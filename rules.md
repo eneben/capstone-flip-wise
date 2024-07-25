@@ -11,12 +11,13 @@
 
 ### Daily - Standup - Meeting:
 
+- 8:45 in Raum 4
 - Habe ich externe Termine?
 - Wie geht's mir heute (auch privat)?
 - An was arbeite ich heute?
 - Brauche ich Hilfe, wo habe ich Schwierigkeiten?
 - 5-10 Minuten insgesamt
 
-### Optionale Wie-geht's-mir-Runde täglich um 13:00
+### Wie-geht's-mir-Runde täglich um 13:00
 
-- in der Küche (Raum 6)
+- außer man muss dringend los
