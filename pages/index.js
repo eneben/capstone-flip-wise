@@ -1,4 +1,4 @@
-import FlashcardList from "@/components/FlascardList/FlashcardList";
+import FlashcardList from "@/components/FlashcardList/FlashcardList";
 import flashcards from "@/assets/flashcards.json";
 import collections from "@/assets/collections.json";
 

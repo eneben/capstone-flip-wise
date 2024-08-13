@@ -27,6 +27,6 @@ const FlashcardListWrapper = styled.div`
   gap: 15px;
 `;
 
-const StyledHeadline = styled.h1`
+const StyledHeadline = styled.h2`
   text-align: center;
 `;
