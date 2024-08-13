@@ -1,9 +1,16 @@
+import styled from "styled-components";
+
 export default function Flashcard({ question, answer, collection }) {
   return (
-    <section>
+    <StyledFlashcard>
       <p>{collection}</p>
       <p>{question}</p>
       <p>{answer}</p>
-    </section>
+    </StyledFlashcard>
   );
 }
+
+const StyledFlashcard = styled.section`
+  border: 1px solid #000;
+  padding: 10px;
+`;
