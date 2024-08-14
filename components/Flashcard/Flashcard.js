@@ -14,9 +14,32 @@ export default function Flashcard({ question, answer, collection }) {
         <>
           <CollectionTitle>{collection}</CollectionTitle>
           <Question>{question}</Question>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="24px"
+            viewBox="0 -960 960 960"
+            width="24px"
+            fill="#000"
+          >
+            <path d="m700-300-57-56 84-84H120v-80h607l-83-84 57-56 179 180-180 180Z" />
+          </svg>
         </>
       )}
-      {showAnswer && <p>{answer}</p>}
+      {showAnswer && (
+        <>
+          <p>{answer}</p>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="24px"
+            viewBox="0 -960 960 960"
+            width="24px"
+            fill="#000"
+            transform="scale(-1 1)"
+          >
+            <path d="m700-300-57-56 84-84H120v-80h607l-83-84 57-56 179 180-180 180Z" />
+          </svg>
+        </>
+      )}
     </StyledFlashcard>
   );
 }
