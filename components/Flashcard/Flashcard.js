@@ -1,11 +1,22 @@
 import styled from "styled-components";
+import { useState } from "react";
 
 export default function Flashcard({ question, answer, collection }) {
+  const [showAnswer, setShowAnswer] = useState(false);
+
+  function handleShowAnswer() {
+    setShowAnswer(!showAnswer);
+  }
+
   return (
-    <StyledFlashcard>
-      <CollectionTitle>{collection}</CollectionTitle>
-      <Question>{question}</Question>
-      <p>{answer}</p>
+    <StyledFlashcard onClick={handleShowAnswer}>
+      {!showAnswer && (
+        <>
+          <CollectionTitle>{collection}</CollectionTitle>
+          <Question>{question}</Question>
+        </>
+      )}
+      {showAnswer && <p>{answer}</p>}
     </StyledFlashcard>
   );
 }
