@@ -23,10 +23,12 @@ export default function FlashcardList({ headline, flashcards }) {
 
 const FlashcardListWrapper = styled.div`
   display: flex;
+  align-items: center;
   flex-direction: column;
   gap: 15px;
 `;
 
 const StyledHeadline = styled.h2`
   text-align: center;
+  padding: 15px 0;
 `;

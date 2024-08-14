@@ -14,7 +14,7 @@ export default function Flashcard({ question, answer, collection }) {
         <CardFront>
           <CollectionTitle>{collection}</CollectionTitle>
           <Question>{question}</Question>
-          <svg
+          <StyledArrow
             xmlns="http://www.w3.org/2000/svg"
             height="24px"
             viewBox="0 -960 960 960"
@@ -22,11 +22,11 @@ export default function Flashcard({ question, answer, collection }) {
             fill="#000"
           >
             <path d="m700-300-57-56 84-84H120v-80h607l-83-84 57-56 179 180-180 180Z" />
-          </svg>
+          </StyledArrow>
         </CardFront>
         <CardBack>
           <Answer>{answer}</Answer>
-          <svg
+          <StyledArrow
             xmlns="http://www.w3.org/2000/svg"
             height="24px"
             viewBox="0 -960 960 960"
@@ -35,7 +35,7 @@ export default function Flashcard({ question, answer, collection }) {
             transform="scale(-1 1)"
           >
             <path d="m700-300-57-56 84-84H120v-80h607l-83-84 57-56 179 180-180 180Z" />
-          </svg>
+          </StyledArrow>
         </CardBack>
       </StyledFlashcard>
     </CardContainer>
@@ -72,7 +72,7 @@ const CardFront = styled(CardFace)`
 `;
 
 const CardBack = styled(CardFace)`
-  background-color: #f8f8f8;
+  background-color: #e6e6e6;
   transform: rotateY(180deg);
 `;
 
@@ -80,12 +80,21 @@ const CollectionTitle = styled.p`
   font-size: 0.8rem;
 `;
 
-const Question = styled.p`
+const CardText = styled.p`
   font-size: 1.2rem;
   font-weight: 500;
 `;
 
-const Answer = styled.p`
-  font-size: 1rem;
-  font-weight: 500;
+const Question = styled(CardText)`
+  padding-top: 37.2px;
+`;
+
+const Answer = styled(CardText)`
+  padding-top: 50px;
+`;
+
+const StyledArrow = styled.svg`
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
 `;
