@@ -1,11 +1,19 @@
 import styled from "styled-components";
 import { useState } from "react";
 
-export default function Flashcard({ question, answer, collection }) {
+export default function Flashcard({ flashcard, onIsCorrect }) {
   const [showAnswer, setShowAnswer] = useState(false);
+  const [isCorrect, setIsCorrect] = useState(false);
+
+  const { question, answer, collectionTitle: collection, id } = flashcard;
 
   function handleShowAnswer() {
     setShowAnswer(!showAnswer);
+  }
+
+  function handleToggleIsCorrect() {
+    setIsCorrect(!isCorrect);
+    onIsCorrect(id);
   }
 
   return (
@@ -14,6 +22,22 @@ export default function Flashcard({ question, answer, collection }) {
         <CardFront>
           <CollectionTitle>{collection}</CollectionTitle>
           <Question>{question}</Question>
+          {isCorrect && (
+            <StyledButton
+              $isCorrect={isCorrect}
+              onClick={handleToggleIsCorrect}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="24px"
+                viewBox="0 -960 960 960"
+                width="24px"
+                fill="#000"
+              >
+                <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+              </svg>
+            </StyledButton>
+          )}
           <StyledArrow
             xmlns="http://www.w3.org/2000/svg"
             height="24px"
@@ -26,6 +50,31 @@ export default function Flashcard({ question, answer, collection }) {
         </CardFront>
         <CardBack>
           <Answer>{answer}</Answer>
+
+          <StyledButton $isCorrect={isCorrect} onClick={handleToggleIsCorrect}>
+            {isCorrect ? (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="24px"
+                viewBox="0 -960 960 960"
+                width="24px"
+                fill="#000"
+              >
+                <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+              </svg>
+            ) : (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="24px"
+                viewBox="0 -960 960 960"
+                width="24px"
+                fill="#000"
+              >
+                <path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z" />
+              </svg>
+            )}
+          </StyledButton>
+
           <StyledArrow
             xmlns="http://www.w3.org/2000/svg"
             height="24px"
@@ -92,8 +141,22 @@ const Question = styled.h2`
   padding-top: 37.2px;
 `;
 
+const StyledButton = styled.button`
+  width: 40px;
+  height: 40px;
+  border: 1px solid black;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  bottom: 15px;
+  left: 10px;
+  background-color: ${({ $isCorrect }) => ($isCorrect ? "#edafb8" : "#b0c4b1")};
+`;
+
 const StyledArrow = styled.svg`
   position: absolute;
   right: 10px;
-  bottom: 10px;
+  bottom: 15px;
 `;
