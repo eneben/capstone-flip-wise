@@ -21,14 +21,16 @@ export default function FlashcardList({ headline, flashcards }) {
   );
 }
 
-const FlashcardListWrapper = styled.div`
+const FlashcardListWrapper = styled.ul`
   display: flex;
   align-items: center;
   flex-direction: column;
   gap: 15px;
+  list-style: none;
 `;
 
-const StyledHeadline = styled.h2`
+const StyledHeadline = styled.h1`
   text-align: center;
   padding: 15px 0;
+  font-size: 1.7rem;
 `;

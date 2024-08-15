@@ -42,11 +42,11 @@ export default function Flashcard({ question, answer, collection }) {
   );
 }
 
-const CardContainer = styled.div`
+const CardContainer = styled.li`
   perspective: 1000px;
 `;
 
-const StyledFlashcard = styled.section`
+const StyledFlashcard = styled.article`
   width: 19rem;
   height: 13rem;
   position: relative;
@@ -80,17 +80,16 @@ const CollectionTitle = styled.p`
   font-size: 0.8rem;
 `;
 
-const CardText = styled.p`
+const Answer = styled.p`
   font-size: 1.2rem;
   font-weight: 500;
-`;
-
-const Question = styled(CardText)`
-  padding-top: 37.2px;
-`;
-
-const Answer = styled(CardText)`
   padding-top: 50px;
+`;
+
+const Question = styled.h2`
+  font-size: 1.2rem;
+  font-weight: 500;
+  padding-top: 37.2px;
 `;
 
 const StyledArrow = styled.svg`
