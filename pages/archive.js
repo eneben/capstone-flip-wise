@@ -7,11 +7,23 @@ export default function Archive({ flashcardsWithCollection, handleIsCorrect }) {
 
   return (
     <>
-      <FlashcardList
-        headline="Archive"
-        flashcards={correctFlashcards}
-        handleIsCorrect={handleIsCorrect}
-      />
+      {correctFlashcards.length > 0 && (
+        <FlashcardList
+          headline="Archive"
+          flashcards={correctFlashcards}
+          handleIsCorrect={handleIsCorrect}
+        />
+      )}
+      {(!correctFlashcards || correctFlashcards.length === 0) && (
+        <StyledMessage>
+          No flashcards have been correctly answered yet.
+        </StyledMessage>
+      )}
     </>
   );
 }
+
+const StyledMessage = styled.p`
+  font-size: 1rem;
+  padding: 40px 20px;
+`;

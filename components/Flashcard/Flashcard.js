@@ -3,7 +3,7 @@ import { useState } from "react";
 
 export default function Flashcard({ flashcard, onIsCorrect }) {
   const [showAnswer, setShowAnswer] = useState(false);
-  const [isCorrect, setIsCorrect] = useState(false);
+  const [isCorrect, setIsCorrect] = useState(flashcard.isCorrect);
 
   const { question, answer, collectionTitle: collection, id } = flashcard;
 
