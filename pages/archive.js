@@ -1,4 +1,5 @@
 import FlashcardList from "@/components/FlashcardList/FlashcardList";
+import styled from "styled-components";
 
 export default function Archive({ flashcardsWithCollection, handleIsCorrect }) {
   const correctFlashcards = flashcardsWithCollection.filter(
