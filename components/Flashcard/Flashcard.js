@@ -1,19 +1,22 @@
 import styled from "styled-components";
 import { useState } from "react";
+import MarkAsIncorrect from "@/public/icons/MarkAsIncorrect.svg";
+import MarkAsCorrect from "@/public/icons/MarkAsCorrect.svg";
+import Arrow from "@/public/icons/Arrow.svg";
 
 export default function Flashcard({ flashcard, onIsCorrect }) {
   const [showAnswer, setShowAnswer] = useState(false);
-  const [isCorrect, setIsCorrect] = useState(flashcard.isCorrect);
 
-  const { question, answer, collectionTitle: collection, id } = flashcard;
+  const {
+    question,
+    answer,
+    collectionTitle: collection,
+    id,
+    isCorrect,
+  } = flashcard;
 
   function handleShowAnswer() {
     setShowAnswer(!showAnswer);
-  }
-
-  function handleToggleIsCorrect() {
-    setIsCorrect(!isCorrect);
-    onIsCorrect(id);
   }
 
   return (
@@ -25,66 +28,19 @@ export default function Flashcard({ flashcard, onIsCorrect }) {
           {isCorrect && (
             <StyledButton
               $isCorrect={isCorrect}
-              onClick={handleToggleIsCorrect}
+              onClick={() => onIsCorrect(id)}
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="24px"
-                viewBox="0 -960 960 960"
-                width="24px"
-                fill="#000"
-              >
-                <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
-              </svg>
+              <MarkAsIncorrect />
             </StyledButton>
           )}
-          <StyledArrow
-            xmlns="http://www.w3.org/2000/svg"
-            height="24px"
-            viewBox="0 -960 960 960"
-            width="24px"
-            fill="#000"
-          >
-            <path d="m700-300-57-56 84-84H120v-80h607l-83-84 57-56 179 180-180 180Z" />
-          </StyledArrow>
+          <StyledArrow />
         </CardFront>
         <CardBack>
           <Answer>{answer}</Answer>
-
-          <StyledButton $isCorrect={isCorrect} onClick={handleToggleIsCorrect}>
-            {isCorrect ? (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="24px"
-                viewBox="0 -960 960 960"
-                width="24px"
-                fill="#000"
-              >
-                <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
-              </svg>
-            ) : (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="24px"
-                viewBox="0 -960 960 960"
-                width="24px"
-                fill="#000"
-              >
-                <path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z" />
-              </svg>
-            )}
+          <StyledButton $isCorrect={isCorrect} onClick={() => onIsCorrect(id)}>
+            {isCorrect ? <MarkAsIncorrect /> : <MarkAsCorrect />}
           </StyledButton>
-
-          <StyledArrow
-            xmlns="http://www.w3.org/2000/svg"
-            height="24px"
-            viewBox="0 -960 960 960"
-            width="24px"
-            fill="#000"
-            transform="scale(-1 1)"
-          >
-            <path d="m700-300-57-56 84-84H120v-80h607l-83-84 57-56 179 180-180 180Z" />
-          </StyledArrow>
+          <StyledArrow transform="scale(-1 1)" />
         </CardBack>
       </StyledFlashcard>
     </CardContainer>
@@ -155,7 +111,7 @@ const StyledButton = styled.button`
   background-color: ${({ $isCorrect }) => ($isCorrect ? "#edafb8" : "#b0c4b1")};
 `;
 
-const StyledArrow = styled.svg`
+const StyledArrow = styled(Arrow)`
   position: absolute;
   right: 10px;
   bottom: 15px;

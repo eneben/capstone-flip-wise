@@ -40,7 +40,6 @@ const StyledList = styled.ul`
 `;
 
 const ListItem = styled.li`
-  padding: 10px;
   width: 50%;
   height: 100%;
   text-align: center;
@@ -59,4 +58,8 @@ const StyledLink = styled(Link)`
   text-decoration: none;
   color: #000;
   width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
