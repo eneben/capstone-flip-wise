@@ -1,4 +1,5 @@
 import FlashcardList from "@/components/FlashcardList/FlashcardList";
+import FormCreateFlashcard from "@/components/FormCreateFlashcard/FormCreateFlashcard";
 import flashcards from "@/assets/flashcards.json";
 import collections from "@/assets/collections.json";
 
@@ -17,6 +18,7 @@ const flashcardsWithCollection = flashcards.map((flashcard) => ({
 export default function HomePage() {
   return (
     <>
+      <FormCreateFlashcard />
       <FlashcardList
         headline="Random Study Cards"
         flashcards={flashcardsWithCollection}
