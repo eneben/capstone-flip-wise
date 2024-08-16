@@ -1,26 +1,34 @@
 import FlashcardList from "@/components/FlashcardList/FlashcardList";
-import flashcards from "@/assets/flashcards.json";
-import collections from "@/assets/collections.json";
+import styled from "styled-components";
 
-function getCollection(collectionId) {
-  const collectionToFind = collections.find((collection) => {
-    return collection.id === collectionId;
-  });
-  return collectionToFind.title;
-}
+export default function HomePage({
+  flashcardsWithCollection,
+  handleIsCorrect,
+}) {
+  const incorrectFlashcards = flashcardsWithCollection.filter(
+    (flashcard) => !flashcard.isCorrect
+  );
 
-const flashcardsWithCollection = flashcards.map((flashcard) => ({
-  ...flashcard,
-  collectionTitle: getCollection(flashcard.collectionId),
-}));
-
-export default function HomePage() {
   return (
     <>
-      <FlashcardList
-        headline="Random Study Cards"
-        flashcards={flashcardsWithCollection}
-      />
+      {incorrectFlashcards.length > 0 && (
+        <FlashcardList
+          headline="Random Study Cards"
+          flashcards={incorrectFlashcards}
+          handleIsCorrect={handleIsCorrect}
+        />
+      )}
+      {(!incorrectFlashcards || incorrectFlashcards.length === 0) && (
+        <StyledMessage>
+          All flashcards have been correctly answered. Have a look in the
+          archive.
+        </StyledMessage>
+      )}
     </>
   );
 }
+
+const StyledMessage = styled.p`
+  font-size: 1rem;
+  padding: 40px 20px;
+`;

@@ -1,8 +1,19 @@
 import styled from "styled-components";
 import { useState } from "react";
+import MarkAsIncorrect from "@/public/icons/MarkAsIncorrect.svg";
+import MarkAsCorrect from "@/public/icons/MarkAsCorrect.svg";
+import Arrow from "@/public/icons/Arrow.svg";
 
-export default function Flashcard({ question, answer, collection }) {
+export default function Flashcard({ flashcard, onIsCorrect }) {
   const [showAnswer, setShowAnswer] = useState(false);
+
+  const {
+    question,
+    answer,
+    collectionTitle: collection,
+    id,
+    isCorrect,
+  } = flashcard;
 
   function handleShowAnswer() {
     setShowAnswer(!showAnswer);
@@ -14,28 +25,22 @@ export default function Flashcard({ question, answer, collection }) {
         <CardFront>
           <CollectionTitle>{collection}</CollectionTitle>
           <Question>{question}</Question>
-          <StyledArrow
-            xmlns="http://www.w3.org/2000/svg"
-            height="24px"
-            viewBox="0 -960 960 960"
-            width="24px"
-            fill="#000"
-          >
-            <path d="m700-300-57-56 84-84H120v-80h607l-83-84 57-56 179 180-180 180Z" />
-          </StyledArrow>
+          {isCorrect && (
+            <StyledButton
+              $isCorrect={isCorrect}
+              onClick={() => onIsCorrect(id)}
+            >
+              <MarkAsIncorrect />
+            </StyledButton>
+          )}
+          <StyledArrow />
         </CardFront>
         <CardBack>
           <Answer>{answer}</Answer>
-          <StyledArrow
-            xmlns="http://www.w3.org/2000/svg"
-            height="24px"
-            viewBox="0 -960 960 960"
-            width="24px"
-            fill="#000"
-            transform="scale(-1 1)"
-          >
-            <path d="m700-300-57-56 84-84H120v-80h607l-83-84 57-56 179 180-180 180Z" />
-          </StyledArrow>
+          <StyledButton $isCorrect={isCorrect} onClick={() => onIsCorrect(id)}>
+            {isCorrect ? <MarkAsIncorrect /> : <MarkAsCorrect />}
+          </StyledButton>
+          <StyledArrow transform="scale(-1 1)" />
         </CardBack>
       </StyledFlashcard>
     </CardContainer>
@@ -92,8 +97,22 @@ const Question = styled.h2`
   padding-top: 37.2px;
 `;
 
-const StyledArrow = styled.svg`
+const StyledButton = styled.button`
+  width: 40px;
+  height: 40px;
+  border: 1px solid black;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  bottom: 15px;
+  left: 10px;
+  background-color: ${({ $isCorrect }) => ($isCorrect ? "#edafb8" : "#b0c4b1")};
+`;
+
+const StyledArrow = styled(Arrow)`
   position: absolute;
   right: 10px;
-  bottom: 10px;
+  bottom: 15px;
 `;
