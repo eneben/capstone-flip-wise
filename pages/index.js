@@ -1,10 +1,11 @@
 import FlashcardList from "@/components/FlashcardList/FlashcardList";
-import FormCreateFlashcard from "@/components/FormCreateFlashcard/FormCreateFlashcard";
+import FormFlashcard from "@/components/FormFlashcard/FormFlashcard";
 import styled from "styled-components";
 
 export default function HomePage({
   flashcardsWithCollection,
   handleIsCorrect,
+  collections,
 }) {
   const incorrectFlashcards = flashcardsWithCollection.filter(
     (flashcard) => !flashcard.isCorrect
@@ -12,7 +13,7 @@ export default function HomePage({
 
   return (
     <>
-      <FormCreateFlashcard />
+      <FormFlashcard collections={collections} />
       {incorrectFlashcards.length > 0 && (
         <FlashcardList
           headline="Random Study Cards"
