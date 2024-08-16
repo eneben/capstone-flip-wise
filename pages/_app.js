@@ -1,6 +1,5 @@
 import GlobalStyle from "../styles";
 import Layout from "@/components/Layout/Layout";
-import { useState } from "react";
 import initialFlashcards from "@/assets/flashcards.json";
 import collections from "@/assets/collections.json";
 import useLocalStorageState from "use-local-storage-state";
