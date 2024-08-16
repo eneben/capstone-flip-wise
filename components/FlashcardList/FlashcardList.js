@@ -1,7 +1,11 @@
 import Flashcard from "../Flashcard/Flashcard";
 import styled from "styled-components";
 
-export default function FlashcardList({ headline, flashcards }) {
+export default function FlashcardList({
+  headline,
+  flashcards,
+  handleIsCorrect,
+}) {
   return (
     <>
       <StyledHeadline>{headline}</StyledHeadline>
@@ -10,9 +14,8 @@ export default function FlashcardList({ headline, flashcards }) {
           return (
             <Flashcard
               key={flashcard.id}
-              question={flashcard.question}
-              answer={flashcard.answer}
-              collection={flashcard.collectionTitle}
+              flashcard={flashcard}
+              onIsCorrect={handleIsCorrect}
             />
           );
         })}
