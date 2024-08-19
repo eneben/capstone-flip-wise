@@ -11,9 +11,19 @@ export default function App({ Component, pageProps }) {
   });
 
   function handleCreateFlashcard(newFlashcard) {
-    // 1. wir bekommen newFlashcard.collection und müssen die im collections-array finden,
-    // um die id an flashcards weiterzugeben .
-    setFlashcards([{ ...newFlashcard, id: uid() }, ...flashcards]);
+    const currentCollection = collections.find((collection) => {
+      return collection.title === newFlashcard.collection;
+    });
+
+    setFlashcards([
+      {
+        id: uid(),
+        collectionId: currentCollection.id,
+        question: newFlashcard.question,
+        answer: newFlashcard.answer,
+      },
+      ...flashcards,
+    ]);
   }
 
   function handleIsCorrect(id) {
@@ -46,6 +56,7 @@ export default function App({ Component, pageProps }) {
         flashcardsWithCollection={flashcardsWithCollection}
         handleIsCorrect={handleIsCorrect}
         collections={collections}
+        handleCreateFlashcard={handleCreateFlashcard}
       />
     </Layout>
   );

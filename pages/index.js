@@ -6,6 +6,7 @@ export default function HomePage({
   flashcardsWithCollection,
   handleIsCorrect,
   collections,
+  handleCreateFlashcard,
 }) {
   const incorrectFlashcards = flashcardsWithCollection.filter(
     (flashcard) => !flashcard.isCorrect
@@ -13,7 +14,10 @@ export default function HomePage({
 
   return (
     <>
-      <FormFlashcard collections={collections} />
+      <FormFlashcard
+        onCreateFlashcard={handleCreateFlashcard}
+        collections={collections}
+      />
       {incorrectFlashcards.length > 0 && (
         <FlashcardList
           headline="Random Study Cards"

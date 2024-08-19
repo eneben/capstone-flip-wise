@@ -1,8 +1,11 @@
-export default function FormFlashcard({ collections }) {
+export default function FormFlashcard({ collections, onCreateFlashcard }) {
   function handleSubmit(event) {
     event.preventDefault();
+
     const formData = new FormData(event.target);
     const newFlashcard = Object.fromEntries(formData);
+
+    onCreateFlashcard(newFlashcard);
     event.target.reset();
   }
   // 3. Im event handler: error handling, error messages bei nicht ausgefüllten feldern. auch layout.
