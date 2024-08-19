@@ -19,7 +19,6 @@ export default function FormFlashcard({ collections, onCreateFlashcard }) {
         <input id="answer" name="answer" type="text" required />
         <label htmlFor="collection">Collection</label>
         <select id="collection" name="collection" required>
-          {/* Wie machen wir das, dass die erste Option nicht auswählbar ist, wenn das select element required ist? Ist der leere value ausreichend? default value */}
           <option value="">--Please choose a collection:--</option>
           {collections.map((collection) => {
             return (
