@@ -35,4 +35,4 @@ export default function FormFlashcard({ collections, onCreateFlashcard }) {
   );
 }
 
-// 5. layout
+// layout
