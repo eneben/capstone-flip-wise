@@ -34,6 +34,6 @@ const FlashcardListWrapper = styled.ul`
 
 const StyledHeadline = styled.h1`
   text-align: center;
-  padding: 15px 0;
+  padding: 30px 0 15px 0;
   font-size: 1.7rem;
 `;

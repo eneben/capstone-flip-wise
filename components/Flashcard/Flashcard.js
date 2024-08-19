@@ -52,7 +52,7 @@ const CardContainer = styled.li`
 `;
 
 const StyledFlashcard = styled.article`
-  width: 19rem;
+  width: 20rem;
   height: 13rem;
   position: relative;
   transform-style: preserve-3d;

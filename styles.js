@@ -15,4 +15,9 @@ export default createGlobalStyle`
   body {
     font-family: ${nunito.style.fontFamily}, system-ui;
   }
+
+input, select, button {
+  font-family: ${nunito.style.fontFamily}, system-ui;
+}
+
 `;
