@@ -12,36 +12,34 @@ export default function FormFlashcard({ collections, onCreateFlashcard }) {
   }
 
   return (
-    <>
-      <StyledForm onSubmit={handleSubmit}>
-        <StyledFormHeadline>Create new flashcard</StyledFormHeadline>
-        <StyledLabel htmlFor="question">Question</StyledLabel>
-        <StyledInput id="question" name="question" type="text" required />
-        <StyledLabel htmlFor="answer">Answer</StyledLabel>
-        <StyledInput id="answer" name="answer" type="text" required />
-        <StyledLabel htmlFor="collection">Collection</StyledLabel>
-        <StyledSelect id="collection" name="collection" required>
-          <option value="">--Please choose a collection:--</option>
-          {collections.map((collection) => {
-            return (
-              <option key={collection.id} value={collection.title}>
-                {collection.title}
-              </option>
-            );
-          })}
-        </StyledSelect>
-        <SubmitButtonWrapper>
-          <StyledSubmitButton type="submit">Submit</StyledSubmitButton>
-        </SubmitButtonWrapper>
-      </StyledForm>
-    </>
+    <StyledForm onSubmit={handleSubmit}>
+      <StyledFormHeadline>Create new flashcard</StyledFormHeadline>
+      <StyledLabel htmlFor="question">Question</StyledLabel>
+      <StyledInput id="question" name="question" type="text" required />
+      <StyledLabel htmlFor="answer">Answer</StyledLabel>
+      <StyledInput id="answer" name="answer" type="text" required />
+      <StyledLabel htmlFor="collection">Collection</StyledLabel>
+      <StyledSelect id="collection" name="collection" required>
+        <option value="">--Please choose a collection:--</option>
+        {collections.map((collection) => {
+          return (
+            <option key={collection.id} value={collection.title}>
+              {collection.title}
+            </option>
+          );
+        })}
+      </StyledSelect>
+      <SubmitButtonWrapper>
+        <StyledSubmitButton type="submit">Submit</StyledSubmitButton>
+      </SubmitButtonWrapper>
+    </StyledForm>
   );
 }
 
 const StyledForm = styled.form`
   width: 20rem;
   margin: 0 auto;
-  padding: 10px;
+  padding: 20px 10px 10px 10px;
   border: 1px solid #000;
   border-top: 0;
   border-radius: 0 0 10px 10px;

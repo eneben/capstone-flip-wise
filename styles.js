@@ -17,7 +17,7 @@ export default createGlobalStyle`
   }
 
 input, select, button {
-  font-family: ${nunito.style.fontFamily}, system-ui;
+  font-family: inherit;
 }
 
 `;

@@ -25,7 +25,7 @@ export default function Layout({ children }) {
 const MainContainer = styled.main`
   margin: 0 auto;
   max-width: 30rem;
-  padding: 0 1rem 1rem 1rem;
+  padding: 0 1rem 4.5rem 1rem;
 `;
 
 const StyledList = styled.ul`
