@@ -11,16 +11,10 @@ export default function App({ Component, pageProps }) {
   });
 
   function handleCreateFlashcard(newFlashcard) {
-    const currentCollection = collections.find((collection) => {
-      return collection.title === newFlashcard.collection;
-    });
-
     setFlashcards([
       {
         id: uid(),
-        collectionId: currentCollection.id,
-        question: newFlashcard.question,
-        answer: newFlashcard.answer,
+        ...newFlashcard,
       },
       ...flashcards,
     ]);
@@ -35,6 +29,8 @@ export default function App({ Component, pageProps }) {
       })
     );
   }
+
+  console.log(flashcards);
 
   function getCollection(collectionId) {
     const collectionToFind = collections.find((collection) => {

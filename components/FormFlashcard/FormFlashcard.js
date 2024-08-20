@@ -19,11 +19,11 @@ export default function FormFlashcard({ collections, onCreateFlashcard }) {
       <StyledLabel htmlFor="answer">Answer</StyledLabel>
       <StyledInput id="answer" name="answer" type="text" required />
       <StyledLabel htmlFor="collection">Collection</StyledLabel>
-      <StyledSelect id="collection" name="collection" required>
+      <StyledSelect id="collection" name="collectionId" required>
         <option value="">--Please choose a collection:--</option>
         {collections.map((collection) => {
           return (
-            <option key={collection.id} value={collection.title}>
+            <option key={collection.id} value={collection.id}>
               {collection.title}
             </option>
           );
