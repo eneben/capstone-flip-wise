@@ -3,11 +3,28 @@ import Layout from "@/components/Layout/Layout";
 import initialFlashcards from "@/assets/flashcards.json";
 import collections from "@/assets/collections.json";
 import useLocalStorageState from "use-local-storage-state";
+import { uid } from "uid";
 
 export default function App({ Component, pageProps }) {
   const [flashcards, setFlashcards] = useLocalStorageState("flashcards", {
     defaultValue: initialFlashcards,
   });
+
+  function handleCreateFlashcard(newFlashcard) {
+    const currentCollection = collections.find((collection) => {
+      return collection.title === newFlashcard.collection;
+    });
+
+    setFlashcards([
+      {
+        id: uid(),
+        collectionId: currentCollection.id,
+        question: newFlashcard.question,
+        answer: newFlashcard.answer,
+      },
+      ...flashcards,
+    ]);
+  }
 
   function handleIsCorrect(id) {
     setFlashcards(
@@ -38,6 +55,8 @@ export default function App({ Component, pageProps }) {
         {...pageProps}
         flashcardsWithCollection={flashcardsWithCollection}
         handleIsCorrect={handleIsCorrect}
+        collections={collections}
+        handleCreateFlashcard={handleCreateFlashcard}
       />
     </Layout>
   );
