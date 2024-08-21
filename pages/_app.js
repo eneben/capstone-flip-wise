@@ -30,8 +30,6 @@ export default function App({ Component, pageProps }) {
     );
   }
 
-  console.log(flashcards);
-
   function getCollection(collectionId) {
     const collectionToFind = collections.find((collection) => {
       return collection.id === collectionId;

@@ -3,6 +3,7 @@ import { useState } from "react";
 import MarkAsIncorrect from "@/public/icons/MarkAsIncorrect.svg";
 import MarkAsCorrect from "@/public/icons/MarkAsCorrect.svg";
 import Arrow from "@/public/icons/Arrow.svg";
+import { RoundButton } from "../Button/Button";
 
 export default function Flashcard({ flashcard, onIsCorrect }) {
   const [showAnswer, setShowAnswer] = useState(false);
@@ -26,12 +27,12 @@ export default function Flashcard({ flashcard, onIsCorrect }) {
           <CollectionTitle>{collection}</CollectionTitle>
           <Question>{question}</Question>
           {isCorrect && (
-            <StyledButton
-              $isCorrect={isCorrect}
+            <RoundButton
+              content={<MarkAsIncorrect />}
               onClick={() => onIsCorrect(id)}
-            >
-              <MarkAsIncorrect />
-            </StyledButton>
+              type="button"
+              variant="markAsIncorrect"
+            />
           )}
           <StyledArrow />
         </CardFront>
