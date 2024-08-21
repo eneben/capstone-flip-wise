@@ -24,6 +24,7 @@ export default function Flashcard({ flashcard, onIsCorrect, onDelete }) {
 
   function toggleDeleteConfirmation(event) {
     event.stopPropagation();
+    console.log("DELETE");
     setIsDelete(!isDelete);
   }
 
@@ -35,7 +36,7 @@ export default function Flashcard({ flashcard, onIsCorrect, onDelete }) {
             <p>Do you want to delete this flashcard?</p>
             <RegularButton
               content="Yes"
-              onClick={onDelete(id)}
+              onClick={() => onDelete(id)}
               type="button"
               variant="confirm"
             />

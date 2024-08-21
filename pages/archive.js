@@ -30,6 +30,7 @@ export default function Archive({
 }
 
 const StyledMessage = styled.p`
+  text-align: center;
   font-size: 1rem;
   padding: 40px 20px;
 `;
