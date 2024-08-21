@@ -16,6 +16,10 @@ export function RoundButton({ content, onClick, type, variant }) {
   );
 }
 
+export function ButtonWrapper({ children }) {
+  return <StyledButtonWrapper>{children}</StyledButtonWrapper>;
+}
+
 const StyledRegularButton = styled.button`
   padding: 6px 12px;
   font-weight: 500;
@@ -79,4 +83,11 @@ const StyledRoundButton = styled.button`
       top: 15px;
       right: 10px;
     `}
+`;
+
+const StyledButtonWrapper = styled.div`
+  display: flex;
+  padding: 20px 0 10px 0;
+  gap: 10px;
+  justify-content: center;
 `;

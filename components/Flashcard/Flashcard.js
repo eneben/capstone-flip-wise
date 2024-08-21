@@ -4,9 +4,10 @@ import MarkAsIncorrect from "@/public/icons/MarkAsIncorrect.svg";
 import MarkAsCorrect from "@/public/icons/MarkAsCorrect.svg";
 import Delete from "@/public/icons/Delete.svg";
 import Arrow from "@/public/icons/Arrow.svg";
-import { RoundButton, RegularButton } from "../Button/Button";
+import { RoundButton, RegularButton, ButtonWrapper } from "../Button/Button";
+import DeleteConfirmationDialog from "../DeleteConfirmationDialog/DeleteConfirmationDialog";
 
-export default function Flashcard({ flashcard, onIsCorrect, onDelete }) {
+export default function Flashcard({ flashcard, onIsCorrect, handleDelete }) {
   const [showAnswer, setShowAnswer] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
 
@@ -33,19 +34,20 @@ export default function Flashcard({ flashcard, onIsCorrect, onDelete }) {
       <StyledFlashcard $showAnswer={showAnswer}>
         {isDelete && (
           <>
-            <p>Do you want to delete this flashcard?</p>
-            <RegularButton
-              content="Yes"
-              onClick={() => onDelete(id)}
-              type="button"
-              variant="confirm"
-            />
-            <RegularButton
-              content="No"
-              onClick={toggleDeleteConfirmation}
-              type="button"
-              variant="warning"
-            />
+            <CardFront>
+              <DeleteConfirmationDialog
+                onDelete={handleDelete}
+                toggleDeleteConfirmation={toggleDeleteConfirmation}
+                flashcardId={id}
+              />
+            </CardFront>
+            <CardBack>
+              <DeleteConfirmationDialog
+                onDelete={handleDelete}
+                toggleDeleteConfirmation={toggleDeleteConfirmation}
+                flashcardId={id}
+              />
+            </CardBack>
           </>
         )}
 
@@ -72,6 +74,12 @@ export default function Flashcard({ flashcard, onIsCorrect, onDelete }) {
               <StyledArrow />
             </CardFront>
             <CardBack>
+              <RoundButton
+                content={<Delete />}
+                onClick={toggleDeleteConfirmation}
+                type="button"
+                variant="delete"
+              />
               <Answer>{answer}</Answer>
 
               <RoundButton

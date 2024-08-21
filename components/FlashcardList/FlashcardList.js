@@ -14,7 +14,7 @@ export default function FlashcardList({
         {flashcards.map((flashcard) => {
           return (
             <Flashcard
-              onDelete={handleDelete}
+              handleDelete={handleDelete}
               key={flashcard.id}
               flashcard={flashcard}
               onIsCorrect={handleIsCorrect}
