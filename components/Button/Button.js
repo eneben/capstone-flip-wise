@@ -1,6 +1,6 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
-export function RegularButton(content, onClick, type, variant) {
+export function RegularButton({ content, onClick, type, variant }) {
   return (
     <StyledRegularButton type={type} onClick={onClick} $variant={variant}>
       {content}
@@ -8,7 +8,7 @@ export function RegularButton(content, onClick, type, variant) {
   );
 }
 
-export function RoundButton(content, onClick, type, variant) {
+export function RoundButton({ content, onClick, type, variant }) {
   return (
     <StyledRoundButton type={type} onClick={onClick} $variant={variant}>
       {content}
@@ -34,6 +34,13 @@ const StyledRegularButton = styled.button`
     css`
       color: #fff;
       background-color: #000;
+    `}
+
+    ${(props) =>
+    props.$variant === "warning" &&
+    css`
+      color: #000;
+      background-color: #edafb8;
     `}
 `;
 
@@ -62,5 +69,14 @@ const StyledRoundButton = styled.button`
       position: absolute;
       bottom: 15px;
       left: 10px;
+    `}
+
+    ${(props) =>
+    props.$variant === "delete" &&
+    css`
+      background-color: #eee;
+      position: absolute;
+      top: 15px;
+      right: 10px;
     `}
 `;

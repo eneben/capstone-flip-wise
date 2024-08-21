@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { RegularButton } from "../Button/Button";
 
 export default function FormFlashcard({ collections, onCreateFlashcard }) {
   function handleSubmit(event) {
@@ -30,7 +31,7 @@ export default function FormFlashcard({ collections, onCreateFlashcard }) {
         })}
       </StyledSelect>
       <SubmitButtonWrapper>
-        <StyledSubmitButton type="submit">Submit</StyledSubmitButton>
+        <RegularButton type="submit" content="Submit" variant="submit" />
       </SubmitButtonWrapper>
     </StyledForm>
   );
@@ -70,13 +71,4 @@ const SubmitButtonWrapper = styled.div`
   display: flex;
   padding: 20px 0 10px 0;
   justify-content: center;
-`;
-
-const StyledSubmitButton = styled.button`
-  padding: 6px 12px 6px 12px;
-  font-weight: 500;
-  color: #fff;
-  background-color: #000;
-  border-style: none;
-  border-radius: 4px;
 `;

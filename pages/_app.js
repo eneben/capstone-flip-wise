@@ -30,6 +30,14 @@ export default function App({ Component, pageProps }) {
     );
   }
 
+  function handleDelete(id) {
+    setFlashcards(
+      flashcards.filter((flashcard) => {
+        return flashcard.id !== id;
+      })
+    );
+  }
+
   function getCollection(collectionId) {
     const collectionToFind = collections.find((collection) => {
       return collection.id === collectionId;
@@ -51,6 +59,7 @@ export default function App({ Component, pageProps }) {
         handleIsCorrect={handleIsCorrect}
         collections={collections}
         handleCreateFlashcard={handleCreateFlashcard}
+        handleDelete={handleDelete}
       />
     </Layout>
   );

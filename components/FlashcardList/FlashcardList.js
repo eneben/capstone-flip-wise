@@ -5,6 +5,7 @@ export default function FlashcardList({
   headline,
   flashcards,
   handleIsCorrect,
+  handleDelete,
 }) {
   return (
     <>
@@ -13,6 +14,7 @@ export default function FlashcardList({
         {flashcards.map((flashcard) => {
           return (
             <Flashcard
+              onDelete={handleDelete}
               key={flashcard.id}
               flashcard={flashcard}
               onIsCorrect={handleIsCorrect}

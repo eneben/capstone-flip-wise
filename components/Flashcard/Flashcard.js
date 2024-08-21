@@ -2,11 +2,13 @@ import styled from "styled-components";
 import { useState } from "react";
 import MarkAsIncorrect from "@/public/icons/MarkAsIncorrect.svg";
 import MarkAsCorrect from "@/public/icons/MarkAsCorrect.svg";
+import Delete from "@/public/icons/Delete.svg";
 import Arrow from "@/public/icons/Arrow.svg";
-import { RoundButton } from "../Button/Button";
+import { RoundButton, RegularButton } from "../Button/Button";
 
-export default function Flashcard({ flashcard, onIsCorrect }) {
+export default function Flashcard({ flashcard, onIsCorrect, onDelete }) {
   const [showAnswer, setShowAnswer] = useState(false);
+  const [isDelete, setIsDelete] = useState(false);
 
   const {
     question,
@@ -20,29 +22,67 @@ export default function Flashcard({ flashcard, onIsCorrect }) {
     setShowAnswer(!showAnswer);
   }
 
+  function toggleDeleteConfirmation(event) {
+    event.stopPropagation();
+    setIsDelete(!isDelete);
+  }
+
   return (
     <CardContainer onClick={handleShowAnswer}>
       <StyledFlashcard $showAnswer={showAnswer}>
-        <CardFront>
-          <CollectionTitle>{collection}</CollectionTitle>
-          <Question>{question}</Question>
-          {isCorrect && (
-            <RoundButton
-              content={<MarkAsIncorrect />}
-              onClick={() => onIsCorrect(id)}
+        {isDelete && (
+          <>
+            <p>Do you want to delete this flashcard?</p>
+            <RegularButton
+              content="Yes"
+              onClick={onDelete(id)}
               type="button"
-              variant="markAsIncorrect"
+              variant="confirm"
             />
-          )}
-          <StyledArrow />
-        </CardFront>
-        <CardBack>
-          <Answer>{answer}</Answer>
-          <StyledButton $isCorrect={isCorrect} onClick={() => onIsCorrect(id)}>
-            {isCorrect ? <MarkAsIncorrect /> : <MarkAsCorrect />}
-          </StyledButton>
-          <StyledArrow transform="scale(-1 1)" />
-        </CardBack>
+            <RegularButton
+              content="No"
+              onClick={toggleDeleteConfirmation}
+              type="button"
+              variant="warning"
+            />
+          </>
+        )}
+
+        {!isDelete && (
+          <>
+            <CardFront>
+              <CollectionTitle>{collection}</CollectionTitle>
+
+              <RoundButton
+                content={<Delete />}
+                onClick={toggleDeleteConfirmation}
+                type="button"
+                variant="delete"
+              />
+              <Question>{question}</Question>
+              {isCorrect && (
+                <RoundButton
+                  content={<MarkAsIncorrect />}
+                  onClick={() => onIsCorrect(id)}
+                  type="button"
+                  variant="markAsIncorrect"
+                />
+              )}
+              <StyledArrow />
+            </CardFront>
+            <CardBack>
+              <Answer>{answer}</Answer>
+
+              <RoundButton
+                content={isCorrect ? <MarkAsIncorrect /> : <MarkAsCorrect />}
+                onClick={() => onIsCorrect(id)}
+                type="button"
+                variant={isCorrect ? "markAsIncorrect" : "markAsCorrect"}
+              />
+              <StyledArrow transform="scale(-1 1)" />
+            </CardBack>
+          </>
+        )}
       </StyledFlashcard>
     </CardContainer>
   );
@@ -96,20 +136,6 @@ const Question = styled.h2`
   font-size: 1.2rem;
   font-weight: 500;
   padding-top: 37.2px;
-`;
-
-const StyledButton = styled.button`
-  width: 40px;
-  height: 40px;
-  border: 1px solid black;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  bottom: 15px;
-  left: 10px;
-  background-color: ${({ $isCorrect }) => ($isCorrect ? "#edafb8" : "#b0c4b1")};
 `;
 
 const StyledArrow = styled(Arrow)`

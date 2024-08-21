@@ -7,6 +7,7 @@ export default function HomePage({
   handleIsCorrect,
   collections,
   handleCreateFlashcard,
+  handleDelete,
 }) {
   const incorrectFlashcards = flashcardsWithCollection.filter(
     (flashcard) => !flashcard.isCorrect
@@ -20,6 +21,7 @@ export default function HomePage({
       />
       {incorrectFlashcards.length > 0 && (
         <FlashcardList
+          handleDelete={handleDelete}
           headline="Random Study Cards"
           flashcards={incorrectFlashcards}
           handleIsCorrect={handleIsCorrect}

@@ -1,7 +1,11 @@
 import FlashcardList from "@/components/FlashcardList/FlashcardList";
 import styled from "styled-components";
 
-export default function Archive({ flashcardsWithCollection, handleIsCorrect }) {
+export default function Archive({
+  flashcardsWithCollection,
+  handleIsCorrect,
+  handleDelete,
+}) {
   const correctFlashcards = flashcardsWithCollection.filter(
     (flashcard) => flashcard.isCorrect === true
   );
@@ -13,6 +17,7 @@ export default function Archive({ flashcardsWithCollection, handleIsCorrect }) {
           headline="Archive"
           flashcards={correctFlashcards}
           handleIsCorrect={handleIsCorrect}
+          handleDelete={handleDelete}
         />
       )}
       {(!correctFlashcards || correctFlashcards.length === 0) && (
