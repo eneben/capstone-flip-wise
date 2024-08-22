@@ -2,10 +2,18 @@ import styled from "styled-components";
 import { useState } from "react";
 import MarkAsIncorrect from "@/public/icons/MarkAsIncorrect.svg";
 import MarkAsCorrect from "@/public/icons/MarkAsCorrect.svg";
+import Delete from "@/public/icons/Delete.svg";
 import Arrow from "@/public/icons/Arrow.svg";
+import { RoundButton } from "../Button/Button";
+import DeleteConfirmationDialog from "../DeleteConfirmationDialog/DeleteConfirmationDialog";
 
-export default function Flashcard({ flashcard, onIsCorrect }) {
+export default function Flashcard({
+  flashcard,
+  onToggleCorrect,
+  handleDelete,
+}) {
   const [showAnswer, setShowAnswer] = useState(false);
+  const [isDelete, setIsDelete] = useState(false);
 
   const {
     question,
@@ -19,29 +27,74 @@ export default function Flashcard({ flashcard, onIsCorrect }) {
     setShowAnswer(!showAnswer);
   }
 
+  function toggleDeleteConfirmation(event) {
+    event.stopPropagation();
+    setIsDelete(!isDelete);
+  }
+
   return (
     <CardContainer onClick={handleShowAnswer}>
       <StyledFlashcard $showAnswer={showAnswer}>
-        <CardFront>
-          <CollectionTitle>{collection}</CollectionTitle>
-          <Question>{question}</Question>
-          {isCorrect && (
-            <StyledButton
-              $isCorrect={isCorrect}
-              onClick={() => onIsCorrect(id)}
-            >
-              <MarkAsIncorrect />
-            </StyledButton>
-          )}
-          <StyledArrow />
-        </CardFront>
-        <CardBack>
-          <Answer>{answer}</Answer>
-          <StyledButton $isCorrect={isCorrect} onClick={() => onIsCorrect(id)}>
-            {isCorrect ? <MarkAsIncorrect /> : <MarkAsCorrect />}
-          </StyledButton>
-          <StyledArrow transform="scale(-1 1)" />
-        </CardBack>
+        {isDelete && (
+          <>
+            <CardFront>
+              <DeleteConfirmationDialog
+                onDelete={handleDelete}
+                toggleDeleteConfirmation={toggleDeleteConfirmation}
+                flashcardId={id}
+              />
+            </CardFront>
+            <CardBack>
+              <DeleteConfirmationDialog
+                onDelete={handleDelete}
+                toggleDeleteConfirmation={toggleDeleteConfirmation}
+                flashcardId={id}
+              />
+            </CardBack>
+          </>
+        )}
+
+        {!isDelete && (
+          <>
+            <CardFront>
+              <CollectionTitle>{collection}</CollectionTitle>
+
+              <RoundButton
+                content={<Delete />}
+                onClick={toggleDeleteConfirmation}
+                type="button"
+                variant="delete"
+              />
+              <Question>{question}</Question>
+              {isCorrect && (
+                <RoundButton
+                  content={<MarkAsIncorrect />}
+                  onClick={() => onToggleCorrect(id)}
+                  type="button"
+                  variant="markAsIncorrect"
+                />
+              )}
+              <StyledArrow />
+            </CardFront>
+            <CardBack>
+              <RoundButton
+                content={<Delete />}
+                onClick={toggleDeleteConfirmation}
+                type="button"
+                variant="delete"
+              />
+              <Answer>{answer}</Answer>
+
+              <RoundButton
+                content={isCorrect ? <MarkAsIncorrect /> : <MarkAsCorrect />}
+                onClick={() => onToggleCorrect(id)}
+                type="button"
+                variant={isCorrect ? "markAsIncorrect" : "markAsCorrect"}
+              />
+              <StyledArrow transform="scale(-1 1)" />
+            </CardBack>
+          </>
+        )}
       </StyledFlashcard>
     </CardContainer>
   );
@@ -95,20 +148,6 @@ const Question = styled.h2`
   font-size: 1.2rem;
   font-weight: 500;
   padding-top: 37.2px;
-`;
-
-const StyledButton = styled.button`
-  width: 40px;
-  height: 40px;
-  border: 1px solid black;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  bottom: 15px;
-  left: 10px;
-  background-color: ${({ $isCorrect }) => ($isCorrect ? "#edafb8" : "#b0c4b1")};
 `;
 
 const StyledArrow = styled(Arrow)`

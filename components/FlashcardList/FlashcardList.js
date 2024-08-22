@@ -4,7 +4,8 @@ import styled from "styled-components";
 export default function FlashcardList({
   headline,
   flashcards,
-  handleIsCorrect,
+  handleToggleCorrect,
+  handleDelete,
 }) {
   return (
     <>
@@ -13,9 +14,10 @@ export default function FlashcardList({
         {flashcards.map((flashcard) => {
           return (
             <Flashcard
+              handleDelete={handleDelete}
               key={flashcard.id}
               flashcard={flashcard}
-              onIsCorrect={handleIsCorrect}
+              onToggleCorrect={handleToggleCorrect}
             />
           );
         })}

@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { RegularButton } from "../Button/Button";
 
 export default function FormFlashcard({ collections, onCreateFlashcard }) {
   function handleSubmit(event) {
@@ -19,18 +20,18 @@ export default function FormFlashcard({ collections, onCreateFlashcard }) {
       <StyledLabel htmlFor="answer">Answer</StyledLabel>
       <StyledInput id="answer" name="answer" type="text" required />
       <StyledLabel htmlFor="collection">Collection</StyledLabel>
-      <StyledSelect id="collection" name="collection" required>
+      <StyledSelect id="collection" name="collectionId" required>
         <option value="">--Please choose a collection:--</option>
         {collections.map((collection) => {
           return (
-            <option key={collection.id} value={collection.title}>
+            <option key={collection.id} value={collection.id}>
               {collection.title}
             </option>
           );
         })}
       </StyledSelect>
       <SubmitButtonWrapper>
-        <StyledSubmitButton type="submit">Submit</StyledSubmitButton>
+        <RegularButton type="submit" content="Submit" variant="submit" />
       </SubmitButtonWrapper>
     </StyledForm>
   );
@@ -70,13 +71,4 @@ const SubmitButtonWrapper = styled.div`
   display: flex;
   padding: 20px 0 10px 0;
   justify-content: center;
-`;
-
-const StyledSubmitButton = styled.button`
-  padding: 6px 12px 6px 12px;
-  font-weight: 500;
-  color: #fff;
-  background-color: #000;
-  border-style: none;
-  border-radius: 4px;
 `;

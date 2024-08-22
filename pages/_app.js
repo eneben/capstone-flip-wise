@@ -11,27 +11,29 @@ export default function App({ Component, pageProps }) {
   });
 
   function handleCreateFlashcard(newFlashcard) {
-    const currentCollection = collections.find((collection) => {
-      return collection.title === newFlashcard.collection;
-    });
-
     setFlashcards([
       {
         id: uid(),
-        collectionId: currentCollection.id,
-        question: newFlashcard.question,
-        answer: newFlashcard.answer,
+        ...newFlashcard,
       },
       ...flashcards,
     ]);
   }
 
-  function handleIsCorrect(id) {
+  function handleToggleCorrect(id) {
     setFlashcards(
       flashcards.map((flashcard) => {
         return flashcard.id === id
           ? { ...flashcard, isCorrect: !flashcard.isCorrect }
           : flashcard;
+      })
+    );
+  }
+
+  function handleDelete(id) {
+    setFlashcards(
+      flashcards.filter((flashcard) => {
+        return flashcard.id !== id;
       })
     );
   }
@@ -54,9 +56,10 @@ export default function App({ Component, pageProps }) {
       <Component
         {...pageProps}
         flashcardsWithCollection={flashcardsWithCollection}
-        handleIsCorrect={handleIsCorrect}
+        handleToggleCorrect={handleToggleCorrect}
         collections={collections}
         handleCreateFlashcard={handleCreateFlashcard}
+        handleDelete={handleDelete}
       />
     </Layout>
   );

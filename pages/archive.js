@@ -1,7 +1,11 @@
 import FlashcardList from "@/components/FlashcardList/FlashcardList";
 import styled from "styled-components";
 
-export default function Archive({ flashcardsWithCollection, handleIsCorrect }) {
+export default function Archive({
+  flashcardsWithCollection,
+  handleToggleCorrect,
+  handleDelete,
+}) {
   const correctFlashcards = flashcardsWithCollection.filter(
     (flashcard) => flashcard.isCorrect === true
   );
@@ -12,7 +16,8 @@ export default function Archive({ flashcardsWithCollection, handleIsCorrect }) {
         <FlashcardList
           headline="Archive"
           flashcards={correctFlashcards}
-          handleIsCorrect={handleIsCorrect}
+          handleToggleCorrect={handleToggleCorrect}
+          handleDelete={handleDelete}
         />
       )}
       {(!correctFlashcards || correctFlashcards.length === 0) && (
@@ -25,6 +30,7 @@ export default function Archive({ flashcardsWithCollection, handleIsCorrect }) {
 }
 
 const StyledMessage = styled.p`
+  text-align: center;
   font-size: 1rem;
   padding: 40px 20px;
 `;
