@@ -4,10 +4,14 @@ import MarkAsIncorrect from "@/public/icons/MarkAsIncorrect.svg";
 import MarkAsCorrect from "@/public/icons/MarkAsCorrect.svg";
 import Delete from "@/public/icons/Delete.svg";
 import Arrow from "@/public/icons/Arrow.svg";
-import { RoundButton, RegularButton, ButtonWrapper } from "../Button/Button";
+import { RoundButton } from "../Button/Button";
 import DeleteConfirmationDialog from "../DeleteConfirmationDialog/DeleteConfirmationDialog";
 
-export default function Flashcard({ flashcard, onIsCorrect, handleDelete }) {
+export default function Flashcard({
+  flashcard,
+  onToggleCorrect,
+  handleDelete,
+}) {
   const [showAnswer, setShowAnswer] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
 
@@ -25,7 +29,6 @@ export default function Flashcard({ flashcard, onIsCorrect, handleDelete }) {
 
   function toggleDeleteConfirmation(event) {
     event.stopPropagation();
-    console.log("DELETE");
     setIsDelete(!isDelete);
   }
 
@@ -66,7 +69,7 @@ export default function Flashcard({ flashcard, onIsCorrect, handleDelete }) {
               {isCorrect && (
                 <RoundButton
                   content={<MarkAsIncorrect />}
-                  onClick={() => onIsCorrect(id)}
+                  onClick={() => onToggleCorrect(id)}
                   type="button"
                   variant="markAsIncorrect"
                 />
@@ -84,7 +87,7 @@ export default function Flashcard({ flashcard, onIsCorrect, handleDelete }) {
 
               <RoundButton
                 content={isCorrect ? <MarkAsIncorrect /> : <MarkAsCorrect />}
-                onClick={() => onIsCorrect(id)}
+                onClick={() => onToggleCorrect(id)}
                 type="button"
                 variant={isCorrect ? "markAsIncorrect" : "markAsCorrect"}
               />

@@ -4,7 +4,7 @@ import styled from "styled-components";
 export default function FlashcardList({
   headline,
   flashcards,
-  handleIsCorrect,
+  handleToggleCorrect,
   handleDelete,
 }) {
   return (
@@ -17,7 +17,7 @@ export default function FlashcardList({
               handleDelete={handleDelete}
               key={flashcard.id}
               flashcard={flashcard}
-              onIsCorrect={handleIsCorrect}
+              onToggleCorrect={handleToggleCorrect}
             />
           );
         })}

@@ -20,7 +20,7 @@ export default function App({ Component, pageProps }) {
     ]);
   }
 
-  function handleIsCorrect(id) {
+  function handleToggleCorrect(id) {
     setFlashcards(
       flashcards.map((flashcard) => {
         return flashcard.id === id
@@ -56,7 +56,7 @@ export default function App({ Component, pageProps }) {
       <Component
         {...pageProps}
         flashcardsWithCollection={flashcardsWithCollection}
-        handleIsCorrect={handleIsCorrect}
+        handleToggleCorrect={handleToggleCorrect}
         collections={collections}
         handleCreateFlashcard={handleCreateFlashcard}
         handleDelete={handleDelete}

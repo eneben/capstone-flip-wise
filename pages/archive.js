@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 export default function Archive({
   flashcardsWithCollection,
-  handleIsCorrect,
+  handleToggleCorrect,
   handleDelete,
 }) {
   const correctFlashcards = flashcardsWithCollection.filter(
@@ -16,7 +16,7 @@ export default function Archive({
         <FlashcardList
           headline="Archive"
           flashcards={correctFlashcards}
-          handleIsCorrect={handleIsCorrect}
+          handleToggleCorrect={handleToggleCorrect}
           handleDelete={handleDelete}
         />
       )}

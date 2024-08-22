@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 export default function HomePage({
   flashcardsWithCollection,
-  handleIsCorrect,
+  handleToggleCorrect,
   collections,
   handleCreateFlashcard,
   handleDelete,
@@ -24,7 +24,7 @@ export default function HomePage({
           handleDelete={handleDelete}
           headline="Random Study Cards"
           flashcards={incorrectFlashcards}
-          handleIsCorrect={handleIsCorrect}
+          handleToggleCorrect={handleToggleCorrect}
         />
       )}
       {(!incorrectFlashcards || incorrectFlashcards.length === 0) && (
