@@ -1,7 +1,11 @@
 import styled from "styled-components";
 import { RegularButton } from "../Button/Button";
 
-export default function FormFlashcard({ collections, onCreateFlashcard }) {
+export default function FormFlashcard({
+  collections,
+  onCreateFlashcard,
+  headline,
+}) {
   function handleSubmit(event) {
     event.preventDefault();
 
@@ -14,7 +18,7 @@ export default function FormFlashcard({ collections, onCreateFlashcard }) {
 
   return (
     <StyledForm onSubmit={handleSubmit}>
-      <StyledFormHeadline>Create new flashcard</StyledFormHeadline>
+      <StyledFormHeadline>{headline}</StyledFormHeadline>
       <StyledLabel htmlFor="question">Question</StyledLabel>
       <StyledInput id="question" name="question" type="text" required />
       <StyledLabel htmlFor="answer">Answer</StyledLabel>

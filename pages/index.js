@@ -8,6 +8,8 @@ export default function HomePage({
   collections,
   handleCreateFlashcard,
   handleDelete,
+  handleToggleEdit,
+  isEdit,
 }) {
   const incorrectFlashcards = flashcardsWithCollection.filter(
     (flashcard) => !flashcard.isCorrect
@@ -15,16 +17,21 @@ export default function HomePage({
 
   return (
     <>
-      <FormFlashcard
-        onCreateFlashcard={handleCreateFlashcard}
-        collections={collections}
-      />
+      {!isEdit && (
+        <FormFlashcard
+          onCreateFlashcard={handleCreateFlashcard}
+          collections={collections}
+          headline="Create new Flashcard"
+        />
+      )}
+
       {incorrectFlashcards.length > 0 && (
         <FlashcardList
           handleDelete={handleDelete}
           headline="Random Study Cards"
           flashcards={incorrectFlashcards}
           handleToggleCorrect={handleToggleCorrect}
+          handleToggleEdit={handleToggleEdit}
         />
       )}
       {(!incorrectFlashcards || incorrectFlashcards.length === 0) && (

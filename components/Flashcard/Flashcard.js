@@ -4,6 +4,7 @@ import MarkAsIncorrect from "@/public/icons/MarkAsIncorrect.svg";
 import MarkAsCorrect from "@/public/icons/MarkAsCorrect.svg";
 import Delete from "@/public/icons/Delete.svg";
 import Arrow from "@/public/icons/Arrow.svg";
+import Edit from "@/public/icons/Edit.svg";
 import { RoundButton } from "../Button/Button";
 import DeleteConfirmationDialog from "../DeleteConfirmationDialog/DeleteConfirmationDialog";
 
@@ -58,7 +59,7 @@ export default function Flashcard({
           <>
             <CardFront>
               <CollectionTitle>{collection}</CollectionTitle>
-
+              <RoundButton content={<Edit />} type="button" variant="edit" />
               <RoundButton
                 content={<Delete />}
                 onClick={toggleDeleteConfirmation}

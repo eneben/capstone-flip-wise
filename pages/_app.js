@@ -4,11 +4,18 @@ import initialFlashcards from "@/assets/flashcards.json";
 import collections from "@/assets/collections.json";
 import useLocalStorageState from "use-local-storage-state";
 import { uid } from "uid";
+import { useState } from "react";
 
 export default function App({ Component, pageProps }) {
   const [flashcards, setFlashcards] = useLocalStorageState("flashcards", {
     defaultValue: initialFlashcards,
   });
+
+  const [isEdit, setIsEdit] = useState(false);
+
+  function handleToggleEdit() {
+    setIsEdit(!isEdit);
+  }
 
   function handleCreateFlashcard(newFlashcard) {
     setFlashcards([
@@ -60,6 +67,8 @@ export default function App({ Component, pageProps }) {
         collections={collections}
         handleCreateFlashcard={handleCreateFlashcard}
         handleDelete={handleDelete}
+        handleToggleEdit={handleToggleEdit}
+        isEdit={isEdit}
       />
     </Layout>
   );

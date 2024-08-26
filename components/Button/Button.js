@@ -83,6 +83,15 @@ const StyledRoundButton = styled.button`
       top: 15px;
       right: 10px;
     `}
+
+    ${(props) =>
+    props.$variant === "edit" &&
+    css`
+      background-color: #eee;
+      position: absolute;
+      top: 15px;
+      right: 60px;
+    `}
 `;
 
 const StyledButtonWrapper = styled.div`
