@@ -12,6 +12,7 @@ export default function Flashcard({
   flashcard,
   onToggleCorrect,
   handleDelete,
+  onToggleEdit,
 }) {
   const [showAnswer, setShowAnswer] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
@@ -59,7 +60,12 @@ export default function Flashcard({
           <>
             <CardFront>
               <CollectionTitle>{collection}</CollectionTitle>
-              <RoundButton content={<Edit />} type="button" variant="edit" />
+              <RoundButton
+                content={<Edit />}
+                onClick={onToggleEdit}
+                type="button"
+                variant="edit"
+              />
               <RoundButton
                 content={<Delete />}
                 onClick={toggleDeleteConfirmation}

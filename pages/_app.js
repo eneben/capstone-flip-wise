@@ -16,6 +16,7 @@ export default function App({ Component, pageProps }) {
   function handleToggleEdit() {
     setIsEdit(!isEdit);
   }
+  console.log(isEdit);
 
   function handleCreateFlashcard(newFlashcard) {
     setFlashcards([

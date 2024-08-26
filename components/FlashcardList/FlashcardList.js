@@ -6,6 +6,7 @@ export default function FlashcardList({
   flashcards,
   handleToggleCorrect,
   handleDelete,
+  handleToggleEdit,
 }) {
   return (
     <>
@@ -18,6 +19,7 @@ export default function FlashcardList({
               key={flashcard.id}
               flashcard={flashcard}
               onToggleCorrect={handleToggleCorrect}
+              onToggleEdit={handleToggleEdit}
             />
           );
         })}
