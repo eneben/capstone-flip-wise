@@ -18,6 +18,14 @@ export default function App({ Component, pageProps }) {
   }
   console.log(isEdit);
 
+  function handleEditFlashcard(id, updatedFlashcard) {
+    setFlashcards(
+      flashcards.map((flashcard) => {
+        return flashcard.id === id ? { updatedFlashcard } : flashcard;
+      })
+    );
+  }
+
   function handleCreateFlashcard(newFlashcard) {
     setFlashcards([
       {

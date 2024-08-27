@@ -34,6 +34,11 @@ export default function Flashcard({
     setIsDelete(!isDelete);
   }
 
+  function toggleEditWithoutFlip(event) {
+    event.stopPropagation();
+    onToggleEdit();
+  }
+
   return (
     <CardContainer onClick={handleShowAnswer}>
       <StyledFlashcard $showAnswer={showAnswer}>
@@ -62,7 +67,7 @@ export default function Flashcard({
               <CollectionTitle>{collection}</CollectionTitle>
               <RoundButton
                 content={<Edit />}
-                onClick={onToggleEdit}
+                onClick={toggleEditWithoutFlip}
                 type="button"
                 variant="edit"
               />
