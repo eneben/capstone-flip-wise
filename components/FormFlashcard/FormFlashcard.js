@@ -21,12 +21,9 @@ export default function FormFlashcard({
         id: currentFlashcard.id,
         isCorrect: currentFlashcard.isCorrect,
       };
-    }
-
-    {
-      isEdit
-        ? onEditFlashcard(updatedFlashcard)
-        : onCreateFlashcard(newFlashcard);
+      onEditFlashcard(updatedFlashcard);
+    } else {
+      onCreateFlashcard(newFlashcard);
     }
 
     event.target.reset();
@@ -69,12 +66,14 @@ export default function FormFlashcard({
       </StyledSelect>
       <SubmitButtonWrapper>
         <RegularButton type="submit" content="Submit" variant="submit" />
-        <RegularButton
-          type="button"
-          content="Cancel"
-          variant="confirm"
-          onClick={() => setIsEdit(false)}
-        />
+        {isEdit && (
+          <RegularButton
+            type="button"
+            content="Cancel"
+            variant="confirm"
+            onClick={() => setIsEdit(false)}
+          />
+        )}
       </SubmitButtonWrapper>
     </StyledForm>
   );
