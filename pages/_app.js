@@ -20,11 +20,10 @@ export default function App({ Component, pageProps }) {
   }
 
   function handleEditFlashcard(updatedFlashcard) {
-    console.log(updatedFlashcard);
     setFlashcards(
       flashcards.map((flashcard) => {
         return flashcard.id === updatedFlashcard.id
-          ? { updatedFlashcard }
+          ? updatedFlashcard
           : flashcard;
       })
     );

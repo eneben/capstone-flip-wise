@@ -15,6 +15,7 @@ export default function FormFlashcard({
     const formData = new FormData(event.target);
     const newFlashcard = Object.fromEntries(formData);
     const updatedFlashcard = { ...newFlashcard, id: currentFlashcard.id };
+
     {
       isEdit
         ? onEditFlashcard(updatedFlashcard)
