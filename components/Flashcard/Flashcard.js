@@ -40,6 +40,7 @@ export default function Flashcard({
     event.stopPropagation();
     setIsEdit(true);
     setCurrentFlashcard(flashcard);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   return (

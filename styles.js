@@ -10,10 +10,12 @@ export default createGlobalStyle`
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+overflow-wrap: break-word;
   }
 
   body {
     font-family: ${nunito.style.fontFamily}, system-ui;
+
   }
 
 input, select, button {

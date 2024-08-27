@@ -67,7 +67,7 @@ export default function App({ Component, pageProps }) {
   }));
 
   return (
-    <Layout>
+    <Layout setIsEdit={setIsEdit}>
       <GlobalStyle />
       <Component
         {...pageProps}
