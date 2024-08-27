@@ -14,9 +14,11 @@ export default function FormFlashcard({
 
     const formData = new FormData(event.target);
     const newFlashcard = Object.fromEntries(formData);
-
+    const updatedFlashcard = { ...newFlashcard, id: currentFlashcard.id };
     {
-      isEdit ? onEditFlashcard(newFlashcard) : onCreateFlashcard(newFlashcard);
+      isEdit
+        ? onEditFlashcard(updatedFlashcard)
+        : onCreateFlashcard(newFlashcard);
     }
 
     event.target.reset();
@@ -31,12 +33,23 @@ export default function FormFlashcard({
         name="question"
         type="text"
         required
-        value={isEdit ? currentFlashcard.question : ""}
+        defaultValue={isEdit && currentFlashcard.question}
       />
       <StyledLabel htmlFor="answer">Answer</StyledLabel>
-      <StyledInput id="answer" name="answer" type="text" required />
+      <StyledInput
+        id="answer"
+        name="answer"
+        type="text"
+        required
+        defaultValue={isEdit && currentFlashcard.answer}
+      />
       <StyledLabel htmlFor="collection">Collection</StyledLabel>
-      <StyledSelect id="collection" name="collectionId" required>
+      <StyledSelect
+        id="collection"
+        name="collectionId"
+        required
+        defaultValue={isEdit && currentFlashcard.collectionId}
+      >
         <option value="">--Please choose a collection:--</option>
         {collections.map((collection) => {
           return (
