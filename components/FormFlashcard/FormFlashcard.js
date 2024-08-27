@@ -6,6 +6,7 @@ export default function FormFlashcard({
   onCreateFlashcard,
   headline,
   isEdit,
+  setIsEdit,
   currentFlashcard,
   onEditFlashcard,
 }) {
@@ -34,7 +35,7 @@ export default function FormFlashcard({
         name="question"
         type="text"
         required
-        defaultValue={isEdit && currentFlashcard.question}
+        defaultValue={isEdit ? currentFlashcard.question : ""}
       />
       <StyledLabel htmlFor="answer">Answer</StyledLabel>
       <StyledInput
@@ -42,14 +43,14 @@ export default function FormFlashcard({
         name="answer"
         type="text"
         required
-        defaultValue={isEdit && currentFlashcard.answer}
+        defaultValue={isEdit ? currentFlashcard.answer : ""}
       />
       <StyledLabel htmlFor="collection">Collection</StyledLabel>
       <StyledSelect
         id="collection"
         name="collectionId"
         required
-        defaultValue={isEdit && currentFlashcard.collectionId}
+        defaultValue={isEdit ? currentFlashcard.collectionId : ""}
       >
         <option value="">--Please choose a collection:--</option>
         {collections.map((collection) => {
@@ -62,6 +63,12 @@ export default function FormFlashcard({
       </StyledSelect>
       <SubmitButtonWrapper>
         <RegularButton type="submit" content="Submit" variant="submit" />
+        <RegularButton
+          type="button"
+          content="Cancel"
+          variant="confirm"
+          onClick={() => setIsEdit(false)}
+        />
       </SubmitButtonWrapper>
     </StyledForm>
   );
@@ -101,4 +108,5 @@ const SubmitButtonWrapper = styled.div`
   display: flex;
   padding: 20px 0 10px 0;
   justify-content: center;
+  gap: 10px;
 `;

@@ -8,9 +8,14 @@ export function RegularButton({ content, onClick, type, variant }) {
   );
 }
 
-export function RoundButton({ content, onClick, type, variant }) {
+export function RoundButton({ content, onClick, type, variant, disabled }) {
   return (
-    <StyledRoundButton type={type} onClick={onClick} $variant={variant}>
+    <StyledRoundButton
+      type={type}
+      onClick={onClick}
+      $variant={variant}
+      disabled={disabled}
+    >
       {content}
     </StyledRoundButton>
   );

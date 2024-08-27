@@ -8,7 +8,7 @@ export default function HomePage({
   collections,
   handleCreateFlashcard,
   handleDelete,
-  handleToggleEdit,
+  setIsEdit,
   isEdit,
   currentFlashcard,
   setCurrentFlashcard,
@@ -26,6 +26,7 @@ export default function HomePage({
           collections={collections}
           headline="Create new Flashcard"
           isEdit={isEdit}
+          setIsEdit={setIsEdit}
           currentFlashcard={currentFlashcard}
           onEditFlashcard={handleEditFlashcard}
         />
@@ -37,6 +38,7 @@ export default function HomePage({
           collections={collections}
           headline="Edit Flashcard"
           isEdit={isEdit}
+          setIsEdit={setIsEdit}
           currentFlashcard={currentFlashcard}
           onEditFlashcard={handleEditFlashcard}
         />
@@ -48,8 +50,9 @@ export default function HomePage({
           headline="Random Study Cards"
           flashcards={incorrectFlashcards}
           handleToggleCorrect={handleToggleCorrect}
-          handleToggleEdit={handleToggleEdit}
           setCurrentFlashcard={setCurrentFlashcard}
+          isEdit={isEdit}
+          setIsEdit={setIsEdit}
         />
       )}
       {(!incorrectFlashcards || incorrectFlashcards.length === 0) && (

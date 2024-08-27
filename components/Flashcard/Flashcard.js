@@ -12,8 +12,9 @@ export default function Flashcard({
   flashcard,
   onToggleCorrect,
   handleDelete,
-  onToggleEdit,
   setCurrentFlashcard,
+  isEdit,
+  setIsEdit,
 }) {
   const [showAnswer, setShowAnswer] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
@@ -35,9 +36,9 @@ export default function Flashcard({
     setIsDelete(!isDelete);
   }
 
-  function toggleEditWithoutFlip(event) {
+  function setEditWithoutFlip(event) {
     event.stopPropagation();
-    onToggleEdit();
+    setIsEdit(true);
     setCurrentFlashcard(flashcard);
   }
 
@@ -69,7 +70,7 @@ export default function Flashcard({
               <CollectionTitle>{collection}</CollectionTitle>
               <RoundButton
                 content={<Edit />}
-                onClick={toggleEditWithoutFlip}
+                onClick={setEditWithoutFlip}
                 type="button"
                 variant="edit"
               />
@@ -78,6 +79,7 @@ export default function Flashcard({
                 onClick={toggleDeleteConfirmation}
                 type="button"
                 variant="delete"
+                disabled={isEdit}
               />
               <Question>{question}</Question>
               {isCorrect && (

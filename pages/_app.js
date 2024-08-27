@@ -15,10 +15,6 @@ export default function App({ Component, pageProps }) {
 
   const [currentFlashcard, setCurrentFlashcard] = useState(null);
 
-  function handleToggleEdit() {
-    setIsEdit(!isEdit);
-  }
-
   function handleEditFlashcard(updatedFlashcard) {
     setFlashcards(
       flashcards.map((flashcard) => {
@@ -27,7 +23,7 @@ export default function App({ Component, pageProps }) {
           : flashcard;
       })
     );
-    handleToggleEdit();
+    setIsEdit(false);
   }
 
   function handleCreateFlashcard(newFlashcard) {
@@ -80,7 +76,7 @@ export default function App({ Component, pageProps }) {
         collections={collections}
         handleCreateFlashcard={handleCreateFlashcard}
         handleDelete={handleDelete}
-        handleToggleEdit={handleToggleEdit}
+        setIsEdit={setIsEdit}
         isEdit={isEdit}
         handleEditFlashcard={handleEditFlashcard}
         currentFlashcard={currentFlashcard}
