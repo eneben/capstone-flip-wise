@@ -13,6 +13,7 @@ export default function Flashcard({
   onToggleCorrect,
   handleDelete,
   onToggleEdit,
+  setCurrentFlashcard,
 }) {
   const [showAnswer, setShowAnswer] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
@@ -37,6 +38,7 @@ export default function Flashcard({
   function toggleEditWithoutFlip(event) {
     event.stopPropagation();
     onToggleEdit();
+    setCurrentFlashcard(flashcard);
   }
 
   return (

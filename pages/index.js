@@ -10,6 +10,9 @@ export default function HomePage({
   handleDelete,
   handleToggleEdit,
   isEdit,
+  currentFlashcard,
+  setCurrentFlashcard,
+  handleEditFlashcard,
 }) {
   const incorrectFlashcards = flashcardsWithCollection.filter(
     (flashcard) => !flashcard.isCorrect
@@ -22,6 +25,20 @@ export default function HomePage({
           onCreateFlashcard={handleCreateFlashcard}
           collections={collections}
           headline="Create new Flashcard"
+          isEdit={isEdit}
+          currentFlashcard={currentFlashcard}
+          onEditFlashcard={handleEditFlashcard}
+        />
+      )}
+
+      {isEdit && (
+        <FormFlashcard
+          onCreateFlashcard={handleCreateFlashcard}
+          collections={collections}
+          headline="Edit Flashcard"
+          isEdit={isEdit}
+          currentFlashcard={currentFlashcard}
+          onEditFlashcard={handleEditFlashcard}
         />
       )}
 
@@ -32,6 +49,7 @@ export default function HomePage({
           flashcards={incorrectFlashcards}
           handleToggleCorrect={handleToggleCorrect}
           handleToggleEdit={handleToggleEdit}
+          setCurrentFlashcard={setCurrentFlashcard}
         />
       )}
       {(!incorrectFlashcards || incorrectFlashcards.length === 0) && (

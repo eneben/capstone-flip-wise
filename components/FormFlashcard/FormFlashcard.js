@@ -5,6 +5,9 @@ export default function FormFlashcard({
   collections,
   onCreateFlashcard,
   headline,
+  isEdit,
+  currentFlashcard,
+  onEditFlashcard,
 }) {
   function handleSubmit(event) {
     event.preventDefault();
@@ -12,7 +15,10 @@ export default function FormFlashcard({
     const formData = new FormData(event.target);
     const newFlashcard = Object.fromEntries(formData);
 
-    onCreateFlashcard(newFlashcard);
+    {
+      isEdit ? onEditFlashcard(newFlashcard) : onCreateFlashcard(newFlashcard);
+    }
+
     event.target.reset();
   }
 
@@ -20,7 +26,13 @@ export default function FormFlashcard({
     <StyledForm onSubmit={handleSubmit}>
       <StyledFormHeadline>{headline}</StyledFormHeadline>
       <StyledLabel htmlFor="question">Question</StyledLabel>
-      <StyledInput id="question" name="question" type="text" required />
+      <StyledInput
+        id="question"
+        name="question"
+        type="text"
+        required
+        value={isEdit ? currentFlashcard.question : ""}
+      />
       <StyledLabel htmlFor="answer">Answer</StyledLabel>
       <StyledInput id="answer" name="answer" type="text" required />
       <StyledLabel htmlFor="collection">Collection</StyledLabel>

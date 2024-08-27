@@ -13,15 +13,16 @@ export default function App({ Component, pageProps }) {
 
   const [isEdit, setIsEdit] = useState(false);
 
+  const [currentFlashcard, setCurrentFlashcard] = useState(null);
+
   function handleToggleEdit() {
     setIsEdit(!isEdit);
   }
-  console.log(isEdit);
 
-  function handleEditFlashcard(id, updatedFlashcard) {
+  function handleEditFlashcard(newFlashcard) {
     setFlashcards(
       flashcards.map((flashcard) => {
-        return flashcard.id === id ? { updatedFlashcard } : flashcard;
+        return flashcard.id === newFlashcard.id ? { newFlashcard } : flashcard;
       })
     );
   }
@@ -78,6 +79,9 @@ export default function App({ Component, pageProps }) {
         handleDelete={handleDelete}
         handleToggleEdit={handleToggleEdit}
         isEdit={isEdit}
+        handleEditFlashcard={handleEditFlashcard}
+        currentFlashcard={currentFlashcard}
+        setCurrentFlashcard={setCurrentFlashcard}
       />
     </Layout>
   );

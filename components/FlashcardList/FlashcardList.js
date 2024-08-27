@@ -7,6 +7,7 @@ export default function FlashcardList({
   handleToggleCorrect,
   handleDelete,
   handleToggleEdit,
+  setCurrentFlashcard,
 }) {
   return (
     <>
@@ -20,6 +21,7 @@ export default function FlashcardList({
               flashcard={flashcard}
               onToggleCorrect={handleToggleCorrect}
               onToggleEdit={handleToggleEdit}
+              setCurrentFlashcard={setCurrentFlashcard}
             />
           );
         })}
