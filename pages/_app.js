@@ -33,7 +33,7 @@ export default function App({ Component, pageProps }) {
           : flashcard;
       })
     );
-    changeActionMode("edit");
+    changeActionMode("default");
   }
 
   function handleCreateFlashcard(newFlashcard) {
