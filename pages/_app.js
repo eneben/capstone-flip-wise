@@ -15,14 +15,6 @@ export default function App({ Component, pageProps }) {
 
   const [currentFlashcard, setCurrentFlashcard] = useState(null);
 
-  function setEditTrue() {
-    setIsEdit(true);
-  }
-
-  function setEditFalse() {
-    setIsEdit(false);
-  }
-
   function handleEditFlashcard(updatedFlashcard) {
     setFlashcards(
       flashcards.map((flashcard) => {
