@@ -8,7 +8,8 @@ export default function HomePage({
   collections,
   handleCreateFlashcard,
   handleDelete,
-
+  actionMode,
+  changeActionMode,
   currentFlashcard,
   setCurrentFlashcard,
   handleEditFlashcard,
@@ -19,25 +20,25 @@ export default function HomePage({
 
   return (
     <>
-      {!isEdit && (
+      {actionMode !== "edit" && (
         <FormFlashcard
           onCreateFlashcard={handleCreateFlashcard}
           collections={collections}
           headline="Create new Flashcard"
-          isEdit={isEdit}
-          setIsEdit={setIsEdit}
+          actionMode={actionMode}
+          changeActionMode={changeActionMode}
           currentFlashcard={currentFlashcard}
           onEditFlashcard={handleEditFlashcard}
         />
       )}
 
-      {isEdit && (
+      {actionMode === "edit" && (
         <FormFlashcard
           onCreateFlashcard={handleCreateFlashcard}
           collections={collections}
           headline="Edit Flashcard"
-          isEdit={isEdit}
-          setIsEdit={setIsEdit}
+          actionMode={actionMode}
+          changeActionMode={changeActionMode}
           currentFlashcard={currentFlashcard}
           onEditFlashcard={handleEditFlashcard}
         />
@@ -50,8 +51,8 @@ export default function HomePage({
           flashcards={incorrectFlashcards}
           handleToggleCorrect={handleToggleCorrect}
           setCurrentFlashcard={setCurrentFlashcard}
-          isEdit={isEdit}
-          setIsEdit={setIsEdit}
+          actionMode={actionMode}
+          changeActionMode={changeActionMode}
         />
       )}
       {(!incorrectFlashcards || incorrectFlashcards.length === 0) && (
