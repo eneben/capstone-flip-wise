@@ -17,9 +17,13 @@ export default function App({ Component, pageProps }) {
     defaultValue: initialFlashcards,
   });
 
-  const [isEdit, setIsEdit] = useState(false);
-
   const [currentFlashcard, setCurrentFlashcard] = useState(null);
+
+  const [actionMode, setActionMode] = useState("default");
+
+  function changeActionMode(mode) {
+    setActionMode(mode);
+  }
 
   function handleEditFlashcard(updatedFlashcard) {
     setFlashcards(
@@ -29,7 +33,7 @@ export default function App({ Component, pageProps }) {
           : flashcard;
       })
     );
-    setIsEdit(false);
+    changeActionMode("edit");
   }
 
   function handleCreateFlashcard(newFlashcard) {
@@ -73,7 +77,7 @@ export default function App({ Component, pageProps }) {
   }));
 
   return (
-    <Layout setIsEdit={setIsEdit}>
+    <Layout changeActionMode={changeActionMode}>
       <GlobalStyle />
       <Component
         {...pageProps}
@@ -82,11 +86,11 @@ export default function App({ Component, pageProps }) {
         collections={collections}
         handleCreateFlashcard={handleCreateFlashcard}
         handleDelete={handleDelete}
-        setIsEdit={setIsEdit}
-        isEdit={isEdit}
         handleEditFlashcard={handleEditFlashcard}
         currentFlashcard={currentFlashcard}
         setCurrentFlashcard={setCurrentFlashcard}
+        actionMode={actionMode}
+        changeActionMode={changeActionMode}
       />
     </Layout>
   );

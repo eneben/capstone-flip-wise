@@ -8,8 +8,7 @@ export default function HomePage({
   collections,
   handleCreateFlashcard,
   handleDelete,
-  setIsEdit,
-  isEdit,
+
   currentFlashcard,
   setCurrentFlashcard,
   handleEditFlashcard,
