@@ -6,8 +6,8 @@ export default function FormFlashcard({
   collections,
   onCreateFlashcard,
   headline,
-  isEdit,
-  setIsEdit,
+  actionMode,
+  changeActionMode,
   currentFlashcard,
   onEditFlashcard,
 }) {
@@ -16,7 +16,7 @@ export default function FormFlashcard({
 
     const formData = new FormData(event.target);
     const newFlashcard = Object.fromEntries(formData);
-    if (isEdit) {
+    if (actionMode === "edit") {
       const updatedFlashcard = {
         ...newFlashcard,
         id: currentFlashcard.id,
@@ -39,7 +39,7 @@ export default function FormFlashcard({
         name="question"
         type="text"
         required
-        defaultValue={isEdit ? currentFlashcard.question : ""}
+        defaultValue={actionMode === "edit" ? currentFlashcard.question : ""}
       />
       <StyledLabel htmlFor="answer">Answer</StyledLabel>
       <StyledInput
@@ -47,14 +47,16 @@ export default function FormFlashcard({
         name="answer"
         type="text"
         required
-        defaultValue={isEdit ? currentFlashcard.answer : ""}
+        defaultValue={actionMode === "edit" ? currentFlashcard.answer : ""}
       />
       <StyledLabel htmlFor="collection">Collection</StyledLabel>
       <StyledSelect
         id="collection"
         name="collectionId"
         required
-        defaultValue={isEdit ? currentFlashcard.collectionId : ""}
+        defaultValue={
+          actionMode === "edit" ? currentFlashcard.collectionId : ""
+        }
       >
         <option value="">--Please choose a collection:--</option>
         {collections.map((collection) => {
@@ -67,12 +69,12 @@ export default function FormFlashcard({
       </StyledSelect>
       <ButtonWrapper>
         <RegularButton type="submit" content="Submit" variant="submit" />
-        {isEdit && (
+        {actionMode === "edit" && (
           <RegularButton
             type="button"
             content="Cancel"
             variant="confirm"
-            onClick={() => setIsEdit(false)}
+            onClick={() => changeActionMode("default")}
           />
         )}
       </ButtonWrapper>

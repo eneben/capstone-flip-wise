@@ -6,7 +6,7 @@ export default function RoundButton({
   type,
   variant,
   disabled,
-  isEdit,
+  actionMode,
 }) {
   return (
     <StyledRoundButton
@@ -14,7 +14,7 @@ export default function RoundButton({
       onClick={onClick}
       $variant={variant}
       disabled={disabled}
-      $isEdit={isEdit}
+      $actionMode={actionMode}
     >
       {content}
     </StyledRoundButton>
@@ -30,7 +30,7 @@ const StyledRoundButton = styled.button`
   align-items: center;
   justify-content: center;
   ${(props) =>
-    props.$isEdit &&
+    props.$actionMode === "edit" &&
     css`
       opacity: 0.5;
     `}

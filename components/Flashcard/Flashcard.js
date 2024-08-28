@@ -35,7 +35,7 @@ export default function Flashcard({
     changeActionMode("delete");
   }
 
-  function stopDeleteMode(event) {
+  function resetActionMode(event) {
     event.stopPropagation();
     changeActionMode("default");
   }
@@ -55,14 +55,14 @@ export default function Flashcard({
             <CardFront>
               <DeleteConfirmationDialog
                 onDelete={handleDelete}
-                toggleDeleteConfirmation={toggleDeleteConfirmation}
+                resetActionMode={resetActionMode}
                 flashcardId={id}
               />
             </CardFront>
             <CardBack>
               <DeleteConfirmationDialog
                 onDelete={handleDelete}
-                toggleDeleteConfirmation={toggleDeleteConfirmation}
+                resetActionMode={resetActionMode}
                 flashcardId={id}
               />
             </CardBack>
@@ -82,7 +82,7 @@ export default function Flashcard({
               />
               <RoundButton
                 content={<Delete />}
-                onClick={toggleDeleteConfirmation}
+                onClick={setDeleteMode}
                 type="button"
                 variant="delete"
                 disabled={actionMode === "edit"}
@@ -103,7 +103,7 @@ export default function Flashcard({
             <CardBack>
               <RoundButton
                 content={<Delete />}
-                onClick={toggleDeleteConfirmation}
+                onClick={setDeleteMode}
                 type="button"
                 variant="delete"
                 disabled={actionMode === "edit"}
