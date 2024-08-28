@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import RegularButton from "../Buttons/RegularButton";
 import ButtonWrapper from "../Buttons/ButtonWrapper";
+import FormInput from "./FormInput";
 
 export default function FormFlashcard({
   collections,
@@ -22,20 +23,16 @@ export default function FormFlashcard({
     <StyledForm onSubmit={handleSubmit}>
       <StyledFormHeadline>{headline}</StyledFormHeadline>
       <StyledLabel htmlFor="question">Question</StyledLabel>
-      <StyledInput
-        id="question"
+      <FormInput
         name="question"
-        type="text"
-        required
-        defaultValue={actionMode === "edit" ? currentFlashcard.question : ""}
+        actionMode={actionMode}
+        currentFlashcard={currentFlashcard}
       />
       <StyledLabel htmlFor="answer">Answer</StyledLabel>
-      <StyledInput
-        id="answer"
+      <FormInput
         name="answer"
-        type="text"
-        required
-        defaultValue={actionMode === "edit" ? currentFlashcard.answer : ""}
+        actionMode={actionMode}
+        currentFlashcard={currentFlashcard}
       />
       <StyledLabel htmlFor="collection">Collection</StyledLabel>
       <StyledSelect
@@ -87,11 +84,6 @@ const StyledLabel = styled.label`
   display: block;
   padding: 10px 0 2px 0;
   font-size: 0.9rem;
-`;
-
-const StyledInput = styled.input`
-  width: 100%;
-  height: 1.5rem;
 `;
 
 const StyledSelect = styled.select`

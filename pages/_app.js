@@ -8,8 +8,6 @@ import { useState } from "react";
 
 //TO DO:
 // - Components for input fields
-// - dumme handleSubmit Funktion und if-else-Logik in
-//  Elternkomponente (wie bei theme creator)
 
 export default function App({ Component, pageProps }) {
   const [flashcards, setFlashcards] = useLocalStorageState("flashcards", {
