@@ -17,6 +17,7 @@ export default function Flashcard({
   changeActionMode,
 }) {
   const [showAnswer, setShowAnswer] = useState(false);
+  const [isDelete, setIsDelete] = useState(false);
 
   const {
     question,
@@ -30,14 +31,9 @@ export default function Flashcard({
     setShowAnswer(!showAnswer);
   }
 
-  function setDeleteMode(event) {
+  function toggleDeleteConfirmation(event) {
     event.stopPropagation();
-    changeActionMode("delete");
-  }
-
-  function resetActionMode(event) {
-    event.stopPropagation();
-    changeActionMode("default");
+    setIsDelete(!isDelete);
   }
 
   function setEditWithoutFlip(event) {
@@ -50,26 +46,26 @@ export default function Flashcard({
   return (
     <CardContainer onClick={handleShowAnswer}>
       <StyledFlashcard $showAnswer={showAnswer}>
-        {actionMode === "delete" && (
+        {isDelete && (
           <>
             <CardFront>
               <DeleteConfirmationDialog
                 onDelete={handleDelete}
-                resetActionMode={resetActionMode}
+                toggleDeleteConfirmation={toggleDeleteConfirmation}
                 flashcardId={id}
               />
             </CardFront>
             <CardBack>
               <DeleteConfirmationDialog
                 onDelete={handleDelete}
-                resetActionMode={resetActionMode}
+                toggleDeleteConfirmation={toggleDeleteConfirmation}
                 flashcardId={id}
               />
             </CardBack>
           </>
         )}
 
-        {actionMode !== "delete" && (
+        {!isDelete && (
           <>
             <CardFront>
               <CollectionTitle>{collection}</CollectionTitle>
@@ -82,7 +78,7 @@ export default function Flashcard({
               />
               <RoundButton
                 content={<Delete />}
-                onClick={setDeleteMode}
+                onClick={toggleDeleteConfirmation}
                 type="button"
                 variant="delete"
                 disabled={actionMode === "edit"}
@@ -103,7 +99,7 @@ export default function Flashcard({
             <CardBack>
               <RoundButton
                 content={<Delete />}
-                onClick={setDeleteMode}
+                onClick={toggleDeleteConfirmation}
                 type="button"
                 variant="delete"
                 disabled={actionMode === "edit"}

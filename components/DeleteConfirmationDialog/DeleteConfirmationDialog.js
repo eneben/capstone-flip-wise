@@ -4,7 +4,7 @@ import ButtonWrapper from "../Buttons/ButtonWrapper";
 
 export default function DeleteConfirmationDialog({
   onDelete,
-  resetActionMode,
+  toggleDeleteConfirmation,
   flashcardId,
 }) {
   return (
@@ -21,7 +21,7 @@ export default function DeleteConfirmationDialog({
         />
         <RegularButton
           content="No"
-          onClick={resetActionMode}
+          onClick={toggleDeleteConfirmation}
           type="button"
           variant="warning"
         />
