@@ -7,8 +7,8 @@ export default function FlashcardList({
   handleToggleCorrect,
   handleDelete,
   setCurrentFlashcard,
-  isEdit,
-  setIsEdit,
+  actionMode,
+  changeActionMode,
 }) {
   return (
     <>
@@ -22,8 +22,8 @@ export default function FlashcardList({
               flashcard={flashcard}
               onToggleCorrect={handleToggleCorrect}
               setCurrentFlashcard={setCurrentFlashcard}
-              isEdit={isEdit}
-              setIsEdit={setIsEdit}
+              actionMode={actionMode}
+              changeActionMode={changeActionMode}
             />
           );
         })}
