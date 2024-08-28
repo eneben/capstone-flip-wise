@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import { RegularButton } from "../Button/Button";
+import RegularButton from "../Buttons/RegularButton";
+import ButtonWrapper from "../Buttons/ButtonWrapper";
 
 export default function FormFlashcard({
   collections,
@@ -64,7 +65,7 @@ export default function FormFlashcard({
           );
         })}
       </StyledSelect>
-      <SubmitButtonWrapper>
+      <ButtonWrapper>
         <RegularButton type="submit" content="Submit" variant="submit" />
         {isEdit && (
           <RegularButton
@@ -74,7 +75,7 @@ export default function FormFlashcard({
             onClick={() => setIsEdit(false)}
           />
         )}
-      </SubmitButtonWrapper>
+      </ButtonWrapper>
     </StyledForm>
   );
 }
@@ -107,11 +108,4 @@ const StyledSelect = styled.select`
   display: block;
   width: 100%;
   height: 1.5rem;
-`;
-
-const SubmitButtonWrapper = styled.div`
-  display: flex;
-  padding: 20px 0 10px 0;
-  justify-content: center;
-  gap: 10px;
 `;
