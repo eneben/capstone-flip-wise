@@ -12,7 +12,7 @@ export default function Flashcard({
   flashcard,
   onToggleCorrect,
   handleDelete,
-  setCurrentFlashcard,
+  changeCurrentFlashcard,
   actionMode,
   changeActionMode,
 }) {
@@ -39,7 +39,7 @@ export default function Flashcard({
   function setEditWithoutFlip(event) {
     event.stopPropagation();
     changeActionMode("edit");
-    setCurrentFlashcard(flashcard);
+    changeCurrentFlashcard(flashcard);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 

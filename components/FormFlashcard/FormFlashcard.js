@@ -4,29 +4,17 @@ import ButtonWrapper from "../Buttons/ButtonWrapper";
 
 export default function FormFlashcard({
   collections,
-  onCreateFlashcard,
   headline,
   actionMode,
   changeActionMode,
   currentFlashcard,
-  onEditFlashcard,
+  onSubmitFlashcard,
 }) {
   function handleSubmit(event) {
     event.preventDefault();
-
     const formData = new FormData(event.target);
     const newFlashcard = Object.fromEntries(formData);
-    if (actionMode === "edit") {
-      const updatedFlashcard = {
-        ...newFlashcard,
-        id: currentFlashcard.id,
-        isCorrect: currentFlashcard.isCorrect,
-      };
-      onEditFlashcard(updatedFlashcard);
-    } else {
-      onCreateFlashcard(newFlashcard);
-    }
-
+    onSubmitFlashcard(newFlashcard);
     event.target.reset();
   }
 

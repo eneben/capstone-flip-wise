@@ -6,13 +6,12 @@ export default function HomePage({
   flashcardsWithCollection,
   handleToggleCorrect,
   collections,
-  handleCreateFlashcard,
+  handleSubmitFlashcard,
   handleDelete,
   actionMode,
   changeActionMode,
   currentFlashcard,
-  setCurrentFlashcard,
-  handleEditFlashcard,
+  changeCurrentFlashcard,
 }) {
   const incorrectFlashcards = flashcardsWithCollection.filter(
     (flashcard) => !flashcard.isCorrect
@@ -22,25 +21,23 @@ export default function HomePage({
     <>
       {actionMode !== "edit" && (
         <FormFlashcard
-          onCreateFlashcard={handleCreateFlashcard}
           collections={collections}
           headline="Create new Flashcard"
           actionMode={actionMode}
           changeActionMode={changeActionMode}
           currentFlashcard={currentFlashcard}
-          onEditFlashcard={handleEditFlashcard}
+          onSubmitFlashcard={handleSubmitFlashcard}
         />
       )}
 
       {actionMode === "edit" && (
         <FormFlashcard
-          onCreateFlashcard={handleCreateFlashcard}
           collections={collections}
           headline="Edit Flashcard"
           actionMode={actionMode}
           changeActionMode={changeActionMode}
           currentFlashcard={currentFlashcard}
-          onEditFlashcard={handleEditFlashcard}
+          onSubmitFlashcard={handleSubmitFlashcard}
         />
       )}
 
@@ -50,7 +47,7 @@ export default function HomePage({
           headline="Random Study Cards"
           flashcards={incorrectFlashcards}
           handleToggleCorrect={handleToggleCorrect}
-          setCurrentFlashcard={setCurrentFlashcard}
+          changeCurrentFlashcard={changeCurrentFlashcard}
           actionMode={actionMode}
           changeActionMode={changeActionMode}
         />

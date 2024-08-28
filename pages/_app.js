@@ -7,7 +7,6 @@ import { uid } from "uid";
 import { useState } from "react";
 
 //TO DO:
-// - neues State Management für Modes (default, create, edit, delete)
 // - Components for input fields
 // - dumme handleSubmit Funktion und if-else-Logik in
 //  Elternkomponente (wie bei theme creator)
@@ -20,6 +19,10 @@ export default function App({ Component, pageProps }) {
   const [currentFlashcard, setCurrentFlashcard] = useState(null);
 
   const [actionMode, setActionMode] = useState("default");
+
+  function changeCurrentFlashcard(flashcard) {
+    setCurrentFlashcard(flashcard);
+  }
 
   function changeActionMode(mode) {
     setActionMode(mode);
@@ -44,6 +47,19 @@ export default function App({ Component, pageProps }) {
       },
       ...flashcards,
     ]);
+  }
+
+  function handleSubmitFlashcard(newFlashcard) {
+    if (actionMode === "edit") {
+      const updatedFlashcard = {
+        ...newFlashcard,
+        id: currentFlashcard.id,
+        isCorrect: currentFlashcard.isCorrect,
+      };
+      handleEditFlashcard(updatedFlashcard);
+    } else {
+      handleCreateFlashcard(newFlashcard);
+    }
   }
 
   function handleToggleCorrect(id) {
@@ -84,13 +100,12 @@ export default function App({ Component, pageProps }) {
         flashcardsWithCollection={flashcardsWithCollection}
         handleToggleCorrect={handleToggleCorrect}
         collections={collections}
-        handleCreateFlashcard={handleCreateFlashcard}
         handleDelete={handleDelete}
-        handleEditFlashcard={handleEditFlashcard}
         currentFlashcard={currentFlashcard}
-        setCurrentFlashcard={setCurrentFlashcard}
+        changeCurrentFlashcard={changeCurrentFlashcard}
         actionMode={actionMode}
         changeActionMode={changeActionMode}
+        handleSubmitFlashcard={handleSubmitFlashcard}
       />
     </Layout>
   );
