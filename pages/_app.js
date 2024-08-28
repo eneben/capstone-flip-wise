@@ -6,9 +6,6 @@ import useLocalStorageState from "use-local-storage-state";
 import { uid } from "uid";
 import { useState } from "react";
 
-//TO DO:
-// - Components for input fields
-
 export default function App({ Component, pageProps }) {
   const [flashcards, setFlashcards] = useLocalStorageState("flashcards", {
     defaultValue: initialFlashcards,
