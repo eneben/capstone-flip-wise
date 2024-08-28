@@ -8,13 +8,21 @@ export function RegularButton({ content, onClick, type, variant }) {
   );
 }
 
-export function RoundButton({ content, onClick, type, variant, disabled }) {
+export function RoundButton({
+  content,
+  onClick,
+  type,
+  variant,
+  disabled,
+  isEdit,
+}) {
   return (
     <StyledRoundButton
       type={type}
       onClick={onClick}
       $variant={variant}
       disabled={disabled}
+      $isEdit={isEdit}
     >
       {content}
     </StyledRoundButton>
@@ -61,6 +69,12 @@ const StyledRoundButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  ${(props) =>
+    props.$isEdit == true &&
+    css`
+      opacity: 0.5;
+    `}
 
   ${(props) =>
     props.$variant === "markAsCorrect" &&

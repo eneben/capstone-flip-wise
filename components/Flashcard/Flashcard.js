@@ -74,6 +74,7 @@ export default function Flashcard({
                 onClick={setEditWithoutFlip}
                 type="button"
                 variant="edit"
+                isEdit={isEdit}
               />
               <RoundButton
                 content={<Delete />}
@@ -81,6 +82,7 @@ export default function Flashcard({
                 type="button"
                 variant="delete"
                 disabled={isEdit}
+                isEdit={isEdit}
               />
               <Question>{question}</Question>
               {isCorrect && (
@@ -89,6 +91,7 @@ export default function Flashcard({
                   onClick={() => onToggleCorrect(id)}
                   type="button"
                   variant="markAsIncorrect"
+                  isEdit={isEdit}
                 />
               )}
               <StyledArrow />
@@ -99,6 +102,8 @@ export default function Flashcard({
                 onClick={toggleDeleteConfirmation}
                 type="button"
                 variant="delete"
+                disabled={isEdit}
+                isEdit={isEdit}
               />
               <Answer>{answer}</Answer>
 
@@ -107,6 +112,7 @@ export default function Flashcard({
                 onClick={() => onToggleCorrect(id)}
                 type="button"
                 variant={isCorrect ? "markAsIncorrect" : "markAsCorrect"}
+                isEdit={isEdit}
               />
               <StyledArrow transform="scale(-1 1)" />
             </CardBack>
