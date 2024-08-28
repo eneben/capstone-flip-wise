@@ -13,7 +13,6 @@ export default function App({ Component, pageProps }) {
 
   const [isEdit, setIsEdit] = useState(false);
 
-  console.log("hallo");
   const [currentFlashcard, setCurrentFlashcard] = useState(null);
 
   function handleEditFlashcard(updatedFlashcard) {
