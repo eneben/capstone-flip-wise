@@ -1,32 +1,21 @@
 import styled from "styled-components";
 import RegularButton from "../Buttons/RegularButton";
 import ButtonWrapper from "../Buttons/ButtonWrapper";
+import FormInput from "./FormInput";
 
 export default function FormFlashcard({
   collections,
-  onCreateFlashcard,
   headline,
-  isEdit,
-  setIsEdit,
+  actionMode,
+  changeActionMode,
   currentFlashcard,
-  onEditFlashcard,
+  onSubmitFlashcard,
 }) {
   function handleSubmit(event) {
     event.preventDefault();
-
     const formData = new FormData(event.target);
     const newFlashcard = Object.fromEntries(formData);
-    if (isEdit) {
-      const updatedFlashcard = {
-        ...newFlashcard,
-        id: currentFlashcard.id,
-        isCorrect: currentFlashcard.isCorrect,
-      };
-      onEditFlashcard(updatedFlashcard);
-    } else {
-      onCreateFlashcard(newFlashcard);
-    }
-
+    onSubmitFlashcard(newFlashcard);
     event.target.reset();
   }
 
@@ -34,27 +23,25 @@ export default function FormFlashcard({
     <StyledForm onSubmit={handleSubmit}>
       <StyledFormHeadline>{headline}</StyledFormHeadline>
       <StyledLabel htmlFor="question">Question</StyledLabel>
-      <StyledInput
-        id="question"
+      <FormInput
         name="question"
-        type="text"
-        required
-        defaultValue={isEdit ? currentFlashcard.question : ""}
+        actionMode={actionMode}
+        currentFlashcard={currentFlashcard}
       />
       <StyledLabel htmlFor="answer">Answer</StyledLabel>
-      <StyledInput
-        id="answer"
+      <FormInput
         name="answer"
-        type="text"
-        required
-        defaultValue={isEdit ? currentFlashcard.answer : ""}
+        actionMode={actionMode}
+        currentFlashcard={currentFlashcard}
       />
       <StyledLabel htmlFor="collection">Collection</StyledLabel>
       <StyledSelect
         id="collection"
         name="collectionId"
         required
-        defaultValue={isEdit ? currentFlashcard.collectionId : ""}
+        defaultValue={
+          actionMode === "edit" ? currentFlashcard.collectionId : ""
+        }
       >
         <option value="">--Please choose a collection:--</option>
         {collections.map((collection) => {
@@ -67,12 +54,12 @@ export default function FormFlashcard({
       </StyledSelect>
       <ButtonWrapper>
         <RegularButton type="submit" content="Submit" variant="submit" />
-        {isEdit && (
+        {actionMode === "edit" && (
           <RegularButton
             type="button"
             content="Cancel"
             variant="confirm"
-            onClick={() => setIsEdit(false)}
+            onClick={() => changeActionMode("default")}
           />
         )}
       </ButtonWrapper>
@@ -97,11 +84,6 @@ const StyledLabel = styled.label`
   display: block;
   padding: 10px 0 2px 0;
   font-size: 0.9rem;
-`;
-
-const StyledInput = styled.input`
-  width: 100%;
-  height: 1.5rem;
 `;
 
 const StyledSelect = styled.select`

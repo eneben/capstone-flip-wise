@@ -7,12 +7,11 @@ export default function Archive({
   handleToggleCorrect,
   collections,
   currentFlashcard,
-  setCurrentFlashcard,
-  handleEditFlashcard,
+  changeCurrentFlashcard,
   handleDelete,
-  isEdit,
-  setIsEdit,
-  handleCreateFlashcard,
+  actionMode,
+  changeActionMode,
+  handleEditFlashcard,
 }) {
   const correctFlashcards = flashcardsWithCollection.filter(
     (flashcard) => flashcard.isCorrect === true
@@ -20,15 +19,14 @@ export default function Archive({
 
   return (
     <>
-      {correctFlashcards.length > 0 && isEdit && (
+      {correctFlashcards.length > 0 && actionMode === "edit" && (
         <FormFlashcard
-          onCreateFlashcard={handleCreateFlashcard}
           collections={collections}
           headline="Edit Flashcard"
-          isEdit={isEdit}
-          setIsEdit={setIsEdit}
+          actionMode={actionMode}
+          changeActionMode={changeActionMode}
           currentFlashcard={currentFlashcard}
-          onEditFlashcard={handleEditFlashcard}
+          onSubmitFlashcard={handleEditFlashcard}
         />
       )}
 
@@ -38,9 +36,9 @@ export default function Archive({
           flashcards={correctFlashcards}
           handleToggleCorrect={handleToggleCorrect}
           handleDelete={handleDelete}
-          setCurrentFlashcard={setCurrentFlashcard}
-          isEdit={isEdit}
-          setIsEdit={setIsEdit}
+          changeCurrentFlashcard={changeCurrentFlashcard}
+          actionMode={actionMode}
+          changeActionMode={changeActionMode}
         />
       )}
       {(!correctFlashcards || correctFlashcards.length === 0) && (

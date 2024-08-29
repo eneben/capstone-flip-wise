@@ -12,9 +12,9 @@ export default function Flashcard({
   flashcard,
   onToggleCorrect,
   handleDelete,
-  setCurrentFlashcard,
-  isEdit,
-  setIsEdit,
+  changeCurrentFlashcard,
+  actionMode,
+  changeActionMode,
 }) {
   const [showAnswer, setShowAnswer] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
@@ -38,8 +38,8 @@ export default function Flashcard({
 
   function setEditWithoutFlip(event) {
     event.stopPropagation();
-    setIsEdit(true);
-    setCurrentFlashcard(flashcard);
+    changeActionMode("edit");
+    changeCurrentFlashcard(flashcard);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
@@ -74,15 +74,15 @@ export default function Flashcard({
                 onClick={setEditWithoutFlip}
                 type="button"
                 variant="edit"
-                isEdit={isEdit}
+                actionMode={actionMode}
               />
               <RoundButton
                 content={<Delete />}
                 onClick={toggleDeleteConfirmation}
                 type="button"
                 variant="delete"
-                disabled={isEdit}
-                isEdit={isEdit}
+                disabled={actionMode === "edit"}
+                actionMode={actionMode}
               />
               <Question>{question}</Question>
               {isCorrect && (
@@ -91,7 +91,7 @@ export default function Flashcard({
                   onClick={() => onToggleCorrect(id)}
                   type="button"
                   variant="markAsIncorrect"
-                  isEdit={isEdit}
+                  actionMode={actionMode}
                 />
               )}
               <StyledArrow />
@@ -102,8 +102,8 @@ export default function Flashcard({
                 onClick={toggleDeleteConfirmation}
                 type="button"
                 variant="delete"
-                disabled={isEdit}
-                isEdit={isEdit}
+                disabled={actionMode === "edit"}
+                actionMode={actionMode}
               />
               <Answer>{answer}</Answer>
 
@@ -112,7 +112,7 @@ export default function Flashcard({
                 onClick={() => onToggleCorrect(id)}
                 type="button"
                 variant={isCorrect ? "markAsIncorrect" : "markAsCorrect"}
-                isEdit={isEdit}
+                actionMode={actionMode}
               />
               <StyledArrow transform="scale(-1 1)" />
             </CardBack>

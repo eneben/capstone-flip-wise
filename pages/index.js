@@ -6,13 +6,13 @@ export default function HomePage({
   flashcardsWithCollection,
   handleToggleCorrect,
   collections,
+  handleEditFlashcard,
   handleCreateFlashcard,
   handleDelete,
-  setIsEdit,
-  isEdit,
+  actionMode,
+  changeActionMode,
   currentFlashcard,
-  setCurrentFlashcard,
-  handleEditFlashcard,
+  changeCurrentFlashcard,
 }) {
   const incorrectFlashcards = flashcardsWithCollection.filter(
     (flashcard) => !flashcard.isCorrect
@@ -20,27 +20,25 @@ export default function HomePage({
 
   return (
     <>
-      {!isEdit && (
+      {actionMode !== "edit" && (
         <FormFlashcard
-          onCreateFlashcard={handleCreateFlashcard}
           collections={collections}
           headline="Create new Flashcard"
-          isEdit={isEdit}
-          setIsEdit={setIsEdit}
+          actionMode={actionMode}
+          changeActionMode={changeActionMode}
           currentFlashcard={currentFlashcard}
-          onEditFlashcard={handleEditFlashcard}
+          onSubmitFlashcard={handleCreateFlashcard}
         />
       )}
 
-      {isEdit && (
+      {actionMode === "edit" && (
         <FormFlashcard
-          onCreateFlashcard={handleCreateFlashcard}
           collections={collections}
           headline="Edit Flashcard"
-          isEdit={isEdit}
-          setIsEdit={setIsEdit}
+          actionMode={actionMode}
+          changeActionMode={changeActionMode}
           currentFlashcard={currentFlashcard}
-          onEditFlashcard={handleEditFlashcard}
+          onSubmitFlashcard={handleEditFlashcard}
         />
       )}
 
@@ -50,9 +48,9 @@ export default function HomePage({
           headline="Random Study Cards"
           flashcards={incorrectFlashcards}
           handleToggleCorrect={handleToggleCorrect}
-          setCurrentFlashcard={setCurrentFlashcard}
-          isEdit={isEdit}
-          setIsEdit={setIsEdit}
+          changeCurrentFlashcard={changeCurrentFlashcard}
+          actionMode={actionMode}
+          changeActionMode={changeActionMode}
         />
       )}
       {(!incorrectFlashcards || incorrectFlashcards.length === 0) && (
