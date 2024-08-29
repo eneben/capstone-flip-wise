@@ -23,7 +23,12 @@ export default function App({ Component, pageProps }) {
     setActionMode(mode);
   }
 
-  function handleEditFlashcard(updatedFlashcard) {
+  function handleEditFlashcard(newFlashcard) {
+    const updatedFlashcard = {
+      ...newFlashcard,
+      id: currentFlashcard.id,
+      isCorrect: currentFlashcard.isCorrect,
+    };
     setFlashcards(
       flashcards.map((flashcard) => {
         return flashcard.id === updatedFlashcard.id
@@ -42,19 +47,6 @@ export default function App({ Component, pageProps }) {
       },
       ...flashcards,
     ]);
-  }
-
-  function handleSubmitFlashcard(newFlashcard) {
-    if (actionMode === "edit") {
-      const updatedFlashcard = {
-        ...newFlashcard,
-        id: currentFlashcard.id,
-        isCorrect: currentFlashcard.isCorrect,
-      };
-      handleEditFlashcard(updatedFlashcard);
-    } else {
-      handleCreateFlashcard(newFlashcard);
-    }
   }
 
   function handleToggleCorrect(id) {
@@ -100,7 +92,8 @@ export default function App({ Component, pageProps }) {
         changeCurrentFlashcard={changeCurrentFlashcard}
         actionMode={actionMode}
         changeActionMode={changeActionMode}
-        handleSubmitFlashcard={handleSubmitFlashcard}
+        handleEditFlashcard={handleEditFlashcard}
+        handleCreateFlashcard={handleCreateFlashcard}
       />
     </Layout>
   );

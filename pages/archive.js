@@ -11,7 +11,7 @@ export default function Archive({
   handleDelete,
   actionMode,
   changeActionMode,
-  handleSubmitFlashcard,
+  handleEditFlashcard,
 }) {
   const correctFlashcards = flashcardsWithCollection.filter(
     (flashcard) => flashcard.isCorrect === true
@@ -26,7 +26,7 @@ export default function Archive({
           actionMode={actionMode}
           changeActionMode={changeActionMode}
           currentFlashcard={currentFlashcard}
-          onSubmitFlashcard={handleSubmitFlashcard}
+          onSubmitFlashcard={handleEditFlashcard}
         />
       )}
 

@@ -6,7 +6,8 @@ export default function HomePage({
   flashcardsWithCollection,
   handleToggleCorrect,
   collections,
-  handleSubmitFlashcard,
+  handleEditFlashcard,
+  handleCreateFlashcard,
   handleDelete,
   actionMode,
   changeActionMode,
@@ -26,7 +27,7 @@ export default function HomePage({
           actionMode={actionMode}
           changeActionMode={changeActionMode}
           currentFlashcard={currentFlashcard}
-          onSubmitFlashcard={handleSubmitFlashcard}
+          onSubmitFlashcard={handleCreateFlashcard}
         />
       )}
 
@@ -37,7 +38,7 @@ export default function HomePage({
           actionMode={actionMode}
           changeActionMode={changeActionMode}
           currentFlashcard={currentFlashcard}
-          onSubmitFlashcard={handleSubmitFlashcard}
+          onSubmitFlashcard={handleEditFlashcard}
         />
       )}
 
