@@ -8,7 +8,7 @@ export default function Layout({ children, changeActionMode }) {
   return (
     <>
       <MainContainer>{children}</MainContainer>
-      {/* <nav>
+      <nav>
         <StyledList>
           <ListItem $active={router.pathname === "/"}>
             <StyledLink onClick={() => changeActionMode("default")} href="/">
@@ -24,7 +24,7 @@ export default function Layout({ children, changeActionMode }) {
             </StyledLink>
           </ListItem>
         </StyledList>
-      </nav> */}
+      </nav>
     </>
   );
 }
