@@ -24,6 +24,10 @@ export default function App({ Component, pageProps }) {
   }
 
   function handleEditFlashcard(newFlashcard) {
+    if (!currentFlashcard) {
+      console.error("No flashcard selected for editing.");
+      return;
+    }
     const updatedFlashcard = {
       ...newFlashcard,
       id: currentFlashcard.id,
