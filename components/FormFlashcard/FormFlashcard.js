@@ -1,26 +1,48 @@
 import styled from "styled-components";
-import { RegularButton } from "../Button/Button";
+import RegularButton from "../Buttons/RegularButton";
+import ButtonWrapper from "../Buttons/ButtonWrapper";
+import FormInput from "./FormInput";
 
-export default function FormFlashcard({ collections, onCreateFlashcard }) {
+export default function FormFlashcard({
+  collections,
+  headline,
+  actionMode,
+  changeActionMode,
+  currentFlashcard,
+  onSubmitFlashcard,
+}) {
   function handleSubmit(event) {
     event.preventDefault();
-
     const formData = new FormData(event.target);
     const newFlashcard = Object.fromEntries(formData);
-
-    onCreateFlashcard(newFlashcard);
+    onSubmitFlashcard(newFlashcard);
     event.target.reset();
   }
 
   return (
     <StyledForm onSubmit={handleSubmit}>
-      <StyledFormHeadline>Create new flashcard</StyledFormHeadline>
+      <StyledFormHeadline>{headline}</StyledFormHeadline>
       <StyledLabel htmlFor="question">Question</StyledLabel>
-      <StyledInput id="question" name="question" type="text" required />
+      <FormInput
+        name="question"
+        actionMode={actionMode}
+        currentFlashcard={currentFlashcard}
+      />
       <StyledLabel htmlFor="answer">Answer</StyledLabel>
-      <StyledInput id="answer" name="answer" type="text" required />
+      <FormInput
+        name="answer"
+        actionMode={actionMode}
+        currentFlashcard={currentFlashcard}
+      />
       <StyledLabel htmlFor="collection">Collection</StyledLabel>
-      <StyledSelect id="collection" name="collectionId" required>
+      <StyledSelect
+        id="collection"
+        name="collectionId"
+        required
+        defaultValue={
+          actionMode === "edit" ? currentFlashcard.collectionId : ""
+        }
+      >
         <option value="">--Please choose a collection:--</option>
         {collections.map((collection) => {
           return (
@@ -30,9 +52,17 @@ export default function FormFlashcard({ collections, onCreateFlashcard }) {
           );
         })}
       </StyledSelect>
-      <SubmitButtonWrapper>
+      <ButtonWrapper>
         <RegularButton type="submit" content="Submit" variant="submit" />
-      </SubmitButtonWrapper>
+        {actionMode === "edit" && (
+          <RegularButton
+            type="button"
+            content="Cancel"
+            variant="confirm"
+            onClick={() => changeActionMode("default")}
+          />
+        )}
+      </ButtonWrapper>
     </StyledForm>
   );
 }
@@ -56,19 +86,8 @@ const StyledLabel = styled.label`
   font-size: 0.9rem;
 `;
 
-const StyledInput = styled.input`
-  width: 100%;
-  height: 1.5rem;
-`;
-
 const StyledSelect = styled.select`
   display: block;
   width: 100%;
   height: 1.5rem;
-`;
-
-const SubmitButtonWrapper = styled.div`
-  display: flex;
-  padding: 20px 0 10px 0;
-  justify-content: center;
 `;

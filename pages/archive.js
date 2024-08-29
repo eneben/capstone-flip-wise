@@ -1,10 +1,17 @@
 import FlashcardList from "@/components/FlashcardList/FlashcardList";
 import styled from "styled-components";
+import FormFlashcard from "@/components/FormFlashcard/FormFlashcard";
 
 export default function Archive({
   flashcardsWithCollection,
   handleToggleCorrect,
+  collections,
+  currentFlashcard,
+  changeCurrentFlashcard,
   handleDelete,
+  actionMode,
+  changeActionMode,
+  handleEditFlashcard,
 }) {
   const correctFlashcards = flashcardsWithCollection.filter(
     (flashcard) => flashcard.isCorrect === true
@@ -12,12 +19,26 @@ export default function Archive({
 
   return (
     <>
+      {correctFlashcards.length > 0 && actionMode === "edit" && (
+        <FormFlashcard
+          collections={collections}
+          headline="Edit Flashcard"
+          actionMode={actionMode}
+          changeActionMode={changeActionMode}
+          currentFlashcard={currentFlashcard}
+          onSubmitFlashcard={handleEditFlashcard}
+        />
+      )}
+
       {correctFlashcards.length > 0 && (
         <FlashcardList
           headline="Archive"
           flashcards={correctFlashcards}
           handleToggleCorrect={handleToggleCorrect}
           handleDelete={handleDelete}
+          changeCurrentFlashcard={changeCurrentFlashcard}
+          actionMode={actionMode}
+          changeActionMode={changeActionMode}
         />
       )}
       {(!correctFlashcards || correctFlashcards.length === 0) && (

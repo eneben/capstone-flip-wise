@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-export default function Layout({ children }) {
+export default function Layout({ children, changeActionMode }) {
   const router = useRouter();
 
   return (
@@ -11,10 +11,17 @@ export default function Layout({ children }) {
       <nav>
         <StyledList>
           <ListItem $active={router.pathname === "/"}>
-            <StyledLink href="/">Home</StyledLink>
+            <StyledLink onClick={() => changeActionMode("default")} href="/">
+              Home
+            </StyledLink>
           </ListItem>
           <ListItem $active={router.pathname === "/archive"}>
-            <StyledLink href="/archive">Archive</StyledLink>
+            <StyledLink
+              onClick={() => changeActionMode("default")}
+              href="/archive"
+            >
+              Archive
+            </StyledLink>
           </ListItem>
         </StyledList>
       </nav>

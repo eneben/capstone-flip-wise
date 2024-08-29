@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import { RegularButton, ButtonWrapper } from "../Button/Button";
+import RegularButton from "../Buttons/RegularButton";
+import ButtonWrapper from "../Buttons/ButtonWrapper";
 
 export default function DeleteConfirmationDialog({
   onDelete,

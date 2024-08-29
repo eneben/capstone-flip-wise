@@ -6,6 +6,9 @@ export default function FlashcardList({
   flashcards,
   handleToggleCorrect,
   handleDelete,
+  changeCurrentFlashcard,
+  actionMode,
+  changeActionMode,
 }) {
   return (
     <>
@@ -18,6 +21,9 @@ export default function FlashcardList({
               key={flashcard.id}
               flashcard={flashcard}
               onToggleCorrect={handleToggleCorrect}
+              changeCurrentFlashcard={changeCurrentFlashcard}
+              actionMode={actionMode}
+              changeActionMode={changeActionMode}
             />
           );
         })}

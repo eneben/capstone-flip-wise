@@ -4,11 +4,44 @@ import initialFlashcards from "@/assets/flashcards.json";
 import collections from "@/assets/collections.json";
 import useLocalStorageState from "use-local-storage-state";
 import { uid } from "uid";
+import { useState } from "react";
 
 export default function App({ Component, pageProps }) {
   const [flashcards, setFlashcards] = useLocalStorageState("flashcards", {
     defaultValue: initialFlashcards,
   });
+
+  const [currentFlashcard, setCurrentFlashcard] = useState(null);
+
+  const [actionMode, setActionMode] = useState("default");
+
+  function changeCurrentFlashcard(flashcard) {
+    setCurrentFlashcard(flashcard);
+  }
+
+  function changeActionMode(mode) {
+    setActionMode(mode);
+  }
+
+  function handleEditFlashcard(newFlashcard) {
+    if (!currentFlashcard) {
+      console.error("No flashcard selected for editing.");
+      return;
+    }
+    const updatedFlashcard = {
+      ...newFlashcard,
+      id: currentFlashcard.id,
+      isCorrect: currentFlashcard.isCorrect,
+    };
+    setFlashcards(
+      flashcards.map((flashcard) => {
+        return flashcard.id === updatedFlashcard.id
+          ? updatedFlashcard
+          : flashcard;
+      })
+    );
+    changeActionMode("default");
+  }
 
   function handleCreateFlashcard(newFlashcard) {
     setFlashcards([
@@ -51,15 +84,20 @@ export default function App({ Component, pageProps }) {
   }));
 
   return (
-    <Layout>
+    <Layout changeActionMode={changeActionMode}>
       <GlobalStyle />
       <Component
         {...pageProps}
         flashcardsWithCollection={flashcardsWithCollection}
         handleToggleCorrect={handleToggleCorrect}
         collections={collections}
-        handleCreateFlashcard={handleCreateFlashcard}
         handleDelete={handleDelete}
+        currentFlashcard={currentFlashcard}
+        changeCurrentFlashcard={changeCurrentFlashcard}
+        actionMode={actionMode}
+        changeActionMode={changeActionMode}
+        handleEditFlashcard={handleEditFlashcard}
+        handleCreateFlashcard={handleCreateFlashcard}
       />
     </Layout>
   );

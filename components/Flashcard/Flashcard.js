@@ -4,13 +4,17 @@ import MarkAsIncorrect from "@/public/icons/MarkAsIncorrect.svg";
 import MarkAsCorrect from "@/public/icons/MarkAsCorrect.svg";
 import Delete from "@/public/icons/Delete.svg";
 import Arrow from "@/public/icons/Arrow.svg";
-import { RoundButton } from "../Button/Button";
+import Edit from "@/public/icons/Edit.svg";
+import RoundButton from "../Buttons/RoundButton";
 import DeleteConfirmationDialog from "../DeleteConfirmationDialog/DeleteConfirmationDialog";
 
 export default function Flashcard({
   flashcard,
   onToggleCorrect,
   handleDelete,
+  changeCurrentFlashcard,
+  actionMode,
+  changeActionMode,
 }) {
   const [showAnswer, setShowAnswer] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
@@ -30,6 +34,13 @@ export default function Flashcard({
   function toggleDeleteConfirmation(event) {
     event.stopPropagation();
     setIsDelete(!isDelete);
+  }
+
+  function setEditWithoutFlip(event) {
+    event.stopPropagation();
+    changeActionMode("edit");
+    changeCurrentFlashcard(flashcard);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   return (
@@ -58,12 +69,20 @@ export default function Flashcard({
           <>
             <CardFront>
               <CollectionTitle>{collection}</CollectionTitle>
-
+              <RoundButton
+                content={<Edit />}
+                onClick={setEditWithoutFlip}
+                type="button"
+                variant="edit"
+                actionMode={actionMode}
+              />
               <RoundButton
                 content={<Delete />}
                 onClick={toggleDeleteConfirmation}
                 type="button"
                 variant="delete"
+                disabled={actionMode === "edit"}
+                actionMode={actionMode}
               />
               <Question>{question}</Question>
               {isCorrect && (
@@ -72,6 +91,7 @@ export default function Flashcard({
                   onClick={() => onToggleCorrect(id)}
                   type="button"
                   variant="markAsIncorrect"
+                  actionMode={actionMode}
                 />
               )}
               <StyledArrow />
@@ -82,6 +102,8 @@ export default function Flashcard({
                 onClick={toggleDeleteConfirmation}
                 type="button"
                 variant="delete"
+                disabled={actionMode === "edit"}
+                actionMode={actionMode}
               />
               <Answer>{answer}</Answer>
 
@@ -90,6 +112,7 @@ export default function Flashcard({
                 onClick={() => onToggleCorrect(id)}
                 type="button"
                 variant={isCorrect ? "markAsIncorrect" : "markAsCorrect"}
+                actionMode={actionMode}
               />
               <StyledArrow transform="scale(-1 1)" />
             </CardBack>
