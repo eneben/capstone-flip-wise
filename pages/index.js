@@ -4,7 +4,7 @@ export default function CollectionList({ collections }) {
   return (
     <Collection
       name="Test-Collection"
-      correctCounter="5"
+      correctCounter="533"
       incorrectCounter="2"
       color="#f00"
     />
