@@ -84,7 +84,7 @@ export default function App({ Component, pageProps }) {
   }));
 
   return (
-    <Layout changeActionMode={changeActionMode}>
+    <Layout changeActionMode={changeActionMode} collections={collections}>
       <GlobalStyle />
       <Component
         {...pageProps}

@@ -62,4 +62,8 @@ const variantRoundButtonStyles = {
     top: 15px;
     right: 60px;
   `,
+  formToggle: css`
+    position: fixed;
+    background-color: #fff;
+  `,
 };
