@@ -1,16 +1,8 @@
 import styled from "styled-components";
-import MarkAsIncorrect from "@/public/icons/MarkAsIncorrect.svg";
-import MarkAsCorrect from "@/public/icons/MarkAsCorrect.svg";
-import RoundButton from "../Buttons/RoundButton";
 import CorrectCounter from "../CorrectCounter/CorrectCounter";
 
-export default function Collection({
-  name,
-  correctCounter,
-  incorrectCounter,
-  color,
-  actionMode,
-}) {
+export default function Collection({ name, color, actionMode }) {
+  //color sollte später auch dynamisch eingefügt werden (gehört zu bestimmter collection)
   return (
     <CollectionBox $color={color}>
       <CollectionName>{name}</CollectionName>
