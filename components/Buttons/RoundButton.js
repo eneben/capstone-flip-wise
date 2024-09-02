@@ -68,4 +68,7 @@ const variantRoundButtonStyles = {
   incorrect: css`
     background-color: #edafb8;
   `,
+  default: css`
+    background-color: #eee;
+  `,
 };

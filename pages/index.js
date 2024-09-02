@@ -2,7 +2,12 @@ import Collection from "@/components/Collection/Collection";
 import { uid } from "uid";
 import styled from "styled-components";
 
-export default function HomePage({ collections, actionMode }) {
+export default function HomePage({
+  collections,
+  actionMode,
+  getCorrectFlashcardsFromCollection,
+  getIncorrectFlashcardsFromCollection,
+}) {
   return (
     <>
       <StyledHeadline>My flashcard collections</StyledHeadline>
@@ -13,6 +18,12 @@ export default function HomePage({ collections, actionMode }) {
               key={uid()}
               collection={collection}
               actionMode={actionMode}
+              getCorrectFlashcardsFromCollection={
+                getCorrectFlashcardsFromCollection
+              }
+              getIncorrectFlashcardsFromCollection={
+                getIncorrectFlashcardsFromCollection
+              }
             />
           );
         })}

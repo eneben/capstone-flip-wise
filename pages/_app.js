@@ -6,6 +6,9 @@ import useLocalStorageState from "use-local-storage-state";
 import { uid } from "uid";
 import { useState } from "react";
 
+// merken: wenn edit mode, footer symbole mit opacity -> ändern?!
+// edit: formular vorausgefüllt funktioniert nicht in all flashcards ansicht
+
 export default function App({ Component, pageProps }) {
   const [flashcards, setFlashcards] = useLocalStorageState("flashcards", {
     defaultValue: initialFlashcards,
@@ -90,6 +93,28 @@ export default function App({ Component, pageProps }) {
     };
   });
 
+  function getAllFlashcardsFromCollection(id) {
+    const allFlashcardsFromCollection = flashcardsWithCollection.filter(
+      (flashcard) => flashcard.collectionId === id
+    );
+    return allFlashcardsFromCollection;
+  }
+
+  function getCorrectFlashcardsFromCollection(id) {
+    const allFlashcardsFromCollection = getAllFlashcardsFromCollection(id);
+    const correctFlashcardsFromCollection = allFlashcardsFromCollection.filter(
+      (flashcard) => flashcard.isCorrect === true
+    );
+    return correctFlashcardsFromCollection;
+  }
+
+  function getIncorrectFlashcardsFromCollection(id) {
+    const allFlashcardsFromCollection = getAllFlashcardsFromCollection(id);
+    const incorrectFlashcardsFromCollection =
+      allFlashcardsFromCollection.filter((flashcard) => !flashcard.isCorrect);
+    return incorrectFlashcardsFromCollection;
+  }
+
   return (
     <Layout changeActionMode={changeActionMode}>
       <GlobalStyle />
@@ -105,6 +130,11 @@ export default function App({ Component, pageProps }) {
         changeActionMode={changeActionMode}
         handleEditFlashcard={handleEditFlashcard}
         handleCreateFlashcard={handleCreateFlashcard}
+        getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
+        getCorrectFlashcardsFromCollection={getCorrectFlashcardsFromCollection}
+        getIncorrectFlashcardsFromCollection={
+          getIncorrectFlashcardsFromCollection
+        }
       />
     </Layout>
   );

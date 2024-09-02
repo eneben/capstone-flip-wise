@@ -2,9 +2,9 @@ import { useRouter } from "next/router";
 import FlashcardList from "@/components/FlashcardList/FlashcardList";
 import FormFlashcard from "@/components/FormFlashcard/FormFlashcard";
 import styled from "styled-components";
+import Footer from "@/components/Footer/Footer";
 
 export default function CollectionPage({
-  flashcardsWithCollection,
   handleToggleCorrect,
   collections,
   handleEditFlashcard,
@@ -14,13 +14,18 @@ export default function CollectionPage({
   changeActionMode,
   currentFlashcard,
   changeCurrentFlashcard,
+  getAllFlashcardsFromCollection,
+  getIncorrectFlashcardsFromCollection,
+  getCorrectFlashcardsFromCollection,
 }) {
   const router = useRouter();
   const { id } = router.query;
 
-  const allFlashcardsFromCollection = flashcardsWithCollection.filter(
-    (flashcard) => flashcard.collectionId === id
-  );
+  const allFlashcardsFromCollection = getAllFlashcardsFromCollection(id);
+  // const incorrectFlashcardsFromCollection =
+  //   getIncorrectFlashcardsFromCollection(id);
+  // const correctFlashcardsFromCollection =
+  //   getCorrectFlashcardsFromCollection(id);
 
   const collectionTitle = allFlashcardsFromCollection[0]?.collectionTitle;
   const collectionColor = allFlashcardsFromCollection[0]?.collectionColor;
@@ -68,6 +73,16 @@ export default function CollectionPage({
           No flashcards in this collection found. Add some new!
         </StyledMessage>
       )}
+      <Footer
+        allFlashcardsFromCollection={allFlashcardsFromCollection}
+        getIncorrectFlashcardsFromCollection={
+          getIncorrectFlashcardsFromCollection
+        }
+        getCorrectFlashcardsFromCollection={getCorrectFlashcardsFromCollection}
+        id={id}
+        actionMode={actionMode}
+        changeActionMode={changeActionMode}
+      />
     </>
   );
 }

@@ -2,14 +2,39 @@ import styled from "styled-components";
 import CorrectCounter from "../CorrectCounter/CorrectCounter";
 import Link from "next/link";
 
-export default function Collection({ collection, actionMode }) {
+export default function Collection({
+  collection,
+  actionMode,
+  getCorrectFlashcardsFromCollection,
+  getIncorrectFlashcardsFromCollection,
+}) {
   const { title: name, color, id } = collection;
   return (
     <CollectionBox $color={color} href={`/${id}`}>
       <CollectionName>{name}</CollectionName>
       <IconWrapper>
-        <CorrectCounter variant="incorrect" actionMode={actionMode} />
-        <CorrectCounter variant="correct" actionMode={actionMode} />
+        <CorrectCounter
+          getIncorrectFlashcardsFromCollection={
+            getIncorrectFlashcardsFromCollection
+          }
+          getCorrectFlashcardsFromCollection={
+            getCorrectFlashcardsFromCollection
+          }
+          id={id}
+          variant="incorrect"
+          actionMode={actionMode}
+        />
+        <CorrectCounter
+          getCorrectFlashcardsFromCollection={
+            getCorrectFlashcardsFromCollection
+          }
+          getIncorrectFlashcardsFromCollection={
+            getIncorrectFlashcardsFromCollection
+          }
+          id={id}
+          variant="correct"
+          actionMode={actionMode}
+        />
       </IconWrapper>
     </CollectionBox>
   );
@@ -56,7 +81,7 @@ const CollectionName = styled.h2`
   text-align: center;
 `;
 
-const IconWrapper = styled.ul`
+const IconWrapper = styled.section`
   list-style: none;
   display: flex;
   justify-content: space-between;

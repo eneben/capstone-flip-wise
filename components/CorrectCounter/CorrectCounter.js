@@ -2,34 +2,60 @@ import styled from "styled-components";
 import RoundButton from "../Buttons/RoundButton";
 import MarkAsIncorrect from "@/public/icons/MarkAsIncorrect.svg";
 import MarkAsCorrect from "@/public/icons/MarkAsCorrect.svg";
+import Stack from "@/public/icons/Stack.svg";
+import { useRouter } from "next/router";
 
-export default function CorrectCounter({ variant, actionMode }) {
-  if (variant !== "correct" && variant !== "incorrect") {
+export default function CorrectCounter({
+  variant,
+  actionMode,
+  getIncorrectFlashcardsFromCollection,
+  getCorrectFlashcardsFromCollection,
+  id,
+}) {
+  const router = useRouter();
+
+  if (variant !== "correct" && variant !== "incorrect" && variant !== "all") {
     return console.log("This variant doesn't exist.");
   }
+
+  const numberOfIncorrectFlashcards =
+    getIncorrectFlashcardsFromCollection(id).length;
+  const numberOfCorrectFlashcards =
+    getCorrectFlashcardsFromCollection(id).length;
+  const numberOfAllFlashcards =
+    numberOfCorrectFlashcards + numberOfIncorrectFlashcards;
 
   const correctVariants = {
     incorrect: {
       icon: <MarkAsIncorrect />,
-      onClick: () => console.log("Incorrect button clicked"),
-      count: 0,
-      //Platzhalter für den count -> sollte dynamisch eingefügt werden
+      count: numberOfIncorrectFlashcards,
     },
     correct: {
       icon: <MarkAsCorrect />,
-      onClick: () => console.log("Correct button clicked"),
-      count: 0,
-      //Platzhalter für den count -> sollte dynamisch eingefügt werden
+      count: numberOfCorrectFlashcards,
+    },
+    all: {
+      icon: <Stack />,
+      count: numberOfAllFlashcards,
     },
   };
 
-  const { icon, onClick, count } = correctVariants[variant];
+  const { icon, count } = correctVariants[variant];
+
+  function handleRedirect() {
+    if (variant === "correct") {
+      router.push(`/${id}/learned`);
+    } else if (variant === "incorrect") {
+      router.push(`/${id}/to-learn`);
+    } else if (variant === "all") {
+      router.push(`/${id}`);
+    }
+  }
 
   return (
-    <CorrectCounterWrapper>
+    <CorrectCounterWrapper onClick={handleRedirect}>
       <RoundButton
         content={icon}
-        onClick={onClick}
         type="button"
         variant={variant}
         actionMode={actionMode}
@@ -39,7 +65,7 @@ export default function CorrectCounter({ variant, actionMode }) {
   );
 }
 
-const CorrectCounterWrapper = styled.li`
+const CorrectCounterWrapper = styled.article`
   display: flex;
   align-items: center;
   justify-content: space-between;
