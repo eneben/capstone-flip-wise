@@ -1,6 +1,8 @@
 import FlashcardList from "@/components/FlashcardList/FlashcardList";
 import FormFlashcard from "@/components/FormFlashcard/FormFlashcard";
 import styled from "styled-components";
+import ToastMessage from "@/components/ToastMessage/ToastMessage";
+import MarkAsCorrect from "@/public/icons/MarkAsCorrect.svg";
 
 export default function HomePage({
   flashcardsWithCollection,
@@ -41,6 +43,12 @@ export default function HomePage({
           onSubmitFlashcard={handleEditFlashcard}
         />
       )}
+
+      <ToastMessage
+        text="Flashcard deleted successfully!"
+        variant="success"
+        icon={MarkAsCorrect}
+      />
 
       {incorrectFlashcards.length > 0 && (
         <FlashcardList
