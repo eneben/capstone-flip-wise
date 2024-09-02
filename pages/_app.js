@@ -6,8 +6,6 @@ import useLocalStorageState from "use-local-storage-state";
 import { uid } from "uid";
 import { useState } from "react";
 
-// merken: wenn edit mode, footer symbole mit opacity -> ändern?!
-
 export default function App({ Component, pageProps }) {
   const [flashcards, setFlashcards] = useLocalStorageState("flashcards", {
     defaultValue: initialFlashcards,

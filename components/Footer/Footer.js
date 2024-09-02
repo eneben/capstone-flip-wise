@@ -1,12 +1,8 @@
-import Link from "next/link";
 import styled from "styled-components";
 import { useRouter } from "next/router";
 import CorrectCounter from "../CorrectCounter/CorrectCounter";
-import Stack from "@/public/icons/Stack.svg";
-import RoundButton from "../Buttons/RoundButton";
 
 export default function Footer({
-  allFlashcardsFromCollection,
   getIncorrectFlashcardsFromCollection,
   getCorrectFlashcardsFromCollection,
   id,
@@ -23,6 +19,7 @@ export default function Footer({
           $active={router.pathname.endsWith("/to-learn")}
         >
           <CorrectCounter
+            isFooter={true}
             variant="incorrect"
             getIncorrectFlashcardsFromCollection={
               getIncorrectFlashcardsFromCollection
@@ -39,6 +36,7 @@ export default function Footer({
           $active={router.pathname.endsWith("/[id]")}
         >
           <CorrectCounter
+            isFooter={true}
             variant="all"
             getIncorrectFlashcardsFromCollection={
               getIncorrectFlashcardsFromCollection
@@ -55,6 +53,7 @@ export default function Footer({
           $active={router.pathname.endsWith("/learned")}
         >
           <CorrectCounter
+            isFooter={true}
             variant="correct"
             getIncorrectFlashcardsFromCollection={
               getIncorrectFlashcardsFromCollection

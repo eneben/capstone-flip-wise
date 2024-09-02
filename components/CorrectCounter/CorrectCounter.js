@@ -11,6 +11,7 @@ export default function CorrectCounter({
   getIncorrectFlashcardsFromCollection,
   getCorrectFlashcardsFromCollection,
   id,
+  isFooter,
 }) {
   const router = useRouter();
 
@@ -55,6 +56,7 @@ export default function CorrectCounter({
   return (
     <CorrectCounterWrapper onClick={handleRedirect}>
       <RoundButton
+        isFooter={isFooter}
         content={icon}
         type="button"
         variant={variant}
