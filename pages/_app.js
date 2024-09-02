@@ -84,7 +84,14 @@ export default function App({ Component, pageProps }) {
   }));
 
   return (
-    <Layout changeActionMode={changeActionMode} collections={collections}>
+    <Layout
+      collections={collections}
+      actionMode={actionMode}
+      changeActionMode={changeActionMode}
+      currentFlashcard={currentFlashcard}
+      handleEditFlashcard={handleEditFlashcard}
+      handleCreateFlashcard={handleCreateFlashcard}
+    >
       <GlobalStyle />
       <Component
         {...pageProps}

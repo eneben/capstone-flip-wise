@@ -20,7 +20,7 @@ export default function HomePage({
 
   return (
     <>
-      {actionMode !== "edit" && (
+      {/* {actionMode !== "edit" && (
         <FormFlashcard
           collections={collections}
           headline="Create new Flashcard"
@@ -40,7 +40,7 @@ export default function HomePage({
           currentFlashcard={currentFlashcard}
           onSubmitFlashcard={handleEditFlashcard}
         />
-      )}
+      )} */}
 
       {incorrectFlashcards.length > 0 && (
         <FlashcardList
