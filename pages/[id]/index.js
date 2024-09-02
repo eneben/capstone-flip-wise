@@ -22,10 +22,6 @@ export default function CollectionPage({
   const { id } = router.query;
 
   const allFlashcardsFromCollection = getAllFlashcardsFromCollection(id);
-  // const incorrectFlashcardsFromCollection =
-  //   getIncorrectFlashcardsFromCollection(id);
-  // const correctFlashcardsFromCollection =
-  //   getCorrectFlashcardsFromCollection(id);
 
   const collectionTitle = allFlashcardsFromCollection[0]?.collectionTitle;
   const collectionColor = allFlashcardsFromCollection[0]?.collectionColor;

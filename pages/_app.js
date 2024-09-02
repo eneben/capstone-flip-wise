@@ -7,7 +7,6 @@ import { uid } from "uid";
 import { useState } from "react";
 
 // merken: wenn edit mode, footer symbole mit opacity -> ändern?!
-// edit: formular vorausgefüllt funktioniert nicht in all flashcards ansicht
 
 export default function App({ Component, pageProps }) {
   const [flashcards, setFlashcards] = useLocalStorageState("flashcards", {

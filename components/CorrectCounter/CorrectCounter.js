@@ -70,7 +70,7 @@ const CorrectCounterWrapper = styled.article`
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  padding: 10px;
+  padding: 0 10px;
 `;
 
 const Counter = styled.span``;
