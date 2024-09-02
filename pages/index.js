@@ -1,12 +1,36 @@
 import Collection from "@/components/Collection/Collection";
+import { uid } from "uid";
+import styled from "styled-components";
 
-export default function CollectionList({ collections }) {
+export default function HomePage({ collections, actionMode }) {
   return (
-    <Collection
-      name="Test-Collection"
-      correctCounter="533"
-      incorrectCounter="2"
-      color="#f00"
-    />
+    <>
+      <StyledHeadline>My flashcard collections</StyledHeadline>
+      <CollectionsWrapper>
+        {collections.map((collection) => {
+          return (
+            <Collection
+              key={uid()}
+              collection={collection}
+              actionMode={actionMode}
+            />
+          );
+        })}
+      </CollectionsWrapper>
+    </>
   );
 }
+
+const CollectionsWrapper = styled.ul`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 30px;
+  list-style: none;
+`;
+
+const StyledHeadline = styled.h1`
+  text-align: center;
+  padding: 35px 0 30px 0;
+  font-size: 1.7rem;
+`;

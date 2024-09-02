@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import CorrectCounter from "../CorrectCounter/CorrectCounter";
 
-export default function Collection({ name, color, actionMode }) {
-  //color sollte später auch dynamisch eingefügt werden (gehört zu bestimmter collection)
+export default function Collection({ collection, actionMode }) {
+  const { title: name, color } = collection;
   return (
     <CollectionBox $color={color}>
       <CollectionName>{name}</CollectionName>
