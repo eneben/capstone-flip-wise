@@ -39,7 +39,7 @@ from {
 `;
 
 const ToastMessageContainerWrapper = styled.div`
-  width: 250px;
+  width: 200px;
   background-color: #fff;
   padding: 10px 10px;
   border: 1px solid black;
@@ -76,15 +76,14 @@ const StyledProgressBar = styled.div`
 const MessageContentWrapper = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
   padding: 5px 0px 0px 0px;
   gap: 10px;
 `;
 
 const StyledIconWrapper = styled.div`
-  width: 40px;
-  height: 40px;
   border-radius: 50%;
-  /* border: 1px solid black; */
+  border: 1px solid black;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -93,6 +92,7 @@ const StyledIconWrapper = styled.div`
 
 const StyledToastMessageText = styled.p`
   font-weight: 600;
+  line-height: 1.1rem;
 `;
 
 const variantToastMessageStyles = {
