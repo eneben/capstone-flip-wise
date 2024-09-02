@@ -1,8 +1,8 @@
 import styled, { css, keyframes } from "styled-components";
 
-export default function ToastMessage({ text, variant, icon: Icon }) {
+export default function ToastMessage({ text, variant, icon: Icon, onClick }) {
   return (
-    <ToastMessageContainerWrapper>
+    <ToastMessageContainerWrapper onClick={onClick}>
       <ProgressBarWrapper>
         <StyledProgressBar $variant={variant} />
       </ProgressBarWrapper>
@@ -17,24 +17,28 @@ export default function ToastMessage({ text, variant, icon: Icon }) {
 }
 
 const slideInAndFade = keyframes`
-from {
-  opacity: 0;
-  transform: translateX(80%);
-}
-to {
-  opacity: 1;
-  transform: translateX(0);
-}
+ 0% {
+    opacity: 0;             
+    /* transform: translateX(100%); */
+    right: -300px;
+  }
+  100% {
+    opacity: 1;              
+    /* transform: translateX(0);     */
+    right: 0px;
+  }
 `;
 
 const slideOutAndFade = keyframes`
-from {
-    opacity: 1;
-    transform: translateX(0);
+0% {
+    opacity: 1;              
+    /* transform: translateX(0);     */
+    right: 0px;
   }
-  to {
-    opacity: 0;
-    transform: translateX(80%);
+  100% {
+    opacity: 0;              
+    /* transform: translateX(100%);  */
+    right: -100px;
   }
 `;
 
@@ -47,7 +51,12 @@ const ToastMessageContainerWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  animation: ${slideInAndFade} 1s, ${slideOutAndFade} 1s 4.5s;
+  position: fixed;
+  bottom: 70px;
+  z-index: 1000;
+  animation: ${slideInAndFade} 0.5s ease-out forwards,
+    ${slideOutAndFade} 0.5s ease-in forwards 5s;
+  cursor: pointer;
 `;
 
 const ProgressBarWrapper = styled.div`
