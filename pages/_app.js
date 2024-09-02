@@ -75,13 +75,20 @@ export default function App({ Component, pageProps }) {
     const collectionToFind = collections.find((collection) => {
       return collection.id === collectionId;
     });
-    return collectionToFind.title;
+    return {
+      title: collectionToFind.title,
+      color: collectionToFind.color,
+    };
   }
 
-  const flashcardsWithCollection = flashcards.map((flashcard) => ({
-    ...flashcard,
-    collectionTitle: getCollection(flashcard.collectionId),
-  }));
+  const flashcardsWithCollection = flashcards.map((flashcard) => {
+    const collection = getCollection(flashcard.collectionId);
+    return {
+      ...flashcard,
+      collectionTitle: collection.title,
+      collectionColor: collection.color,
+    };
+  });
 
   return (
     <Layout changeActionMode={changeActionMode}>

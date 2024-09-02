@@ -1,10 +1,11 @@
 import styled from "styled-components";
 import CorrectCounter from "../CorrectCounter/CorrectCounter";
+import Link from "next/link";
 
 export default function Collection({ collection, actionMode }) {
-  const { title: name, color } = collection;
+  const { title: name, color, id } = collection;
   return (
-    <CollectionBox $color={color}>
+    <CollectionBox $color={color} href={`/${id}`}>
       <CollectionName>{name}</CollectionName>
       <IconWrapper>
         <CorrectCounter variant="incorrect" actionMode={actionMode} />
@@ -14,7 +15,7 @@ export default function Collection({ collection, actionMode }) {
   );
 }
 
-const CollectionBox = styled.section`
+const CollectionBox = styled(Link)`
   margin: 0 auto;
   width: 20rem;
   height: 13rem;
@@ -23,6 +24,8 @@ const CollectionBox = styled.section`
   border: 2px solid ${({ $color }) => $color};
   padding: 10px;
   background-color: #fff;
+  text-decoration: none;
+  color: #000;
 
   &::before,
   &::after {
