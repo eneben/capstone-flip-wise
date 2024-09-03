@@ -38,7 +38,7 @@ const slideOutAndFade = keyframes`
   }
 `;
 
-const ToastMessageContainerWrapper = styled.div`
+const ToastMessageContainerWrapper = styled.section`
   max-width: 200px;
   width: 90%;
   background-color: #fff;
