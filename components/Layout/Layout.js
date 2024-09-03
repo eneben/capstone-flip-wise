@@ -5,6 +5,7 @@ import Menu from "../Menu/Menu";
 import Plus from "@/public/icons/Plus.svg";
 import RoundButton from "../Buttons/RoundButton";
 import FormFlashcard from "@/components/FormFlashcard/FormFlashcard";
+import { useState } from "react";
 
 export default function Layout({
   children,
@@ -15,14 +16,24 @@ export default function Layout({
   handleCreateFlashcard,
   handleEditFlashcard,
 }) {
+  const [isFormClosing, setIsFormClosing] = useState(false);
+
   function handleToggleForm() {
     if (actionMode === "create") {
-      changeActionMode("default");
+      startClosingForm();
     } else if (actionMode === "edit") {
-      changeActionMode("default");
+      startClosingForm();
     } else {
       changeActionMode("create");
     }
+  }
+
+  function startClosingForm() {
+    setIsFormClosing(true);
+    setTimeout(() => {
+      setIsFormClosing(false);
+      changeActionMode("default");
+    }, 500);
   }
 
   return (
@@ -37,6 +48,7 @@ export default function Layout({
           changeActionMode={changeActionMode}
           currentFlashcard={currentFlashcard}
           onSubmitFlashcard={handleCreateFlashcard}
+          isFormClosing={isFormClosing}
         />
       )}
 
@@ -48,6 +60,7 @@ export default function Layout({
           changeActionMode={changeActionMode}
           currentFlashcard={currentFlashcard}
           onSubmitFlashcard={handleEditFlashcard}
+          isFormClosing={isFormClosing}
         />
       )}
 

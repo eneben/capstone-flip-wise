@@ -28,7 +28,7 @@ export default function Flashcard({
   } = flashcard;
 
   function handleShowAnswer() {
-    setShowAnswer(!showAnswer);
+    if (!isDelete && actionMode === "default") setShowAnswer(!showAnswer);
   }
 
   function toggleDeleteConfirmation(event) {

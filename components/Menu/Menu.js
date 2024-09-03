@@ -6,6 +6,8 @@ import Link from "next/link";
 
 export default function Menu({ collections, actionMode, changeActionMode }) {
   const [isCollections, setIsCollections] = useState(false);
+  const [isMenuClosing, setIsMenuClosing] = useState(false);
+  const [isCollectionsClosing, setIsCollectionsClosing] = useState(false);
 
   useEffect(() => {
     if (actionMode === "menu") {
@@ -20,14 +22,43 @@ export default function Menu({ collections, actionMode, changeActionMode }) {
     const menuArea = document.getElementById("menu");
 
     if (menuArea && !menuArea.contains(event.target)) {
-      changeActionMode("default");
+      startClosingMenu();
     }
   }
 
-  function toggleMenu(event) {
+  function handleToggleMenu(event) {
     event.stopPropagation();
-    changeActionMode(actionMode === "default" ? "menu" : "default");
+    if (actionMode === "default") {
+      changeActionMode("menu");
+    } else {
+      startClosingMenu();
+    }
     setIsCollections(false);
+  }
+
+  function startClosingMenu() {
+    setIsMenuClosing(true);
+    setTimeout(() => {
+      setIsMenuClosing(false);
+      changeActionMode("default");
+    }, 300);
+  }
+
+  function handleToggleCollections(event) {
+    event.stopPropagation();
+    if (!isCollections) {
+      setIsCollections(true);
+    } else {
+      startClosingCollections();
+    }
+  }
+
+  function startClosingCollections() {
+    setIsCollectionsClosing(true);
+    setTimeout(() => {
+      setIsCollectionsClosing(false);
+      setIsCollections(false);
+    }, 300);
   }
 
   return (
@@ -35,20 +66,24 @@ export default function Menu({ collections, actionMode, changeActionMode }) {
       <StyledButton
         type="button"
         name="menuButton"
-        onClick={toggleMenu}
+        onClick={handleToggleMenu}
         disabled={actionMode === "edit" || actionMode === "create"}
       >
         <MenuIcon />
       </StyledButton>
 
       {actionMode === "menu" && (
-        <StyledNavigation id="menu" $isMenu={actionMode === "menu"}>
+        <StyledNavigation
+          id="menu"
+          $isMenu={actionMode === "menu"}
+          $isMenuClosing={isMenuClosing}
+        >
           <StyledNavigationList>
             <StyledNavigationListItem>
               <StyledNavigationLink href="/">Collections</StyledNavigationLink>
               <StyledSubMenuArrow
                 $isRotate={isCollections}
-                onClick={() => setIsCollections(!isCollections)}
+                onClick={handleToggleCollections}
               />
             </StyledNavigationListItem>
             {isCollections && (
@@ -57,7 +92,7 @@ export default function Menu({ collections, actionMode, changeActionMode }) {
                   return (
                     <StyledSubNavigationListItem
                       key={collection.id}
-                      $iCollections={isCollections}
+                      $isCollectionsClosing={isCollectionsClosing}
                     >
                       <StyledSubNavigationLink href="#">
                         {collection.title}
@@ -79,9 +114,19 @@ const menuAnimationIn = keyframes`
 100% { right: 0px; }
 `;
 
+const menuAnimationOut = keyframes`
+0% { right: 0px; }
+100% { right: -220px; }
+`;
+
 const subMenuAnimationOpen = keyframes`
-0% { height: 0px; }
-100% { height: 35px; }
+0% { height: 0px; opacity: 0;}
+100% { height: 35px; opacity: 1;}
+`;
+
+const subMenuAnimationClose = keyframes`
+0% { height: 35px; opacity: 1;}
+100% { height: 0px; opacity: 0;}
 `;
 
 const StyledButton = styled.button`
@@ -91,7 +136,14 @@ const StyledButton = styled.button`
 `;
 
 const StyledNavigation = styled.nav`
-  animation: ${menuAnimationIn} 0.3s ease-in;
+  animation: ${(props) =>
+    props.$isMenuClosing
+      ? css`
+          ${menuAnimationOut} 0.3s ease-out
+        `
+      : css`
+          ${menuAnimationIn} 0.3s ease-out
+        `};
   position: absolute;
   top: 100px;
   right: 0px;
@@ -135,8 +187,14 @@ const StyledSubNavigationList = styled.ul`
 `;
 
 const StyledSubNavigationListItem = styled.li`
-  animation-name: ${subMenuAnimationOpen};
-  animation-duration: 0.3s;
+  animation: ${(props) =>
+    props.$isCollectionsClosing
+      ? css`
+          ${subMenuAnimationClose} 0.3s ease-out
+        `
+      : css`
+          ${subMenuAnimationOpen} 0.3s ease-out
+        `};
   height: 35px;
   border-top: 1px solid #000;
   text-align: center;
