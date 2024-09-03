@@ -74,6 +74,7 @@ export default function Flashcard({
                 onClick={setEditWithoutFlip}
                 type="button"
                 variant="edit"
+                disabled={actionMode !== "default"}
                 actionMode={actionMode}
               />
               <RoundButton
@@ -81,7 +82,7 @@ export default function Flashcard({
                 onClick={toggleDeleteConfirmation}
                 type="button"
                 variant="delete"
-                disabled={actionMode === "edit"}
+                disabled={actionMode !== "default"}
                 actionMode={actionMode}
               />
               <Question>{question}</Question>
@@ -102,7 +103,7 @@ export default function Flashcard({
                 onClick={toggleDeleteConfirmation}
                 type="button"
                 variant="delete"
-                disabled={actionMode === "edit"}
+                disabled={actionMode !== "default"}
                 actionMode={actionMode}
               />
               <Answer>{answer}</Answer>

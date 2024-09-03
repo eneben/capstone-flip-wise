@@ -15,9 +15,42 @@ export default function Layout({
   handleCreateFlashcard,
   handleEditFlashcard,
 }) {
+  function handleToggleForm() {
+    if (actionMode === "create") {
+      changeActionMode("default");
+    } else if (actionMode === "edit") {
+      changeActionMode("default");
+    } else {
+      changeActionMode("create");
+    }
+  }
+
   return (
     <>
       <MainContainer>{children}</MainContainer>
+
+      {actionMode === "create" && (
+        <FormFlashcard
+          collections={collections}
+          headline="Create new Flashcard"
+          actionMode={actionMode}
+          changeActionMode={changeActionMode}
+          currentFlashcard={currentFlashcard}
+          onSubmitFlashcard={handleCreateFlashcard}
+        />
+      )}
+
+      {actionMode === "edit" && (
+        <FormFlashcard
+          collections={collections}
+          headline="Edit Flashcard"
+          actionMode={actionMode}
+          changeActionMode={changeActionMode}
+          currentFlashcard={currentFlashcard}
+          onSubmitFlashcard={handleEditFlashcard}
+        />
+      )}
+
       <StyledHeader>
         <Link href="/">
           <LogoContainer>
@@ -25,42 +58,23 @@ export default function Layout({
           </LogoContainer>
         </Link>
 
-        {actionMode === "create" && (
-          <FormFlashcard
-            collections={collections}
-            headline="Create new Flashcard"
-            actionMode={actionMode}
-            changeActionMode={changeActionMode}
-            currentFlashcard={currentFlashcard}
-            onSubmitFlashcard={handleCreateFlashcard}
-          />
-        )}
-
-        {actionMode === "edit" && (
-          <FormFlashcard
-            collections={collections}
-            headline="Edit Flashcard"
-            actionMode={actionMode}
-            changeActionMode={changeActionMode}
-            currentFlashcard={currentFlashcard}
-            onSubmitFlashcard={handleEditFlashcard}
-          />
-        )}
-
         <FormToggleContainer>
           <RoundButton
             type="button"
             content={<Plus />}
             variant="formToggle"
             name="menu"
-            onClick={() => {
-              changeActionMode("create");
-            }}
-            actionMode
+            onClick={handleToggleForm}
+            actionMode={actionMode}
+            isRotate={actionMode === "create" || actionMode === "edit"}
           />
         </FormToggleContainer>
 
-        <Menu collections={collections} />
+        <Menu
+          collections={collections}
+          actionMode={actionMode}
+          changeActionMode={changeActionMode}
+        />
       </StyledHeader>
     </>
   );

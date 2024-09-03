@@ -1,17 +1,12 @@
 import FlashcardList from "@/components/FlashcardList/FlashcardList";
-import FormFlashcard from "@/components/FormFlashcard/FormFlashcard";
 import styled from "styled-components";
 
 export default function HomePage({
   flashcardsWithCollection,
   handleToggleCorrect,
-  collections,
-  handleEditFlashcard,
-  handleCreateFlashcard,
   handleDelete,
   actionMode,
   changeActionMode,
-  currentFlashcard,
   changeCurrentFlashcard,
 }) {
   const incorrectFlashcards = flashcardsWithCollection.filter(
@@ -20,28 +15,6 @@ export default function HomePage({
 
   return (
     <>
-      {/* {actionMode !== "edit" && (
-        <FormFlashcard
-          collections={collections}
-          headline="Create new Flashcard"
-          actionMode={actionMode}
-          changeActionMode={changeActionMode}
-          currentFlashcard={currentFlashcard}
-          onSubmitFlashcard={handleCreateFlashcard}
-        />
-      )}
-
-      {actionMode === "edit" && (
-        <FormFlashcard
-          collections={collections}
-          headline="Edit Flashcard"
-          actionMode={actionMode}
-          changeActionMode={changeActionMode}
-          currentFlashcard={currentFlashcard}
-          onSubmitFlashcard={handleEditFlashcard}
-        />
-      )} */}
-
       {incorrectFlashcards.length > 0 && (
         <FlashcardList
           handleDelete={handleDelete}

@@ -4,41 +4,45 @@ import SubMenuArrow from "@/public/icons/SubMenuArrow.svg";
 import styled, { keyframes, css } from "styled-components";
 import Link from "next/link";
 
-export default function Menu({ collections }) {
-  const [isMenu, setIsMenu] = useState(false);
+export default function Menu({ collections, actionMode, changeActionMode }) {
   const [isCollections, setIsCollections] = useState(false);
 
   useEffect(() => {
-    if (isMenu) {
+    if (actionMode === "menu") {
       document.addEventListener("click", clickOutsideMenu);
     }
-    if (!isMenu) {
+    if (actionMode !== "menu") {
       document.removeEventListener("click", clickOutsideMenu);
     }
-  }, [isMenu]);
+  }, [actionMode]);
 
   function clickOutsideMenu(event) {
     const menuArea = document.getElementById("menu");
 
     if (menuArea && !menuArea.contains(event.target)) {
-      setIsMenu(false);
+      changeActionMode("default");
     }
   }
 
   function toggleMenu(event) {
     event.stopPropagation();
-    setIsMenu(!isMenu);
+    changeActionMode(actionMode === "default" ? "menu" : "default");
     setIsCollections(false);
   }
 
   return (
     <>
-      <StyledButton type="button" name="menuButton" onClick={toggleMenu}>
+      <StyledButton
+        type="button"
+        name="menuButton"
+        onClick={toggleMenu}
+        disabled={actionMode === "edit" || actionMode === "create"}
+      >
         <MenuIcon />
       </StyledButton>
 
-      {isMenu && (
-        <StyledNavigation id="menu" $isMenu={isMenu}>
+      {actionMode === "menu" && (
+        <StyledNavigation id="menu" $isMenu={actionMode === "menu"}>
           <StyledNavigationList>
             <StyledNavigationListItem>
               <StyledNavigationLink href="/">Collections</StyledNavigationLink>
@@ -75,12 +79,7 @@ const menuAnimationIn = keyframes`
 100% { right: 0px; }
 `;
 
-const menuAnimationOut = keyframes`
-100% { right: 0px; }
-0% { right: -220px; }
-`;
-
-const subMenuAnimation = keyframes`
+const subMenuAnimationOpen = keyframes`
 0% { height: 0px; }
 100% { height: 35px; }
 `;
@@ -92,14 +91,7 @@ const StyledButton = styled.button`
 `;
 
 const StyledNavigation = styled.nav`
-  animation: ${(props) =>
-    props.$isMenu
-      ? css`
-          ${menuAnimationOut} 0.3s ease-out
-        `
-      : css`
-          ${menuAnimationIn} 0.3s ease-in
-        `};
+  animation: ${menuAnimationIn} 0.3s ease-in;
   position: absolute;
   top: 100px;
   right: 0px;
@@ -143,7 +135,7 @@ const StyledSubNavigationList = styled.ul`
 `;
 
 const StyledSubNavigationListItem = styled.li`
-  animation-name: ${subMenuAnimation};
+  animation-name: ${subMenuAnimationOpen};
   animation-duration: 0.3s;
   height: 35px;
   border-top: 1px solid #000;

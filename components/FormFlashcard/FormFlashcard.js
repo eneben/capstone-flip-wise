@@ -68,15 +68,17 @@ export default function FormFlashcard({
 }
 
 const StyledForm = styled.form`
-  margin: 0 auto;
+  left: 50%;
+  transform: translateX(-50%);
   position: fixed;
   top: 100px;
-  width: 20rem;
-  padding: 20px 10px 10px 10px;
+  width: 21rem;
+  padding: 30px 10px 10px 10px;
   background-color: #fff;
   border: 1px solid #000;
   border-top: 0;
   border-radius: 0 0 10px 10px;
+  box-shadow: 0px 0px 10px #000;
 `;
 
 const StyledFormHeadline = styled.h2`

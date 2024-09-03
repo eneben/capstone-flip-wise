@@ -51,6 +51,7 @@ export default function App({ Component, pageProps }) {
       },
       ...flashcards,
     ]);
+    setActionMode("default");
   }
 
   function handleToggleCorrect(id) {
