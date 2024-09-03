@@ -4,7 +4,7 @@ import initialFlashcards from "@/assets/flashcards.json";
 import collections from "@/assets/collections.json";
 import useLocalStorageState from "use-local-storage-state";
 import { uid } from "uid";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ToastMessage from "@/components/ToastMessage/ToastMessage";
 import MarkAsCorrect from "@/public/icons/MarkAsCorrect.svg";
 
@@ -20,14 +20,22 @@ export default function App({ Component, pageProps }) {
 
   function showToastMessage(message, variant, icon) {
     setToastMessage({ message, variant, icon });
-    setTimeout(() => {
-      setToastMessage(null);
-    }, 5500);
   }
 
   function hideToastMessage() {
     setToastMessage(null);
   }
+
+  useEffect(() => {
+    if (toastMessage) {
+      const timer = setTimeout(() => {
+        setToastMessage(null);
+      }, 5500);
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [toastMessage]);
 
   function changeCurrentFlashcard(flashcard) {
     setCurrentFlashcard(flashcard);
