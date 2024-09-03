@@ -19,31 +19,28 @@ export default function ToastMessage({ text, variant, icon: Icon, onClick }) {
 const slideInAndFade = keyframes`
  0% {
     opacity: 0;             
-    /* transform: translateX(100%); */
-    right: -300px;
+    right: -100%;
   }
   100% {
     opacity: 1;              
-    /* transform: translateX(0);     */
-    right: 0px;
+    right: 10%;
   }
 `;
 
 const slideOutAndFade = keyframes`
 0% {
     opacity: 1;              
-    /* transform: translateX(0);     */
-    right: 0px;
+    right: 10%;
   }
   100% {
     opacity: 0;              
-    /* transform: translateX(100%);  */
-    right: -100px;
+    right: -100%;
   }
 `;
 
 const ToastMessageContainerWrapper = styled.div`
-  width: 200px;
+  max-width: 200px;
+  width: 90%;
   background-color: #fff;
   padding: 10px 10px;
   border: 1px solid black;
@@ -52,11 +49,12 @@ const ToastMessageContainerWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   position: fixed;
-  bottom: 70px;
+  bottom: 15%;
   z-index: 1000;
   animation: ${slideInAndFade} 0.5s ease-out forwards,
     ${slideOutAndFade} 0.5s ease-in forwards 5s;
   cursor: pointer;
+  box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
 `;
 
 const ProgressBarWrapper = styled.div`
