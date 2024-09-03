@@ -4,43 +4,28 @@ import SubMenuArrow from "@/public/icons/SubMenuArrow.svg";
 import styled, { keyframes, css } from "styled-components";
 import Link from "next/link";
 
-export default function Menu({ collections, actionMode, changeActionMode }) {
+export default function Menu({ collections, actionMode, startClosingForm }) {
+  const [isMenu, setIsMenu] = useState(false);
   const [isCollections, setIsCollections] = useState(false);
   const [isMenuClosing, setIsMenuClosing] = useState(false);
   const [isCollectionsClosing, setIsCollectionsClosing] = useState(false);
 
-  useEffect(() => {
-    if (actionMode === "menu") {
-      document.addEventListener("click", clickOutsideMenu);
-    }
-    if (actionMode !== "menu") {
-      document.removeEventListener("click", clickOutsideMenu);
-    }
-  }, [actionMode]);
-
-  function clickOutsideMenu(event) {
-    const menuArea = document.getElementById("menu");
-
-    if (menuArea && !menuArea.contains(event.target)) {
-      startClosingMenu();
-    }
-  }
-
   function handleToggleMenu(event) {
     event.stopPropagation();
-    if (actionMode === "default") {
-      changeActionMode("menu");
+    if (!isMenu) {
+      startClosingForm();
+      setIsMenu(true);
     } else {
       startClosingMenu();
     }
-    setIsCollections(false);
+    startClosingCollections();
   }
 
   function startClosingMenu() {
     setIsMenuClosing(true);
     setTimeout(() => {
       setIsMenuClosing(false);
-      changeActionMode("default");
+      setIsMenu(false);
     }, 300);
   }
 
@@ -63,16 +48,13 @@ export default function Menu({ collections, actionMode, changeActionMode }) {
 
   return (
     <>
-      <StyledButton
-        type="button"
-        name="menuButton"
-        onClick={handleToggleMenu}
-        disabled={actionMode === "edit" || actionMode === "create"}
-      >
+      <StyledButton type="button" name="menuButton" onClick={handleToggleMenu}>
         <MenuIcon />
       </StyledButton>
 
-      {actionMode === "menu" && (
+      {isMenu && <StyledOutsideClickArea onClick={handleToggleMenu} />}
+
+      {isMenu && (
         <StyledNavigation
           id="menu"
           $isMenu={actionMode === "menu"}
@@ -217,4 +199,14 @@ const StyledSubNavigationLink = styled(Link)`
 const StyledSubMenuArrow = styled(SubMenuArrow)`
   rotate: ${(props) => (props.$isRotate ? "1.5turn" : "0")};
   transition: 0.3s ease;
+`;
+
+const StyledOutsideClickArea = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #000;
+  opacity: 0;
 `;

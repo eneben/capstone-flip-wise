@@ -87,6 +87,7 @@ export default function Layout({
           collections={collections}
           actionMode={actionMode}
           changeActionMode={changeActionMode}
+          startClosingForm={startClosingForm}
         />
       </StyledHeader>
     </>
