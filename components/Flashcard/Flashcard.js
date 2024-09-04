@@ -92,6 +92,7 @@ export default function Flashcard({
                   onClick={() => onToggleCorrect(id)}
                   type="button"
                   variant="markAsIncorrect"
+                  disabled={actionMode !== "default"}
                   actionMode={actionMode}
                 />
               )}
@@ -113,6 +114,7 @@ export default function Flashcard({
                 onClick={() => onToggleCorrect(id)}
                 type="button"
                 variant={isCorrect ? "markAsIncorrect" : "markAsCorrect"}
+                disabled={actionMode !== "default"}
                 actionMode={actionMode}
               />
               <StyledArrow transform="scale(-1 1)" />

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import MenuIcon from "@/public/icons/Menu.svg";
 import SubMenuArrow from "@/public/icons/SubMenuArrow.svg";
 import styled, { keyframes, css } from "styled-components";
