@@ -15,10 +15,6 @@ export default function CorrectCounter({
 }) {
   const router = useRouter();
 
-  if (variant !== "correct" && variant !== "incorrect" && variant !== "all") {
-    return console.log("This variant doesn't exist.");
-  }
-
   const numberOfIncorrectFlashcards =
     getIncorrectFlashcardsFromCollection(id).length;
   const numberOfCorrectFlashcards =
@@ -62,17 +58,16 @@ export default function CorrectCounter({
         variant={variant}
         actionMode={actionMode}
       />
-      <Counter>{count}</Counter>
+      <span>{count}</span>
     </CorrectCounterWrapper>
   );
 }
 
 const CorrectCounterWrapper = styled.article`
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   gap: 10px;
-  padding: 0 10px;
 `;
-
-const Counter = styled.span``;

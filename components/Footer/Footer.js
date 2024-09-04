@@ -84,7 +84,7 @@ const StyledList = styled.ul`
 `;
 
 const ListItem = styled.li`
-  width: 33.33%;
+  width: 100%;
   height: 100%;
   text-align: center;
   border: 1px solid #000;
@@ -92,7 +92,7 @@ const ListItem = styled.li`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: ${(props) => (props.$active ? "#e6e6e6" : "#fff")};
+  background-color: ${({ $active }) => ($active ? "#e6e6e6" : "#fff")};
 
   &:nth-of-type(3) {
     border-right: none;

@@ -31,9 +31,9 @@ const StyledRoundButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  ${(props) =>
-    props.$actionMode === "edit" &&
-    !props.$isFooter &&
+  ${({ $actionMode, $isFooter }) =>
+    $actionMode === "edit" &&
+    !$isFooter &&
     css`
       opacity: 0.5;
     `}

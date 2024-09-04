@@ -31,27 +31,18 @@ export default function CollectionPage({
 
   return (
     <>
-      {actionMode !== "edit" && (
-        <FormFlashcard
-          collections={collections}
-          headline="Create new Flashcard"
-          actionMode={actionMode}
-          changeActionMode={changeActionMode}
-          currentFlashcard={currentFlashcard}
-          onSubmitFlashcard={handleCreateFlashcard}
-        />
-      )}
-
-      {actionMode === "edit" && (
-        <FormFlashcard
-          collections={collections}
-          headline="Edit Flashcard"
-          actionMode={actionMode}
-          changeActionMode={changeActionMode}
-          currentFlashcard={currentFlashcard}
-          onSubmitFlashcard={handleEditFlashcard}
-        />
-      )}
+      <FormFlashcard
+        collections={collections}
+        headline={
+          actionMode === "edit" ? "Edit Flashcard" : "Create new Flashcard"
+        }
+        actionMode={actionMode}
+        changeActionMode={changeActionMode}
+        currentFlashcard={currentFlashcard}
+        onSubmitFlashcard={
+          actionMode === "edit" ? handleEditFlashcard : handleCreateFlashcard
+        }
+      />
 
       {correctFlashcardsFromCollection.length > 0 && (
         <FlashcardList
@@ -66,8 +57,8 @@ export default function CollectionPage({
           collectionColor={collectionColor}
         />
       )}
-      {(!allFlashcardsFromCollection ||
-        allFlashcardsFromCollection.length === 0) && (
+      {(!correctFlashcardsFromCollection ||
+        correctFlashcardsFromCollection.length === 0) && (
         <StyledMessage>
           No learned flashcards in this collection. Start learning!
         </StyledMessage>

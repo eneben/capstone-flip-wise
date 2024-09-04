@@ -1,5 +1,4 @@
 import Collection from "@/components/Collection/Collection";
-import { uid } from "uid";
 import styled from "styled-components";
 
 export default function HomePage({
@@ -15,7 +14,7 @@ export default function HomePage({
         {collections.map((collection) => {
           return (
             <Collection
-              key={uid()}
+              key={collection.id}
               collection={collection}
               actionMode={actionMode}
               getCorrectFlashcardsFromCollection={
