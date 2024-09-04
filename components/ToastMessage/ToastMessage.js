@@ -19,22 +19,22 @@ export default function ToastMessage({ text, variant, icon: Icon, onClick }) {
 const slideInAndFade = keyframes`
  0% {
     opacity: 0;             
-    right: -100%;
+    transform: translateX(100%);
   }
   100% {
     opacity: 1;              
-    right: 10%;
+    transform: translateX(0);
   }
 `;
 
 const slideOutAndFade = keyframes`
 0% {
     opacity: 1;              
-    right: 10%;
+    transform: translateX(0);
   }
   100% {
     opacity: 0;              
-    right: -100%;
+    transform: translateX(100%);
   }
 `;
 
@@ -43,13 +43,12 @@ const ToastMessageContainerWrapper = styled.section`
   width: 90%;
   background-color: #fff;
   padding: 10px 10px;
+  margin-bottom: 10px;
   border: 1px solid black;
   border-radius: 4px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: fixed;
-  bottom: 15%;
   z-index: 1000;
   animation: ${slideInAndFade} 0.5s ease-out forwards,
     ${slideOutAndFade} 0.5s ease-in forwards 5s;

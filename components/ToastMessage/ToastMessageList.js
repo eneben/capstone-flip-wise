@@ -17,7 +17,15 @@ export default function ToastMessageList({ toastMessages, hideToastMessage }) {
   );
 }
 
-const StyledToastMessageList = styled.li`
+const StyledToastMessageList = styled.ul`
+  width: 100%;
   display: flex;
+  position: fixed;
   flex-direction: column-reverse;
+  align-items: flex-end;
+  bottom: 10px;
+  right: 10px;
+  gap: 10px;
+  list-style: none;
+  z-index: 1000;
 `;

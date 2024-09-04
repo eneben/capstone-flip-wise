@@ -29,7 +29,7 @@ export default function App({ Component, pageProps }) {
 
   function hideToastMessage(id) {
     setToastMessages((allMessages) => {
-      allMessages.filter((message) => message.id !== id);
+      return allMessages.filter((message) => message.id !== id);
     });
   }
 
@@ -145,12 +145,10 @@ export default function App({ Component, pageProps }) {
         handleEditFlashcard={handleEditFlashcard}
         handleCreateFlashcard={handleCreateFlashcard}
       />
-      {toastMessage && (
-        <ToastMessageList
-          toastMessages={toastMessages}
-          hideToastMessage={hideToastMessage}
-        />
-      )}
+      <ToastMessageList
+        toastMessages={toastMessages}
+        hideToastMessage={hideToastMessage}
+      />
     </Layout>
   );
 }
