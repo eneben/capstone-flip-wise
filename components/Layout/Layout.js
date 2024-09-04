@@ -122,7 +122,7 @@ const HiddenHeadline = styled.h1`
 `;
 
 const LogoContainer = styled.div`
-  width: 70px;
+  width: 110px;
 `;
 
 const FormToggleContainer = styled.div`
