@@ -65,6 +65,7 @@ export default function Layout({
       )}
 
       <StyledHeader>
+        <HiddenHeadline>BRAIN STACK</HiddenHeadline>
         <Link href="/">
           <LogoContainer>
             <Logo />
@@ -112,6 +113,12 @@ const StyledHeader = styled.header`
   background-color: #fff;
   border-bottom: 1px solid #000;
   box-shadow: 0px 0px 10px #000;
+`;
+
+const HiddenHeadline = styled.h1`
+  position: fixed;
+  color: #fff;
+  visibility: hidden;
 `;
 
 const LogoContainer = styled.div`

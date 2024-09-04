@@ -68,7 +68,7 @@ const variantRoundButtonStyles = {
     position: fixed;
     background-color: #fff;
     rotate: ${(props) => (props.$isRotate ? "1.125turn" : "0")};
-    transition: 0.3s ease;
+    transition: 0.3s ease-out;
     opacity: 1;
   `,
 };
