@@ -5,37 +5,45 @@ import collections from "@/assets/collections.json";
 import useLocalStorageState from "use-local-storage-state";
 import { uid } from "uid";
 import { useEffect, useState } from "react";
-import ToastMessage from "@/components/ToastMessage/ToastMessage";
 import MarkAsCorrect from "@/public/icons/MarkAsCorrect.svg";
+import ToastMessageList from "@/components/ToastMessage/ToastMessageList";
 
 export default function App({ Component, pageProps }) {
   const [flashcards, setFlashcards] = useLocalStorageState("flashcards", {
     defaultValue: initialFlashcards,
   });
 
-  const [toastMessage, setToastMessage] = useState(null);
+  const [toastMessages, setToastMessages] = useState([]);
+
   const [currentFlashcard, setCurrentFlashcard] = useState(null);
 
   const [actionMode, setActionMode] = useState("default");
 
   function showToastMessage(message, variant, icon) {
-    setToastMessage({ message, variant, icon });
+    const id = uid();
+    setToastMessages((allMessages) => [
+      ...allMessages,
+      { id, message, variant, icon },
+    ]);
   }
 
-  function hideToastMessage() {
-    setToastMessage(null);
+  function hideToastMessage(id) {
+    setToastMessages((allMessages) => {
+      allMessages.filter((message) => message.id !== id);
+    });
   }
 
   useEffect(() => {
-    if (toastMessage) {
-      const timer = setTimeout(() => {
-        setToastMessage(null);
-      }, 5500);
+    if (toastMessages.length > 0) {
+      const timers = toastMessages.map((message) =>
+        setTimeout(() => hideToastMessage(message.id), 5500)
+      );
+
       return () => {
-        clearTimeout(timer);
+        timers.forEach(clearTimeout);
       };
     }
-  }, [toastMessage]);
+  }, [toastMessages]);
 
   function changeCurrentFlashcard(flashcard) {
     setCurrentFlashcard(flashcard);
@@ -138,11 +146,9 @@ export default function App({ Component, pageProps }) {
         handleCreateFlashcard={handleCreateFlashcard}
       />
       {toastMessage && (
-        <ToastMessage
-          text={toastMessage.message}
-          variant={toastMessage.variant}
-          icon={toastMessage.icon}
-          onClick={hideToastMessage}
+        <ToastMessageList
+          toastMessages={toastMessages}
+          hideToastMessage={hideToastMessage}
         />
       )}
     </Layout>
