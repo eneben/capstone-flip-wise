@@ -1,6 +1,5 @@
 import Flashcard from "../Flashcard/Flashcard";
 import styled from "styled-components";
-import Link from "next/link";
 
 export default function FlashcardList({
   headline,
@@ -15,10 +14,6 @@ export default function FlashcardList({
 }) {
   return (
     <>
-      <StyledLink href="/" onClick={() => changeActionMode("default")}>
-        Back to collections list
-      </StyledLink>
-
       <StyledHeadline>{headline}</StyledHeadline>
       <StyledSubheading>{subheading}</StyledSubheading>
       <FlashcardListWrapper>
@@ -59,16 +54,4 @@ const StyledSubheading = styled.h2`
   text-align: center;
   font-size: 1.2rem;
   padding: 5px 0 30px 0;
-`;
-
-const StyledLink = styled(Link)`
-  text-decoration: none;
-  color: #000;
-  border: 1px solid #000;
-  border-radius: 4px;
-  padding: 6px;
-  background-color: #eee;
-  display: block;
-  margin: 10px;
-  width: fit-content;
 `;

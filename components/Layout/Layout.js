@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export default function Layout({ children, changeActionMode }) {
+export default function Layout({ children }) {
   return <MainContainer>{children}</MainContainer>;
 }
 

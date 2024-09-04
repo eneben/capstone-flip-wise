@@ -12,6 +12,7 @@ export default function CorrectCounter({
   getCorrectFlashcardsFromCollection,
   id,
   isFooter,
+  changeFlashcardSelection,
 }) {
   const router = useRouter();
 
@@ -41,11 +42,11 @@ export default function CorrectCounter({
 
   function handleRedirect() {
     if (variant === "correct") {
-      router.push(`/${id}/learned`);
+      changeFlashcardSelection("learned");
     } else if (variant === "incorrect") {
-      router.push(`/${id}/to-learn`);
+      changeFlashcardSelection("to-learn");
     } else if (variant === "all") {
-      router.push(`/${id}`);
+      changeFlashcardSelection("all");
     }
   }
 

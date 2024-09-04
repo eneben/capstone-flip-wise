@@ -8,6 +8,8 @@ export default function Footer({
   id,
   actionMode,
   changeActionMode,
+  flashcardSelection,
+  changeFlashcardSelection,
 }) {
   const router = useRouter();
 
@@ -16,7 +18,7 @@ export default function Footer({
       <StyledList>
         <ListItem
           onClick={() => changeActionMode("default")}
-          $active={router.pathname.endsWith("/to-learn")}
+          $active={flashcardSelection === "to-learn"}
         >
           <CorrectCounter
             isFooter={true}
@@ -29,11 +31,12 @@ export default function Footer({
               getCorrectFlashcardsFromCollection
             }
             actionMode={actionMode}
+            changeFlashcardSelection={changeFlashcardSelection}
           />
         </ListItem>
         <ListItem
           onClick={() => changeActionMode("default")}
-          $active={router.pathname.endsWith("/[id]")}
+          $active={flashcardSelection === "all"}
         >
           <CorrectCounter
             isFooter={true}
@@ -46,11 +49,12 @@ export default function Footer({
               getCorrectFlashcardsFromCollection
             }
             actionMode={actionMode}
+            changeFlashcardSelection={changeFlashcardSelection}
           />
         </ListItem>
         <ListItem
           onClick={() => changeActionMode("default")}
-          $active={router.pathname.endsWith("/learned")}
+          $active={flashcardSelection === "learned"}
         >
           <CorrectCounter
             isFooter={true}
@@ -63,6 +67,7 @@ export default function Footer({
               getCorrectFlashcardsFromCollection
             }
             actionMode={actionMode}
+            changeFlashcardSelection={changeFlashcardSelection}
           />
         </ListItem>
       </StyledList>
