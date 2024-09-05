@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MenuIcon from "@/public/icons/Menu.svg";
 import SubMenuArrow from "@/public/icons/SubMenuArrow.svg";
 import styled, { keyframes, css } from "styled-components";
@@ -13,38 +13,42 @@ export default function Menu({ collections, actionMode, startClosingForm }) {
   function handleToggleMenu(event) {
     event.stopPropagation();
     if (!isMenu) {
-      startClosingForm();
+      startClosingForm(); // Hier noch anpassen
       setIsMenu(true);
     } else {
-      startClosingMenu();
+      setIsMenuClosing(true);
     }
-    startClosingCollections();
+    setIsCollectionsClosing(true);
   }
 
-  function startClosingMenu() {
-    setIsMenuClosing(true);
-    setTimeout(() => {
-      setIsMenuClosing(false);
-      setIsMenu(false);
-    }, 300);
-  }
+  useEffect(() => {
+    if (isMenuClosing) {
+      const menuTimeoutId = setTimeout(() => {
+        setIsMenu(false);
+        setIsMenuClosing(false);
+      }, 300);
+      return () => clearTimeout(menuTimeoutId);
+    }
+  }, [isMenuClosing]);
 
   function handleToggleCollections(event) {
     event.stopPropagation();
     if (!isCollections) {
       setIsCollections(true);
     } else {
-      startClosingCollections();
+      setIsCollectionsClosing(true);
     }
   }
 
-  function startClosingCollections() {
-    setIsCollectionsClosing(true);
-    setTimeout(() => {
-      setIsCollectionsClosing(false);
-      setIsCollections(false);
-    }, 300);
-  }
+  useEffect(() => {
+    if (isCollectionsClosing) {
+      const collectionsTimeoutId = setTimeout(() => {
+        setIsCollections(false);
+        setIsCollectionsClosing(false);
+      }, 300);
+      return () => clearTimeout(collectionsTimeoutId);
+    }
+  }, [isCollectionsClosing]);
 
   return (
     <>
