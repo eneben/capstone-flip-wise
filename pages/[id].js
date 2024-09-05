@@ -127,6 +127,3 @@ const StyledLink = styled(Link)`
   margin: 10px;
   width: fit-content;
 `;
-
-// To do:
-// Muss ein onClick-Element zwingend ein Button oder ein Link sein? Siehe Kommunikation im Pull Request mit Niklas.
