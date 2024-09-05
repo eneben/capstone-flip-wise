@@ -3,7 +3,6 @@ import FlashcardList from "@/components/FlashcardList/FlashcardList";
 import FormFlashcard from "@/components/FormFlashcard/FormFlashcard";
 import styled from "styled-components";
 import Footer from "@/components/Footer/Footer";
-import { useState } from "react";
 import Link from "next/link";
 
 export default function CollectionPage({
