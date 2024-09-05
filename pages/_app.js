@@ -4,16 +4,46 @@ import initialFlashcards from "@/assets/flashcards.json";
 import collections from "@/assets/collections.json";
 import useLocalStorageState from "use-local-storage-state";
 import { uid } from "uid";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import MarkAsCorrect from "@/public/icons/MarkAsCorrect.svg";
+import ToastMessageList from "@/components/ToastMessage/ToastMessageList";
 
 export default function App({ Component, pageProps }) {
   const [flashcards, setFlashcards] = useLocalStorageState("flashcards", {
     defaultValue: initialFlashcards,
   });
 
+  const [toastMessages, setToastMessages] = useState([]);
+
   const [currentFlashcard, setCurrentFlashcard] = useState(null);
 
   const [actionMode, setActionMode] = useState("default");
+
+  function showToastMessage(message, variant, icon) {
+    const id = uid();
+    setToastMessages((allMessages) => [
+      ...allMessages,
+      { id, message, variant, icon },
+    ]);
+  }
+
+  function hideToastMessage(id) {
+    setToastMessages((allMessages) => {
+      return allMessages.filter((message) => message.id !== id);
+    });
+  }
+
+  useEffect(() => {
+    if (toastMessages.length > 0) {
+      const timers = toastMessages.map((message) =>
+        setTimeout(() => hideToastMessage(message.id), 5500)
+      );
+
+      return () => {
+        timers.forEach(clearTimeout);
+      };
+    }
+  }, [toastMessages]);
 
   function changeCurrentFlashcard(flashcard) {
     setCurrentFlashcard(flashcard);
@@ -26,6 +56,7 @@ export default function App({ Component, pageProps }) {
   function handleEditFlashcard(newFlashcard) {
     if (!currentFlashcard) {
       console.error("No flashcard selected for editing.");
+
       return;
     }
     const updatedFlashcard = {
@@ -41,6 +72,11 @@ export default function App({ Component, pageProps }) {
       })
     );
     changeActionMode("default");
+    showToastMessage(
+      "Flashcard updated successfully!",
+      "success",
+      MarkAsCorrect
+    );
   }
 
   function handleCreateFlashcard(newFlashcard) {
@@ -51,6 +87,11 @@ export default function App({ Component, pageProps }) {
       },
       ...flashcards,
     ]);
+    showToastMessage(
+      "Flashcard created successfully!",
+      "success",
+      MarkAsCorrect
+    );
   }
 
   function handleToggleCorrect(id) {
@@ -68,6 +109,11 @@ export default function App({ Component, pageProps }) {
       flashcards.filter((flashcard) => {
         return flashcard.id !== id;
       })
+    );
+    showToastMessage(
+      "Flashcard deleted successfully!",
+      "success",
+      MarkAsCorrect
     );
   }
 
@@ -98,6 +144,10 @@ export default function App({ Component, pageProps }) {
         changeActionMode={changeActionMode}
         handleEditFlashcard={handleEditFlashcard}
         handleCreateFlashcard={handleCreateFlashcard}
+      />
+      <ToastMessageList
+        toastMessages={toastMessages}
+        hideToastMessage={hideToastMessage}
       />
     </Layout>
   );
