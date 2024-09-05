@@ -13,7 +13,7 @@ export default function Menu({ collections, actionMode, startClosingForm }) {
   function handleToggleMenu(event) {
     event.stopPropagation();
     if (!isMenu) {
-      startClosingForm(); // Hier noch anpassen
+      startClosingForm();
       setIsMenu(true);
     } else {
       setIsMenuClosing(true);
