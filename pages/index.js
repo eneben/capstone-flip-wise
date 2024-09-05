@@ -6,6 +6,8 @@ export default function HomePage({
   actionMode,
   getCorrectFlashcardsFromCollection,
   getIncorrectFlashcardsFromCollection,
+  flashcardSelection,
+  changeFlashcardSelection,
 }) {
   return (
     <>
@@ -23,6 +25,8 @@ export default function HomePage({
               getIncorrectFlashcardsFromCollection={
                 getIncorrectFlashcardsFromCollection
               }
+              flashcardSelection={flashcardSelection}
+              changeFlashcardSelection={changeFlashcardSelection}
             />
           );
         })}

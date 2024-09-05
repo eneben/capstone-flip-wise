@@ -7,7 +7,6 @@ export default function RoundButton({
   variant,
   disabled,
   actionMode,
-  isFooter = false,
 }) {
   return (
     <StyledRoundButton
@@ -16,7 +15,6 @@ export default function RoundButton({
       $variant={variant}
       disabled={disabled}
       $actionMode={actionMode}
-      $isFooter={isFooter}
     >
       {content}
     </StyledRoundButton>
@@ -31,9 +29,8 @@ const StyledRoundButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  ${({ $actionMode, $isFooter }) =>
+  ${({ $actionMode }) =>
     $actionMode === "edit" &&
-    !$isFooter &&
     css`
       opacity: 0.5;
     `}
@@ -64,14 +61,5 @@ const variantRoundButtonStyles = {
     position: absolute;
     top: 15px;
     right: 60px;
-  `,
-  correct: css`
-    background-color: #b0c4b1;
-  `,
-  incorrect: css`
-    background-color: #edafb8;
-  `,
-  default: css`
-    background-color: #eee;
   `,
 };

@@ -1,21 +1,16 @@
 import styled from "styled-components";
-import RoundButton from "../Buttons/RoundButton";
 import MarkAsIncorrect from "@/public/icons/MarkAsIncorrect.svg";
 import MarkAsCorrect from "@/public/icons/MarkAsCorrect.svg";
 import Stack from "@/public/icons/Stack.svg";
-import { useRouter } from "next/router";
 
 export default function CorrectCounter({
   variant,
-  actionMode,
   getIncorrectFlashcardsFromCollection,
   getCorrectFlashcardsFromCollection,
   id,
-  isFooter,
   changeFlashcardSelection,
+  active,
 }) {
-  const router = useRouter();
-
   const numberOfIncorrectFlashcards =
     getIncorrectFlashcardsFromCollection(id).length;
   const numberOfCorrectFlashcards =
@@ -27,18 +22,21 @@ export default function CorrectCounter({
     incorrect: {
       icon: <MarkAsIncorrect />,
       count: numberOfIncorrectFlashcards,
+      color: "#edafb8",
     },
     correct: {
       icon: <MarkAsCorrect />,
       count: numberOfCorrectFlashcards,
+      color: "#b0c4b1",
     },
     all: {
       icon: <Stack />,
       count: numberOfAllFlashcards,
+      color: "#eee",
     },
   };
 
-  const { icon, count } = correctVariants[variant];
+  const { icon, count, color } = correctVariants[variant];
 
   function handleRedirect() {
     if (variant === "correct") {
@@ -51,24 +49,35 @@ export default function CorrectCounter({
   }
 
   return (
-    <CorrectCounterWrapper onClick={handleRedirect}>
-      <RoundButton
-        isFooter={isFooter}
-        content={icon}
-        type="button"
-        variant={variant}
-        actionMode={actionMode}
-      />
+    <CorrectCounterButton
+      $active={active}
+      onClick={handleRedirect}
+      type="button"
+    >
+      <StyledIconWrapper $color={color}>{icon}</StyledIconWrapper>
       <span>{count}</span>
-    </CorrectCounterWrapper>
+    </CorrectCounterButton>
   );
 }
 
-const CorrectCounterWrapper = styled.article`
+const CorrectCounterButton = styled.button`
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
+  border: none;
+  background-color: ${({ $active }) => ($active ? "#e6e6e6" : "#fff")};
+`;
+
+const StyledIconWrapper = styled.div`
+  width: 40px;
+  height: 40px;
+  border: 1px solid black;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: ${({ $color }) => $color};
 `;

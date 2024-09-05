@@ -19,15 +19,11 @@ export default function CollectionPage({
   getAllFlashcardsFromCollection,
   getIncorrectFlashcardsFromCollection,
   getCorrectFlashcardsFromCollection,
+  flashcardSelection,
+  changeFlashcardSelection,
 }) {
   const router = useRouter();
   const { id } = router.query;
-
-  const [flashcardSelection, setFlashcardSelection] = useState("all");
-
-  function changeFlashcardSelection(selection) {
-    setFlashcardSelection(selection);
-  }
 
   const allFlashcardsFromCollection = getAllFlashcardsFromCollection(id);
   const incorrectFlashcardsFromCollection =
@@ -63,7 +59,13 @@ export default function CollectionPage({
         }
       />
 
-      <StyledLink href="/" onClick={() => changeActionMode("default")}>
+      <StyledLink
+        href="/"
+        onClick={() => {
+          changeActionMode("default");
+          changeFlashcardSelection("all");
+        }}
+      >
         Back to collections list
       </StyledLink>
 

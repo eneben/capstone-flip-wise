@@ -16,11 +16,9 @@ export default function Footer({
   return (
     <nav>
       <StyledList>
-        <ListItem
-          onClick={() => changeActionMode("default")}
-          $active={flashcardSelection === "to-learn"}
-        >
+        <ListItem onClick={() => changeActionMode("default")}>
           <CorrectCounter
+            active={flashcardSelection === "to-learn"}
             isFooter={true}
             variant="incorrect"
             getIncorrectFlashcardsFromCollection={
@@ -34,11 +32,9 @@ export default function Footer({
             changeFlashcardSelection={changeFlashcardSelection}
           />
         </ListItem>
-        <ListItem
-          onClick={() => changeActionMode("default")}
-          $active={flashcardSelection === "all"}
-        >
+        <ListItem onClick={() => changeActionMode("default")}>
           <CorrectCounter
+            active={flashcardSelection === "all"}
             isFooter={true}
             variant="all"
             getIncorrectFlashcardsFromCollection={
@@ -52,11 +48,9 @@ export default function Footer({
             changeFlashcardSelection={changeFlashcardSelection}
           />
         </ListItem>
-        <ListItem
-          onClick={() => changeActionMode("default")}
-          $active={flashcardSelection === "learned"}
-        >
+        <ListItem onClick={() => changeActionMode("default")}>
           <CorrectCounter
+            active={flashcardSelection === "learned"}
             isFooter={true}
             variant="correct"
             getIncorrectFlashcardsFromCollection={

@@ -7,6 +7,8 @@ export default function Collection({
   actionMode,
   getCorrectFlashcardsFromCollection,
   getIncorrectFlashcardsFromCollection,
+  flashcardSelection,
+  changeFlashcardSelection,
 }) {
   const { title: name, color, id } = collection;
   return (
@@ -23,6 +25,8 @@ export default function Collection({
           id={id}
           variant="incorrect"
           actionMode={actionMode}
+          flashcardSelection={flashcardSelection}
+          changeFlashcardSelection={changeFlashcardSelection}
         />
         <CorrectCounter
           getCorrectFlashcardsFromCollection={
@@ -34,6 +38,8 @@ export default function Collection({
           id={id}
           variant="correct"
           actionMode={actionMode}
+          flashcardSelection={flashcardSelection}
+          changeFlashcardSelection={changeFlashcardSelection}
         />
       </IconWrapper>
     </CollectionBox>
@@ -87,6 +93,7 @@ const IconWrapper = styled.section`
   justify-content: space-between;
   width: 100%;
   position: absolute;
+  gap: 140px;
   bottom: 15px;
   left: 0;
   right: 0;
