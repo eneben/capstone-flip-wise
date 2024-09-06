@@ -31,8 +31,8 @@ const StyledRoundButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  ${(props) =>
-    props.$actionMode !== "default" &&
+  ${({ $actionMode }) =>
+    $actionMode !== "default" &&
     css`
       opacity: 0.5;
     `}

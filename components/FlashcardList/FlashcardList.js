@@ -3,20 +3,24 @@ import styled from "styled-components";
 
 export default function FlashcardList({
   headline,
+  subheading,
   flashcards,
   handleToggleCorrect,
   handleDelete,
   changeCurrentFlashcard,
   actionMode,
   changeActionMode,
+  collectionColor,
 }) {
   return (
     <>
       <StyledHeadline>{headline}</StyledHeadline>
+      <StyledSubheading>{subheading}</StyledSubheading>
       <FlashcardListWrapper>
         {flashcards.map((flashcard) => {
           return (
             <Flashcard
+              collectionColor={collectionColor}
               handleDelete={handleDelete}
               key={flashcard.id}
               flashcard={flashcard}
@@ -40,8 +44,14 @@ const FlashcardListWrapper = styled.ul`
   list-style: none;
 `;
 
-const StyledHeadline = styled.h1`
+const StyledHeadline = styled.h2`
   text-align: center;
-  padding: 30px 0 15px 0;
+  padding-top: 10px;
   font-size: 1.7rem;
+`;
+
+const StyledSubheading = styled.h3`
+  text-align: center;
+  font-size: 1.2rem;
+  padding: 5px 0 30px 0;
 `;

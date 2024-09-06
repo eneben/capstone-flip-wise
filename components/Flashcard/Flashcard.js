@@ -15,6 +15,7 @@ export default function Flashcard({
   changeCurrentFlashcard,
   actionMode,
   changeActionMode,
+  collectionColor,
 }) {
   const [showAnswer, setShowAnswer] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
@@ -48,14 +49,14 @@ export default function Flashcard({
       <StyledFlashcard $showAnswer={showAnswer}>
         {isDelete && (
           <>
-            <CardFront>
+            <CardFront $collectionColor={collectionColor}>
               <DeleteConfirmationDialog
                 onDelete={handleDelete}
                 toggleDeleteConfirmation={toggleDeleteConfirmation}
                 flashcardId={id}
               />
             </CardFront>
-            <CardBack>
+            <CardBack $collectionColor={collectionColor}>
               <DeleteConfirmationDialog
                 onDelete={handleDelete}
                 toggleDeleteConfirmation={toggleDeleteConfirmation}
@@ -67,7 +68,7 @@ export default function Flashcard({
 
         {!isDelete && (
           <>
-            <CardFront>
+            <CardFront $collectionColor={collectionColor}>
               <CollectionTitle>{collection}</CollectionTitle>
               <RoundButton
                 content={<Edit />}
@@ -98,7 +99,7 @@ export default function Flashcard({
               )}
               <StyledArrow />
             </CardFront>
-            <CardBack>
+            <CardBack $collectionColor={collectionColor}>
               <RoundButton
                 content={<Delete />}
                 onClick={toggleDeleteConfirmation}
@@ -146,9 +147,9 @@ const CardFace = styled.div`
   width: 100%;
   height: 100%;
   backface-visibility: hidden;
-  border: 1px solid #000;
   padding: 10px;
   border-radius: 10px;
+  border: 2px solid ${({ $collectionColor }) => $collectionColor || "#000"};
 `;
 
 const CardFront = styled(CardFace)`
@@ -170,7 +171,7 @@ const Answer = styled.p`
   padding-top: 50px;
 `;
 
-const Question = styled.h2`
+const Question = styled.h3`
   font-size: 1.2rem;
   font-weight: 500;
   padding-top: 37.2px;

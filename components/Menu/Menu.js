@@ -80,7 +80,7 @@ export default function Menu({ collections, actionMode, startClosingForm }) {
                       key={collection.id}
                       $isCollectionsClosing={isCollectionsClosing}
                     >
-                      <StyledSubNavigationLink href="#">
+                      <StyledSubNavigationLink href={`/${collection.id}`}>
                         {collection.title}
                       </StyledSubNavigationLink>
                     </StyledSubNavigationListItem>

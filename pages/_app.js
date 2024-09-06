@@ -4,16 +4,52 @@ import initialFlashcards from "@/assets/flashcards.json";
 import collections from "@/assets/collections.json";
 import useLocalStorageState from "use-local-storage-state";
 import { uid } from "uid";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import MarkAsCorrect from "@/public/icons/MarkAsCorrect.svg";
+import ToastMessageContainer from "@/components/ToastMessage/ToastMessageContainer";
 
 export default function App({ Component, pageProps }) {
   const [flashcards, setFlashcards] = useLocalStorageState("flashcards", {
     defaultValue: initialFlashcards,
   });
 
+  const [toastMessages, setToastMessages] = useState([]);
+
   const [currentFlashcard, setCurrentFlashcard] = useState(null);
 
   const [actionMode, setActionMode] = useState("default");
+
+  const [flashcardSelection, setFlashcardSelection] = useState("all");
+
+  function changeFlashcardSelection(selection) {
+    setFlashcardSelection(selection);
+  }
+
+  function showToastMessage(message, variant, icon) {
+    const id = uid();
+    setToastMessages((allMessages) => [
+      ...allMessages,
+      { id, message, variant, icon },
+    ]);
+  }
+
+  function hideToastMessage(id) {
+    setToastMessages((allMessages) => {
+      return allMessages.filter((message) => message.id !== id);
+    });
+  }
+
+  useEffect(() => {
+    if (toastMessages.length > 0) {
+      const timers = toastMessages.map((message) =>
+        setTimeout(() => hideToastMessage(message.id), 5500)
+      );
+
+      return () => {
+        timers.forEach(clearTimeout);
+      };
+    }
+  }, [toastMessages]);
 
   function changeCurrentFlashcard(flashcard) {
     setCurrentFlashcard(flashcard);
@@ -26,6 +62,7 @@ export default function App({ Component, pageProps }) {
   function handleEditFlashcard(newFlashcard) {
     if (!currentFlashcard) {
       console.error("No flashcard selected for editing.");
+
       return;
     }
     const updatedFlashcard = {
@@ -41,6 +78,11 @@ export default function App({ Component, pageProps }) {
       })
     );
     changeActionMode("default");
+    showToastMessage(
+      "Flashcard updated successfully!",
+      "success",
+      MarkAsCorrect
+    );
   }
 
   function handleCreateFlashcard(newFlashcard) {
@@ -52,6 +94,11 @@ export default function App({ Component, pageProps }) {
       ...flashcards,
     ]);
     setActionMode("default");
+    showToastMessage(
+      "Flashcard created successfully!",
+      "success",
+      MarkAsCorrect
+    );
   }
 
   function handleToggleCorrect(id) {
@@ -70,19 +117,53 @@ export default function App({ Component, pageProps }) {
         return flashcard.id !== id;
       })
     );
+    showToastMessage(
+      "Flashcard deleted successfully!",
+      "success",
+      MarkAsCorrect
+    );
   }
 
   function getCollection(collectionId) {
     const collectionToFind = collections.find((collection) => {
       return collection.id === collectionId;
     });
-    return collectionToFind.title;
+    return {
+      title: collectionToFind.title,
+      color: collectionToFind.color,
+    };
   }
 
-  const flashcardsWithCollection = flashcards.map((flashcard) => ({
-    ...flashcard,
-    collectionTitle: getCollection(flashcard.collectionId),
-  }));
+  const flashcardsWithCollection = flashcards.map((flashcard) => {
+    const collection = getCollection(flashcard.collectionId);
+    return {
+      ...flashcard,
+      collectionTitle: collection.title,
+      collectionColor: collection.color,
+    };
+  });
+
+  function getAllFlashcardsFromCollection(id) {
+    const allFlashcardsFromCollection = flashcardsWithCollection.filter(
+      (flashcard) => flashcard.collectionId === id
+    );
+    return allFlashcardsFromCollection;
+  }
+
+  function getCorrectFlashcardsFromCollection(id) {
+    const allFlashcardsFromCollection = getAllFlashcardsFromCollection(id);
+    const correctFlashcardsFromCollection = allFlashcardsFromCollection.filter(
+      (flashcard) => flashcard.isCorrect === true
+    );
+    return correctFlashcardsFromCollection;
+  }
+
+  function getIncorrectFlashcardsFromCollection(id) {
+    const allFlashcardsFromCollection = getAllFlashcardsFromCollection(id);
+    const incorrectFlashcardsFromCollection =
+      allFlashcardsFromCollection.filter((flashcard) => !flashcard.isCorrect);
+    return incorrectFlashcardsFromCollection;
+  }
 
   return (
     <Layout
@@ -106,6 +187,17 @@ export default function App({ Component, pageProps }) {
         changeActionMode={changeActionMode}
         handleEditFlashcard={handleEditFlashcard}
         handleCreateFlashcard={handleCreateFlashcard}
+        getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
+        getCorrectFlashcardsFromCollection={getCorrectFlashcardsFromCollection}
+        getIncorrectFlashcardsFromCollection={
+          getIncorrectFlashcardsFromCollection
+        }
+        flashcardSelection={flashcardSelection}
+        changeFlashcardSelection={changeFlashcardSelection}
+      />
+      <ToastMessageContainer
+        toastMessages={toastMessages}
+        hideToastMessage={hideToastMessage}
       />
     </Layout>
   );

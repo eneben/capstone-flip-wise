@@ -1,43 +1,50 @@
-import FlashcardList from "@/components/FlashcardList/FlashcardList";
+import Collection from "@/components/Collection/Collection";
 import styled from "styled-components";
 
 export default function HomePage({
-  flashcardsWithCollection,
-  handleToggleCorrect,
-  handleDelete,
+  collections,
   actionMode,
-  changeActionMode,
-  changeCurrentFlashcard,
+  getCorrectFlashcardsFromCollection,
+  getIncorrectFlashcardsFromCollection,
+  flashcardSelection,
+  changeFlashcardSelection,
 }) {
-  const incorrectFlashcards = flashcardsWithCollection.filter(
-    (flashcard) => !flashcard.isCorrect
-  );
-
   return (
     <>
-      {incorrectFlashcards.length > 0 && (
-        <FlashcardList
-          handleDelete={handleDelete}
-          headline="Random Study Cards"
-          flashcards={incorrectFlashcards}
-          handleToggleCorrect={handleToggleCorrect}
-          changeCurrentFlashcard={changeCurrentFlashcard}
-          actionMode={actionMode}
-          changeActionMode={changeActionMode}
-        />
-      )}
-      {(!incorrectFlashcards || incorrectFlashcards.length === 0) && (
-        <StyledMessage>
-          No incorrectly answered flashcards. Look at archive or add new
-          flashcards.
-        </StyledMessage>
-      )}
+      <StyledHeadline>My flashcard collections</StyledHeadline>
+      <CollectionsWrapper>
+        {collections.map((collection) => {
+          return (
+            <Collection
+              key={collection.id}
+              collection={collection}
+              actionMode={actionMode}
+              getCorrectFlashcardsFromCollection={
+                getCorrectFlashcardsFromCollection
+              }
+              getIncorrectFlashcardsFromCollection={
+                getIncorrectFlashcardsFromCollection
+              }
+              flashcardSelection={flashcardSelection}
+              changeFlashcardSelection={changeFlashcardSelection}
+            />
+          );
+        })}
+      </CollectionsWrapper>
     </>
   );
 }
 
-const StyledMessage = styled.p`
+const CollectionsWrapper = styled.ul`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 30px;
+  list-style: none;
+`;
+
+const StyledHeadline = styled.h2`
   text-align: center;
-  font-size: 1rem;
-  padding: 40px 20px;
+  padding: 35px 0 30px 0;
+  font-size: 1.7rem;
 `;
