@@ -40,16 +40,6 @@ export default function CollectionPage({
 
   return (
     <>
-      <StyledLink
-        href="/"
-        onClick={() => {
-          changeActionMode("default");
-          changeFlashcardSelection("all");
-        }}
-      >
-        Back to collections list
-      </StyledLink>
-
       {allFlashcardsFromCollection.length > 0 && (
         <FlashcardList
           handleDelete={handleDelete}
@@ -97,16 +87,4 @@ const StyledMessage = styled.p`
   text-align: center;
   font-size: 1rem;
   padding: 40px 20px;
-`;
-
-const StyledLink = styled(Link)`
-  text-decoration: none;
-  color: #000;
-  border: 1px solid #000;
-  border-radius: 4px;
-  padding: 6px;
-  background-color: #eee;
-  display: block;
-  margin: 10px;
-  width: fit-content;
 `;

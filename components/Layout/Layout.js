@@ -15,6 +15,7 @@ export default function Layout({
   currentFlashcard,
   handleCreateFlashcard,
   handleEditFlashcard,
+  changeFlashcardSelection,
 }) {
   const [isFormClosing, setIsFormClosing] = useState(false);
 
@@ -95,6 +96,7 @@ export default function Layout({
           actionMode={actionMode}
           changeActionMode={changeActionMode}
           startClosingForm={startClosingForm}
+          changeFlashcardSelection={changeFlashcardSelection}
         />
       </StyledHeader>
     </>

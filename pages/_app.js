@@ -173,6 +173,7 @@ export default function App({ Component, pageProps }) {
       currentFlashcard={currentFlashcard}
       handleEditFlashcard={handleEditFlashcard}
       handleCreateFlashcard={handleCreateFlashcard}
+      changeFlashcardSelection={changeFlashcardSelection}
     >
       <GlobalStyle />
       <Component

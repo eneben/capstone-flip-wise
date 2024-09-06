@@ -4,7 +4,12 @@ import SubMenuArrow from "@/public/icons/SubMenuArrow.svg";
 import styled, { keyframes, css } from "styled-components";
 import Link from "next/link";
 
-export default function Menu({ collections, actionMode, startClosingForm }) {
+export default function Menu({
+  collections,
+  actionMode,
+  startClosingForm,
+  changeFlashcardSelection,
+}) {
   const [isMenu, setIsMenu] = useState(false);
   const [isCollections, setIsCollections] = useState(false);
   const [isMenuClosing, setIsMenuClosing] = useState(false);
@@ -80,7 +85,14 @@ export default function Menu({ collections, actionMode, startClosingForm }) {
                       key={collection.id}
                       $isCollectionsClosing={isCollectionsClosing}
                     >
-                      <StyledSubNavigationLink href={`/${collection.id}`}>
+                      <StyledSubNavigationLink
+                        href={`/${collection.id}`}
+                        onClick={() => {
+                          changeFlashcardSelection("all");
+                          setIsMenuClosing(true);
+                          setIsCollectionsClosing(true);
+                        }}
+                      >
                         {collection.title}
                       </StyledSubNavigationLink>
                     </StyledSubNavigationListItem>
