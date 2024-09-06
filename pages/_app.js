@@ -6,7 +6,7 @@ import useLocalStorageState from "use-local-storage-state";
 import { uid } from "uid";
 import { useEffect, useState } from "react";
 import MarkAsCorrect from "@/public/icons/MarkAsCorrect.svg";
-import ToastMessageList from "@/components/ToastMessage/ToastMessageList";
+import ToastMessageContainer from "@/components/ToastMessage/ToastMessageContainer";
 
 export default function App({ Component, pageProps }) {
   const [flashcards, setFlashcards] = useLocalStorageState("flashcards", {
@@ -18,6 +18,12 @@ export default function App({ Component, pageProps }) {
   const [currentFlashcard, setCurrentFlashcard] = useState(null);
 
   const [actionMode, setActionMode] = useState("default");
+
+  const [flashcardSelection, setFlashcardSelection] = useState("all");
+
+  function changeFlashcardSelection(selection) {
+    setFlashcardSelection(selection);
+  }
 
   function showToastMessage(message, variant, icon) {
     const id = uid();
@@ -121,13 +127,42 @@ export default function App({ Component, pageProps }) {
     const collectionToFind = collections.find((collection) => {
       return collection.id === collectionId;
     });
-    return collectionToFind.title;
+    return {
+      title: collectionToFind.title,
+      color: collectionToFind.color,
+    };
   }
 
-  const flashcardsWithCollection = flashcards.map((flashcard) => ({
-    ...flashcard,
-    collectionTitle: getCollection(flashcard.collectionId),
-  }));
+  const flashcardsWithCollection = flashcards.map((flashcard) => {
+    const collection = getCollection(flashcard.collectionId);
+    return {
+      ...flashcard,
+      collectionTitle: collection.title,
+      collectionColor: collection.color,
+    };
+  });
+
+  function getAllFlashcardsFromCollection(id) {
+    const allFlashcardsFromCollection = flashcardsWithCollection.filter(
+      (flashcard) => flashcard.collectionId === id
+    );
+    return allFlashcardsFromCollection;
+  }
+
+  function getCorrectFlashcardsFromCollection(id) {
+    const allFlashcardsFromCollection = getAllFlashcardsFromCollection(id);
+    const correctFlashcardsFromCollection = allFlashcardsFromCollection.filter(
+      (flashcard) => flashcard.isCorrect === true
+    );
+    return correctFlashcardsFromCollection;
+  }
+
+  function getIncorrectFlashcardsFromCollection(id) {
+    const allFlashcardsFromCollection = getAllFlashcardsFromCollection(id);
+    const incorrectFlashcardsFromCollection =
+      allFlashcardsFromCollection.filter((flashcard) => !flashcard.isCorrect);
+    return incorrectFlashcardsFromCollection;
+  }
 
   return (
     <Layout changeActionMode={changeActionMode}>
@@ -144,8 +179,15 @@ export default function App({ Component, pageProps }) {
         changeActionMode={changeActionMode}
         handleEditFlashcard={handleEditFlashcard}
         handleCreateFlashcard={handleCreateFlashcard}
+        getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
+        getCorrectFlashcardsFromCollection={getCorrectFlashcardsFromCollection}
+        getIncorrectFlashcardsFromCollection={
+          getIncorrectFlashcardsFromCollection
+        }
+        flashcardSelection={flashcardSelection}
+        changeFlashcardSelection={changeFlashcardSelection}
       />
-      <ToastMessageList
+      <ToastMessageContainer
         toastMessages={toastMessages}
         hideToastMessage={hideToastMessage}
       />

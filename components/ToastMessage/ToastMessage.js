@@ -38,7 +38,7 @@ const slideOutAndFade = keyframes`
   }
 `;
 
-const ToastMessageContainerWrapper = styled.section`
+const ToastMessageContainerWrapper = styled.article`
   max-width: 200px;
   width: 90%;
   background-color: #fff;

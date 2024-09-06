@@ -1,9 +1,12 @@
 import styled from "styled-components";
 import ToastMessage from "./ToastMessage";
 
-export default function ToastMessageList({ toastMessages, hideToastMessage }) {
+export default function ToastMessageContainer({
+  toastMessages,
+  hideToastMessage,
+}) {
   return (
-    <StyledToastMessageList>
+    <StyledToastMessageContainer>
       {toastMessages.map((toast) => (
         <ToastMessage
           key={toast.id}
@@ -13,11 +16,11 @@ export default function ToastMessageList({ toastMessages, hideToastMessage }) {
           onClick={() => hideToastMessage(toast.id)}
         />
       ))}
-    </StyledToastMessageList>
+    </StyledToastMessageContainer>
   );
 }
 
-const StyledToastMessageList = styled.ul`
+const StyledToastMessageContainer = styled.section`
   width: 100%;
   display: flex;
   position: fixed;
