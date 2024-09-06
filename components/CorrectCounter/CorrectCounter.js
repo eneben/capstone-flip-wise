@@ -10,6 +10,7 @@ export default function CorrectCounter({
   id,
   changeFlashcardSelection,
   active,
+  changeActionMode,
 }) {
   const numberOfIncorrectFlashcards =
     getIncorrectFlashcardsFromCollection(id).length;
@@ -46,6 +47,7 @@ export default function CorrectCounter({
     } else if (variant === "all") {
       changeFlashcardSelection("all");
     }
+    changeActionMode("default");
   }
 
   return (

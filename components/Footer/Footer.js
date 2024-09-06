@@ -19,7 +19,6 @@ export default function Footer({
         <ListItem onClick={() => changeActionMode("default")}>
           <CorrectCounter
             active={flashcardSelection === "to-learn"}
-            isFooter={true}
             variant="incorrect"
             getIncorrectFlashcardsFromCollection={
               getIncorrectFlashcardsFromCollection
@@ -28,14 +27,13 @@ export default function Footer({
             getCorrectFlashcardsFromCollection={
               getCorrectFlashcardsFromCollection
             }
-            actionMode={actionMode}
+            changeActionMode={changeActionMode}
             changeFlashcardSelection={changeFlashcardSelection}
           />
         </ListItem>
         <ListItem onClick={() => changeActionMode("default")}>
           <CorrectCounter
             active={flashcardSelection === "all"}
-            isFooter={true}
             variant="all"
             getIncorrectFlashcardsFromCollection={
               getIncorrectFlashcardsFromCollection
@@ -44,14 +42,13 @@ export default function Footer({
             getCorrectFlashcardsFromCollection={
               getCorrectFlashcardsFromCollection
             }
-            actionMode={actionMode}
+            changeActionMode={changeActionMode}
             changeFlashcardSelection={changeFlashcardSelection}
           />
         </ListItem>
         <ListItem onClick={() => changeActionMode("default")}>
           <CorrectCounter
             active={flashcardSelection === "learned"}
-            isFooter={true}
             variant="correct"
             getIncorrectFlashcardsFromCollection={
               getIncorrectFlashcardsFromCollection
@@ -60,7 +57,7 @@ export default function Footer({
             getCorrectFlashcardsFromCollection={
               getCorrectFlashcardsFromCollection
             }
-            actionMode={actionMode}
+            changeActionMode={changeActionMode}
             changeFlashcardSelection={changeFlashcardSelection}
           />
         </ListItem>
