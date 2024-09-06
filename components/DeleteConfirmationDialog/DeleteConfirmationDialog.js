@@ -30,7 +30,7 @@ export default function DeleteConfirmationDialog({
   );
 }
 
-const ConfirmationQuestion = styled.h2`
+const ConfirmationQuestion = styled.h3`
   font-size: 1.2rem;
   font-weight: 500;
   padding-top: 37.2px;

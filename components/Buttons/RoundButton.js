@@ -7,6 +7,7 @@ export default function RoundButton({
   variant,
   disabled,
   actionMode,
+  isRotate,
 }) {
   return (
     <StyledRoundButton
@@ -15,6 +16,7 @@ export default function RoundButton({
       $variant={variant}
       disabled={disabled}
       $actionMode={actionMode}
+      $isRotate={isRotate}
     >
       {content}
     </StyledRoundButton>
@@ -30,7 +32,7 @@ const StyledRoundButton = styled.button`
   align-items: center;
   justify-content: center;
   ${({ $actionMode }) =>
-    $actionMode === "edit" &&
+    $actionMode !== "default" &&
     css`
       opacity: 0.5;
     `}
@@ -61,5 +63,12 @@ const variantRoundButtonStyles = {
     position: absolute;
     top: 15px;
     right: 60px;
+  `,
+  formToggle: css`
+    position: fixed;
+    background-color: #fff;
+    rotate: ${(props) => (props.$isRotate ? "1.125turn" : "0")};
+    transition: 0.3s ease-out;
+    opacity: 1;
   `,
 };

@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes, css } from "styled-components";
 import RegularButton from "../Buttons/RegularButton";
 import ButtonWrapper from "../Buttons/ButtonWrapper";
 import FormInput from "./FormInput";
@@ -10,6 +10,7 @@ export default function FormFlashcard({
   changeActionMode,
   currentFlashcard,
   onSubmitFlashcard,
+  isFormClosing,
 }) {
   function handleSubmit(event) {
     event.preventDefault();
@@ -20,7 +21,7 @@ export default function FormFlashcard({
   }
 
   return (
-    <StyledForm onSubmit={handleSubmit}>
+    <StyledForm onSubmit={handleSubmit} $isFormClosing={isFormClosing}>
       <StyledFormHeadline>{headline}</StyledFormHeadline>
       <StyledLabel htmlFor="question">Question</StyledLabel>
       <FormInput
@@ -67,13 +68,36 @@ export default function FormFlashcard({
   );
 }
 
+const formAnimationIn = keyframes`
+0% { top: -350px; }
+100% { top: 100px; }
+`;
+
+const formAnimationOut = keyframes`
+0% { top: 100px; }
+100% { top: -350px; }
+`;
+
 const StyledForm = styled.form`
-  width: 20rem;
-  margin: 0 auto;
-  padding: 20px 10px 10px 10px;
+  animation: ${(props) =>
+    props.$isFormClosing
+      ? css`
+          ${formAnimationOut} 0.5s ease-out;
+        `
+      : css`
+          ${formAnimationIn} 0.5s ease-out;
+        `};
+  left: 50%;
+  transform: translateX(-50%);
+  position: fixed;
+  top: 100px;
+  width: 21rem;
+  padding: 30px 10px 10px 10px;
+  background-color: #fff;
   border: 1px solid #000;
   border-top: 0;
   border-radius: 0 0 10px 10px;
+  box-shadow: 0px 0px 10px #000;
 `;
 
 const StyledFormHeadline = styled.h2`

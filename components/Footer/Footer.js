@@ -77,6 +77,7 @@ const StyledList = styled.ul`
   height: 4rem;
   z-index: 1;
   background-color: #fff;
+  box-shadow: 0px 0px 10px #000;
 `;
 
 const ListItem = styled.li`
@@ -85,6 +86,7 @@ const ListItem = styled.li`
   text-align: center;
   border: 1px solid #000;
   border-left: none;
+  border-bottom: none;
   display: flex;
   align-items: center;
   justify-content: center;

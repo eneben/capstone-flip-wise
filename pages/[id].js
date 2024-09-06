@@ -1,19 +1,14 @@
 import { useRouter } from "next/router";
 import FlashcardList from "@/components/FlashcardList/FlashcardList";
-import FormFlashcard from "@/components/FormFlashcard/FormFlashcard";
 import styled from "styled-components";
 import Footer from "@/components/Footer/Footer";
 import Link from "next/link";
 
 export default function CollectionPage({
   handleToggleCorrect,
-  collections,
-  handleEditFlashcard,
-  handleCreateFlashcard,
   handleDelete,
   actionMode,
   changeActionMode,
-  currentFlashcard,
   changeCurrentFlashcard,
   getAllFlashcardsFromCollection,
   getIncorrectFlashcardsFromCollection,
@@ -45,29 +40,6 @@ export default function CollectionPage({
 
   return (
     <>
-      <FormFlashcard
-        collections={collections}
-        headline={
-          actionMode === "edit" ? "Edit Flashcard" : "Create new Flashcard"
-        }
-        actionMode={actionMode}
-        changeActionMode={changeActionMode}
-        currentFlashcard={currentFlashcard}
-        onSubmitFlashcard={
-          actionMode === "edit" ? handleEditFlashcard : handleCreateFlashcard
-        }
-      />
-
-      <StyledLink
-        href="/"
-        onClick={() => {
-          changeActionMode("default");
-          changeFlashcardSelection("all");
-        }}
-      >
-        Back to collections list
-      </StyledLink>
-
       {allFlashcardsFromCollection.length > 0 && (
         <FlashcardList
           handleDelete={handleDelete}
@@ -115,16 +87,4 @@ const StyledMessage = styled.p`
   text-align: center;
   font-size: 1rem;
   padding: 40px 20px;
-`;
-
-const StyledLink = styled(Link)`
-  text-decoration: none;
-  color: #000;
-  border: 1px solid #000;
-  border-radius: 4px;
-  padding: 6px;
-  background-color: #eee;
-  display: block;
-  margin: 10px;
-  width: fit-content;
 `;

@@ -43,7 +43,7 @@ const CollectionsWrapper = styled.ul`
   list-style: none;
 `;
 
-const StyledHeadline = styled.h1`
+const StyledHeadline = styled.h2`
   text-align: center;
   padding: 35px 0 30px 0;
   font-size: 1.7rem;

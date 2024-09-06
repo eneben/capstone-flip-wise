@@ -44,13 +44,13 @@ const FlashcardListWrapper = styled.ul`
   list-style: none;
 `;
 
-const StyledHeadline = styled.h1`
+const StyledHeadline = styled.h2`
   text-align: center;
-  padding-top: 10px;
+  padding-top: 35px;
   font-size: 1.7rem;
 `;
 
-const StyledSubheading = styled.h2`
+const StyledSubheading = styled.h3`
   text-align: center;
   font-size: 1.2rem;
   padding: 5px 0 30px 0;

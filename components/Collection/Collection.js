@@ -82,7 +82,8 @@ const CollectionBox = styled(Link)`
   }
 `;
 
-const CollectionName = styled.h2`
+const CollectionName = styled.h3`
+  font-size: 1.5rem;
   padding-top: 50px;
   text-align: center;
 `;

@@ -29,7 +29,7 @@ export default function Flashcard({
   } = flashcard;
 
   function handleShowAnswer() {
-    setShowAnswer(!showAnswer);
+    if (!isDelete && actionMode === "default") setShowAnswer(!showAnswer);
   }
 
   function toggleDeleteConfirmation(event) {
@@ -75,6 +75,7 @@ export default function Flashcard({
                 onClick={setEditWithoutFlip}
                 type="button"
                 variant="edit"
+                disabled={actionMode !== "default"}
                 actionMode={actionMode}
               />
               <RoundButton
@@ -82,7 +83,7 @@ export default function Flashcard({
                 onClick={toggleDeleteConfirmation}
                 type="button"
                 variant="delete"
-                disabled={actionMode === "edit"}
+                disabled={actionMode !== "default"}
                 actionMode={actionMode}
               />
               <Question>{question}</Question>
@@ -92,6 +93,7 @@ export default function Flashcard({
                   onClick={() => onToggleCorrect(id)}
                   type="button"
                   variant="markAsIncorrect"
+                  disabled={actionMode !== "default"}
                   actionMode={actionMode}
                 />
               )}
@@ -103,7 +105,7 @@ export default function Flashcard({
                 onClick={toggleDeleteConfirmation}
                 type="button"
                 variant="delete"
-                disabled={actionMode === "edit"}
+                disabled={actionMode !== "default"}
                 actionMode={actionMode}
               />
               <Answer>{answer}</Answer>
@@ -113,6 +115,7 @@ export default function Flashcard({
                 onClick={() => onToggleCorrect(id)}
                 type="button"
                 variant={isCorrect ? "markAsIncorrect" : "markAsCorrect"}
+                disabled={actionMode !== "default"}
                 actionMode={actionMode}
               />
               <StyledArrow transform="scale(-1 1)" />
@@ -168,7 +171,7 @@ const Answer = styled.p`
   padding-top: 50px;
 `;
 
-const Question = styled.h2`
+const Question = styled.h3`
   font-size: 1.2rem;
   font-weight: 500;
   padding-top: 37.2px;
