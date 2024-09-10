@@ -1,7 +1,17 @@
 import { createGlobalStyle } from "styled-components";
-import { Nunito } from "next/font/google";
+import { Barlow, Barlow_Semi_Condensed } from "next/font/google";
 
-const nunito = Nunito({ subsets: ["latin"] });
+const barlow = Barlow({
+  subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  style: ["normal", "italic"],
+});
+
+const barlowSemi = Barlow_Semi_Condensed({
+  subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  style: ["normal", "italic"],
+});
 
 export default createGlobalStyle`
   *,
@@ -14,7 +24,7 @@ overflow-wrap: break-word;
   }
 
   body {
-    font-family: ${nunito.style.fontFamily}, system-ui;
+    font-family: ${barlow.style.fontFamily}, system-ui;
 
   }
 

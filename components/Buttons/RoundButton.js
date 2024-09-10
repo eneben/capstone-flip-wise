@@ -24,8 +24,9 @@ export default function RoundButton({
 }
 
 const StyledRoundButton = styled.button`
-  width: 40px;
-  height: 40px;
+  width: 34px;
+  height: 34px;
+  padding: 4px;
   border: 1px solid black;
   border-radius: 50%;
   display: flex;
@@ -65,6 +66,8 @@ const variantRoundButtonStyles = {
     right: 60px;
   `,
   formToggle: css`
+    width: 40px;
+    height: 40px;
     position: fixed;
     background-color: #fff;
     rotate: ${(props) => (props.$isRotate ? "1.125turn" : "0")};

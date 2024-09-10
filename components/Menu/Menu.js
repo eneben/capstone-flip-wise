@@ -128,6 +128,8 @@ const subMenuAnimationClose = keyframes`
 `;
 
 const StyledButton = styled.button`
+  width: 35px;
+  height: 35px;
   z-index: 1;
   background-color: #fff;
   border: none;
@@ -213,6 +215,7 @@ const StyledSubNavigationLink = styled(Link)`
 `;
 
 const StyledSubMenuArrow = styled(SubMenuArrow)`
+  width: 30px;
   rotate: ${(props) => (props.$isRotate ? "1.5turn" : "0")};
   transition: 0.3s ease-out;
 `;
