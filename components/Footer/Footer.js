@@ -6,7 +6,6 @@ export default function Footer({
   getIncorrectFlashcardsFromCollection,
   getCorrectFlashcardsFromCollection,
   id,
-  actionMode,
   changeActionMode,
   flashcardSelection,
   changeFlashcardSelection,

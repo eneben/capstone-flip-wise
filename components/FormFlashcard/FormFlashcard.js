@@ -2,6 +2,7 @@ import styled, { keyframes, css } from "styled-components";
 import RegularButton from "../Buttons/RegularButton";
 import ButtonWrapper from "../Buttons/ButtonWrapper";
 import FormInput from "./FormInput";
+import { useState } from "react";
 
 export default function FormFlashcard({
   collections,
@@ -12,6 +13,16 @@ export default function FormFlashcard({
   onSubmitFlashcard,
   isFormClosing,
 }) {
+  const [showNewCollectionFields, setShowNewCollectionFields] = useState(false);
+
+  function handleCollectionChange(event) {
+    if (event.target.value === "newCollection") {
+      setShowNewCollectionFields(true);
+    } else {
+      setShowNewCollectionFields(false);
+    }
+  }
+
   function handleSubmit(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
@@ -43,7 +54,9 @@ export default function FormFlashcard({
         defaultValue={
           actionMode === "edit" ? currentFlashcard.collectionId : ""
         }
+        onChange={handleCollectionChange}
       >
+        <option value="newCollection">+ Add New Collection</option>
         <option value="">--Please choose a collection:--</option>
         {collections.map((collection) => {
           return (
