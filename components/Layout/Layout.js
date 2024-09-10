@@ -119,7 +119,7 @@ const StyledHeader = styled.header`
   height: 100px;
   padding: 15px 20px;
   background-color: #fff;
-  border-bottom: 1px solid #000;
+  /* border-bottom: 1px solid #000; */
   box-shadow: 0px 0px 10px #000;
 `;
 

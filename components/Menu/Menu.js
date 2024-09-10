@@ -128,6 +128,9 @@ const subMenuAnimationClose = keyframes`
 `;
 
 const StyledButton = styled.button`
+  svg {
+    fill: #000;
+  }
   width: 35px;
   height: 35px;
   z-index: 1;

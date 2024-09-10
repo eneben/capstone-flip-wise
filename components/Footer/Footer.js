@@ -74,7 +74,6 @@ const StyledList = styled.ul`
   right: 0;
   bottom: 0;
   width: 100%;
-  height: 4rem;
   z-index: 1;
   background-color: #fff;
   box-shadow: 0px 0px 10px #000;
@@ -84,15 +83,8 @@ const ListItem = styled.li`
   width: 100%;
   height: 100%;
   text-align: center;
-  border: 1px solid #000;
-  border-left: none;
-  border-bottom: none;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: ${({ $active }) => ($active ? "#e6e6e6" : "#fff")};
-
-  &:nth-of-type(3) {
-    border-right: none;
-  }
 `;

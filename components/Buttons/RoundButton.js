@@ -24,10 +24,13 @@ export default function RoundButton({
 }
 
 const StyledRoundButton = styled.button`
+  svg {
+    fill: #fff;
+  }
   width: 34px;
   height: 34px;
-  padding: 4px;
-  border: 1px solid black;
+  padding: 7px;
+  border: none;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -42,34 +45,39 @@ const StyledRoundButton = styled.button`
 
 const variantRoundButtonStyles = {
   markAsCorrect: css`
-    background-color: #b0c4b1;
+    background-color: #2a9d8f;
     position: absolute;
     bottom: 15px;
     left: 10px;
   `,
   markAsIncorrect: css`
-    background-color: #edafb8;
+    background-color: #e76f51;
     position: absolute;
     bottom: 15px;
     left: 10px;
   `,
   delete: css`
-    background-color: #eee;
+    background-color: #264653;
     position: absolute;
     top: 15px;
     right: 10px;
   `,
   edit: css`
-    background-color: #eee;
+    background-color: #264653;
     position: absolute;
     top: 15px;
-    right: 60px;
+    right: 53px;
   `,
   formToggle: css`
+    svg {
+      fill: #000;
+    }
     width: 40px;
     height: 40px;
     position: fixed;
     background-color: #fff;
+    box-shadow: 0px 0px 10px #000;
+
     rotate: ${(props) => (props.$isRotate ? "1.125turn" : "0")};
     transition: 0.3s ease-out;
     opacity: 1;

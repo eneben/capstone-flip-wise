@@ -21,19 +21,19 @@ export default function CorrectCounter({
 
   const correctVariants = {
     incorrect: {
-      icon: <MarkAsIncorrect />,
+      icon: <MarkAsIncorrect fill="#fff" />,
       count: numberOfIncorrectFlashcards,
-      color: "#edafb8",
+      color: "#e76f51",
     },
     correct: {
-      icon: <MarkAsCorrect />,
+      icon: <MarkAsCorrect fill="#fff" />,
       count: numberOfCorrectFlashcards,
-      color: "#b0c4b1",
+      color: "#2a9d8f",
     },
     all: {
-      icon: <Stack />,
+      icon: <Stack fill="#fff" />,
       count: numberOfAllFlashcards,
-      color: "#eee",
+      color: "#264653",
     },
   };
 
@@ -65,6 +65,7 @@ export default function CorrectCounter({
 const CorrectCounterButton = styled.button`
   width: 100%;
   height: 100%;
+  padding: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -74,9 +75,9 @@ const CorrectCounterButton = styled.button`
 `;
 
 const StyledIconWrapper = styled.div`
-  width: 40px;
-  height: 40px;
-  border: 1px solid black;
+  width: 34px;
+  height: 34px;
+  padding: 7px;
   border-radius: 50%;
   display: flex;
   align-items: center;
