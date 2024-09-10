@@ -1,7 +1,7 @@
 import GlobalStyle from "../styles";
 import Layout from "@/components/Layout/Layout";
 import initialFlashcards from "@/assets/flashcards.json";
-import collections from "@/assets/collections.json";
+import initialCollections from "@/assets/collections.json";
 import useLocalStorageState from "use-local-storage-state";
 import { uid } from "uid";
 import { useEffect, useState } from "react";
@@ -13,6 +13,10 @@ export default function App({ Component, pageProps }) {
     defaultValue: initialFlashcards,
   });
 
+  const [collections, setCollections] = useLocalStorageState("collections", {
+    defaultValue: initialCollections,
+  });
+
   const [toastMessages, setToastMessages] = useState([]);
 
   const [currentFlashcard, setCurrentFlashcard] = useState(null);
@@ -20,6 +24,10 @@ export default function App({ Component, pageProps }) {
   const [actionMode, setActionMode] = useState("default");
 
   const [flashcardSelection, setFlashcardSelection] = useState("all");
+
+  function changeCollections(newCollection) {
+    setCollections((prevCollections) => [newCollection, ...prevCollections]);
+  }
 
   function changeFlashcardSelection(selection) {
     setFlashcardSelection(selection);
@@ -174,6 +182,7 @@ export default function App({ Component, pageProps }) {
       handleEditFlashcard={handleEditFlashcard}
       handleCreateFlashcard={handleCreateFlashcard}
       changeFlashcardSelection={changeFlashcardSelection}
+      changeCollections={changeCollections}
     >
       <GlobalStyle />
       <Component

@@ -3,6 +3,7 @@ import RegularButton from "../Buttons/RegularButton";
 import ButtonWrapper from "../Buttons/ButtonWrapper";
 import FormInput from "./FormInput";
 import { useState } from "react";
+import { uid } from "uid";
 
 export default function FormFlashcard({
   collections,
@@ -12,6 +13,7 @@ export default function FormFlashcard({
   currentFlashcard,
   onSubmitFlashcard,
   isFormClosing,
+  changeCollections,
 }) {
   const [showNewCollectionFields, setShowNewCollectionFields] = useState(false);
 
@@ -23,11 +25,28 @@ export default function FormFlashcard({
     }
   }
 
+  function addNewCollection(formData) {
+    const newCollectionName = formData.get("collectionName");
+    const newCollectionColor = formData.get("collectionColor");
+    const newCollection = {
+      id: uid(),
+      title: newCollectionName,
+      color: newCollectionColor,
+    };
+    changeCollections(newCollection);
+  }
+
   function handleSubmit(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
+
+    if (showNewCollectionFields) {
+      addNewCollection(formData);
+    }
+
     const newFlashcard = Object.fromEntries(formData);
     onSubmitFlashcard(newFlashcard);
+    setShowNewCollectionFields(false);
     event.target.reset();
   }
 
