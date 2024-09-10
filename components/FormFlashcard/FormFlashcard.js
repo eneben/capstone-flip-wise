@@ -57,6 +57,14 @@ export default function FormFlashcard({
     event.target.reset();
   }
 
+  /*
+error in console
+funktion oben verbessern (chat gpt fragen)
+maxlength für alle eingaben in formular einfügen
+nebenbei to-do's erledigen (zB useState zurücksetzen bei zurückgehen)
+AC: The number of cards in a collection is displayed in the burger menu.
+*/
+
   return (
     <StyledForm onSubmit={handleSubmit} $isFormClosing={isFormClosing}>
       <StyledFormHeadline>{headline}</StyledFormHeadline>
