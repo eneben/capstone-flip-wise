@@ -56,8 +56,8 @@ export default function FormFlashcard({
         }
         onChange={handleCollectionChange}
       >
-        <option value="newCollection">+ Add New Collection</option>
         <option value="">--Please choose a collection:--</option>
+        <option value="newCollection">+ Add New Collection</option>
         {collections.map((collection) => {
           return (
             <option key={collection.id} value={collection.id}>
@@ -66,6 +66,25 @@ export default function FormFlashcard({
           );
         })}
       </StyledSelect>
+
+      {showNewCollectionFields && (
+        <NewCollectionWrapper>
+          <CollectionNameWrapper>
+            <StyledLabel htmlFor="collectionName">Collection Name</StyledLabel>
+            <FormInput name="collectionName" />
+          </CollectionNameWrapper>
+          <CollectionColorWrapper>
+            <StyledLabel htmlFor="collectionColor">Color</StyledLabel>
+            <StyledColorInput
+              type="color"
+              id="collectionColor"
+              name="collectionColor"
+              required
+            />
+          </CollectionColorWrapper>
+        </NewCollectionWrapper>
+      )}
+
       <ButtonWrapper>
         <RegularButton type="submit" content="Submit" variant="submit" />
         {actionMode === "edit" && (
@@ -127,4 +146,23 @@ const StyledSelect = styled.select`
   display: block;
   width: 100%;
   height: 1.5rem;
+`;
+
+const NewCollectionWrapper = styled.section`
+  display: flex;
+  width: 100%;
+  gap: 10px;
+`;
+
+const CollectionNameWrapper = styled.article`
+  flex-grow: 3;
+`;
+
+const CollectionColorWrapper = styled.article`
+  flex-grow: 1;
+`;
+
+const StyledColorInput = styled.input`
+  height: 1.5rem;
+  width: 100%;
 `;
