@@ -34,17 +34,24 @@ export default function FormFlashcard({
       color: newCollectionColor,
     };
     changeCollections(newCollection);
+    return newCollection.id;
   }
 
   function handleSubmit(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
-
+    let newFlashcard;
     if (showNewCollectionFields) {
-      addNewCollection(formData);
+      const newId = addNewCollection(formData);
+      newFlashcard = {
+        collectionId: newId,
+        question: formData.get("question"),
+        answer: formData.get("answer"),
+      };
+    } else {
+      newFlashcard = Object.fromEntries(formData);
     }
 
-    const newFlashcard = Object.fromEntries(formData);
     onSubmitFlashcard(newFlashcard);
     setShowNewCollectionFields(false);
     event.target.reset();
