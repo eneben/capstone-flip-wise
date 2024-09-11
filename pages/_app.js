@@ -25,10 +25,6 @@ export default function App({ Component, pageProps }) {
 
   const [flashcardSelection, setFlashcardSelection] = useState("all");
 
-  function changeCollections(newCollection) {
-    setCollections([newCollection, ...collections]);
-  }
-
   function changeFlashcardSelection(selection) {
     setFlashcardSelection(selection);
   }
@@ -132,6 +128,10 @@ export default function App({ Component, pageProps }) {
     );
   }
 
+  function handleAddCollection(newCollection) {
+    setCollections([newCollection, ...collections]);
+  }
+
   function getCollection(collectionId) {
     const collectionToFind = collections.find((collection) => {
       return collection.id === collectionId;
@@ -182,7 +182,7 @@ export default function App({ Component, pageProps }) {
       handleEditFlashcard={handleEditFlashcard}
       handleCreateFlashcard={handleCreateFlashcard}
       changeFlashcardSelection={changeFlashcardSelection}
-      changeCollections={changeCollections}
+      handleAddCollection={handleAddCollection}
       getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
     >
       <GlobalStyle />

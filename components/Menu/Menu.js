@@ -56,12 +56,6 @@ export default function Menu({
     }
   }, [isCollectionsClosing]);
 
-  function getNumberOfCardsInCollection(id) {
-    const cardsInCollection = getAllFlashcardsFromCollection(id);
-    const numberOfCards = cardsInCollection.length;
-    return numberOfCards;
-  }
-
   return (
     <>
       <StyledButton type="button" name="menuButton" onClick={handleToggleMenu}>
@@ -87,9 +81,6 @@ export default function Menu({
             {isCollections && (
               <StyledSubNavigationList>
                 {collections.map((collection) => {
-                  const numberOfCards = getNumberOfCardsInCollection(
-                    collection.id
-                  );
                   return (
                     <StyledSubNavigationListItem
                       key={collection.id}
@@ -103,7 +94,8 @@ export default function Menu({
                           setIsCollectionsClosing(true);
                         }}
                       >
-                        {collection.title} ({numberOfCards})
+                        {collection.title} (
+                        {getAllFlashcardsFromCollection(collection.id).length})
                       </StyledSubNavigationLink>
                     </StyledSubNavigationListItem>
                   );

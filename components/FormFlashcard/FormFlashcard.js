@@ -13,7 +13,7 @@ export default function FormFlashcard({
   currentFlashcard,
   onSubmitFlashcard,
   isFormClosing,
-  changeCollections,
+  onAddCollection,
 }) {
   const [showNewCollectionFields, setShowNewCollectionFields] = useState(false);
 
@@ -25,31 +25,29 @@ export default function FormFlashcard({
     }
   }
 
-  function addNewCollection(formData) {
-    const newCollectionName = formData.get("collectionName");
-    const newCollectionColor = formData.get("collectionColor");
-    const newCollection = {
-      id: uid(),
-      title: newCollectionName,
-      color: newCollectionColor,
-    };
-    changeCollections(newCollection);
-    return newCollection.id;
-  }
-
   function handleSubmit(event) {
     event.preventDefault();
-    const formData = new FormData(event.target);
+
+    const formData = Object.fromEntries(new FormData(event.target));
+    const { collectionName, collectionColor, question, answer, collectionId } =
+      formData;
     let newFlashcard;
+
     if (showNewCollectionFields) {
-      const newId = addNewCollection(formData);
+      const newCollection = {
+        id: uid(),
+        title: collectionName,
+        color: collectionColor,
+      };
+      onAddCollection(newCollection);
+
       newFlashcard = {
-        collectionId: newId,
-        question: formData.get("question"),
-        answer: formData.get("answer"),
+        collectionId: newCollection.id,
+        question,
+        answer,
       };
     } else {
-      newFlashcard = Object.fromEntries(formData);
+      newFlashcard = { ...formData };
     }
 
     onSubmitFlashcard(newFlashcard);
