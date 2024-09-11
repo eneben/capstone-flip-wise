@@ -25,42 +25,48 @@ export default function Collection({
 
   return (
     <CollectionBox $color={color} href={`/${id}`}>
-      <RoundButton
-        content={<Delete />}
-        onClick={toggleDeleteConfirmation}
-        type="button"
-        variant="delete"
-        actionMode={actionMode}
-      />
-      <CollectionName>{name}</CollectionName>
-      <IconWrapper>
-        <CorrectCounter
-          getIncorrectFlashcardsFromCollection={
-            getIncorrectFlashcardsFromCollection
-          }
-          getCorrectFlashcardsFromCollection={
-            getCorrectFlashcardsFromCollection
-          }
-          id={id}
-          variant="incorrect"
-          actionMode={actionMode}
-          flashcardSelection={flashcardSelection}
-          changeFlashcardSelection={changeFlashcardSelection}
-        />
-        <CorrectCounter
-          getCorrectFlashcardsFromCollection={
-            getCorrectFlashcardsFromCollection
-          }
-          getIncorrectFlashcardsFromCollection={
-            getIncorrectFlashcardsFromCollection
-          }
-          id={id}
-          variant="correct"
-          actionMode={actionMode}
-          flashcardSelection={flashcardSelection}
-          changeFlashcardSelection={changeFlashcardSelection}
-        />
-      </IconWrapper>
+      {isDelete && <></>}
+
+      {!isDelete && (
+        <>
+          <RoundButton
+            content={<Delete />}
+            onClick={toggleDeleteConfirmation}
+            type="button"
+            variant="delete"
+            actionMode={actionMode}
+          />
+          <CollectionName>{name}</CollectionName>
+          <IconWrapper>
+            <CorrectCounter
+              getIncorrectFlashcardsFromCollection={
+                getIncorrectFlashcardsFromCollection
+              }
+              getCorrectFlashcardsFromCollection={
+                getCorrectFlashcardsFromCollection
+              }
+              id={id}
+              variant="incorrect"
+              actionMode={actionMode}
+              flashcardSelection={flashcardSelection}
+              changeFlashcardSelection={changeFlashcardSelection}
+            />
+            <CorrectCounter
+              getCorrectFlashcardsFromCollection={
+                getCorrectFlashcardsFromCollection
+              }
+              getIncorrectFlashcardsFromCollection={
+                getIncorrectFlashcardsFromCollection
+              }
+              id={id}
+              variant="correct"
+              actionMode={actionMode}
+              flashcardSelection={flashcardSelection}
+              changeFlashcardSelection={changeFlashcardSelection}
+            />
+          </IconWrapper>
+        </>
+      )}
     </CollectionBox>
   );
 }

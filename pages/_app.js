@@ -111,7 +111,7 @@ export default function App({ Component, pageProps }) {
     );
   }
 
-  function handleDelete(id) {
+  function handleDeleteFlashcard(id) {
     setFlashcards(
       flashcards.filter((flashcard) => {
         return flashcard.id !== id;
@@ -181,7 +181,7 @@ export default function App({ Component, pageProps }) {
         flashcardsWithCollection={flashcardsWithCollection}
         handleToggleCorrect={handleToggleCorrect}
         collections={collections}
-        handleDelete={handleDelete}
+        handleDeleteFlashcard={handleDeleteFlashcard}
         currentFlashcard={currentFlashcard}
         changeCurrentFlashcard={changeCurrentFlashcard}
         actionMode={actionMode}

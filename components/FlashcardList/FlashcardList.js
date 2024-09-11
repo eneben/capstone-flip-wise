@@ -6,7 +6,7 @@ export default function FlashcardList({
   subheading,
   flashcards,
   handleToggleCorrect,
-  handleDelete,
+  handleDeleteFlashcard,
   changeCurrentFlashcard,
   actionMode,
   changeActionMode,
@@ -21,7 +21,7 @@ export default function FlashcardList({
           return (
             <Flashcard
               collectionColor={collectionColor}
-              handleDelete={handleDelete}
+              handleDeleteFlashcard={handleDeleteFlashcard}
               key={flashcard.id}
               flashcard={flashcard}
               onToggleCorrect={handleToggleCorrect}
