@@ -71,7 +71,16 @@ export default function Menu({
         >
           <StyledNavigationList>
             <StyledNavigationListItem>
-              <StyledNavigationLink href="/">Collections</StyledNavigationLink>
+              <StyledNavigationLink
+                href="/"
+                onClick={() => {
+                  changeFlashcardSelection("all");
+                  setIsMenuClosing(true);
+                  setIsCollectionsClosing(true);
+                }}
+              >
+                Collections
+              </StyledNavigationLink>
               <StyledSubMenuArrow
                 $isRotate={isCollections}
                 onClick={handleToggleCollections}

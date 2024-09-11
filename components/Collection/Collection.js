@@ -12,7 +12,11 @@ export default function Collection({
 }) {
   const { title: name, color, id } = collection;
   return (
-    <CollectionBox $color={color} href={`/${id}`}>
+    <CollectionBox
+      $color={color}
+      href={`/${id}`}
+      onClick={() => changeFlashcardSelection("all")}
+    >
       <CollectionName>{name}</CollectionName>
       <IconWrapper>
         <CorrectCounter
