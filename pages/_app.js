@@ -29,7 +29,7 @@ export default function App({ Component, pageProps }) {
   const [flashcardSelection, setFlashcardSelection] = useState("all");
 
   function changeCollections(newCollection) {
-    setCollections((prevCollections) => [newCollection, ...prevCollections]);
+    setCollections([newCollection, ...collections]);
   }
 
   function changeFlashcardSelection(selection) {

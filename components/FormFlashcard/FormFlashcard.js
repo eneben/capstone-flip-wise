@@ -57,14 +57,6 @@ export default function FormFlashcard({
     event.target.reset();
   }
 
-  /*
-error in console
-funktion oben verbessern (chat gpt fragen)
-maxlength für alle eingaben in formular einfügen
-nebenbei to-do's erledigen (zB useState zurücksetzen bei zurückgehen)
-AC: The number of cards in a collection is displayed in the burger menu.
-*/
-
   return (
     <StyledForm onSubmit={handleSubmit} $isFormClosing={isFormClosing}>
       <StyledFormHeadline>{headline}</StyledFormHeadline>
@@ -73,12 +65,14 @@ AC: The number of cards in a collection is displayed in the burger menu.
         name="question"
         actionMode={actionMode}
         currentFlashcard={currentFlashcard}
+        maxlength="100"
       />
       <StyledLabel htmlFor="answer">Answer</StyledLabel>
       <FormInput
         name="answer"
         actionMode={actionMode}
         currentFlashcard={currentFlashcard}
+        maxlength="70"
       />
       <StyledLabel htmlFor="collection">Collection</StyledLabel>
       <StyledSelect
@@ -105,7 +99,7 @@ AC: The number of cards in a collection is displayed in the burger menu.
         <NewCollectionWrapper>
           <CollectionNameWrapper>
             <StyledLabel htmlFor="collectionName">Collection Name</StyledLabel>
-            <FormInput name="collectionName" />
+            <FormInput name="collectionName" maxlength="25" />
           </CollectionNameWrapper>
           <CollectionColorWrapper>
             <StyledLabel htmlFor="collectionColor">Color</StyledLabel>
@@ -113,6 +107,7 @@ AC: The number of cards in a collection is displayed in the burger menu.
               type="color"
               id="collectionColor"
               name="collectionColor"
+              defaultValue="#000000"
               required
             />
           </CollectionColorWrapper>

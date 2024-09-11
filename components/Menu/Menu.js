@@ -94,6 +94,7 @@ export default function Menu({
                         }}
                       >
                         {collection.title}
+                        {/* HIER ANZAHL DER KARTEN IN DER COLLECTION */}
                       </StyledSubNavigationLink>
                     </StyledSubNavigationListItem>
                   );
