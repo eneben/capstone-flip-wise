@@ -5,8 +5,6 @@ export default function RoundButton({
   onClick,
   type,
   variant,
-  disabled,
-  actionMode,
   isRotate,
 }) {
   return (
@@ -14,8 +12,6 @@ export default function RoundButton({
       type={type}
       onClick={onClick}
       $variant={variant}
-      disabled={disabled}
-      $actionMode={actionMode}
       $isRotate={isRotate}
     >
       {content}
@@ -35,35 +31,30 @@ const StyledRoundButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  ${({ $actionMode }) =>
-    $actionMode !== "default" &&
-    css`
-      opacity: 0.5;
-    `}
   ${(props) => variantRoundButtonStyles[props.$variant]}
 `;
 
 const variantRoundButtonStyles = {
   markAsCorrect: css`
-    background-color: #2a9d8f;
+    background-color: var(--primary-green);
     position: absolute;
     bottom: 15px;
     left: 10px;
   `,
   markAsIncorrect: css`
-    background-color: #e76f51;
+    background-color: var(--primary-red);
     position: absolute;
     bottom: 15px;
     left: 10px;
   `,
   delete: css`
-    background-color: #264653;
+    background-color: var(--primary-neutral);
     position: absolute;
     top: 15px;
     right: 10px;
   `,
   edit: css`
-    background-color: #264653;
+    background-color: var(--primary-neutral);
     position: absolute;
     top: 15px;
     right: 53px;
@@ -76,8 +67,6 @@ const variantRoundButtonStyles = {
     height: 40px;
     position: fixed;
     background-color: #fff;
-    box-shadow: 0px 0px 10px #000;
-
     rotate: ${(props) => (props.$isRotate ? "1.125turn" : "0")};
     transition: 0.3s ease-out;
     opacity: 1;

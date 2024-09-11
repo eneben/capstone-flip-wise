@@ -8,7 +8,6 @@ export default function FlashcardList({
   handleToggleCorrect,
   handleDelete,
   changeCurrentFlashcard,
-  actionMode,
   changeActionMode,
   collectionColor,
 }) {
@@ -26,7 +25,6 @@ export default function FlashcardList({
               flashcard={flashcard}
               onToggleCorrect={handleToggleCorrect}
               changeCurrentFlashcard={changeCurrentFlashcard}
-              actionMode={actionMode}
               changeActionMode={changeActionMode}
             />
           );

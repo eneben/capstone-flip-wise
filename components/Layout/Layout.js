@@ -47,6 +47,10 @@ export default function Layout({
     <>
       <MainContainer>{children}</MainContainer>
 
+      {actionMode !== "default" && (
+        <StyledOutsideClickArea onClick={handleToggleForm} />
+      )}
+
       {actionMode === "create" && (
         <FormFlashcard
           collections={collections}
@@ -71,9 +75,18 @@ export default function Layout({
         />
       )}
 
+      <FormToggleContainer>
+        <FormButtonShadow />
+      </FormToggleContainer>
+
       <StyledHeader>
         <HiddenHeadline>BRAIN STACK</HiddenHeadline>
-        <Link href="/">
+        <Link
+          href="/"
+          onClick={() => {
+            setIsFormClosing(true);
+          }}
+        >
           <LogoContainer>
             <Logo />
           </LogoContainer>
@@ -86,15 +99,12 @@ export default function Layout({
             variant="formToggle"
             name="menu"
             onClick={handleToggleForm}
-            actionMode={actionMode}
             isRotate={actionMode === "create" || actionMode === "edit"}
           />
         </FormToggleContainer>
 
         <Menu
           collections={collections}
-          actionMode={actionMode}
-          changeActionMode={changeActionMode}
           startClosingForm={startClosingForm}
           changeFlashcardSelection={changeFlashcardSelection}
         />
@@ -119,7 +129,7 @@ const StyledHeader = styled.header`
   height: 100px;
   padding: 15px 20px;
   background-color: #fff;
-  box-shadow: 0px 0px 10px #000;
+  box-shadow: 0 2px 10px #000;
 `;
 
 const HiddenHeadline = styled.h1`
@@ -141,4 +151,24 @@ const FormToggleContainer = styled.div`
   width: 100vw;
   position: absolute;
   top: 80px;
+`;
+
+const StyledOutsideClickArea = styled.div`
+  backdrop-filter: blur(10px);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #000;
+  opacity: 0;
+`;
+
+const FormButtonShadow = styled.div`
+  width: 40px;
+  height: 40px;
+  position: fixed;
+  border-radius: 50%;
+  background-color: #fff;
+  box-shadow: 0 3px 10px #000;
 `;

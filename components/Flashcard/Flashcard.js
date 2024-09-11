@@ -13,7 +13,6 @@ export default function Flashcard({
   onToggleCorrect,
   handleDelete,
   changeCurrentFlashcard,
-  actionMode,
   changeActionMode,
   collectionColor,
 }) {
@@ -29,7 +28,7 @@ export default function Flashcard({
   } = flashcard;
 
   function handleShowAnswer() {
-    if (!isDelete && actionMode === "default") setShowAnswer(!showAnswer);
+    setShowAnswer(!showAnswer);
   }
 
   function toggleDeleteConfirmation(event) {
@@ -75,16 +74,12 @@ export default function Flashcard({
                 onClick={setEditWithoutFlip}
                 type="button"
                 variant="edit"
-                disabled={actionMode !== "default"}
-                actionMode={actionMode}
               />
               <RoundButton
                 content={<Delete />}
                 onClick={toggleDeleteConfirmation}
                 type="button"
                 variant="delete"
-                disabled={actionMode !== "default"}
-                actionMode={actionMode}
               />
               <Question>{question}</Question>
               {isCorrect && (
@@ -93,11 +88,8 @@ export default function Flashcard({
                   onClick={() => onToggleCorrect(id)}
                   type="button"
                   variant="markAsIncorrect"
-                  disabled={actionMode !== "default"}
-                  actionMode={actionMode}
                 />
               )}
-              <StyledArrow />
             </CardFront>
             <CardBack $collectionColor={collectionColor}>
               <RoundButton
@@ -105,8 +97,6 @@ export default function Flashcard({
                 onClick={toggleDeleteConfirmation}
                 type="button"
                 variant="delete"
-                disabled={actionMode !== "default"}
-                actionMode={actionMode}
               />
               <Answer>{answer}</Answer>
 
@@ -115,10 +105,7 @@ export default function Flashcard({
                 onClick={() => onToggleCorrect(id)}
                 type="button"
                 variant={isCorrect ? "markAsIncorrect" : "markAsCorrect"}
-                disabled={actionMode !== "default"}
-                actionMode={actionMode}
               />
-              <StyledArrow transform="scale(-1 1)" />
             </CardBack>
           </>
         )}
@@ -149,7 +136,8 @@ const CardFace = styled.div`
   backface-visibility: hidden;
   padding: 10px;
   border-radius: 10px;
-  border: 2px solid ${({ $collectionColor }) => $collectionColor || "#000"};
+  border: var(--border-thickness) solid
+    ${({ $collectionColor }) => $collectionColor};
 `;
 
 const CardFront = styled(CardFace)`
@@ -157,7 +145,7 @@ const CardFront = styled(CardFace)`
 `;
 
 const CardBack = styled(CardFace)`
-  background-color: #e6e6e6;
+  background-color: var(--secondary-grey);
   transform: rotateY(180deg);
 `;
 
@@ -175,10 +163,4 @@ const Question = styled.h3`
   font-size: 1.2rem;
   font-weight: 500;
   padding-top: 37.2px;
-`;
-
-const StyledArrow = styled(Arrow)`
-  position: absolute;
-  right: 10px;
-  bottom: 15px;
 `;

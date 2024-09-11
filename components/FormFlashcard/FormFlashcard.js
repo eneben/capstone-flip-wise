@@ -94,7 +94,6 @@ const StyledForm = styled.form`
   width: 21rem;
   padding: 30px 10px 10px 10px;
   background-color: #fff;
-  border: 1px solid #000;
   border-top: 0;
   border-radius: 0 0 10px 10px;
   box-shadow: 0px 0px 10px #000;

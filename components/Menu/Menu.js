@@ -6,7 +6,6 @@ import Link from "next/link";
 
 export default function Menu({
   collections,
-  actionMode,
   startClosingForm,
   changeFlashcardSelection,
 }) {
@@ -64,11 +63,7 @@ export default function Menu({
       {isMenu && <StyledOutsideClickArea onClick={handleToggleMenu} />}
 
       {isMenu && (
-        <StyledNavigation
-          id="menu"
-          $isMenu={actionMode === "menu"}
-          $isMenuClosing={isMenuClosing}
-        >
+        <StyledNavigation id="menu" $isMenuClosing={isMenuClosing}>
           <StyledNavigationList>
             <StyledNavigationListItem>
               <StyledNavigationLink
@@ -163,7 +158,7 @@ const StyledNavigation = styled.nav`
   border: 1px solid #000;
   border-top: none;
   border-right: none;
-  box-shadow: 0px 0px 10px #000;
+  box-shadow: 0px 3px 10px -2px #000;
 
   &::before {
     content: "";
@@ -173,7 +168,6 @@ const StyledNavigation = styled.nav`
     width: 220px;
     height: 100px;
     background-color: #fff;
-    /* border-bottom: 1px solid #000; */
   }
 `;
 

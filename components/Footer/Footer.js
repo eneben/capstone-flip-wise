@@ -6,8 +6,6 @@ export default function Footer({
   getIncorrectFlashcardsFromCollection,
   getCorrectFlashcardsFromCollection,
   id,
-  actionMode,
-  changeActionMode,
   flashcardSelection,
   changeFlashcardSelection,
 }) {
@@ -16,7 +14,7 @@ export default function Footer({
   return (
     <nav>
       <StyledList>
-        <ListItem onClick={() => changeActionMode("default")}>
+        <ListItem>
           <CorrectCounter
             active={flashcardSelection === "to-learn"}
             variant="incorrect"
@@ -27,11 +25,10 @@ export default function Footer({
             getCorrectFlashcardsFromCollection={
               getCorrectFlashcardsFromCollection
             }
-            changeActionMode={changeActionMode}
             changeFlashcardSelection={changeFlashcardSelection}
           />
         </ListItem>
-        <ListItem onClick={() => changeActionMode("default")}>
+        <ListItem>
           <CorrectCounter
             active={flashcardSelection === "all"}
             variant="all"
@@ -42,11 +39,10 @@ export default function Footer({
             getCorrectFlashcardsFromCollection={
               getCorrectFlashcardsFromCollection
             }
-            changeActionMode={changeActionMode}
             changeFlashcardSelection={changeFlashcardSelection}
           />
         </ListItem>
-        <ListItem onClick={() => changeActionMode("default")}>
+        <ListItem>
           <CorrectCounter
             active={flashcardSelection === "learned"}
             variant="correct"
@@ -57,7 +53,6 @@ export default function Footer({
             getCorrectFlashcardsFromCollection={
               getCorrectFlashcardsFromCollection
             }
-            changeActionMode={changeActionMode}
             changeFlashcardSelection={changeFlashcardSelection}
           />
         </ListItem>
@@ -74,9 +69,8 @@ const StyledList = styled.ul`
   right: 0;
   bottom: 0;
   width: 100%;
-  z-index: 1;
   background-color: #fff;
-  box-shadow: 0px 0px 10px #000;
+  box-shadow: 0 0 10px #000;
 `;
 
 const ListItem = styled.li`

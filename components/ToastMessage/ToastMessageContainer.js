@@ -26,7 +26,7 @@ const StyledToastMessageContainer = styled.section`
   position: fixed;
   flex-direction: column-reverse;
   align-items: flex-end;
-  bottom: 10px;
+  bottom: 60px;
   right: 10px;
   gap: 10px;
   list-style: none;

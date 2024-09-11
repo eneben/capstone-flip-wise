@@ -2,12 +2,10 @@ import { useRouter } from "next/router";
 import FlashcardList from "@/components/FlashcardList/FlashcardList";
 import styled from "styled-components";
 import Footer from "@/components/Footer/Footer";
-import Link from "next/link";
 
 export default function CollectionPage({
   handleToggleCorrect,
   handleDelete,
-  actionMode,
   changeActionMode,
   changeCurrentFlashcard,
   getAllFlashcardsFromCollection,
@@ -52,7 +50,6 @@ export default function CollectionPage({
           flashcards={displayedFlashcards}
           handleToggleCorrect={handleToggleCorrect}
           changeCurrentFlashcard={changeCurrentFlashcard}
-          actionMode={actionMode}
           changeActionMode={changeActionMode}
           collectionColor={collectionColor}
         />
@@ -74,8 +71,6 @@ export default function CollectionPage({
         }
         getCorrectFlashcardsFromCollection={getCorrectFlashcardsFromCollection}
         id={id}
-        actionMode={actionMode}
-        changeActionMode={changeActionMode}
         flashcardSelection={flashcardSelection}
         changeFlashcardSelection={changeFlashcardSelection}
       />

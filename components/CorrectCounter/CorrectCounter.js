@@ -10,7 +10,6 @@ export default function CorrectCounter({
   id,
   changeFlashcardSelection,
   active,
-  changeActionMode,
 }) {
   const numberOfIncorrectFlashcards =
     getIncorrectFlashcardsFromCollection(id).length;
@@ -23,17 +22,17 @@ export default function CorrectCounter({
     incorrect: {
       icon: <MarkAsIncorrect fill="#fff" />,
       count: numberOfIncorrectFlashcards,
-      color: "#e76f51",
+      color: "var(--primary-red)",
     },
     correct: {
       icon: <MarkAsCorrect fill="#fff" />,
       count: numberOfCorrectFlashcards,
-      color: "#2a9d8f",
+      color: "var(--primary-green)",
     },
     all: {
       icon: <Stack fill="#fff" />,
       count: numberOfAllFlashcards,
-      color: "#264653",
+      color: "var(--primary-neutral)",
     },
   };
 
@@ -47,7 +46,6 @@ export default function CorrectCounter({
     } else if (variant === "all") {
       changeFlashcardSelection("all");
     }
-    changeActionMode("default");
   }
 
   return (
@@ -71,7 +69,8 @@ const CorrectCounterButton = styled.button`
   justify-content: center;
   gap: 10px;
   border: none;
-  background-color: ${({ $active }) => ($active ? "#e6e6e6" : "#fff")};
+  background-color: ${({ $active }) =>
+    $active ? "var(--secondary-grey)" : "#fff"};
 `;
 
 const StyledIconWrapper = styled.div`

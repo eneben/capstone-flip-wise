@@ -74,15 +74,17 @@ const CollectionBox = styled(Link)`
   }
 
   &::after {
-    top: 10px;
-    right: 10px;
-    background-color: #ddd;
+    top: 8px;
+    right: 8px;
+    border: none;
+    background-color: var(--secondary-grey);
   }
 
   &::before {
-    top: 19px;
-    left: 10px;
-    background-color: #bbb;
+    top: 15px;
+    left: 8px;
+    border: none;
+    background-color: var(--secondary-mid-grey);
   }
 `;
 
