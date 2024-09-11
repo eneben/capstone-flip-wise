@@ -183,6 +183,7 @@ export default function App({ Component, pageProps }) {
       handleCreateFlashcard={handleCreateFlashcard}
       changeFlashcardSelection={changeFlashcardSelection}
       changeCollections={changeCollections}
+      getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
     >
       <GlobalStyle />
       <Component

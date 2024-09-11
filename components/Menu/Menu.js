@@ -9,6 +9,7 @@ export default function Menu({
   actionMode,
   startClosingForm,
   changeFlashcardSelection,
+  getAllFlashcardsFromCollection,
 }) {
   const [isMenu, setIsMenu] = useState(false);
   const [isCollections, setIsCollections] = useState(false);
@@ -55,6 +56,12 @@ export default function Menu({
     }
   }, [isCollectionsClosing]);
 
+  function getNumberOfCardsInCollection(id) {
+    const cardsInCollection = getAllFlashcardsFromCollection(id);
+    const numberOfCards = cardsInCollection.length;
+    return numberOfCards;
+  }
+
   return (
     <>
       <StyledButton type="button" name="menuButton" onClick={handleToggleMenu}>
@@ -80,6 +87,9 @@ export default function Menu({
             {isCollections && (
               <StyledSubNavigationList>
                 {collections.map((collection) => {
+                  const numberOfCards = getNumberOfCardsInCollection(
+                    collection.id
+                  );
                   return (
                     <StyledSubNavigationListItem
                       key={collection.id}
@@ -93,8 +103,7 @@ export default function Menu({
                           setIsCollectionsClosing(true);
                         }}
                       >
-                        {collection.title}
-                        {/* HIER ANZAHL DER KARTEN IN DER COLLECTION */}
+                        {collection.title} ({numberOfCards})
                       </StyledSubNavigationLink>
                     </StyledSubNavigationListItem>
                   );
