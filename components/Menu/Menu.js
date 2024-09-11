@@ -74,7 +74,6 @@ export default function Menu({
               <StyledNavigationLink
                 href="/"
                 onClick={() => {
-                  changeFlashcardSelection("all");
                   setIsMenuClosing(true);
                   setIsCollectionsClosing(true);
                 }}
@@ -171,10 +170,10 @@ const StyledNavigation = styled.nav`
     position: absolute;
     top: -100px;
     right: 0;
-    width: 240px;
+    width: 220px;
     height: 100px;
     background-color: #fff;
-    border-bottom: 1px solid #000;
+    /* border-bottom: 1px solid #000; */
   }
 `;
 
