@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import CorrectCounter from "../CorrectCounter/CorrectCounter";
 import Link from "next/link";
+import RoundButton from "../Buttons/RoundButton";
 
 export default function Collection({
   collection,
