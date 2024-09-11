@@ -34,7 +34,7 @@ export default function Layout({
       const formTimeoutId = setTimeout(() => {
         setIsFormClosing(false);
         changeActionMode("default");
-      }, 500);
+      }, 490);
       return () => clearTimeout(formTimeoutId);
     }
   }, [isFormClosing]);

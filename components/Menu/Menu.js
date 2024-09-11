@@ -30,7 +30,7 @@ export default function Menu({
       const menuTimeoutId = setTimeout(() => {
         setIsMenu(false);
         setIsMenuClosing(false);
-      }, 300);
+      }, 290);
       return () => clearTimeout(menuTimeoutId);
     }
   }, [isMenuClosing]);
@@ -49,7 +49,7 @@ export default function Menu({
       const collectionsTimeoutId = setTimeout(() => {
         setIsCollections(false);
         setIsCollectionsClosing(false);
-      }, 300);
+      }, 290);
       return () => clearTimeout(collectionsTimeoutId);
     }
   }, [isCollectionsClosing]);
