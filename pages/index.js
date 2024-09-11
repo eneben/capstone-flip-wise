@@ -8,6 +8,7 @@ export default function HomePage({
   getIncorrectFlashcardsFromCollection,
   flashcardSelection,
   changeFlashcardSelection,
+  handleDeleteCollection,
 }) {
   return (
     <>
@@ -27,6 +28,7 @@ export default function HomePage({
               }
               flashcardSelection={flashcardSelection}
               changeFlashcardSelection={changeFlashcardSelection}
+              handleDeleteCollection={handleDeleteCollection}
             />
           );
         })}

@@ -1,16 +1,21 @@
 import GlobalStyle from "../styles";
 import Layout from "@/components/Layout/Layout";
 import initialFlashcards from "@/assets/flashcards.json";
-import collections from "@/assets/collections.json";
+import initialCollections from "@/assets/collections.json";
 import useLocalStorageState from "use-local-storage-state";
 import { uid } from "uid";
 import { useEffect, useState } from "react";
 import MarkAsCorrect from "@/public/icons/MarkAsCorrect.svg";
 import ToastMessageContainer from "@/components/ToastMessage/ToastMessageContainer";
+import { useRouter } from "next/router";
 
 export default function App({ Component, pageProps }) {
   const [flashcards, setFlashcards] = useLocalStorageState("flashcards", {
     defaultValue: initialFlashcards,
+  });
+
+  const [collections, setCollections] = useLocalStorageState("collections", {
+    defaultValue: initialCollections,
   });
 
   const [toastMessages, setToastMessages] = useState([]);
@@ -20,6 +25,8 @@ export default function App({ Component, pageProps }) {
   const [actionMode, setActionMode] = useState("default");
 
   const [flashcardSelection, setFlashcardSelection] = useState("all");
+
+  const router = useRouter();
 
   function changeFlashcardSelection(selection) {
     setFlashcardSelection(selection);
@@ -124,6 +131,23 @@ export default function App({ Component, pageProps }) {
     );
   }
 
+  function handleDeleteCollection(id) {
+    console.log(`collection with ${id} will be deleted`);
+    // event.preventDefault();
+    // event.stopPropagation();
+    setCollections(
+      collections.filter((collection) => {
+        return collection.id !== id;
+      })
+    );
+    showToastMessage(
+      "Collection deleted successfully!",
+      "success",
+      MarkAsCorrect
+    );
+    // router.push("/");
+  }
+
   function getCollection(collectionId) {
     const collectionToFind = collections.find((collection) => {
       return collection.id === collectionId;
@@ -182,6 +206,7 @@ export default function App({ Component, pageProps }) {
         handleToggleCorrect={handleToggleCorrect}
         collections={collections}
         handleDeleteFlashcard={handleDeleteFlashcard}
+        handleDeleteCollection={handleDeleteCollection}
         currentFlashcard={currentFlashcard}
         changeCurrentFlashcard={changeCurrentFlashcard}
         actionMode={actionMode}

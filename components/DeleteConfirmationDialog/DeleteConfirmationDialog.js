@@ -4,6 +4,7 @@ import ButtonWrapper from "../Buttons/ButtonWrapper";
 
 export default function DeleteConfirmationDialog({
   onDeleteFlashcard,
+  onDeleteCollection,
   toggleDeleteConfirmation,
   id,
   variant,
