@@ -17,9 +17,6 @@ export default function App({ Component, pageProps }) {
     defaultValue: initialCollections,
   });
 
-  console.log("flashcards: ", flashcards);
-  console.log("collections: ", collections);
-
   const [toastMessages, setToastMessages] = useState([]);
 
   const [currentFlashcard, setCurrentFlashcard] = useState(null);
