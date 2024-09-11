@@ -7,7 +7,6 @@ import { uid } from "uid";
 import { useEffect, useState } from "react";
 import MarkAsCorrect from "@/public/icons/MarkAsCorrect.svg";
 import ToastMessageContainer from "@/components/ToastMessage/ToastMessageContainer";
-import { useRouter } from "next/router";
 
 export default function App({ Component, pageProps }) {
   const [flashcards, setFlashcards] = useLocalStorageState("flashcards", {
@@ -25,8 +24,6 @@ export default function App({ Component, pageProps }) {
   const [actionMode, setActionMode] = useState("default");
 
   const [flashcardSelection, setFlashcardSelection] = useState("all");
-
-  const router = useRouter();
 
   function changeFlashcardSelection(selection) {
     setFlashcardSelection(selection);
@@ -132,12 +129,14 @@ export default function App({ Component, pageProps }) {
   }
 
   function handleDeleteCollection(id) {
-    console.log(`collection with ${id} will be deleted`);
-    // event.preventDefault();
-    // event.stopPropagation();
     setCollections(
       collections.filter((collection) => {
         return collection.id !== id;
+      })
+    );
+    setFlashcards(
+      flashcards.filter((flashcard) => {
+        return flashcard.collectionId !== id;
       })
     );
     showToastMessage(
@@ -145,7 +144,6 @@ export default function App({ Component, pageProps }) {
       "success",
       MarkAsCorrect
     );
-    // router.push("/");
   }
 
   function getCollection(collectionId) {
