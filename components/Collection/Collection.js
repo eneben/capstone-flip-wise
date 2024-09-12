@@ -1,6 +1,11 @@
 import styled from "styled-components";
 import CorrectCounter from "../CorrectCounter/CorrectCounter";
 import Link from "next/link";
+import RoundButton from "../Buttons/RoundButton";
+import Delete from "@/public/icons/Delete.svg";
+import DeleteConfirmationDialog from "../DeleteConfirmationDialog/DeleteConfirmationDialog";
+
+import { useState } from "react";
 
 export default function Collection({
   collection,
@@ -9,40 +14,72 @@ export default function Collection({
   getIncorrectFlashcardsFromCollection,
   flashcardSelection,
   changeFlashcardSelection,
+  handleDeleteCollection,
 }) {
+  const [isDelete, setIsDelete] = useState(false);
+
   const { title: name, color, id } = collection;
+
+  function toggleDeleteConfirmation(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    setIsDelete(!isDelete);
+  }
+
   return (
-    <CollectionBox $color={color} href={`/${id}`}>
-      <CollectionName>{name}</CollectionName>
-      <IconWrapper>
-        <CorrectCounter
-          getIncorrectFlashcardsFromCollection={
-            getIncorrectFlashcardsFromCollection
-          }
-          getCorrectFlashcardsFromCollection={
-            getCorrectFlashcardsFromCollection
-          }
-          id={id}
-          variant="incorrect"
-          actionMode={actionMode}
-          flashcardSelection={flashcardSelection}
-          changeFlashcardSelection={changeFlashcardSelection}
-        />
-        <CorrectCounter
-          getCorrectFlashcardsFromCollection={
-            getCorrectFlashcardsFromCollection
-          }
-          getIncorrectFlashcardsFromCollection={
-            getIncorrectFlashcardsFromCollection
-          }
-          id={id}
-          variant="correct"
-          actionMode={actionMode}
-          flashcardSelection={flashcardSelection}
-          changeFlashcardSelection={changeFlashcardSelection}
-        />
-      </IconWrapper>
-    </CollectionBox>
+    <>
+      {isDelete && (
+        <CollectionBox $color={color} href={"/"}>
+          <DeleteConfirmationDialog
+            onDeleteCollection={handleDeleteCollection}
+            toggleDeleteConfirmation={toggleDeleteConfirmation}
+            id={id}
+            variant="collection"
+          />
+        </CollectionBox>
+      )}
+
+      {!isDelete && (
+        <CollectionBox $color={color} href={`/${id}`}>
+          <RoundButton
+            content={<Delete />}
+            onClick={toggleDeleteConfirmation}
+            type="button"
+            variant="delete"
+            actionMode={actionMode}
+          />
+          <CollectionName>{name}</CollectionName>
+          <IconWrapper>
+            <CorrectCounter
+              getIncorrectFlashcardsFromCollection={
+                getIncorrectFlashcardsFromCollection
+              }
+              getCorrectFlashcardsFromCollection={
+                getCorrectFlashcardsFromCollection
+              }
+              id={id}
+              variant="incorrect"
+              actionMode={actionMode}
+              flashcardSelection={flashcardSelection}
+              changeFlashcardSelection={changeFlashcardSelection}
+            />
+            <CorrectCounter
+              getCorrectFlashcardsFromCollection={
+                getCorrectFlashcardsFromCollection
+              }
+              getIncorrectFlashcardsFromCollection={
+                getIncorrectFlashcardsFromCollection
+              }
+              id={id}
+              variant="correct"
+              actionMode={actionMode}
+              flashcardSelection={flashcardSelection}
+              changeFlashcardSelection={changeFlashcardSelection}
+            />
+          </IconWrapper>
+        </CollectionBox>
+      )}
+    </>
   );
 }
 

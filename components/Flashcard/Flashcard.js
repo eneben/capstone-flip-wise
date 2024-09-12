@@ -11,7 +11,7 @@ import DeleteConfirmationDialog from "../DeleteConfirmationDialog/DeleteConfirma
 export default function Flashcard({
   flashcard,
   onToggleCorrect,
-  handleDelete,
+  handleDeleteFlashcard,
   changeCurrentFlashcard,
   actionMode,
   changeActionMode,
@@ -51,16 +51,18 @@ export default function Flashcard({
           <>
             <CardFront $collectionColor={collectionColor}>
               <DeleteConfirmationDialog
-                onDelete={handleDelete}
+                onDeleteFlashcard={handleDeleteFlashcard}
                 toggleDeleteConfirmation={toggleDeleteConfirmation}
-                flashcardId={id}
+                id={id}
+                variant="flashcard"
               />
             </CardFront>
             <CardBack $collectionColor={collectionColor}>
               <DeleteConfirmationDialog
-                onDelete={handleDelete}
+                onDeleteFlashcard={handleDeleteFlashcard}
                 toggleDeleteConfirmation={toggleDeleteConfirmation}
-                flashcardId={id}
+                id={id}
+                variant="flashcard"
               />
             </CardBack>
           </>

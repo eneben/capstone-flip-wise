@@ -3,19 +3,30 @@ import RegularButton from "../Buttons/RegularButton";
 import ButtonWrapper from "../Buttons/ButtonWrapper";
 
 export default function DeleteConfirmationDialog({
-  onDelete,
+  onDeleteFlashcard,
+  onDeleteCollection,
   toggleDeleteConfirmation,
-  flashcardId,
+  id,
+  variant,
 }) {
+  function handleDelete() {
+    if (variant === "flashcard") {
+      onDeleteFlashcard(id);
+    } else if (variant === "collection") {
+      onDeleteCollection(id);
+    }
+  }
+
   return (
     <>
       <ConfirmationQuestion>
-        Do you want to delete this flashcard?
+        {variant === "flashcard" && "Do you want to delete this flashcard?"}
+        {variant === "collection" && "Do you want to delete this collection?"}
       </ConfirmationQuestion>
       <ButtonWrapper>
         <RegularButton
           content="Yes"
-          onClick={() => onDelete(flashcardId)}
+          onClick={handleDelete}
           type="button"
           variant="confirm"
         />

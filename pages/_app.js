@@ -115,7 +115,7 @@ export default function App({ Component, pageProps }) {
     );
   }
 
-  function handleDelete(id) {
+  function handleDeleteFlashcard(id) {
     setFlashcards(
       flashcards.filter((flashcard) => {
         return flashcard.id !== id;
@@ -123,6 +123,24 @@ export default function App({ Component, pageProps }) {
     );
     showToastMessage(
       "Flashcard deleted successfully!",
+      "success",
+      MarkAsCorrect
+    );
+  }
+
+  function handleDeleteCollection(id) {
+    setCollections(
+      collections.filter((collection) => {
+        return collection.id !== id;
+      })
+    );
+    setFlashcards(
+      flashcards.filter((flashcard) => {
+        return flashcard.collectionId !== id;
+      })
+    );
+    showToastMessage(
+      "Collection deleted successfully!",
       "success",
       MarkAsCorrect
     );
@@ -191,7 +209,8 @@ export default function App({ Component, pageProps }) {
         flashcardsWithCollection={flashcardsWithCollection}
         handleToggleCorrect={handleToggleCorrect}
         collections={collections}
-        handleDelete={handleDelete}
+        handleDeleteFlashcard={handleDeleteFlashcard}
+        handleDeleteCollection={handleDeleteCollection}
         currentFlashcard={currentFlashcard}
         changeCurrentFlashcard={changeCurrentFlashcard}
         actionMode={actionMode}

@@ -5,7 +5,7 @@ import Footer from "@/components/Footer/Footer";
 
 export default function CollectionPage({
   handleToggleCorrect,
-  handleDelete,
+  handleDeleteFlashcard,
   actionMode,
   changeActionMode,
   changeCurrentFlashcard,
@@ -41,7 +41,7 @@ export default function CollectionPage({
     <>
       {allFlashcardsFromCollection.length > 0 && (
         <FlashcardList
-          handleDelete={handleDelete}
+          handleDeleteFlashcard={handleDeleteFlashcard}
           headline={collectionTitle}
           subheading={
             (flashcardSelection === "all" && "All flashcards") ||
