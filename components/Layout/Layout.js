@@ -16,6 +16,8 @@ export default function Layout({
   handleCreateFlashcard,
   handleEditFlashcard,
   changeFlashcardSelection,
+  handleAddCollection,
+  getAllFlashcardsFromCollection,
 }) {
   const [isFormClosing, setIsFormClosing] = useState(false);
 
@@ -56,6 +58,7 @@ export default function Layout({
           currentFlashcard={currentFlashcard}
           onSubmitFlashcard={handleCreateFlashcard}
           isFormClosing={isFormClosing}
+          onAddCollection={handleAddCollection}
         />
       )}
 
@@ -68,6 +71,7 @@ export default function Layout({
           currentFlashcard={currentFlashcard}
           onSubmitFlashcard={handleEditFlashcard}
           isFormClosing={isFormClosing}
+          onAddCollection={handleAddCollection}
         />
       )}
 
@@ -97,6 +101,7 @@ export default function Layout({
           changeActionMode={changeActionMode}
           startClosingForm={startClosingForm}
           changeFlashcardSelection={changeFlashcardSelection}
+          getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
         />
       </StyledHeader>
     </>
