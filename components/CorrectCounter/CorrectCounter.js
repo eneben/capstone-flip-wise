@@ -5,6 +5,7 @@ import Stack from "@/public/icons/Stack.svg";
 
 export default function CorrectCounter({
   variant,
+  collectionTitle,
   getIncorrectFlashcardsFromCollection,
   getCorrectFlashcardsFromCollection,
   id,
@@ -51,6 +52,7 @@ export default function CorrectCounter({
   return (
     <CorrectCounterButton
       $active={active}
+      $collectionTitle={collectionTitle}
       onClick={handleRedirect}
       type="button"
     >
@@ -69,8 +71,12 @@ const CorrectCounterButton = styled.button`
   justify-content: center;
   gap: 10px;
   border: none;
-  background-color: ${({ $active }) =>
-    $active ? "var(--secondary-grey)" : "#fff"};
+  background-color: ${({ $collectionTitle, $active }) =>
+    $collectionTitle
+      ? "transparent"
+      : $active
+      ? "var(--secondary-grey)"
+      : "#fff"};
 `;
 
 const StyledIconWrapper = styled.div`

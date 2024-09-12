@@ -18,7 +18,7 @@ export default function Collection({
       onClick={() => changeFlashcardSelection("all")}
     >
       <CollectionName>{name}</CollectionName>
-      <IconWrapper>
+      <IconIncorrectWrapper>
         <CorrectCounter
           getIncorrectFlashcardsFromCollection={
             getIncorrectFlashcardsFromCollection
@@ -28,10 +28,13 @@ export default function Collection({
           }
           id={id}
           variant="incorrect"
+          collectionTitle={true}
           actionMode={actionMode}
           flashcardSelection={flashcardSelection}
           changeFlashcardSelection={changeFlashcardSelection}
         />
+      </IconIncorrectWrapper>
+      <IconCorrectWrapper>
         <CorrectCounter
           getCorrectFlashcardsFromCollection={
             getCorrectFlashcardsFromCollection
@@ -41,26 +44,29 @@ export default function Collection({
           }
           id={id}
           variant="correct"
+          collectionTitle={true}
           actionMode={actionMode}
           flashcardSelection={flashcardSelection}
           changeFlashcardSelection={changeFlashcardSelection}
         />
-      </IconWrapper>
+      </IconCorrectWrapper>
     </CollectionBox>
   );
 }
 
 const CollectionBox = styled(Link)`
   margin: 0 auto;
-  width: 20rem;
-  height: 13rem;
+  width: 90vw;
+  height: 218px;
+  max-width: 500px;
   position: relative;
   border-radius: 10px;
   border: 2px solid ${({ $color }) => $color};
-  padding: 10px;
+  display: grid;
+  grid-template-columns: 54px 54px 24px 1fr 24px 54px 54px;
+  grid-template-rows: 54px 106px 54px;
   background-color: #fff;
   text-decoration: none;
-  color: #000;
 
   &::before,
   &::after {
@@ -90,18 +96,26 @@ const CollectionBox = styled(Link)`
 
 const CollectionName = styled.h3`
   font: var(--collection-name);
-  padding-top: 50px;
+  color: #000;
   text-align: center;
+  align-self: center;
+  grid-column: 1 / 8;
+  grid-row: 2 / 3;
 `;
 
 const IconWrapper = styled.section`
-  list-style: none;
   display: flex;
-  justify-content: space-between;
-  width: 100%;
-  position: absolute;
-  gap: 140px;
-  bottom: 15px;
-  left: 0;
-  right: 0;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+`;
+
+const IconIncorrectWrapper = styled(IconWrapper)`
+  grid-column: 1 / 3;
+  grid-row: 3 / 4;
+`;
+
+const IconCorrectWrapper = styled(IconWrapper)`
+  grid-column: 6 / 8;
+  grid-row: 3 / 4;
 `;
