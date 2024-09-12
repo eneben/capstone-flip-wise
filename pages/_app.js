@@ -1,7 +1,7 @@
 import GlobalStyle from "../styles";
 import Layout from "@/components/Layout/Layout";
 import initialFlashcards from "@/assets/flashcards.json";
-import collections from "@/assets/collections.json";
+import initialCollections from "@/assets/collections.json";
 import useLocalStorageState from "use-local-storage-state";
 import { uid } from "uid";
 import { useEffect, useState } from "react";
@@ -11,6 +11,10 @@ import ToastMessageContainer from "@/components/ToastMessage/ToastMessageContain
 export default function App({ Component, pageProps }) {
   const [flashcards, setFlashcards] = useLocalStorageState("flashcards", {
     defaultValue: initialFlashcards,
+  });
+
+  const [collections, setCollections] = useLocalStorageState("collections", {
+    defaultValue: initialCollections,
   });
 
   const [toastMessages, setToastMessages] = useState([]);
@@ -124,6 +128,10 @@ export default function App({ Component, pageProps }) {
     );
   }
 
+  function handleAddCollection(newCollection) {
+    setCollections([newCollection, ...collections]);
+  }
+
   function getCollection(collectionId) {
     const collectionToFind = collections.find((collection) => {
       return collection.id === collectionId;
@@ -174,6 +182,8 @@ export default function App({ Component, pageProps }) {
       handleEditFlashcard={handleEditFlashcard}
       handleCreateFlashcard={handleCreateFlashcard}
       changeFlashcardSelection={changeFlashcardSelection}
+      handleAddCollection={handleAddCollection}
+      getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
     >
       <GlobalStyle />
       <Component
