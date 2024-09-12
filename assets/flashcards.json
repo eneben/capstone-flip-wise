@@ -1,176 +1,884 @@
 [
   {
     "id": "1",
-    "collectionId": "2",
-    "question": "What is the powerhouse of the cell?",
-    "answer": "The mitochondrion"
+    "collectionId": "1",
+    "question": "What is 5 + 7?",
+    "answer": "12"
   },
   {
     "id": "2",
-    "collectionId": "2",
-    "question": "What is the process by which plants make their food?",
-    "answer": "Photosynthesis"
+    "collectionId": "1",
+    "question": "What is the square root of 81?",
+    "answer": "9"
   },
   {
     "id": "3",
-    "collectionId": "2",
-    "question": "What are the building blocks of proteins?",
-    "answer": "Amino acids"
+    "collectionId": "1",
+    "question": "What is the formula for the area of a circle?",
+    "answer": "πr²"
   },
   {
     "id": "4",
-    "collectionId": "2",
-    "question": "What is the largest organ in the human body?",
-    "answer": "The skin"
+    "collectionId": "1",
+    "question": "What is 15% of 200?",
+    "answer": "30"
   },
   {
     "id": "5",
-    "collectionId": "2",
-    "question": "What is the main function of red blood cells?",
-    "answer": "To transport oxygen"
+    "collectionId": "1",
+    "question": "Solve for x: 2x + 5 = 13.",
+    "answer": "x = 4"
   },
   {
     "id": "6",
+    "collectionId": "1",
+    "question": "What is 9 × 6?",
+    "answer": "54"
+  },
+  {
+    "id": "7",
+    "collectionId": "1",
+    "question": "What is the value of π (Pi)?",
+    "answer": "3.14159"
+  },
+  {
+    "id": "8",
+    "collectionId": "1",
+    "question": "What is 7 cubed?",
+    "answer": "343"
+  },
+  {
+    "id": "9",
+    "collectionId": "1",
+    "question": "Convert 0.75 to a fraction.",
+    "answer": "3/4"
+  },
+  {
+    "id": "10",
+    "collectionId": "1",
+    "question": "What is the derivative of x²?",
+    "answer": "2x"
+  },
+  {
+    "id": "11",
+    "collectionId": "1",
+    "question": "What is the sum of the angles in a triangle?",
+    "answer": "180°"
+  },
+  {
+    "id": "12",
+    "collectionId": "1",
+    "question": "What is the result of 12 ÷ 4?",
+    "answer": "3"
+  },
+  {
+    "id": "13",
+    "collectionId": "1",
+    "question": "What is the perimeter of a square with side length 5?",
+    "answer": "20"
+  },
+  {
+    "id": "14",
+    "collectionId": "1",
+    "question": "What is the next prime number after 7?",
+    "answer": "11"
+  },
+  {
+    "id": "15",
+    "collectionId": "1",
+    "question": "What is 25% of 400?",
+    "answer": "100"
+  },
+  {
+    "id": "16",
+    "collectionId": "2",
+    "question": "Apple",
+    "answer": "Pomme"
+  },
+  {
+    "id": "17",
+    "collectionId": "2",
+    "question": "Dog",
+    "answer": "Chien"
+  },
+  {
+    "id": "18",
+    "collectionId": "2",
+    "question": "House",
+    "answer": "Maison"
+  },
+  {
+    "id": "19",
+    "collectionId": "2",
+    "question": "Water",
+    "answer": "Eau"
+  },
+  {
+    "id": "20",
+    "collectionId": "2",
+    "question": "Book",
+    "answer": "Livre"
+  },
+  {
+    "id": "21",
+    "collectionId": "2",
+    "question": "Table",
+    "answer": "Table"
+  },
+  {
+    "id": "22",
+    "collectionId": "2",
+    "question": "Chair",
+    "answer": "Chaise"
+  },
+  {
+    "id": "23",
+    "collectionId": "2",
+    "question": "Car",
+    "answer": "Voiture"
+  },
+  {
+    "id": "24",
+    "collectionId": "2",
+    "question": "School",
+    "answer": "École"
+  },
+  {
+    "id": "25",
+    "collectionId": "2",
+    "question": "Pen",
+    "answer": "Stylo"
+  },
+  {
+    "id": "26",
+    "collectionId": "2",
+    "question": "Window",
+    "answer": "Fenêtre"
+  },
+  {
+    "id": "27",
+    "collectionId": "2",
+    "question": "Door",
+    "answer": "Porte"
+  },
+  {
+    "id": "28",
+    "collectionId": "2",
+    "question": "Cat",
+    "answer": "Chat"
+  },
+  {
+    "id": "29",
+    "collectionId": "2",
+    "question": "Sun",
+    "answer": "Soleil"
+  },
+  {
+    "id": "30",
+    "collectionId": "2",
+    "question": "Moon",
+    "answer": "Lune"
+  },
+  {
+    "id": "31",
+    "collectionId": "3",
+    "question": "What is the powerhouse of the cell?",
+    "answer": "Mitochondrion"
+  },
+  {
+    "id": "32",
+    "collectionId": "3",
+    "question": "What is the basic unit of life?",
+    "answer": "Cell"
+  },
+  {
+    "id": "33",
+    "collectionId": "3",
+    "question": "What molecule carries genetic information?",
+    "answer": "DNA"
+  },
+  {
+    "id": "34",
+    "collectionId": "3",
+    "question": "What process do plants use to make food?",
+    "answer": "Photosynthesis"
+  },
+  {
+    "id": "35",
+    "collectionId": "3",
+    "question": "What is the largest organ in the human body?",
+    "answer": "Skin"
+  },
+  {
+    "id": "36",
+    "collectionId": "3",
+    "question": "What is the chemical symbol for water?",
+    "answer": "H₂O"
+  },
+  {
+    "id": "37",
+    "collectionId": "3",
+    "question": "What part of the cell controls its activities?",
+    "answer": "Nucleus"
+  },
+  {
+    "id": "38",
+    "collectionId": "3",
+    "question": "What type of blood cells fight infections?",
+    "answer": "White blood cells"
+  },
+  {
+    "id": "39",
+    "collectionId": "3",
+    "question": "Which gas do plants absorb from the atmosphere?",
+    "answer": "Carbon dioxide"
+  },
+  {
+    "id": "40",
+    "collectionId": "3",
+    "question": "What is the largest bone in the human body?",
+    "answer": "Femur"
+  },
+  {
+    "id": "41",
+    "collectionId": "3",
+    "question": "What is the boiling point of water in degrees Celsius?",
+    "answer": "100°C"
+  },
+  {
+    "id": "42",
+    "collectionId": "3",
+    "question": "What type of energy do plants convert into chemical energy?",
+    "answer": "Solar energy"
+  },
+  {
+    "id": "43",
+    "collectionId": "3",
+    "question": "What organ filters blood in the human body?",
+    "answer": "Kidneys"
+  },
+  {
+    "id": "44",
+    "collectionId": "3",
+    "question": "What is the name of the process where cells divide?",
+    "answer": "Mitosis"
+  },
+  {
+    "id": "45",
+    "collectionId": "3",
+    "question": "What is the term for a group of tissues working together?",
+    "answer": "Organ"
+  },
+  {
+    "id": "46",
+    "collectionId": "4",
+    "question": "What comes down but never goes up?",
+    "answer": "Rain"
+  },
+  {
+    "id": "47",
+    "collectionId": "4",
+    "question": "What has keys but can't open locks?",
+    "answer": "A piano"
+  },
+  {
+    "id": "48",
+    "collectionId": "4",
+    "question": "What gets wetter as it dries?",
+    "answer": "A towel"
+  },
+  {
+    "id": "49",
+    "collectionId": "4",
+    "question": "What can travel around the world while staying in the same spot?",
+    "answer": "A stamp"
+  },
+  {
+    "id": "50",
+    "collectionId": "4",
+    "question": "What has a heart that doesn't beat?",
+    "answer": "An artichoke"
+  },
+  {
+    "id": "51",
+    "collectionId": "4",
+    "question": "I'm tall when I'm young, and I'm short when I'm old. What am I?",
+    "answer": "A candle"
+  },
+  {
+    "id": "52",
+    "collectionId": "4",
+    "question": "What has a head, a tail, is brown, and has no legs?",
+    "answer": "A penny"
+  },
+  {
+    "id": "53",
+    "collectionId": "4",
+    "question": "The more you take, the more you leave behind. What am I?",
+    "answer": "Footsteps"
+  },
+  {
+    "id": "54",
+    "collectionId": "4",
+    "question": "What has an eye but cannot see?",
+    "answer": "A needle"
+  },
+  {
+    "id": "55",
+    "collectionId": "4",
+    "question": "What has to be broken before you can use it?",
+    "answer": "An egg"
+  },
+  {
+    "id": "56",
+    "collectionId": "4",
+    "question": "What has one head, one foot, and four legs?",
+    "answer": "A bed"
+  },
+  {
+    "id": "57",
+    "collectionId": "4",
+    "question": "What can fill a room but takes up no space?",
+    "answer": "Light"
+  },
+  {
+    "id": "58",
+    "collectionId": "4",
+    "question": "What is so fragile that saying its name breaks it?",
+    "answer": "Silence"
+  },
+  {
+    "id": "59",
+    "collectionId": "4",
+    "question": "What gets sharper the more you use it?",
+    "answer": "Your brain"
+  },
+  {
+    "id": "60",
+    "collectionId": "4",
+    "question": "What has four wheels and flies?",
+    "answer": "A garbage truck"
+  },
+  {
+    "id": "61",
     "collectionId": "5",
     "question": "What is the capital of France?",
     "answer": "Paris"
   },
   {
-    "id": "7",
+    "id": "62",
     "collectionId": "5",
-    "question": "Which river is the longest in the world?",
-    "answer": "The Nile"
+    "question": "Which country is known as the Land of the Rising Sun?",
+    "answer": "Japan"
   },
   {
-    "id": "8",
+    "id": "63",
     "collectionId": "5",
-    "question": "What is the largest desert in the world?",
-    "answer": "The Sahara Desert"
+    "question": "What is the largest ocean on Earth?",
+    "answer": "Pacific Ocean"
   },
   {
-    "id": "9",
+    "id": "64",
     "collectionId": "5",
-    "question": "Which country has the most population?",
+    "question": "Which desert is the largest in the world?",
+    "answer": "Sahara Desert"
+  },
+  {
+    "id": "65",
+    "collectionId": "5",
+    "question": "What is the longest river in the world?",
+    "answer": "Nile River"
+  },
+  {
+    "id": "66",
+    "collectionId": "5",
+    "question": "Which country has the most natural lakes?",
+    "answer": "Canada"
+  },
+  {
+    "id": "67",
+    "collectionId": "5",
+    "question": "What is the tallest mountain in the world?",
+    "answer": "Mount Everest"
+  },
+  {
+    "id": "68",
+    "collectionId": "5",
+    "question": "What continent is known as the frozen continent?",
+    "answer": "Antarctica"
+  },
+  {
+    "id": "69",
+    "collectionId": "5",
+    "question": "What is the smallest country in the world?",
+    "answer": "Vatican City"
+  },
+  {
+    "id": "70",
+    "collectionId": "5",
+    "question": "Which river flows through London?",
+    "answer": "The Thames"
+  },
+  {
+    "id": "71",
+    "collectionId": "5",
+    "question": "Which country has the most people?",
     "answer": "China"
   },
   {
-    "id": "10",
+    "id": "72",
     "collectionId": "5",
-    "question": "What is the smallest continent by land area?",
-    "answer": "Australia"
+    "question": "Which continent is the most populous?",
+    "answer": "Asia"
   },
   {
-    "id": "11",
-    "collectionId": "10",
+    "id": "73",
+    "collectionId": "5",
+    "question": "What is the capital of Australia?",
+    "answer": "Canberra"
+  },
+  {
+    "id": "74",
+    "collectionId": "5",
+    "question": "What is the largest country by area?",
+    "answer": "Russia"
+  },
+  {
+    "id": "75",
+    "collectionId": "5",
+    "question": "Which U.S. state is known as the 'Sunshine State'?",
+    "answer": "Florida"
+  },
+  {
+    "id": "76",
+    "collectionId": "6",
     "question": "What does HTML stand for?",
     "answer": "HyperText Markup Language"
   },
   {
-    "id": "12",
-    "collectionId": "10",
-    "question": "What is the name of the first electronic general-purpose computer?",
-    "answer": "ENIAC"
+    "id": "77",
+    "collectionId": "6",
+    "question": "What is the purpose of the <head> tag in HTML?",
+    "answer": "It contains meta-information about the document"
   },
   {
-    "id": "13",
-    "collectionId": "10",
-    "question": "Who is known as the father of computers?",
-    "answer": "Charles Babbage"
+    "id": "78",
+    "collectionId": "6",
+    "question": "What is the use of the <div> tag in HTML?",
+    "answer": "To define a division or a section in an HTML document"
   },
   {
-    "id": "14",
-    "collectionId": "10",
-    "question": "What does CPU stand for?",
-    "answer": "Central Processing Unit"
+    "id": "79",
+    "collectionId": "6",
+    "question": "What does CSS stand for?",
+    "answer": "Cascading Style Sheets"
   },
   {
-    "id": "15",
-    "collectionId": "10",
-    "question": "What is the main function of RAM?",
-    "answer": "To store data temporarily"
+    "id": "80",
+    "collectionId": "6",
+    "question": "What is the box model in CSS?",
+    "answer": "It includes margins, borders, padding, and the actual content"
   },
   {
-    "id": "16",
-    "collectionId": "3",
-    "question": "What is the pH level of pure water?",
-    "answer": "7"
+    "id": "81",
+    "collectionId": "6",
+    "question": "What is the difference between padding and margin?",
+    "answer": "Padding is inside the element, margin is outside"
   },
   {
-    "id": "17",
-    "collectionId": "3",
-    "question": "What is the periodic table?",
-    "answer": "A table of chemical elements arranged by atomic number"
+    "id": "82",
+    "collectionId": "6",
+    "question": "What is an inline element in HTML?",
+    "answer": "An element that does not start on a new line and only takes up as much width as necessary"
   },
   {
-    "id": "18",
-    "collectionId": "3",
-    "question": "What is the process of converting a liquid into vapour called?",
-    "answer": "Evaporation"
+    "id": "83",
+    "collectionId": "6",
+    "question": "How do you link a CSS file to an HTML document?",
+    "answer": "Using the <link> tag inside the <head> tag"
   },
   {
-    "id": "19",
-    "collectionId": "4",
-    "question": "What is the force that keeps us on the ground?",
-    "answer": "Gravity"
+    "id": "84",
+    "collectionId": "6",
+    "question": "What is a class selector in CSS?",
+    "answer": "It selects elements with a specific class attribute"
   },
   {
-    "id": "20",
-    "collectionId": "4",
-    "question": "What is the speed of light?",
-    "answer": "299,792,458 meters per second"
+    "id": "85",
+    "collectionId": "6",
+    "question": "What is the purpose of the <meta> tag in HTML?",
+    "answer": "It provides metadata about the HTML document"
   },
   {
-    "id": "21",
-    "collectionId": "4",
-    "question": "Who developed the theory of relativity?",
-    "answer": "Albert Einstein"
+    "id": "86",
+    "collectionId": "6",
+    "question": "How do you make text bold in HTML?",
+    "answer": "Using the <b> or <strong> tags"
   },
   {
-    "id": "22",
-    "collectionId": "8",
+    "id": "87",
+    "collectionId": "6",
+    "question": "What is the purpose of the <form> tag in HTML?",
+    "answer": "To create an HTML form for user input"
+  },
+  {
+    "id": "88",
+    "collectionId": "6",
+    "question": "What is the difference between id and class in HTML?",
+    "answer": "id is unique, class can be reused on multiple elements"
+  },
+  {
+    "id": "89",
+    "collectionId": "6",
+    "question": "What is the purpose of the <script> tag in HTML?",
+    "answer": "It is used to embed or reference JavaScript code"
+  },
+  {
+    "id": "90",
+    "collectionId": "6",
+    "question": "How do you create a hyperlink in HTML?",
+    "answer": "Using the <a> tag"
+  },
+  {
+    "id": "91",
+    "collectionId": "7",
     "question": "Who painted the Mona Lisa?",
     "answer": "Leonardo da Vinci"
   },
   {
-    "id": "23",
-    "collectionId": "8",
-    "question": "What is the primary colour of the sky in the painting 'Starry Night' by Van Gogh?",
-    "answer": "Blue"
+    "id": "92",
+    "collectionId": "7",
+    "question": "What musical instrument has 88 keys?",
+    "answer": "Piano"
   },
   {
-    "id": "24",
-    "collectionId": "8",
-    "question": "What is the art technique that uses small dots to create a larger image?",
-    "answer": "Pointillism"
-  },
-  {
-    "id": "25",
-    "collectionId": "9",
+    "id": "93",
+    "collectionId": "7",
     "question": "Who composed the Four Seasons?",
     "answer": "Antonio Vivaldi"
   },
   {
-    "id": "26",
+    "id": "94",
+    "collectionId": "7",
+    "question": "Which art movement is associated with Claude Monet?",
+    "answer": "Impressionism"
+  },
+  {
+    "id": "95",
+    "collectionId": "7",
+    "question": "What is the name of the famous painting of a girl with a pearl earring?",
+    "answer": "Girl with a Pearl Earring"
+  },
+  {
+    "id": "96",
+    "collectionId": "7",
+    "question": "What instrument is often used in jazz music?",
+    "answer": "Saxophone"
+  },
+  {
+    "id": "97",
+    "collectionId": "7",
+    "question": "Who composed the opera 'The Magic Flute'?",
+    "answer": "Wolfgang Amadeus Mozart"
+  },
+  {
+    "id": "98",
+    "collectionId": "7",
+    "question": "Which artist is known for the painting 'Starry Night'?",
+    "answer": "Vincent van Gogh"
+  },
+  {
+    "id": "99",
+    "collectionId": "7",
+    "question": "Who painted the ceiling of the Sistine Chapel?",
+    "answer": "Michelangelo"
+  },
+  {
+    "id": "100",
+    "collectionId": "7",
+    "question": "What musical symbol represents a sharp note?",
+    "answer": "#"
+  },
+  {
+    "id": "101",
+    "collectionId": "7",
+    "question": "Which famous composer was deaf?",
+    "answer": "Ludwig van Beethoven"
+  },
+  {
+    "id": "102",
+    "collectionId": "7",
+    "question": "Who painted 'The Persistence of Memory'?",
+    "answer": "Salvador Dalí"
+  },
+  {
+    "id": "103",
+    "collectionId": "7",
+    "question": "What instrument is the lead in a string quartet?",
+    "answer": "Violin"
+  },
+  {
+    "id": "104",
+    "collectionId": "7",
+    "question": "What is the term for a quick tempo in music?",
+    "answer": "Allegro"
+  },
+  {
+    "id": "105",
+    "collectionId": "7",
+    "question": "Which famous painting was stolen from the Louvre in 1911?",
+    "answer": "The Mona Lisa"
+  },
+  {
+    "id": "106",
+    "collectionId": "8",
+    "question": "What is climate change?",
+    "answer": "A long-term change in global or regional climate patterns"
+  },
+  {
+    "id": "107",
+    "collectionId": "8",
+    "question": "What is the greenhouse effect?",
+    "answer": "The trapping of the sun's heat in Earth's atmosphere"
+  },
+  {
+    "id": "108",
+    "collectionId": "8",
+    "question": "Which gas is the largest contributor to the greenhouse effect?",
+    "answer": "Carbon dioxide (CO₂)"
+  },
+  {
+    "id": "109",
+    "collectionId": "8",
+    "question": "What is renewable energy?",
+    "answer": "Energy from sources that are naturally replenished, like wind and solar"
+  },
+  {
+    "id": "110",
+    "collectionId": "8",
+    "question": "What is deforestation?",
+    "answer": "The clearing of trees and forests"
+  },
+  {
+    "id": "111",
+    "collectionId": "8",
+    "question": "What is the Paris Agreement?",
+    "answer": "An international treaty to limit global warming to below 2°C"
+  },
+  {
+    "id": "112",
+    "collectionId": "8",
+    "question": "What is biodiversity?",
+    "answer": "The variety of life in a particular ecosystem or the entire planet"
+  },
+  {
+    "id": "113",
+    "collectionId": "8",
+    "question": "What is carbon footprint?",
+    "answer": "The total amount of greenhouse gases produced by human activities"
+  },
+  {
+    "id": "114",
+    "collectionId": "8",
+    "question": "What is the largest source of renewable energy in the world?",
+    "answer": "Hydropower"
+  },
+  {
+    "id": "115",
+    "collectionId": "8",
+    "question": "What does 'sustainability' mean?",
+    "answer": "Meeting the needs of the present without compromising the future"
+  },
+  {
+    "id": "116",
+    "collectionId": "8",
+    "question": "What is global warming?",
+    "answer": "The long-term increase in Earth's average surface temperature"
+  },
+  {
+    "id": "117",
+    "collectionId": "8",
+    "question": "What can individuals do to reduce their carbon footprint?",
+    "answer": "Use public transportation, reduce energy use, recycle"
+  },
+  {
+    "id": "118",
+    "collectionId": "8",
+    "question": "What is ocean acidification?",
+    "answer": "The decrease in pH levels of the Earth's oceans caused by CO₂ absorption"
+  },
+  {
+    "id": "119",
+    "collectionId": "8",
+    "question": "What are the main sources of renewable energy?",
+    "answer": "Solar, wind, hydro, geothermal, and biomass"
+  },
+  {
+    "id": "120",
+    "collectionId": "8",
+    "question": "What is the primary cause of climate change?",
+    "answer": "Human activities, especially burning fossil fuels"
+  },
+  {
+    "id": "121",
     "collectionId": "9",
-    "question": "What is the musical term for 'loud'?",
-    "answer": "Forte"
+    "question": "What is JavaScript primarily used for?",
+    "answer": "To create interactive effects on websites"
   },
   {
-    "id": "28",
-    "collectionId": "1",
-    "question": "What is the value of pi up to two decimal places?",
-    "answer": "3.14"
+    "id": "122",
+    "collectionId": "9",
+    "question": "How do you declare a variable in JavaScript?",
+    "answer": "Using var, let, or const"
   },
   {
-    "id": "29",
-    "collectionId": "1",
-    "question": "What is the square root of 144?",
-    "answer": "12"
+    "id": "123",
+    "collectionId": "9",
+    "question": "What does '===' mean in JavaScript?",
+    "answer": "It checks for strict equality (value and type)"
   },
   {
-    "id": "30",
-    "collectionId": "1",
-    "question": "How many sides does a hexagon have?",
-    "answer": "Six"
+    "id": "124",
+    "collectionId": "9",
+    "question": "What is a function in JavaScript?",
+    "answer": "A block of code designed to perform a particular task"
+  },
+  {
+    "id": "125",
+    "collectionId": "9",
+    "question": "What is an array in JavaScript?",
+    "answer": "A collection of elements stored in a single variable"
+  },
+  {
+    "id": "126",
+    "collectionId": "9",
+    "question": "How do you add an element to the end of an array?",
+    "answer": "Using the push() method"
+  },
+  {
+    "id": "127",
+    "collectionId": "9",
+    "question": "What is the difference between let and const in JavaScript?",
+    "answer": "let allows reassignment, const does not"
+  },
+  {
+    "id": "128",
+    "collectionId": "9",
+    "question": "What is a callback function?",
+    "answer": "A function passed as an argument to another function"
+  },
+  {
+    "id": "129",
+    "collectionId": "9",
+    "question": "How do you write a comment in JavaScript?",
+    "answer": "// for single line, /* */ for multi-line"
+  },
+  {
+    "id": "130",
+    "collectionId": "9",
+    "question": "What is the DOM in JavaScript?",
+    "answer": "The Document Object Model, which represents the structure of a web page"
+  },
+  {
+    "id": "131",
+    "collectionId": "9",
+    "question": "What is an object in JavaScript?",
+    "answer": "A collection of properties and methods"
+  },
+  {
+    "id": "132",
+    "collectionId": "9",
+    "question": "What is an event listener in JavaScript?",
+    "answer": "A function that waits for a specific event to occur"
+  },
+  {
+    "id": "133",
+    "collectionId": "9",
+    "question": "What does the map() method do in JavaScript?",
+    "answer": "It creates a new array by calling a function on every element in an array"
+  },
+  {
+    "id": "134",
+    "collectionId": "9",
+    "question": "What is a promise in JavaScript?",
+    "answer": "An object representing the eventual completion or failure of an asynchronous operation"
+  },
+  {
+    "id": "135",
+    "collectionId": "9",
+    "question": "How do you handle errors in JavaScript?",
+    "answer": "Using try...catch blocks"
+  },
+  {
+    "id": "136",
+    "collectionId": "10",
+    "question": "If all bloops are razzies and all razzies are lazzies, are all bloops lazzies?",
+    "answer": "Yes."
+  },
+  {
+    "id": "137",
+    "collectionId": "10",
+    "question": "You need to cross a river with a wolf, goat, and cabbage. Only carry one at a time. How?",
+    "answer": "Take the goat first, then the cabbage. Bring the goat back, take the wolf, and return for the goat."
+  },
+  {
+    "id": "138",
+    "collectionId": "10",
+    "question": "A man with no siblings says, 'That person's father is my father's son.' Who is it?",
+    "answer": "His son."
+  },
+  {
+    "id": "139",
+    "collectionId": "10",
+    "question": "Three boxes are mislabeled: Apples, Oranges, and Apples & Oranges. How to correct them?",
+    "answer": "Pick from 'Apples & Oranges'. If it's an apple, relabel it 'Apples'. The rest are 'Oranges' and 'Apples & Oranges'."
+  },
+  {
+    "id": "140",
+    "collectionId": "10",
+    "question": "With three light switches and three bulbs you can't see, how to find the correct labels?",
+    "answer": "Turn on the first switch for a while, then off. Turn on the second switch. Check bulbs: warm = first, on = second, cold = third."
+  },
+  {
+    "id": "141",
+    "collectionId": "10",
+    "question": "With a 5-liter and a 3-liter jug, measure exactly 4 liters of water. How?",
+    "answer": "Fill the 3-liter jug, pour into the 5-liter jug. Fill the 3-liter again, pour until the 5-liter is full. 1 liter remains in the 3-liter."
+  },
+  {
+    "id": "142",
+    "collectionId": "10",
+    "question": "You are in a room with two doors and two guards. One always lies, one always tells the truth. What to ask?",
+    "answer": "Ask a guard, 'Which door would the other guard say leads to safety?' Choose the opposite door."
+  },
+  {
+    "id": "143",
+    "collectionId": "10",
+    "question": "Two doors: one safe, one a trap. Two guards: one lies, one tells truth. What to ask one guard?",
+    "answer": "Ask, 'Which door would the other guard say leads to safety?' Choose the opposite door."
+  },
+  {
+    "id": "144",
+    "collectionId": "10",
+    "question": "You must cross a river with a fox, a goose, and beans. How to do it safely?",
+    "answer": "Take the goose first, then the beans. Bring the goose back, take the fox, then return for the goose."
+  },
+  {
+    "id": "145",
+    "collectionId": "10",
+    "question": "On a desert island with two tree types: coconuts and bananas. How to find the more common tree?",
+    "answer": "Count the number of each type as you find them. The one with the higher count is more common."
+  },
+  {
+    "id": "146",
+    "collectionId": "10",
+    "question": "Nine balls: 8 equal, 1 heavier. Use a balance scale twice. How to find the heavier ball?",
+    "answer": "Weigh three balls against three. If they balance, weigh two from the remaining three. If not, weigh the heavier group."
+  },
+  {
+    "id": "147",
+    "collectionId": "10",
+    "question": "In a group of 10 people, each shakes hands with every other person once. How many handshakes?",
+    "answer": "45 handshakes. Use the formula n(n-1)/2, where n is 10."
   }
 ]
