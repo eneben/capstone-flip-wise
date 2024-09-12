@@ -44,7 +44,7 @@ const CollectionsWrapper = styled.ul`
 `;
 
 const StyledHeadline = styled.h2`
+  font: var(--main-headline);
   text-align: center;
   padding: 35px 0 30px 0;
-  font-size: 1.7rem;
 `;

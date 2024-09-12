@@ -31,6 +31,14 @@ export default createGlobalStyle`
     --secondary-mid-grey: #bec7cb;
 
     --border-thickness: 2px;
+
+    --main-headline:  700 1.6rem ${barlow.style.fontFamily}, system-ui;
+    --sub-headline:  500 1.1rem ${barlow.style.fontFamily}, system-ui;
+    --collection-name:  500 1.4rem ${barlow.style.fontFamily}, system-ui;
+    --question-answer: 500 1.2rem ${barlowSemi.style.fontFamily}, system-ui;
+    --collection-title: 400 0.9rem ${barlowSemi.style.fontFamily}, system-ui;
+    --counter: 500 0.8rem ${barlowSemi.style.fontFamily}, system-ui;
+    --form-headline: 700 1.5rem ${barlow.style.fontFamily}, system-ui;
 }
 
   body {

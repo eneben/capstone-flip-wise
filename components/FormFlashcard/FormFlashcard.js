@@ -100,6 +100,7 @@ const StyledForm = styled.form`
 `;
 
 const StyledFormHeadline = styled.h2`
+  font: var(--form-headline);
   text-align: center;
 `;
 

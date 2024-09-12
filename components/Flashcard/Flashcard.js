@@ -3,7 +3,6 @@ import { useState } from "react";
 import MarkAsIncorrect from "@/public/icons/MarkAsIncorrect.svg";
 import MarkAsCorrect from "@/public/icons/MarkAsCorrect.svg";
 import Delete from "@/public/icons/Delete.svg";
-import Arrow from "@/public/icons/Arrow.svg";
 import Edit from "@/public/icons/Edit.svg";
 import RoundButton from "../Buttons/RoundButton";
 import DeleteConfirmationDialog from "../DeleteConfirmationDialog/DeleteConfirmationDialog";
@@ -150,17 +149,15 @@ const CardBack = styled(CardFace)`
 `;
 
 const CollectionTitle = styled.p`
-  font-size: 0.8rem;
+  font: var(--collection-title);
 `;
 
 const Answer = styled.p`
-  font-size: 1.2rem;
-  font-weight: 500;
+  font: var(--question-answer);
   padding-top: 50px;
 `;
 
 const Question = styled.h3`
-  font-size: 1.2rem;
-  font-weight: 500;
+  font: var(--question-answer);
   padding-top: 37.2px;
 `;

@@ -55,7 +55,7 @@ export default function CorrectCounter({
       type="button"
     >
       <StyledIconWrapper $color={color}>{icon}</StyledIconWrapper>
-      <span>{count}</span>
+      <Counter>{count}</Counter>
     </CorrectCounterButton>
   );
 }
@@ -82,4 +82,8 @@ const StyledIconWrapper = styled.div`
   align-items: center;
   justify-content: center;
   background-color: ${({ $color }) => $color};
+`;
+
+const Counter = styled.span`
+  font: var(--counter);
 `;
