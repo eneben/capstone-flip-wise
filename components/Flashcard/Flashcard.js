@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useState } from "react";
+import { findContrastColor } from "color-contrast-finder";
 import MarkAsIncorrect from "@/public/icons/MarkAsIncorrect.svg";
 import MarkAsCorrect from "@/public/icons/MarkAsCorrect.svg";
 import Delete from "@/public/icons/Delete.svg";
@@ -42,6 +43,15 @@ export default function Flashcard({
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
+  const contrastOptions = {
+    color: collectionColor,
+    threshold: 0.5,
+    highColor: "#000",
+    lowColor: "#fff",
+  };
+
+  const titleColor = findContrastColor(contrastOptions);
+
   return (
     <CardContainer onClick={handleShowAnswer}>
       <StyledFlashcard $showAnswer={showAnswer}>
@@ -67,7 +77,10 @@ export default function Flashcard({
         {!isDelete && (
           <>
             <CardFront $collectionColor={collectionColor}>
-              <CollectionTitle $collectionColor={collectionColor}>
+              <CollectionTitle
+                $collectionColor={collectionColor}
+                $titleColor={titleColor}
+              >
                 {collection}
               </CollectionTitle>
 
@@ -172,16 +185,14 @@ const CardBack = styled(CardFace)`
 const CollectionTitle = styled.p`
   font: var(--collection-title);
   display: inline-block;
-  padding: 5px 12px 5px 10px;
+  color: ${({ $titleColor }) => $titleColor};
+  background-color: ${({ $collectionColor }) => $collectionColor};
+  padding: 5px 12px 7px 10px;
   grid-column: 1 / 6;
   grid-row: 1 / 2;
   justify-self: start;
   align-self: start;
-  border-bottom-right-radius: 20px;
-  border-right: var(--border-thickness) solid
-    ${({ $collectionColor }) => $collectionColor};
-  border-bottom: var(--border-thickness) solid
-    ${({ $collectionColor }) => $collectionColor};
+  border-bottom-right-radius: 10px;
 `;
 
 const Answer = styled.p`
