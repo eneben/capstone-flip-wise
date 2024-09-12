@@ -1,0 +1,52 @@
+[
+  {
+    "id": "1",
+    "title": "Mathematics",
+    "color": "#62b5e5"
+  },
+  {
+    "id": "2",
+    "title": "Biology",
+    "color": "#64ccc9"
+  },
+  {
+    "id": "3",
+    "title": "Chemistry",
+    "color": "#34b78f"
+  },
+  {
+    "id": "4",
+    "title": "Physics",
+    "color": "#c6d843"
+  },
+  {
+    "id": "5",
+    "title": "Geography",
+    "color": "#ef426f"
+  },
+  {
+    "id": "6",
+    "title": "History",
+    "color": "#ff6d6a"
+  },
+  {
+    "id": "7",
+    "title": "Literature",
+    "color": "#b565a7"
+  },
+  {
+    "id": "8",
+    "title": "Art",
+    "color": "#ffcd00"
+  },
+  {
+    "id": "9",
+    "title": "Music",
+    "color": "#bb2749"
+  },
+  {
+    "id": "10",
+    "title": "Informatics",
+    "color": "#3c539a"
+  }
+]
