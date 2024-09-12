@@ -192,6 +192,7 @@ const CollectionTitle = styled.p`
   grid-row: 1 / 2;
   justify-self: start;
   align-self: start;
+  border-top-left-radius: 6px;
   border-bottom-right-radius: 10px;
 `;
 
