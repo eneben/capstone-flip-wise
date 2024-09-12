@@ -67,7 +67,9 @@ export default function Flashcard({
         {!isDelete && (
           <>
             <CardFront $collectionColor={collectionColor}>
-              <CollectionTitle>{collection}</CollectionTitle>
+              <CollectionTitle $collectionColor={collectionColor}>
+                {collection}
+              </CollectionTitle>
 
               <StyledEditButtonContainer>
                 <RoundButton
@@ -169,9 +171,17 @@ const CardBack = styled(CardFace)`
 
 const CollectionTitle = styled.p`
   font: var(--collection-title);
-  padding: 8px;
+  display: inline-block;
+  padding: 5px 12px 5px 10px;
   grid-column: 1 / 6;
   grid-row: 1 / 2;
+  justify-self: start;
+  align-self: start;
+  border-bottom-right-radius: 20px;
+  border-right: var(--border-thickness) solid
+    ${({ $collectionColor }) => $collectionColor};
+  border-bottom: var(--border-thickness) solid
+    ${({ $collectionColor }) => $collectionColor};
 `;
 
 const Answer = styled.p`
