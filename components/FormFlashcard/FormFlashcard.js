@@ -107,11 +107,17 @@ const StyledFormHeadline = styled.h2`
 const StyledLabel = styled.label`
   display: block;
   padding: 10px 0 2px 0;
-  font-size: 0.9rem;
+  font: var(--form-label);
 `;
 
 const StyledSelect = styled.select`
   display: block;
   width: 100%;
-  height: 1.5rem;
+  font: var(--form-input);
+  height: 1.7rem;
+  border: 1px solid var(--primary-neutral);
+  border-radius: 2px;
+  &:focus {
+    outline: 1px solid var(--primary-neutral);
+  }
 `;

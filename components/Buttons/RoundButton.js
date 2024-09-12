@@ -37,27 +37,15 @@ const StyledRoundButton = styled.button`
 const variantRoundButtonStyles = {
   markAsCorrect: css`
     background-color: var(--primary-green);
-    position: absolute;
-    bottom: 15px;
-    left: 10px;
   `,
   markAsIncorrect: css`
     background-color: var(--primary-red);
-    position: absolute;
-    bottom: 15px;
-    left: 10px;
   `,
   delete: css`
     background-color: var(--primary-neutral);
-    position: absolute;
-    top: 15px;
-    right: 10px;
   `,
   edit: css`
     background-color: var(--primary-neutral);
-    position: absolute;
-    top: 15px;
-    right: 53px;
   `,
   formToggle: css`
     svg {

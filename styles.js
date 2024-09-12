@@ -39,6 +39,8 @@ export default createGlobalStyle`
     --collection-title: 400 0.9rem ${barlowSemi.style.fontFamily}, system-ui;
     --counter: 500 0.8rem ${barlowSemi.style.fontFamily}, system-ui;
     --form-headline: 700 1.5rem ${barlow.style.fontFamily}, system-ui;
+    --form-label: 500 0.9rem ${barlow.style.fontFamily}, system-ui;
+    --form-input: 400 0.9rem ${barlowSemi.style.fontFamily}, system-ui;
 }
 
   body {
