@@ -200,6 +200,7 @@ const Answer = styled.p`
   padding: 10px;
   grid-column: 1 / 8;
   grid-row: 2 / 3;
+  align-self: center;
 `;
 
 const Question = styled.h3`
@@ -208,6 +209,7 @@ const Question = styled.h3`
   white-space: normal;
   grid-column: 1 / 8;
   grid-row: 2 / 3;
+  align-self: center;
 `;
 
 const RoundButtonContainer = styled.div`
