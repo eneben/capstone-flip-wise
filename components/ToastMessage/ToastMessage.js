@@ -8,7 +8,7 @@ export default function ToastMessage({ text, variant, icon: Icon, onClick }) {
       </ProgressBarWrapper>
       <MessageContentWrapper>
         <StyledIconWrapper $variant={variant}>
-          <Icon fill="#fff" />
+          <Icon />
         </StyledIconWrapper>
         <StyledToastMessageText>{text}</StyledToastMessageText>
       </MessageContentWrapper>
@@ -86,6 +86,7 @@ const MessageContentWrapper = styled.div`
 `;
 
 const StyledIconWrapper = styled.div`
+  color: #fff;
   width: 25px;
   padding: 2px;
   border-radius: 50%;

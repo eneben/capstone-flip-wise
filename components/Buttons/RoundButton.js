@@ -46,9 +46,7 @@ const variantRoundButtonStyles = {
     background-color: var(--primary-neutral);
   `,
   formToggle: css`
-    svg {
-      fill: #000;
-    }
+    color: #000;
     width: 40px;
     height: 40px;
     position: fixed;
