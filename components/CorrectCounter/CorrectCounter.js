@@ -92,4 +92,5 @@ const StyledIconWrapper = styled.div`
 
 const Counter = styled.span`
   font: var(--counter);
+  color: #000;
 `;
