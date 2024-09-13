@@ -170,14 +170,14 @@ const CardFace = styled.div`
 const CardFront = styled(CardFace)`
   display: grid;
   grid-template-columns: 54px 54px 24px 1fr 24px 54px 54px;
-  grid-template-rows: 54px 106px 54px;
+  grid-template-rows: var(--grid-rows-card-and-title);
   background-color: #fff;
 `;
 
 const CardBack = styled(CardFace)`
   display: grid;
   grid-template-columns: 54px 54px 24px 1fr 24px 54px 54px;
-  grid-template-rows: 54px 106px 54px;
+  grid-template-rows: var(--grid-rows-card-and-title);
   background-color: var(--secondary-grey);
   transform: rotateY(180deg);
 `;
@@ -200,7 +200,7 @@ const Answer = styled.p`
   font: var(--question-answer);
   padding: 10px;
   grid-column: 1 / 8;
-  grid-row: 2 / 3;
+  grid-row: 2 / 4;
   align-self: center;
 `;
 
@@ -209,7 +209,7 @@ const Question = styled.h3`
   padding: 10px;
   white-space: normal;
   grid-column: 1 / 8;
-  grid-row: 2 / 3;
+  grid-row: 2 / 4;
   align-self: center;
 `;
 
@@ -231,5 +231,5 @@ const StyledDeleteButtonContainer = styled(RoundButtonContainer)`
 
 const StyledMarkAsButtonContainer = styled(RoundButtonContainer)`
   grid-column: 1 / 2;
-  grid-row: 3 / 4;
+  grid-row: 4 / 5;
 `;

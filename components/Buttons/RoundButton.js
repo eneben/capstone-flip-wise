@@ -20,9 +20,7 @@ export default function RoundButton({
 }
 
 const StyledRoundButton = styled.button`
-  svg {
-    fill: #fff;
-  }
+  color: #fff;
   width: 34px;
   height: 34px;
   padding: 7px;
