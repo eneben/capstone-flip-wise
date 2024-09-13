@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import MarkAsIncorrect from "@/public/icons/MarkAsIncorrect.svg";
+import MarkAsIncorrect from "@/public/icons/MarkAsIncorrect_Test.svg";
 import MarkAsCorrect from "@/public/icons/MarkAsCorrect.svg";
 import Stack from "@/public/icons/Stack.svg";
 
