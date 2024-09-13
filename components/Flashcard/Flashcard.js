@@ -183,7 +183,7 @@ const CardBack = styled(CardFace)`
   display: grid;
   grid-template-columns: var(--grid-columns-card-and-title);
   grid-template-rows: var(--grid-rows-card-and-title);
-  background-color: var(--secondary-grey);
+  background-color: var(--secondary-light-grey);
   transform: rotateY(180deg);
 `;
 

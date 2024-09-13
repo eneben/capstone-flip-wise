@@ -78,13 +78,13 @@ const CollectionBoxShadow = styled.div`
 const CollectionBoxShadow1 = styled(CollectionBoxShadow)`
   top: 8px;
   left: 8px;
-  background-color: var(--secondary-grey);
+  background-color: var(--secondary-light-grey);
 `;
 
 const CollectionBoxShadow2 = styled(CollectionBoxShadow)`
   top: 16px;
   left: -8px;
-  background-color: var(--secondary-mid-grey);
+  background-color: var(--secondary-grey);
 `;
 
 const CollectionBox = styled(Link)`
