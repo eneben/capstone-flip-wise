@@ -12,7 +12,7 @@ export default function Footer({
   const router = useRouter();
 
   return (
-    <nav>
+    <StyledNavigation>
       <StyledList>
         <ListItem>
           <CorrectCounter
@@ -57,20 +57,28 @@ export default function Footer({
           />
         </ListItem>
       </StyledList>
-    </nav>
+    </StyledNavigation>
   );
 }
 
-const StyledList = styled.ul`
-  list-style: none;
-  display: flex;
+const StyledNavigation = styled.nav`
+  width: 100vw;
   position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
-  width: 100%;
-  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--secondary-light-grey);
   box-shadow: 0 0 10px #000;
+`;
+
+const StyledList = styled.ul`
+  list-style: none;
+  display: flex;
+  width: 100%;
+  max-width: 800px;
 `;
 
 const ListItem = styled.li`

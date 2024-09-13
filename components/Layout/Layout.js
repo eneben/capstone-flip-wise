@@ -80,34 +80,36 @@ export default function Layout({
       </FormToggleContainer>
 
       <StyledHeader>
-        <HiddenHeadline>BRAIN STACK</HiddenHeadline>
-        <Link
-          href="/"
-          onClick={() => {
-            setIsFormClosing(true);
-          }}
-        >
-          <LogoContainer>
-            <Logo />
-          </LogoContainer>
-        </Link>
+        <StyledHeaderContentContainer>
+          <HiddenHeadline>BRAIN STACK</HiddenHeadline>
+          <Link
+            href="/"
+            onClick={() => {
+              setIsFormClosing(true);
+            }}
+          >
+            <LogoContainer>
+              <Logo />
+            </LogoContainer>
+          </Link>
 
-        <FormToggleContainer>
-          <RoundButton
-            type="button"
-            content={<Plus />}
-            variant="formToggle"
-            name="menu"
-            onClick={handleToggleForm}
-            isRotate={actionMode === "create" || actionMode === "edit"}
+          <FormToggleContainer>
+            <RoundButton
+              type="button"
+              content={<Plus />}
+              variant="formToggle"
+              name="menu"
+              onClick={handleToggleForm}
+              isRotate={actionMode === "create" || actionMode === "edit"}
+            />
+          </FormToggleContainer>
+
+          <Menu
+            collections={collections}
+            startClosingForm={startClosingForm}
+            changeFlashcardSelection={changeFlashcardSelection}
           />
-        </FormToggleContainer>
-
-        <Menu
-          collections={collections}
-          startClosingForm={startClosingForm}
-          changeFlashcardSelection={changeFlashcardSelection}
-        />
+        </StyledHeaderContentContainer>
       </StyledHeader>
     </>
   );
@@ -115,21 +117,33 @@ export default function Layout({
 
 const MainContainer = styled.main`
   margin: 0 auto;
-  max-width: 30rem;
+  min-height: 100vh;
+  max-width: 800px;
   padding: 100px 1rem 4.5rem 1rem;
+  background-color: #fff;
 `;
 
 const StyledHeader = styled.header`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   position: fixed;
   top: 0;
   width: 100vw;
   height: 100px;
-  padding: 15px 20px;
-  background-color: #fff;
+  background-color: var(--secondary-light-grey);
   box-shadow: 0 2px 10px #000;
+`;
+
+const StyledHeaderContentContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  width: 100vw;
+  max-width: 800px;
+  background-color: #fff;
+  height: 100px;
 `;
 
 const HiddenHeadline = styled.h1`
@@ -149,7 +163,6 @@ const FormToggleContainer = styled.div`
   display: flex;
   justify-content: center;
   width: 100vw;
-  position: absolute;
   top: 80px;
 `;
 

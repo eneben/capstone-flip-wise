@@ -29,6 +29,7 @@ export default createGlobalStyle`
     --primary-neutral: #264653;
     --secondary-grey: #dee3e5;
     --secondary-mid-grey: #bec7cb;
+    --secondary-light-grey: #f4f6f6;
 
     --border-thickness: 2px;
 
@@ -43,12 +44,18 @@ export default createGlobalStyle`
     --form-input: 400 0.9rem ${barlowSemi.style.fontFamily}, system-ui;
 
     --grid-columns-card-and-title: 54px 54px 24px 1fr 24px 54px 54px; 
-    --grid-rows-card-and-title: 54px 106px 1fr 54px;
+    --grid-rows-card-and-title: 54px 106px 54px;;
 }
 
   body {
     font-family: ${barlow.style.fontFamily}, system-ui;
-
+    background: repeating-linear-gradient(
+      -45deg,
+      #fff 0px,
+      #fff 15px,
+      var(--secondary-light-grey) 15px,
+      var(--secondary-light-grey) 30px
+  ); 
   }
 
 input, select, button {

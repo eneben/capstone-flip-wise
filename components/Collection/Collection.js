@@ -12,47 +12,80 @@ export default function Collection({
 }) {
   const { title: name, color, id } = collection;
   return (
-    <CollectionBox
-      $color={color}
-      href={`/${id}`}
-      onClick={() => changeFlashcardSelection("all")}
-    >
-      <CollectionName>{name}</CollectionName>
-      <IconIncorrectWrapper>
-        <CorrectCounter
-          getIncorrectFlashcardsFromCollection={
-            getIncorrectFlashcardsFromCollection
-          }
-          getCorrectFlashcardsFromCollection={
-            getCorrectFlashcardsFromCollection
-          }
-          id={id}
-          variant="incorrect"
-          collectionTitle={true}
-          actionMode={actionMode}
-          flashcardSelection={flashcardSelection}
-          changeFlashcardSelection={changeFlashcardSelection}
-        />
-      </IconIncorrectWrapper>
-      <IconCorrectWrapper>
-        <CorrectCounter
-          getCorrectFlashcardsFromCollection={
-            getCorrectFlashcardsFromCollection
-          }
-          getIncorrectFlashcardsFromCollection={
-            getIncorrectFlashcardsFromCollection
-          }
-          id={id}
-          variant="correct"
-          collectionTitle={true}
-          actionMode={actionMode}
-          flashcardSelection={flashcardSelection}
-          changeFlashcardSelection={changeFlashcardSelection}
-        />
-      </IconCorrectWrapper>
-    </CollectionBox>
+    <CollectionBoxWrapper>
+      <CollectionBoxShadow2 />
+      <CollectionBoxShadow1 />
+      <CollectionBox
+        $color={color}
+        href={`/${id}`}
+        onClick={() => changeFlashcardSelection("all")}
+      >
+        <CollectionName>{name}</CollectionName>
+        <IconIncorrectWrapper>
+          <CorrectCounter
+            getIncorrectFlashcardsFromCollection={
+              getIncorrectFlashcardsFromCollection
+            }
+            getCorrectFlashcardsFromCollection={
+              getCorrectFlashcardsFromCollection
+            }
+            id={id}
+            variant="incorrect"
+            collectionTitle={true}
+            actionMode={actionMode}
+            flashcardSelection={flashcardSelection}
+            changeFlashcardSelection={changeFlashcardSelection}
+          />
+        </IconIncorrectWrapper>
+        <IconCorrectWrapper>
+          <CorrectCounter
+            getCorrectFlashcardsFromCollection={
+              getCorrectFlashcardsFromCollection
+            }
+            getIncorrectFlashcardsFromCollection={
+              getIncorrectFlashcardsFromCollection
+            }
+            id={id}
+            variant="correct"
+            collectionTitle={true}
+            actionMode={actionMode}
+            flashcardSelection={flashcardSelection}
+            changeFlashcardSelection={changeFlashcardSelection}
+          />
+        </IconCorrectWrapper>
+      </CollectionBox>
+    </CollectionBoxWrapper>
   );
 }
+
+const CollectionBoxWrapper = styled.div`
+  margin: 0 auto;
+  width: 90vw;
+  height: 218px;
+  max-width: 500px;
+  position: relative;
+`;
+
+const CollectionBoxShadow = styled.div`
+  margin: 0 auto;
+  width: 90vw;
+  height: 218px;
+  max-width: 500px;
+  position: absolute;
+  border-radius: 10px;
+`;
+
+const CollectionBoxShadow1 = styled(CollectionBoxShadow)`
+  top: 8px;
+  left: 8px;
+  background-color: var(--secondary-grey);
+`;
+
+const CollectionBoxShadow2 = styled(CollectionBoxShadow)`
+  top: 16px;
+  left: -8px;
+  background-color: var(--secondary-mid-grey);
+`;
 
 const CollectionBox = styled(Link)`
   margin: 0 auto;
@@ -63,40 +96,15 @@ const CollectionBox = styled(Link)`
   border-radius: 10px;
   border: 2px solid ${({ $color }) => $color};
   display: grid;
-  grid-template-columns: 54px 54px 24px 1fr 24px 54px 54px;
-  grid-template-rows: 54px 106px 54px;
+  grid-template-columns: var(--grid-columns-card-and-title);
+  grid-template-rows: var(--grid-rows-card-and-title);
   background-color: #fff;
   text-decoration: none;
-
-  &::before,
-  &::after {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border-radius: 10px;
-    border: 2px solid ${({ $color }) => $color};
-    z-index: -1;
-  }
-
-  &::after {
-    top: 8px;
-    right: 8px;
-    border: none;
-    background-color: var(--secondary-grey);
-  }
-
-  &::before {
-    top: 15px;
-    left: 8px;
-    border: none;
-    background-color: var(--secondary-mid-grey);
-  }
+  color: #000;
 `;
 
 const CollectionName = styled.h3`
   font: var(--collection-name);
-  color: #000;
   text-align: center;
   align-self: center;
   grid-column: 1 / 8;

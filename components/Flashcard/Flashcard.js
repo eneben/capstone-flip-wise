@@ -58,18 +58,22 @@ export default function Flashcard({
         {isDelete && (
           <>
             <CardFront $collectionColor={collectionColor}>
-              <DeleteConfirmationDialog
-                onDelete={handleDelete}
-                toggleDeleteConfirmation={toggleDeleteConfirmation}
-                flashcardId={id}
-              />
+              <StyledDeleteConfirmationDialogContainer>
+                <DeleteConfirmationDialog
+                  onDelete={handleDelete}
+                  toggleDeleteConfirmation={toggleDeleteConfirmation}
+                  flashcardId={id}
+                />
+              </StyledDeleteConfirmationDialogContainer>
             </CardFront>
             <CardBack $collectionColor={collectionColor}>
-              <DeleteConfirmationDialog
-                onDelete={handleDelete}
-                toggleDeleteConfirmation={toggleDeleteConfirmation}
-                flashcardId={id}
-              />
+              <StyledDeleteConfirmationDialogContainer>
+                <DeleteConfirmationDialog
+                  onDelete={handleDelete}
+                  toggleDeleteConfirmation={toggleDeleteConfirmation}
+                  flashcardId={id}
+                />
+              </StyledDeleteConfirmationDialogContainer>
             </CardBack>
           </>
         )}
@@ -147,7 +151,8 @@ const CardContainer = styled.li`
 
 const StyledFlashcard = styled.article`
   width: 90vw;
-  height: 218px;
+  height: auto;
+  min-height: 218px;
   max-width: 500px;
   position: relative;
   transform-style: preserve-3d;
@@ -169,14 +174,14 @@ const CardFace = styled.div`
 
 const CardFront = styled(CardFace)`
   display: grid;
-  grid-template-columns: 54px 54px 24px 1fr 24px 54px 54px;
+  grid-template-columns: var(--grid-columns-card-and-title);
   grid-template-rows: var(--grid-rows-card-and-title);
   background-color: #fff;
 `;
 
 const CardBack = styled(CardFace)`
   display: grid;
-  grid-template-columns: 54px 54px 24px 1fr 24px 54px 54px;
+  grid-template-columns: var(--grid-columns-card-and-title);
   grid-template-rows: var(--grid-rows-card-and-title);
   background-color: var(--secondary-grey);
   transform: rotateY(180deg);
@@ -200,7 +205,7 @@ const Answer = styled.p`
   font: var(--question-answer);
   padding: 10px;
   grid-column: 1 / 8;
-  grid-row: 2 / 4;
+  grid-row: 2 / 3;
   align-self: center;
 `;
 
@@ -209,7 +214,7 @@ const Question = styled.h3`
   padding: 10px;
   white-space: normal;
   grid-column: 1 / 8;
-  grid-row: 2 / 4;
+  grid-row: 2 / 3;
   align-self: center;
 `;
 
@@ -230,6 +235,11 @@ const StyledDeleteButtonContainer = styled(RoundButtonContainer)`
 `;
 
 const StyledMarkAsButtonContainer = styled(RoundButtonContainer)`
-  grid-column: 1 / 2;
-  grid-row: 4 / 5;
+  grid-column: 7 / 8;
+  grid-row: 3 / 4;
+`;
+
+const StyledDeleteConfirmationDialogContainer = styled.div`
+  grid-column: 1 / 8;
+  grid-row: 2 / 4;
 `;
