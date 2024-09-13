@@ -107,7 +107,7 @@ export default function Flashcard({
               </StyledDeleteButtonContainer>
 
               <Question>{question}</Question>
-              {isCorrect && (
+              {/* {isCorrect && (
                 <StyledMarkAsButtonContainer>
                   <RoundButton
                     content={<MarkAsIncorrect />}
@@ -116,6 +116,12 @@ export default function Flashcard({
                     variant="markAsIncorrect"
                   />
                 </StyledMarkAsButtonContainer>
+              )} */}
+
+              {isCorrect && (
+                <StyledCorrectIcon>
+                  <MarkAsCorrect />
+                </StyledCorrectIcon>
               )}
             </CardFront>
             <CardBack $collectionColor={collectionColor}>
@@ -216,6 +222,15 @@ const Question = styled.h3`
   grid-column: 1 / 8;
   grid-row: 2 / 3;
   align-self: center;
+`;
+
+const StyledCorrectIcon = styled.div`
+  color: var(--primary-green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  grid-column: 7 / 8;
+  grid-row: 3 / 4;
 `;
 
 const RoundButtonContainer = styled.div`
