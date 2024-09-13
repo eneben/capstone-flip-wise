@@ -21,17 +21,17 @@ export default function CorrectCounter({
 
   const correctVariants = {
     incorrect: {
-      icon: <MarkAsIncorrect fill="#fff" />,
+      icon: <MarkAsIncorrect />,
       count: numberOfIncorrectFlashcards,
       color: "var(--primary-red)",
     },
     correct: {
-      icon: <MarkAsCorrect fill="#fff" />,
+      icon: <MarkAsCorrect />,
       count: numberOfCorrectFlashcards,
       color: "var(--primary-green)",
     },
     all: {
-      icon: <Stack fill="#fff" />,
+      icon: <Stack />,
       count: numberOfAllFlashcards,
       color: "var(--primary-neutral)",
     },
