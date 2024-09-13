@@ -8,7 +8,7 @@ export default function ToastMessage({ text, variant, icon: Icon, onClick }) {
       </ProgressBarWrapper>
       <MessageContentWrapper>
         <StyledIconWrapper $variant={variant}>
-          <Icon />
+          <Icon height="14px" width="14px" />
         </StyledIconWrapper>
         <StyledToastMessageText>{text}</StyledToastMessageText>
       </MessageContentWrapper>
