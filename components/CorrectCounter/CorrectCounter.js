@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import MarkAsIncorrect from "@/public/icons/MarkAsIncorrect_Test.svg";
+import MarkAsIncorrect from "@/public/icons/MarkAsIncorrect.svg";
 import MarkAsCorrect from "@/public/icons/MarkAsCorrect.svg";
 import Stack from "@/public/icons/Stack.svg";
 
@@ -21,17 +21,17 @@ export default function CorrectCounter({
 
   const correctVariants = {
     incorrect: {
-      icon: <MarkAsIncorrect />,
+      icon: <MarkAsIncorrect fill="#fff" />,
       count: numberOfIncorrectFlashcards,
       color: "var(--primary-red)",
     },
     correct: {
-      icon: <MarkAsCorrect />,
+      icon: <MarkAsCorrect fill="#fff" />,
       count: numberOfCorrectFlashcards,
       color: "var(--primary-green)",
     },
     all: {
-      icon: <Stack />,
+      icon: <Stack fill="#fff" />,
       count: numberOfAllFlashcards,
       color: "var(--primary-neutral)",
     },
