@@ -103,7 +103,6 @@ export default function Layout({
               isRotate={actionMode === "create" || actionMode === "edit"}
             />
           </FormToggleContainer>
-
           <Menu
             collections={collections}
             startClosingForm={startClosingForm}

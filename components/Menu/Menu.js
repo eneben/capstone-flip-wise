@@ -30,7 +30,7 @@ export default function Menu({
       const menuTimeoutId = setTimeout(() => {
         setIsMenu(false);
         setIsMenuClosing(false);
-      }, 290);
+      }, 190);
       return () => clearTimeout(menuTimeoutId);
     }
   }, [isMenuClosing]);
@@ -55,7 +55,7 @@ export default function Menu({
   }, [isCollectionsClosing]);
 
   return (
-    <>
+    <StyledMenuContainer>
       <StyledButton type="button" name="menuButton" onClick={handleToggleMenu}>
         <MenuIcon />
       </StyledButton>
@@ -106,18 +106,19 @@ export default function Menu({
           </StyledNavigationList>
         </StyledNavigation>
       )}
-    </>
+      {isMenu && <StyledCover />}
+    </StyledMenuContainer>
   );
 }
 
 const menuAnimationIn = keyframes`
-0% { right: -220px; }
-100% { right: 0px; }
+0% { top: 65px; }
+100% { top: 100px; }
 `;
 
 const menuAnimationOut = keyframes`
-0% { right: 0px; }
-100% { right: -220px; }
+0% { top: 100px; }
+100% { top: 65px; }
 `;
 
 const subMenuAnimationOpen = keyframes`
@@ -130,44 +131,56 @@ const subMenuAnimationClose = keyframes`
 100% { height: 0px; opacity: 0;}
 `;
 
+const StyledMenuContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+`;
+
 const StyledButton = styled.button`
   color: #000;
   width: 35px;
   height: 35px;
-  padding: 4px;
   z-index: 1;
   background-color: #fff;
   border: none;
+`;
+
+const StyledCover = styled.div`
+  background-color: #fff;
+  width: 220px;
+  height: 100px;
+  position: absolute;
+  top: 0;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -10px;
+    right: -10px;
+    height: 100%;
+    background-color: #fff;
+  }
 `;
 
 const StyledNavigation = styled.nav`
   animation: ${(props) =>
     props.$isMenuClosing
       ? css`
-          ${menuAnimationOut} 0.3s ease-out
+          ${menuAnimationOut} 0.2s ease-out
         `
       : css`
-          ${menuAnimationIn} 0.3s ease-out
+          ${menuAnimationIn} 0.2s ease-out
         `};
   position: absolute;
   top: 100px;
-  right: 0px;
   width: 220px;
   background-color: #fff;
   border: 1px solid #000;
   border-top: none;
   border-right: none;
   box-shadow: 0px 3px 10px -2px #000;
-
-  &::before {
-    content: "";
-    position: absolute;
-    top: -100px;
-    right: 0;
-    width: 220px;
-    height: 100px;
-    background-color: #fff;
-  }
 `;
 
 const StyledNavigationList = styled.ul`
@@ -179,6 +192,7 @@ const StyledNavigationListItem = styled.li`
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: 1.1rem;
   font-weight: 500;
   text-align: center;
   color: #fff;
@@ -186,7 +200,8 @@ const StyledNavigationListItem = styled.li`
 `;
 
 const StyledSubNavigationList = styled.ul`
-  font-size: 0.8rem;
+  font-weight: 500;
+  font-size: 0.9rem;
   list-style: none;
 `;
 
@@ -219,7 +234,6 @@ const StyledSubNavigationLink = styled(Link)`
 `;
 
 const StyledSubMenuArrow = styled(SubMenuArrow)`
-  width: 30px;
   rotate: ${(props) => (props.$isRotate ? "1.5turn" : "0")};
   transition: 0.3s ease-out;
 `;
