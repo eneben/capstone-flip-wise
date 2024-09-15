@@ -168,9 +168,8 @@ const StyledFlashcard = styled.article`
   cursor: pointer;
 
   @media (min-width: 768px) {
-    width: 60vw;
     min-height: 300px;
-    height: 40vh;
+    max-height: 400px;
     transition: transform 0.8s;
   }
 `;
