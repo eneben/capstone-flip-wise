@@ -166,6 +166,13 @@ const StyledFlashcard = styled.article`
   transform: ${({ $showAnswer }) =>
     $showAnswer ? "rotateY(180deg)" : "rotateY(0deg)"};
   cursor: pointer;
+
+  @media (min-width: 768px) {
+    width: 60vw;
+    min-height: 300px;
+    height: 40vh;
+    transition: transform 0.8s;
+  }
 `;
 
 const CardFace = styled.div`
@@ -183,6 +190,10 @@ const CardFront = styled(CardFace)`
   grid-template-columns: var(--grid-columns-card-and-title);
   grid-template-rows: var(--grid-rows-card-and-title);
   background-color: #fff;
+
+  @media (min-width: 768px) {
+    grid-template-rows: 54px 1fr 54px;
+  }
 `;
 
 const CardBack = styled(CardFace)`
@@ -191,6 +202,10 @@ const CardBack = styled(CardFace)`
   grid-template-rows: var(--grid-rows-card-and-title);
   background-color: var(--secondary-light-grey);
   transform: rotateY(180deg);
+
+  @media (min-width: 768px) {
+    grid-template-rows: 54px 1fr 54px;
+  }
 `;
 
 const CollectionTitle = styled.p`
@@ -257,4 +272,10 @@ const StyledMarkAsButtonContainer = styled(RoundButtonContainer)`
 const StyledDeleteConfirmationDialogContainer = styled.div`
   grid-column: 1 / 8;
   grid-row: 2 / 4;
+
+  @media (min-width: 768px) {
+    padding: 40px;
+    grid-column: 1 / 8;
+    grid-row: 2 / 3;
+  }
 `;
