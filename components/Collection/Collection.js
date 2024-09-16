@@ -161,7 +161,7 @@ const CollectionName = styled.h3`
   grid-row: 2 / 3;
 `;
 
-const IconWrapper = styled.section`
+const IconWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
