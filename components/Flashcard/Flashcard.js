@@ -175,6 +175,9 @@ const StyledFlashcard = styled.article`
 `;
 
 const CardFace = styled.div`
+  display: grid;
+  grid-template-columns: var(--grid-columns-card-and-title);
+  grid-template-rows: var(--grid-rows-card-and-title);
   position: absolute;
   width: 100%;
   height: 100%;
@@ -182,29 +185,19 @@ const CardFace = styled.div`
   border-radius: 10px;
   border: var(--border-thickness) solid
     ${({ $collectionColor }) => $collectionColor};
+
+  @media (min-width: 768px) {
+    grid-template-rows: 54px 1fr 54px;
+  }
 `;
 
 const CardFront = styled(CardFace)`
-  display: grid;
-  grid-template-columns: var(--grid-columns-card-and-title);
-  grid-template-rows: var(--grid-rows-card-and-title);
   background-color: #fff;
-
-  @media (min-width: 768px) {
-    grid-template-rows: 54px 1fr 54px;
-  }
 `;
 
 const CardBack = styled(CardFace)`
-  display: grid;
-  grid-template-columns: var(--grid-columns-card-and-title);
-  grid-template-rows: var(--grid-rows-card-and-title);
   background-color: var(--secondary-light-grey);
   transform: rotateY(180deg);
-
-  @media (min-width: 768px) {
-    grid-template-rows: 54px 1fr 54px;
-  }
 `;
 
 const CollectionTitle = styled.p`
