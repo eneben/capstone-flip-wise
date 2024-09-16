@@ -44,7 +44,7 @@ export default createGlobalStyle`
     --form-input: 400 0.9rem ${barlowSemi.style.fontFamily}, system-ui;
 
     --grid-columns-card-and-title: 54px 54px 24px 1fr 24px 54px 54px; 
-    --grid-rows-card-and-title: 54px 106px 54px;;
+    --grid-rows-card-and-title: 54px 1fr 54px;
 }
 
   body {

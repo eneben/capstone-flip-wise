@@ -161,7 +161,6 @@ const StyledFlashcard = styled.article`
 
   @media (min-width: 768px) {
     min-height: 300px;
-    max-height: 400px;
     transition: transform 0.8s;
   }
 `;
@@ -177,10 +176,6 @@ const CardFace = styled.div`
   border-radius: 10px;
   border: var(--border-thickness) solid
     ${({ $collectionColor }) => $collectionColor};
-
-  @media (min-width: 768px) {
-    grid-template-rows: 54px 1fr 54px;
-  }
 `;
 
 const CardFront = styled(CardFace)`
@@ -212,6 +207,10 @@ const Answer = styled.p`
   grid-column: 1 / 8;
   grid-row: 2 / 3;
   align-self: center;
+
+  @media (min-width: 768px) {
+    font-size: 1.4rem;
+  }
 `;
 
 const Question = styled.h3`
@@ -221,6 +220,10 @@ const Question = styled.h3`
   grid-column: 1 / 8;
   grid-row: 2 / 3;
   align-self: center;
+
+  @media (min-width: 768px) {
+    font-size: 1.4rem;
+  }
 `;
 
 const StyledCorrectIcon = styled.div`
@@ -258,8 +261,6 @@ const StyledDeleteConfirmationDialogContainer = styled.div`
   grid-row: 2 / 4;
 
   @media (min-width: 768px) {
-    padding: 40px;
-    grid-column: 1 / 8;
-    grid-row: 2 / 3;
+    padding-top: 40px;
   }
 `;

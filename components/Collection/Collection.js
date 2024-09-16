@@ -32,24 +32,28 @@ export default function Collection({
       <CollectionBoxShadow1 />
       {isDelete && (
         <CollectionBox $color={color} href={"/"}>
-          <DeleteConfirmationDialog
-            onDeleteCollection={handleDeleteCollection}
-            toggleDeleteConfirmation={toggleDeleteConfirmation}
-            id={id}
-            variant="collection"
-          />
+          <StyledDeleteConfirmationDialogContainer>
+            <DeleteConfirmationDialog
+              onDeleteCollection={handleDeleteCollection}
+              toggleDeleteConfirmation={toggleDeleteConfirmation}
+              id={id}
+              variant="collection"
+            />
+          </StyledDeleteConfirmationDialogContainer>
         </CollectionBox>
       )}
 
       {!isDelete && (
         <CollectionBox $color={color} href={`/${id}`}>
-          <RoundButton
-            content={<Delete />}
-            onClick={toggleDeleteConfirmation}
-            type="button"
-            variant="delete"
-            actionMode={actionMode}
-          />
+          <StyledDeleteButtonContainer>
+            <RoundButton
+              content={<Delete />}
+              onClick={toggleDeleteConfirmation}
+              type="button"
+              variant="delete"
+              actionMode={actionMode}
+            />
+          </StyledDeleteButtonContainer>
           <CollectionName>{name}</CollectionName>
           <IconIncorrectWrapper>
             <CorrectCounter
@@ -95,6 +99,11 @@ const CollectionBoxWrapper = styled.div`
   height: 218px;
   max-width: 500px;
   position: relative;
+
+  @media (min-width: 768px) {
+    min-height: 300px;
+    max-height: 400px;
+  }
 `;
 
 const CollectionBoxShadow = styled.div`
@@ -104,6 +113,11 @@ const CollectionBoxShadow = styled.div`
   max-width: 500px;
   position: absolute;
   border-radius: 10px;
+
+  @media (min-width: 768px) {
+    min-height: 300px;
+    max-height: 400px;
+  }
 `;
 
 const CollectionBoxShadow1 = styled(CollectionBoxShadow)`
@@ -132,6 +146,11 @@ const CollectionBox = styled(Link)`
   background-color: #fff;
   text-decoration: none;
   color: #000;
+
+  @media (min-width: 768px) {
+    min-height: 300px;
+    max-height: 400px;
+  }
 `;
 
 const CollectionName = styled.h3`
@@ -157,4 +176,24 @@ const IconIncorrectWrapper = styled(IconWrapper)`
 const IconCorrectWrapper = styled(IconWrapper)`
   grid-column: 6 / 8;
   grid-row: 3 / 4;
+`;
+
+const RoundButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const StyledDeleteButtonContainer = styled(RoundButtonContainer)`
+  grid-column: 7 / 8;
+  grid-row: 1 / 2;
+`;
+
+const StyledDeleteConfirmationDialogContainer = styled.div`
+  grid-column: 1 / 8;
+  grid-row: 2 / 4;
+
+  @media (min-width: 768px) {
+    padding-top: 40px;
+  }
 `;
