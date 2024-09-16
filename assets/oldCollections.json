@@ -6,17 +6,17 @@
   },
   {
     "id": "2",
-    "title": "French Vokabulary",
+    "title": "Biology",
     "color": "#64ccc9"
   },
   {
     "id": "3",
-    "title": "Biology",
+    "title": "Chemistry",
     "color": "#34b78f"
   },
   {
     "id": "4",
-    "title": "Trick Questions",
+    "title": "Physics",
     "color": "#c6d843"
   },
   {
@@ -26,27 +26,27 @@
   },
   {
     "id": "6",
-    "title": "HTML & CSS",
+    "title": "History",
     "color": "#ff6d6a"
   },
   {
     "id": "7",
-    "title": "Art & Music",
+    "title": "Literature",
     "color": "#b565a7"
   },
   {
     "id": "8",
-    "title": "Climate & Earth",
+    "title": "Art",
     "color": "#ffcd00"
   },
   {
     "id": "9",
-    "title": "JavaScript",
+    "title": "Music",
     "color": "#bb2749"
   },
   {
     "id": "10",
-    "title": "Logical Puzzles",
+    "title": "Informatics",
     "color": "#3c539a"
   }
 ]

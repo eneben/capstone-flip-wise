@@ -8,6 +8,7 @@ export default function Menu({
   collections,
   startClosingForm,
   changeFlashcardSelection,
+  getAllFlashcardsFromCollection,
 }) {
   const [isMenu, setIsMenu] = useState(false);
   const [isCollections, setIsCollections] = useState(false);
@@ -96,7 +97,8 @@ export default function Menu({
                           setIsCollectionsClosing(true);
                         }}
                       >
-                        {collection.title}
+                        {collection.title} (
+                        {getAllFlashcardsFromCollection(collection.id).length})
                       </StyledSubNavigationLink>
                     </StyledSubNavigationListItem>
                   );

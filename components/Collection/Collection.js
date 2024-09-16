@@ -1,6 +1,11 @@
 import styled from "styled-components";
 import CorrectCounter from "../CorrectCounter/CorrectCounter";
 import Link from "next/link";
+import RoundButton from "../Buttons/RoundButton";
+import Delete from "@/public/icons/Delete.svg";
+import DeleteConfirmationDialog from "../DeleteConfirmationDialog/DeleteConfirmationDialog";
+
+import { useState } from "react";
 
 export default function Collection({
   collection,
@@ -9,51 +14,77 @@ export default function Collection({
   getIncorrectFlashcardsFromCollection,
   flashcardSelection,
   changeFlashcardSelection,
+  handleDeleteCollection,
 }) {
+  const [isDelete, setIsDelete] = useState(false);
+
   const { title: name, color, id } = collection;
+
+  function toggleDeleteConfirmation(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    setIsDelete(!isDelete);
+  }
+
   return (
     <CollectionBoxWrapper>
       <CollectionBoxShadow2 />
       <CollectionBoxShadow1 />
-      <CollectionBox
-        $color={color}
-        href={`/${id}`}
-        onClick={() => changeFlashcardSelection("all")}
-      >
-        <CollectionName>{name}</CollectionName>
-        <IconIncorrectWrapper>
-          <CorrectCounter
-            getIncorrectFlashcardsFromCollection={
-              getIncorrectFlashcardsFromCollection
-            }
-            getCorrectFlashcardsFromCollection={
-              getCorrectFlashcardsFromCollection
-            }
+      {isDelete && (
+        <CollectionBox $color={color} href={"/"}>
+          <DeleteConfirmationDialog
+            onDeleteCollection={handleDeleteCollection}
+            toggleDeleteConfirmation={toggleDeleteConfirmation}
             id={id}
-            variant="incorrect"
-            collectionTitle={true}
-            actionMode={actionMode}
-            flashcardSelection={flashcardSelection}
-            changeFlashcardSelection={changeFlashcardSelection}
+            variant="collection"
           />
-        </IconIncorrectWrapper>
-        <IconCorrectWrapper>
-          <CorrectCounter
-            getCorrectFlashcardsFromCollection={
-              getCorrectFlashcardsFromCollection
-            }
-            getIncorrectFlashcardsFromCollection={
-              getIncorrectFlashcardsFromCollection
-            }
-            id={id}
-            variant="correct"
-            collectionTitle={true}
+        </CollectionBox>
+      )}
+
+      {!isDelete && (
+        <CollectionBox $color={color} href={`/${id}`}>
+          <RoundButton
+            content={<Delete />}
+            onClick={toggleDeleteConfirmation}
+            type="button"
+            variant="delete"
             actionMode={actionMode}
-            flashcardSelection={flashcardSelection}
-            changeFlashcardSelection={changeFlashcardSelection}
           />
-        </IconCorrectWrapper>
-      </CollectionBox>
+          <CollectionName>{name}</CollectionName>
+          <IconIncorrectWrapper>
+            <CorrectCounter
+              getIncorrectFlashcardsFromCollection={
+                getIncorrectFlashcardsFromCollection
+              }
+              getCorrectFlashcardsFromCollection={
+                getCorrectFlashcardsFromCollection
+              }
+              id={id}
+              variant="incorrect"
+              collectionTitle={true}
+              actionMode={actionMode}
+              flashcardSelection={flashcardSelection}
+              changeFlashcardSelection={changeFlashcardSelection}
+            />
+          </IconIncorrectWrapper>
+          <IconCorrectWrapper>
+            <CorrectCounter
+              getCorrectFlashcardsFromCollection={
+                getCorrectFlashcardsFromCollection
+              }
+              getIncorrectFlashcardsFromCollection={
+                getIncorrectFlashcardsFromCollection
+              }
+              id={id}
+              variant="correct"
+              collectionTitle={true}
+              actionMode={actionMode}
+              flashcardSelection={flashcardSelection}
+              changeFlashcardSelection={changeFlashcardSelection}
+            />
+          </IconCorrectWrapper>
+        </CollectionBox>
+      )}
     </CollectionBoxWrapper>
   );
 }

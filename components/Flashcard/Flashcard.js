@@ -11,7 +11,7 @@ import DeleteConfirmationDialog from "../DeleteConfirmationDialog/DeleteConfirma
 export default function Flashcard({
   flashcard,
   onToggleCorrect,
-  handleDelete,
+  handleDeleteFlashcard,
   changeCurrentFlashcard,
   changeActionMode,
   collectionColor,
@@ -60,18 +60,20 @@ export default function Flashcard({
             <CardFront $collectionColor={collectionColor}>
               <StyledDeleteConfirmationDialogContainer>
                 <DeleteConfirmationDialog
-                  onDelete={handleDelete}
+                  onDeleteFlashcard={handleDeleteFlashcard}
                   toggleDeleteConfirmation={toggleDeleteConfirmation}
-                  flashcardId={id}
+                  id={id}
+                  variant="flashcard"
                 />
               </StyledDeleteConfirmationDialogContainer>
             </CardFront>
             <CardBack $collectionColor={collectionColor}>
               <StyledDeleteConfirmationDialogContainer>
                 <DeleteConfirmationDialog
-                  onDelete={handleDelete}
+                  onDeleteFlashcard={handleDeleteFlashcard}
                   toggleDeleteConfirmation={toggleDeleteConfirmation}
-                  flashcardId={id}
+                  id={id}
+                  variant="flashcard"
                 />
               </StyledDeleteConfirmationDialogContainer>
             </CardBack>
@@ -107,16 +109,6 @@ export default function Flashcard({
               </StyledDeleteButtonContainer>
 
               <Question>{question}</Question>
-              {/* {isCorrect && (
-                <StyledMarkAsButtonContainer>
-                  <RoundButton
-                    content={<MarkAsIncorrect />}
-                    onClick={() => onToggleCorrect(id)}
-                    type="button"
-                    variant="markAsIncorrect"
-                  />
-                </StyledMarkAsButtonContainer>
-              )} */}
 
               {isCorrect && (
                 <StyledCorrectIcon>

@@ -2,7 +2,7 @@ import GlobalStyle from "../styles";
 import Layout from "@/components/Layout/Layout";
 import styled from "styled-components";
 import initialFlashcards from "@/assets/flashcards.json";
-import collections from "@/assets/collections.json";
+import initialCollections from "@/assets/collections.json";
 import useLocalStorageState from "use-local-storage-state";
 import { uid } from "uid";
 import { useEffect, useState } from "react";
@@ -12,6 +12,10 @@ import ToastMessageContainer from "@/components/ToastMessage/ToastMessageContain
 export default function App({ Component, pageProps }) {
   const [flashcards, setFlashcards] = useLocalStorageState("flashcards", {
     defaultValue: initialFlashcards,
+  });
+
+  const [collections, setCollections] = useLocalStorageState("collections", {
+    defaultValue: initialCollections,
   });
 
   const [toastMessages, setToastMessages] = useState([]);
@@ -112,7 +116,7 @@ export default function App({ Component, pageProps }) {
     );
   }
 
-  function handleDelete(id) {
+  function handleDeleteFlashcard(id) {
     setFlashcards(
       flashcards.filter((flashcard) => {
         return flashcard.id !== id;
@@ -123,6 +127,28 @@ export default function App({ Component, pageProps }) {
       "success",
       MarkAsCorrect
     );
+  }
+
+  function handleDeleteCollection(id) {
+    setCollections(
+      collections.filter((collection) => {
+        return collection.id !== id;
+      })
+    );
+    setFlashcards(
+      flashcards.filter((flashcard) => {
+        return flashcard.collectionId !== id;
+      })
+    );
+    showToastMessage(
+      "Collection deleted successfully!",
+      "success",
+      MarkAsCorrect
+    );
+  }
+
+  function handleAddCollection(newCollection) {
+    setCollections([newCollection, ...collections]);
   }
 
   function getCollection(collectionId) {
@@ -175,6 +201,8 @@ export default function App({ Component, pageProps }) {
       handleEditFlashcard={handleEditFlashcard}
       handleCreateFlashcard={handleCreateFlashcard}
       changeFlashcardSelection={changeFlashcardSelection}
+      handleAddCollection={handleAddCollection}
+      getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
     >
       <GlobalStyle />
       <Component
@@ -182,7 +210,8 @@ export default function App({ Component, pageProps }) {
         flashcardsWithCollection={flashcardsWithCollection}
         handleToggleCorrect={handleToggleCorrect}
         collections={collections}
-        handleDelete={handleDelete}
+        handleDeleteFlashcard={handleDeleteFlashcard}
+        handleDeleteCollection={handleDeleteCollection}
         currentFlashcard={currentFlashcard}
         changeCurrentFlashcard={changeCurrentFlashcard}
         actionMode={actionMode}

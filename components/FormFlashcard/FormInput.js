@@ -1,10 +1,16 @@
 import styled from "styled-components";
 
-export default function FormInput({ name, actionMode, currentFlashcard }) {
+export default function FormInput({
+  name,
+  maxlength,
+  actionMode,
+  currentFlashcard,
+}) {
   return (
     <StyledInput
       id={name}
       name={name}
+      maxLength={maxlength}
       type="text"
       required
       defaultValue={actionMode === "edit" ? currentFlashcard[name] : ""}

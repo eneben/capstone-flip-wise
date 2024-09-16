@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { useRouter } from "next/router";
 import CorrectCounter from "../CorrectCounter/CorrectCounter";
 
 export default function Footer({
@@ -9,8 +8,6 @@ export default function Footer({
   flashcardSelection,
   changeFlashcardSelection,
 }) {
-  const router = useRouter();
-
   return (
     <StyledNavigation>
       <StyledList>
