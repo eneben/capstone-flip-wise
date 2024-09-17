@@ -3,7 +3,7 @@ import FlashcardList from "@/components/FlashcardList/FlashcardList";
 import styled from "styled-components";
 import Footer from "@/components/Footer/Footer";
 
-export default function CollectionPage({
+export default function LearningCollectionPage({
   handleToggleCorrect,
   handleDeleteFlashcard,
   changeActionMode,
@@ -13,6 +13,7 @@ export default function CollectionPage({
   getCorrectFlashcardsFromCollection,
   flashcardSelection,
   changeFlashcardSelection,
+  modeSelection,
 }) {
   const router = useRouter();
   const { id } = router.query;
@@ -52,6 +53,7 @@ export default function CollectionPage({
           changeCurrentFlashcard={changeCurrentFlashcard}
           changeActionMode={changeActionMode}
           collectionColor={collectionColor}
+          modeSelection={modeSelection}
         />
       )}
       {(!displayedFlashcards || displayedFlashcards.length === 0) && (

@@ -7,14 +7,17 @@ import Delete from "@/public/icons/Delete.svg";
 import Edit from "@/public/icons/Edit.svg";
 import RoundButton from "../Buttons/RoundButton";
 import DeleteConfirmationDialog from "../DeleteConfirmationDialog/DeleteConfirmationDialog";
+import LevelBar from "../LevelBar/LevelBar";
 
 export default function Flashcard({
   flashcard,
-  onToggleCorrect,
   handleDeleteFlashcard,
   changeCurrentFlashcard,
   changeActionMode,
   collectionColor,
+  modeSelection,
+  onIncreaseFlashcardLevel,
+  onDecreaseFlashcardLevel,
 }) {
   const [showAnswer, setShowAnswer] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
@@ -25,6 +28,7 @@ export default function Flashcard({
     collectionTitle: collection,
     id,
     isCorrect,
+    level,
   } = flashcard;
 
   function handleShowAnswer() {
@@ -89,7 +93,6 @@ export default function Flashcard({
               >
                 {collection}
               </CollectionTitle>
-
               <StyledEditButtonContainer>
                 <RoundButton
                   onClick={setEditWithoutFlip}
@@ -99,7 +102,6 @@ export default function Flashcard({
                   <Edit />
                 </RoundButton>
               </StyledEditButtonContainer>
-
               <StyledDeleteButtonContainer>
                 <RoundButton
                   onClick={toggleDeleteConfirmation}
@@ -112,12 +114,15 @@ export default function Flashcard({
 
               <Question>{question}</Question>
 
+              {modeSelection === "training" && <LevelBar level={level} />}
+
               {isCorrect && (
                 <StyledCorrectIcon>
                   <MarkAsCorrect />
                 </StyledCorrectIcon>
               )}
             </CardFront>
+
             <CardBack $collectionColor={collectionColor}>
               <StyledDeleteButtonContainer>
                 <RoundButton
@@ -130,15 +135,42 @@ export default function Flashcard({
               </StyledDeleteButtonContainer>
               <Answer>{answer}</Answer>
 
-              <StyledMarkAsButtonContainer>
-                <RoundButton
-                  onClick={() => onToggleCorrect(id)}
-                  type="button"
-                  variant={isCorrect ? "markAsIncorrect" : "markAsCorrect"}
-                >
-                  {isCorrect ? <MarkAsIncorrect /> : <MarkAsCorrect />}
-                </RoundButton>
-              </StyledMarkAsButtonContainer>
+              {modeSelection === "learning" && (
+                <StyledMarkAsButtonContainer>
+                  <RoundButton
+                    onClick={() => onToggleCorrect(id)}
+                    type="button"
+                    variant={isCorrect ? "markAsIncorrect" : "markAsCorrect"}
+                  >
+                    {isCorrect ? <MarkAsIncorrect /> : <MarkAsCorrect />}
+                  </RoundButton>
+                </StyledMarkAsButtonContainer>
+              )}
+
+              {modeSelection === "training" && (
+                <>
+                  <StyledIncorrectButtonContainer>
+                    <RoundButton
+                      onClick={() => onDecreaseFlashcardLevel(id)}
+                      type="button"
+                      variant={"markAsIncorrect"}
+                      disabled={level === 1}
+                    >
+                      <MarkAsIncorrect />
+                    </RoundButton>
+                  </StyledIncorrectButtonContainer>
+                  <StyledCorrectButtonContainer>
+                    <RoundButton
+                      onClick={() => onIncreaseFlashcardLevel(id)}
+                      type="button"
+                      variant={"markAsCorrect"}
+                      disabled={level === 5}
+                    >
+                      <MarkAsCorrect />
+                    </RoundButton>
+                  </StyledCorrectButtonContainer>
+                </>
+              )}
             </CardBack>
           </>
         )}
@@ -256,6 +288,16 @@ const StyledDeleteButtonContainer = styled(RoundButtonContainer)`
 `;
 
 const StyledMarkAsButtonContainer = styled(RoundButtonContainer)`
+  grid-column: 7 / 8;
+  grid-row: 3 / 4;
+`;
+
+const StyledIncorrectButtonContainer = styled(RoundButtonContainer)`
+  grid-column: 6 / 7;
+  grid-row: 3 / 4;
+`;
+
+const StyledCorrectButtonContainer = styled(RoundButtonContainer)`
   grid-column: 7 / 8;
   grid-row: 3 / 4;
 `;

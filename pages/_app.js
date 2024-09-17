@@ -24,10 +24,17 @@ export default function App({ Component, pageProps }) {
 
   const [actionMode, setActionMode] = useState("default");
 
+  const [modeSelection, setModeSelection] = useState(null);
+  console.log(" modeSelection: ", modeSelection);
+
   const [flashcardSelection, setFlashcardSelection] = useState("all");
 
   function changeFlashcardSelection(selection) {
     setFlashcardSelection(selection);
+  }
+
+  function changeModeSelection(selection) {
+    setModeSelection(selection);
   }
 
   function showToastMessage(message, variant, icon) {
@@ -192,6 +199,34 @@ export default function App({ Component, pageProps }) {
     return incorrectFlashcardsFromCollection;
   }
 
+  function handleIncreaseFlashcardLevel(id) {
+    setFlashcards(
+      flashcards.map((flashcard) => {
+        return flashcard.id === id
+          ? {
+              ...flashcard,
+              level: flashcard.level + 1,
+              trainingDate: Date.now(),
+            }
+          : flashcard;
+      })
+    );
+  }
+
+  function handleDecreaseFlashcardLevel(id) {
+    setFlashcards(
+      flashcards.map((flashcard) => {
+        return flashcard.id === id
+          ? {
+              ...flashcard,
+              level: flashcard.level - 1,
+              trainingDate: Date.now(),
+            }
+          : flashcard;
+      })
+    );
+  }
+
   return (
     <Layout
       collections={collections}
@@ -225,6 +260,10 @@ export default function App({ Component, pageProps }) {
         }
         flashcardSelection={flashcardSelection}
         changeFlashcardSelection={changeFlashcardSelection}
+        changeModeSelection={changeModeSelection}
+        modeSelection={modeSelection}
+        handleIncreaseFlashcardLevel={handleIncreaseFlashcardLevel}
+        handleDecreaseFlashcardLevel={handleDecreaseFlashcardLevel}
       />
       <ToastMessageContainer
         toastMessages={toastMessages}

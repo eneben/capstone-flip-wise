@@ -10,13 +10,45 @@ export default function FlashcardList({
   changeCurrentFlashcard,
   changeActionMode,
   collectionColor,
+  modeSelection,
+  handleIncreaseFlashcardLevel,
+  handleDecreaseFlashcardLevel,
 }) {
+  function sortFlashcardsByLevel(flashcards) {
+    return flashcards.sort((a, b) => {
+      if (a.level !== b.level) {
+        return a.level - b.level;
+      }
+
+      if (!a.trainingDate && !b.trainingDate) {
+        return 0;
+      } else if (!a.trainingDate) {
+        return -1;
+      } else if (!b.trainingDate) {
+        return 1;
+      } else {
+        return a.trainingDate - b.trainingDate;
+      }
+    });
+  }
+  const flashcardsSortedByLevel = sortFlashcardsByLevel(flashcards);
+
+  function sortFlashcardsById(flashcards) {
+    return flashcards.sort((a, b) => {
+      a.id - b.id;
+    });
+  }
+  const flashcardsSortedById = sortFlashcardsById(flashcards);
+
   return (
     <>
       <StyledHeadline>{headline}</StyledHeadline>
       <StyledSubheading>{subheading}</StyledSubheading>
       <FlashcardListWrapper>
-        {flashcards.map((flashcard) => {
+        {(modeSelection === "training"
+          ? flashcardsSortedByLevel
+          : flashcardsSortedById
+        ).map((flashcard) => {
           return (
             <Flashcard
               collectionColor={collectionColor}
@@ -26,6 +58,9 @@ export default function FlashcardList({
               onToggleCorrect={handleToggleCorrect}
               changeCurrentFlashcard={changeCurrentFlashcard}
               changeActionMode={changeActionMode}
+              modeSelection={modeSelection}
+              onIncreaseFlashcardLevel={handleIncreaseFlashcardLevel}
+              onDecreaseFlashcardLevel={handleDecreaseFlashcardLevel}
             />
           );
         })}
