@@ -45,10 +45,25 @@ export default function FlashcardList({
     sortedFlashcards = sortFlashcardsById(flashcards);
   }
 
+  function areAllCardsLearned(flashcards) {
+    return flashcards.length > 0 && flashcards[0].level === 5;
+  }
+
+  const allLearned =
+    modeSelection === "training" && areAllCardsLearned(sortedFlashcards);
+
   return (
     <>
       <StyledHeadline>{headline}</StyledHeadline>
       <StyledSubheading>{subheading}</StyledSubheading>
+
+      {allLearned && (
+        <StyledSuccessMessage>
+          You have trained all flashcards up to the last level, BrainStack
+          Champion! <span aria-label="party-popper-emoji">🎉</span>
+        </StyledSuccessMessage>
+      )}
+
       <FlashcardListWrapper>
         {sortedFlashcards.map((flashcard) => {
           return (
@@ -89,4 +104,11 @@ const StyledSubheading = styled.h3`
   font: var(--sub-headline);
   text-align: center;
   padding: 5px 0 30px 0;
+`;
+
+const StyledSuccessMessage = styled.p`
+  font: var(--main-headline);
+  text-align: center;
+  color: var(--primary-green);
+  padding: 0 30px 50px 30px;
 `;
