@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { findContrastColor } from "color-contrast-finder";
 import MarkAsIncorrect from "@/public/icons/MarkAsIncorrect.svg";
 import MarkAsCorrect from "@/public/icons/MarkAsCorrect.svg";
@@ -18,6 +18,12 @@ export default function Flashcard({
 }) {
   const [showAnswer, setShowAnswer] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
+  const [touchStartX, setTouchStartX] = useState(0);
+  const [touchEndX, setTouchEndX] = useState(0);
+  const [cardPosition, setCardPosition] = useState(0);
+  const [isSwiping, setIsSwiping] = useState(false);
+
+  const minimumSwipeDistance = 100;
 
   const {
     question,
@@ -26,6 +32,63 @@ export default function Flashcard({
     id,
     isCorrect,
   } = flashcard;
+
+  useEffect(() => {
+    if (isSwiping) {
+      const distance = touchStartX - touchEndX;
+      const isSwipeRight = distance < 0;
+      const isSwipeLeft = distance > 0;
+
+      if (Math.abs(distance) > minimumSwipeDistance) {
+        const timeout = setTimeout(() => {
+          if (isSwipeRight && !isCorrect) {
+            onToggleCorrect(flashcard.id);
+          } else if (isSwipeLeft && isCorrect) {
+            onToggleCorrect(flashcard.id);
+          }
+          resetSwipe();
+        }, 300);
+
+        return () => clearTimeout(timeout);
+      } else {
+        resetSwipe();
+      }
+    }
+  }, [
+    isSwiping,
+    touchEndX,
+    touchStartX,
+    isCorrect,
+    onToggleCorrect,
+    flashcard.id,
+  ]);
+
+  function handleTouchStart(event) {
+    if (!showAnswer) return;
+    setTouchStartX(event.targetTouches[0].clientX);
+  }
+
+  function handleTouchMove(event) {
+    if (!showAnswer) return;
+    const touchX = event.targetTouches[0].clientX;
+    setCardPosition(touchX - touchStartX);
+    setTouchEndX(touchX);
+  }
+
+  function handleTouchEnd() {
+    if (!showAnswer) {
+      setCardPosition(0);
+      return;
+    }
+    setIsSwiping(true);
+  }
+
+  function resetSwipe() {
+    setIsSwiping(false);
+    setCardPosition(0);
+    setTouchStartX(0);
+    setTouchEndX(0);
+  }
 
   function handleShowAnswer() {
     setShowAnswer(!showAnswer);
@@ -40,7 +103,7 @@ export default function Flashcard({
     event.stopPropagation();
     changeActionMode("edit");
     changeCurrentFlashcard(flashcard);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    // window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   const contrastOptions = {
@@ -53,8 +116,18 @@ export default function Flashcard({
   const titleColor = findContrastColor(contrastOptions);
 
   return (
-    <CardContainer onClick={handleShowAnswer}>
-      <StyledFlashcard $showAnswer={showAnswer}>
+    <CardContainer
+      onClick={handleShowAnswer}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
+      <StyledFlashcard
+        $showAnswer={showAnswer}
+        $cardPosition={cardPosition}
+        $isSwiping={isSwiping}
+        $swipeDirection={touchEndX > touchStartX ? "right" : "left"}
+      >
         {isDelete && (
           <>
             <CardFront $collectionColor={collectionColor}>
@@ -154,9 +227,18 @@ const StyledFlashcard = styled.article`
   max-width: 500px;
   position: relative;
   transform-style: preserve-3d;
-  transition: transform 0.6s;
-  transform: ${({ $showAnswer }) =>
-    $showAnswer ? "rotateY(180deg)" : "rotateY(0deg)"};
+  transition: transform 0.3s, transform 0.6s;
+  transform: ${({ $showAnswer, $cardPosition, $isSwiping, $swipeDirection }) =>
+    $showAnswer
+      ? `rotateY(180deg) translateX(${$cardPosition}px)`
+      : `rotateY(0deg) translateX(${$cardPosition}px)`};
+  opacity: ${({ $isSwiping }) => ($isSwiping ? 0 : 1)};
+  ${({ $isSwiping, $swipeDirection }) =>
+    $isSwiping
+      ? $swipeDirection === "right"
+        ? `transform: translateX(100vw);`
+        : `transform: translateX(-100vw);`
+      : ""};
   cursor: pointer;
 
   @media (min-width: 768px) {
