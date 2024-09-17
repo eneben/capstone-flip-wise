@@ -44,15 +44,20 @@ export default function Collection({
       )}
 
       {!isDelete && (
-        <CollectionBox $color={color} href={`/${id}`}>
+        <CollectionBox
+          $color={color}
+          href={`/${id}`}
+          onClick={() => changeFlashcardSelection("all")}
+        >
           <StyledDeleteButtonContainer>
             <RoundButton
-              content={<Delete />}
               onClick={toggleDeleteConfirmation}
               type="button"
               variant="delete"
               actionMode={actionMode}
-            />
+            >
+              <Delete />
+            </RoundButton>
           </StyledDeleteButtonContainer>
           <CollectionName>{name}</CollectionName>
           <IconIncorrectWrapper>

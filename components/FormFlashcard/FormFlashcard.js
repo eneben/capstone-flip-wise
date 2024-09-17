@@ -113,14 +113,17 @@ export default function FormFlashcard({
       )}
 
       <ButtonWrapper>
-        <RegularButton type="submit" content="Submit" variant="submit" />
+        <RegularButton type="submit" variant="submit">
+          Submit
+        </RegularButton>
         {actionMode === "edit" && (
           <RegularButton
             type="button"
-            content="Cancel"
             variant="confirm"
             onClick={() => changeActionMode("default")}
-          />
+          >
+            Cancel
+          </RegularButton>
         )}
       </ButtonWrapper>
     </StyledForm>

@@ -92,20 +92,22 @@ export default function Flashcard({
 
               <StyledEditButtonContainer>
                 <RoundButton
-                  content={<Edit />}
                   onClick={setEditWithoutFlip}
                   type="button"
                   variant="edit"
-                />
+                >
+                  <Edit />
+                </RoundButton>
               </StyledEditButtonContainer>
 
               <StyledDeleteButtonContainer>
                 <RoundButton
-                  content={<Delete />}
                   onClick={toggleDeleteConfirmation}
                   type="button"
                   variant="delete"
-                />
+                >
+                  <Delete />
+                </RoundButton>
               </StyledDeleteButtonContainer>
 
               <Question>{question}</Question>
@@ -119,21 +121,23 @@ export default function Flashcard({
             <CardBack $collectionColor={collectionColor}>
               <StyledDeleteButtonContainer>
                 <RoundButton
-                  content={<Delete />}
                   onClick={toggleDeleteConfirmation}
                   type="button"
                   variant="delete"
-                />
+                >
+                  <Delete />
+                </RoundButton>
               </StyledDeleteButtonContainer>
               <Answer>{answer}</Answer>
 
               <StyledMarkAsButtonContainer>
                 <RoundButton
-                  content={isCorrect ? <MarkAsIncorrect /> : <MarkAsCorrect />}
                   onClick={() => onToggleCorrect(id)}
                   type="button"
                   variant={isCorrect ? "markAsIncorrect" : "markAsCorrect"}
-                />
+                >
+                  {isCorrect ? <MarkAsIncorrect /> : <MarkAsCorrect />}
+                </RoundButton>
               </StyledMarkAsButtonContainer>
             </CardBack>
           </>
