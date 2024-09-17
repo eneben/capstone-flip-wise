@@ -56,6 +56,7 @@ export default createGlobalStyle`
       var(--secondary-light-grey) 15px,
       var(--secondary-light-grey) 30px
   ); 
+  overflow: hidden;
   }
 
 input, select, button {
