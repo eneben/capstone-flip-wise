@@ -90,6 +90,7 @@ export default function Layout({
             href="/"
             onClick={() => {
               setIsFormClosing(true);
+              changeFlashcardSelection("all");
             }}
           >
             <LogoContainer>

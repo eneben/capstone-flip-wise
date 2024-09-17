@@ -100,6 +100,7 @@ export default function Menu({
               <StyledNavigationLink
                 href="/"
                 onClick={() => {
+                  changeFlashcardSelection("all");
                   setIsMenuClosing(true);
                   setIsLearningCollectionsClosing(true);
                   setIsTrainingCollectionsClosing(true);
@@ -112,6 +113,7 @@ export default function Menu({
               <StyledNavigationLink
                 href="/learning"
                 onClick={() => {
+                  changeFlashcardSelection("all");
                   setIsMenuClosing(true);
                   setIsLearningCollectionsClosing(true);
                 }}
@@ -152,6 +154,7 @@ export default function Menu({
               <StyledNavigationLink
                 href="/training"
                 onClick={() => {
+                  changeFlashcardSelection("all");
                   setIsMenuClosing(true);
                   setIsTrainingCollectionsClosing(true);
                 }}
