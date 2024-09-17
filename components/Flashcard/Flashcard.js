@@ -18,6 +18,7 @@ export default function Flashcard({
   modeSelection,
   onIncreaseFlashcardLevel,
   onDecreaseFlashcardLevel,
+  onToggleCorrect,
 }) {
   const [showAnswer, setShowAnswer] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
