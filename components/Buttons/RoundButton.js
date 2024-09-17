@@ -35,7 +35,7 @@ const StyledRoundButton = styled.button`
   ${({ disabled }) =>
     disabled &&
     css`
-      opacity: 0.6;
+      opacity: 0.4;
     `}
 `;
 
