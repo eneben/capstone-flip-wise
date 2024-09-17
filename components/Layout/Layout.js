@@ -36,7 +36,7 @@ export default function Layout({
       const formTimeoutId = setTimeout(() => {
         setIsFormClosing(false);
         changeActionMode("default");
-      }, 500);
+      }, 490);
       return () => clearTimeout(formTimeoutId);
     }
   }, [isFormClosing]);
@@ -48,6 +48,10 @@ export default function Layout({
   return (
     <>
       <MainContainer>{children}</MainContainer>
+
+      {actionMode !== "default" && (
+        <StyledOutsideClickArea onClick={handleToggleForm} />
+      )}
 
       {actionMode === "create" && (
         <FormFlashcard
@@ -75,34 +79,41 @@ export default function Layout({
         />
       )}
 
+      <FormToggleContainer>
+        <FormButtonShadow />
+      </FormToggleContainer>
+
       <StyledHeader>
-        <HiddenHeadline>BRAIN STACK</HiddenHeadline>
-        <Link href="/">
-          <LogoContainer>
-            <Logo />
-          </LogoContainer>
-        </Link>
+        <StyledHeaderContentContainer>
+          <HiddenHeadline>BRAIN STACK</HiddenHeadline>
+          <Link
+            href="/"
+            onClick={() => {
+              setIsFormClosing(true);
+            }}
+          >
+            <LogoContainer>
+              <Logo />
+            </LogoContainer>
+          </Link>
 
-        <FormToggleContainer>
-          <RoundButton
-            type="button"
-            content={<Plus />}
-            variant="formToggle"
-            name="menu"
-            onClick={handleToggleForm}
-            actionMode={actionMode}
-            isRotate={actionMode === "create" || actionMode === "edit"}
+          <FormToggleContainer>
+            <RoundButton
+              type="button"
+              content={<Plus />}
+              variant="formToggle"
+              name="menu"
+              onClick={handleToggleForm}
+              isRotate={actionMode === "create" || actionMode === "edit"}
+            />
+          </FormToggleContainer>
+          <Menu
+            collections={collections}
+            startClosingForm={startClosingForm}
+            changeFlashcardSelection={changeFlashcardSelection}
+            getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
           />
-        </FormToggleContainer>
-
-        <Menu
-          collections={collections}
-          actionMode={actionMode}
-          changeActionMode={changeActionMode}
-          startClosingForm={startClosingForm}
-          changeFlashcardSelection={changeFlashcardSelection}
-          getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
-        />
+        </StyledHeaderContentContainer>
       </StyledHeader>
     </>
   );
@@ -110,22 +121,33 @@ export default function Layout({
 
 const MainContainer = styled.main`
   margin: 0 auto;
-  max-width: 30rem;
+  min-height: 100vh;
+  max-width: 800px;
   padding: 100px 1rem 4.5rem 1rem;
+  background-color: #fff;
 `;
 
 const StyledHeader = styled.header`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   position: fixed;
   top: 0;
   width: 100vw;
   height: 100px;
+  background-color: var(--secondary-light-grey);
+  box-shadow: 0 2px 10px #000;
+`;
+
+const StyledHeaderContentContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 15px 20px;
+  width: 100vw;
+  max-width: 800px;
   background-color: #fff;
-  border-bottom: 1px solid #000;
-  box-shadow: 0px 0px 10px #000;
+  height: 100px;
 `;
 
 const HiddenHeadline = styled.h1`
@@ -145,6 +167,25 @@ const FormToggleContainer = styled.div`
   display: flex;
   justify-content: center;
   width: 100vw;
-  position: absolute;
   top: 80px;
+`;
+
+const StyledOutsideClickArea = styled.div`
+  backdrop-filter: blur(10px);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #000;
+  opacity: 0;
+`;
+
+const FormButtonShadow = styled.div`
+  width: 40px;
+  height: 40px;
+  position: fixed;
+  border-radius: 50%;
+  background-color: #fff;
+  box-shadow: 0 3px 10px #000;
 `;

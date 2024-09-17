@@ -153,26 +153,32 @@ const StyledForm = styled.form`
   width: 21rem;
   padding: 30px 10px 10px 10px;
   background-color: #fff;
-  border: 1px solid #000;
   border-top: 0;
   border-radius: 0 0 10px 10px;
   box-shadow: 0px 0px 10px #000;
 `;
 
 const StyledFormHeadline = styled.h2`
+  font: var(--form-headline);
   text-align: center;
 `;
 
 const StyledLabel = styled.label`
   display: block;
   padding: 10px 0 2px 0;
-  font-size: 0.9rem;
+  font: var(--form-label);
 `;
 
 const StyledSelect = styled.select`
   display: block;
   width: 100%;
-  height: 1.5rem;
+  font: var(--form-input);
+  height: 1.7rem;
+  border: 1px solid var(--primary-neutral);
+  border-radius: 2px;
+  &:focus {
+    outline: 1px solid var(--primary-neutral);
+  }
 `;
 
 const NewCollectionWrapper = styled.section`

@@ -6,7 +6,6 @@ import Footer from "@/components/Footer/Footer";
 export default function CollectionPage({
   handleToggleCorrect,
   handleDeleteFlashcard,
-  actionMode,
   changeActionMode,
   changeCurrentFlashcard,
   getAllFlashcardsFromCollection,
@@ -51,7 +50,6 @@ export default function CollectionPage({
           flashcards={displayedFlashcards}
           handleToggleCorrect={handleToggleCorrect}
           changeCurrentFlashcard={changeCurrentFlashcard}
-          actionMode={actionMode}
           changeActionMode={changeActionMode}
           collectionColor={collectionColor}
         />
@@ -73,7 +71,6 @@ export default function CollectionPage({
         }
         getCorrectFlashcardsFromCollection={getCorrectFlashcardsFromCollection}
         id={id}
-        changeActionMode={changeActionMode}
         flashcardSelection={flashcardSelection}
         changeFlashcardSelection={changeFlashcardSelection}
       />

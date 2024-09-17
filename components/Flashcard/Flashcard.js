@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import { useState } from "react";
+import { findContrastColor } from "color-contrast-finder";
 import MarkAsIncorrect from "@/public/icons/MarkAsIncorrect.svg";
 import MarkAsCorrect from "@/public/icons/MarkAsCorrect.svg";
 import Delete from "@/public/icons/Delete.svg";
-import Arrow from "@/public/icons/Arrow.svg";
 import Edit from "@/public/icons/Edit.svg";
 import RoundButton from "../Buttons/RoundButton";
 import DeleteConfirmationDialog from "../DeleteConfirmationDialog/DeleteConfirmationDialog";
@@ -13,7 +13,6 @@ export default function Flashcard({
   onToggleCorrect,
   handleDeleteFlashcard,
   changeCurrentFlashcard,
-  actionMode,
   changeActionMode,
   collectionColor,
 }) {
@@ -29,7 +28,7 @@ export default function Flashcard({
   } = flashcard;
 
   function handleShowAnswer() {
-    if (!isDelete && actionMode === "default") setShowAnswer(!showAnswer);
+    setShowAnswer(!showAnswer);
   }
 
   function toggleDeleteConfirmation(event) {
@@ -44,26 +43,39 @@ export default function Flashcard({
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
+  const contrastOptions = {
+    color: collectionColor,
+    threshold: 0.5,
+    highColor: "#000",
+    lowColor: "#fff",
+  };
+
+  const titleColor = findContrastColor(contrastOptions);
+
   return (
     <CardContainer onClick={handleShowAnswer}>
       <StyledFlashcard $showAnswer={showAnswer}>
         {isDelete && (
           <>
             <CardFront $collectionColor={collectionColor}>
-              <DeleteConfirmationDialog
-                onDeleteFlashcard={handleDeleteFlashcard}
-                toggleDeleteConfirmation={toggleDeleteConfirmation}
-                id={id}
-                variant="flashcard"
-              />
+              <StyledDeleteConfirmationDialogContainer>
+                <DeleteConfirmationDialog
+                  onDeleteFlashcard={handleDeleteFlashcard}
+                  toggleDeleteConfirmation={toggleDeleteConfirmation}
+                  id={id}
+                  variant="flashcard"
+                />
+              </StyledDeleteConfirmationDialogContainer>
             </CardFront>
             <CardBack $collectionColor={collectionColor}>
-              <DeleteConfirmationDialog
-                onDeleteFlashcard={handleDeleteFlashcard}
-                toggleDeleteConfirmation={toggleDeleteConfirmation}
-                id={id}
-                variant="flashcard"
-              />
+              <StyledDeleteConfirmationDialogContainer>
+                <DeleteConfirmationDialog
+                  onDeleteFlashcard={handleDeleteFlashcard}
+                  toggleDeleteConfirmation={toggleDeleteConfirmation}
+                  id={id}
+                  variant="flashcard"
+                />
+              </StyledDeleteConfirmationDialogContainer>
             </CardBack>
           </>
         )}
@@ -71,56 +83,58 @@ export default function Flashcard({
         {!isDelete && (
           <>
             <CardFront $collectionColor={collectionColor}>
-              <CollectionTitle>{collection}</CollectionTitle>
-              <RoundButton
-                content={<Edit />}
-                onClick={setEditWithoutFlip}
-                type="button"
-                variant="edit"
-                disabled={actionMode !== "default"}
-                actionMode={actionMode}
-              />
-              <RoundButton
-                content={<Delete />}
-                onClick={toggleDeleteConfirmation}
-                type="button"
-                variant="delete"
-                disabled={actionMode !== "default"}
-                actionMode={actionMode}
-              />
-              <Question>{question}</Question>
-              {isCorrect && (
+              <CollectionTitle
+                $collectionColor={collectionColor}
+                $titleColor={titleColor}
+              >
+                {collection}
+              </CollectionTitle>
+
+              <StyledEditButtonContainer>
                 <RoundButton
-                  content={<MarkAsIncorrect />}
-                  onClick={() => onToggleCorrect(id)}
+                  content={<Edit />}
+                  onClick={setEditWithoutFlip}
                   type="button"
-                  variant="markAsIncorrect"
-                  disabled={actionMode !== "default"}
-                  actionMode={actionMode}
+                  variant="edit"
                 />
+              </StyledEditButtonContainer>
+
+              <StyledDeleteButtonContainer>
+                <RoundButton
+                  content={<Delete />}
+                  onClick={toggleDeleteConfirmation}
+                  type="button"
+                  variant="delete"
+                />
+              </StyledDeleteButtonContainer>
+
+              <Question>{question}</Question>
+
+              {isCorrect && (
+                <StyledCorrectIcon>
+                  <MarkAsCorrect />
+                </StyledCorrectIcon>
               )}
-              <StyledArrow />
             </CardFront>
             <CardBack $collectionColor={collectionColor}>
-              <RoundButton
-                content={<Delete />}
-                onClick={toggleDeleteConfirmation}
-                type="button"
-                variant="delete"
-                disabled={actionMode !== "default"}
-                actionMode={actionMode}
-              />
+              <StyledDeleteButtonContainer>
+                <RoundButton
+                  content={<Delete />}
+                  onClick={toggleDeleteConfirmation}
+                  type="button"
+                  variant="delete"
+                />
+              </StyledDeleteButtonContainer>
               <Answer>{answer}</Answer>
 
-              <RoundButton
-                content={isCorrect ? <MarkAsIncorrect /> : <MarkAsCorrect />}
-                onClick={() => onToggleCorrect(id)}
-                type="button"
-                variant={isCorrect ? "markAsIncorrect" : "markAsCorrect"}
-                disabled={actionMode !== "default"}
-                actionMode={actionMode}
-              />
-              <StyledArrow transform="scale(-1 1)" />
+              <StyledMarkAsButtonContainer>
+                <RoundButton
+                  content={isCorrect ? <MarkAsIncorrect /> : <MarkAsCorrect />}
+                  onClick={() => onToggleCorrect(id)}
+                  type="button"
+                  variant={isCorrect ? "markAsIncorrect" : "markAsCorrect"}
+                />
+              </StyledMarkAsButtonContainer>
             </CardBack>
           </>
         )}
@@ -134,24 +148,34 @@ const CardContainer = styled.li`
 `;
 
 const StyledFlashcard = styled.article`
-  width: 20rem;
-  height: 13rem;
+  width: 90vw;
+  height: auto;
+  min-height: 218px;
+  max-width: 500px;
   position: relative;
   transform-style: preserve-3d;
   transition: transform 0.6s;
   transform: ${({ $showAnswer }) =>
     $showAnswer ? "rotateY(180deg)" : "rotateY(0deg)"};
   cursor: pointer;
+
+  @media (min-width: 768px) {
+    min-height: 300px;
+    transition: transform 0.8s;
+  }
 `;
 
 const CardFace = styled.div`
+  display: grid;
+  grid-template-columns: var(--grid-columns-card-and-title);
+  grid-template-rows: var(--grid-rows-card-and-title);
   position: absolute;
   width: 100%;
   height: 100%;
   backface-visibility: hidden;
-  padding: 10px;
   border-radius: 10px;
-  border: 2px solid ${({ $collectionColor }) => $collectionColor || "#000"};
+  border: var(--border-thickness) solid
+    ${({ $collectionColor }) => $collectionColor};
 `;
 
 const CardFront = styled(CardFace)`
@@ -159,28 +183,84 @@ const CardFront = styled(CardFace)`
 `;
 
 const CardBack = styled(CardFace)`
-  background-color: #e6e6e6;
+  background-color: var(--secondary-light-grey);
   transform: rotateY(180deg);
 `;
 
 const CollectionTitle = styled.p`
-  font-size: 0.8rem;
+  font: var(--collection-title);
+  display: inline-block;
+  color: ${({ $titleColor }) => $titleColor};
+  background-color: ${({ $collectionColor }) => $collectionColor};
+  padding: 5px 12px 7px 10px;
+  grid-column: 1 / 6;
+  grid-row: 1 / 2;
+  justify-self: start;
+  align-self: start;
+  border-top-left-radius: 6px;
+  border-bottom-right-radius: 10px;
 `;
 
 const Answer = styled.p`
-  font-size: 1.2rem;
-  font-weight: 500;
-  padding-top: 50px;
+  font: var(--question-answer);
+  padding: 10px;
+  grid-column: 1 / 8;
+  grid-row: 2 / 3;
+  align-self: center;
+
+  @media (min-width: 768px) {
+    font-size: 1.4rem;
+  }
 `;
 
 const Question = styled.h3`
-  font-size: 1.2rem;
-  font-weight: 500;
-  padding-top: 37.2px;
+  font: var(--question-answer);
+  padding: 10px;
+  white-space: normal;
+  grid-column: 1 / 8;
+  grid-row: 2 / 3;
+  align-self: center;
+
+  @media (min-width: 768px) {
+    font-size: 1.4rem;
+  }
 `;
 
-const StyledArrow = styled(Arrow)`
-  position: absolute;
-  right: 10px;
-  bottom: 15px;
+const StyledCorrectIcon = styled.div`
+  color: var(--primary-green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  grid-column: 7 / 8;
+  grid-row: 3 / 4;
+`;
+
+const RoundButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const StyledEditButtonContainer = styled(RoundButtonContainer)`
+  grid-column: 6 / 7;
+  grid-row: 1 / 2;
+`;
+
+const StyledDeleteButtonContainer = styled(RoundButtonContainer)`
+  grid-column: 7 / 8;
+  grid-row: 1 / 2;
+`;
+
+const StyledMarkAsButtonContainer = styled(RoundButtonContainer)`
+  grid-column: 7 / 8;
+  grid-row: 3 / 4;
+`;
+
+const StyledDeleteConfirmationDialogContainer = styled.div`
+  grid-column: 1 / 8;
+  grid-row: 2 / 4;
+
+  @media (min-width: 768px) {
+    padding-top: 40px;
+  }
 `;

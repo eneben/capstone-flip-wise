@@ -8,7 +8,7 @@ export default function ToastMessage({ text, variant, icon: Icon, onClick }) {
       </ProgressBarWrapper>
       <MessageContentWrapper>
         <StyledIconWrapper $variant={variant}>
-          <Icon />
+          <Icon height="14px" width="14px" />
         </StyledIconWrapper>
         <StyledToastMessageText>{text}</StyledToastMessageText>
       </MessageContentWrapper>
@@ -43,8 +43,6 @@ const ToastMessageContainerWrapper = styled.article`
   width: 90%;
   background-color: #fff;
   padding: 10px 10px;
-  margin-bottom: 10px;
-  border: 1px solid black;
   border-radius: 4px;
   display: flex;
   flex-direction: column;
@@ -53,7 +51,7 @@ const ToastMessageContainerWrapper = styled.article`
   animation: ${slideInAndFade} 0.5s ease-out forwards,
     ${slideOutAndFade} 0.5s ease-in forwards 5s;
   cursor: pointer;
-  box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+  box-shadow: 0 0 10px #000;
 `;
 
 const ProgressBarWrapper = styled.div`
@@ -82,14 +80,16 @@ const StyledProgressBar = styled.div`
 const MessageContentWrapper = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   padding: 5px 0px 0px 0px;
   gap: 10px;
 `;
 
 const StyledIconWrapper = styled.div`
+  color: #fff;
+  width: 25px;
+  padding: 2px;
   border-radius: 50%;
-  border: 1px solid black;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -103,9 +103,9 @@ const StyledToastMessageText = styled.p`
 
 const variantToastMessageStyles = {
   success: css`
-    background-color: #b0c4b1;
+    background-color: var(--primary-green);
   `,
   error: css`
-    background-color: #edafb8;
+    background-color: var(--primary-red);
   `,
 };

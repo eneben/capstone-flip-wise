@@ -1,5 +1,6 @@
 import GlobalStyle from "../styles";
 import Layout from "@/components/Layout/Layout";
+import styled from "styled-components";
 import initialFlashcards from "@/assets/flashcards.json";
 import initialCollections from "@/assets/collections.json";
 import useLocalStorageState from "use-local-storage-state";
@@ -232,3 +233,10 @@ export default function App({ Component, pageProps }) {
     </Layout>
   );
 }
+
+const BackgroundColor = styled.div`
+  margin: 0 auto;
+  min-height: 100vh;
+  max-width: 800px;
+  background-color: #fff;
+`;

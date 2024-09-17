@@ -5,12 +5,12 @@ import Stack from "@/public/icons/Stack.svg";
 
 export default function CorrectCounter({
   variant,
+  collectionTitle,
   getIncorrectFlashcardsFromCollection,
   getCorrectFlashcardsFromCollection,
   id,
   changeFlashcardSelection,
   active,
-  changeActionMode,
 }) {
   const numberOfIncorrectFlashcards =
     getIncorrectFlashcardsFromCollection(id).length;
@@ -23,17 +23,17 @@ export default function CorrectCounter({
     incorrect: {
       icon: <MarkAsIncorrect />,
       count: numberOfIncorrectFlashcards,
-      color: "#edafb8",
+      color: "var(--primary-red)",
     },
     correct: {
       icon: <MarkAsCorrect />,
       count: numberOfCorrectFlashcards,
-      color: "#b0c4b1",
+      color: "var(--primary-green)",
     },
     all: {
       icon: <Stack />,
       count: numberOfAllFlashcards,
-      color: "#eee",
+      color: "var(--primary-neutral)",
     },
   };
 
@@ -47,17 +47,17 @@ export default function CorrectCounter({
     } else if (variant === "all") {
       changeFlashcardSelection("all");
     }
-    changeActionMode("default");
   }
 
   return (
     <CorrectCounterButton
       $active={active}
+      $collectionTitle={collectionTitle}
       onClick={handleRedirect}
       type="button"
     >
       <StyledIconWrapper $color={color}>{icon}</StyledIconWrapper>
-      <span>{count}</span>
+      <Counter>{count}</Counter>
     </CorrectCounterButton>
   );
 }
@@ -65,21 +65,33 @@ export default function CorrectCounter({
 const CorrectCounterButton = styled.button`
   width: 100%;
   height: 100%;
+  padding: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
   border: none;
-  background-color: ${({ $active }) => ($active ? "#e6e6e6" : "#fff")};
+  background-color: ${({ $collectionTitle, $active }) =>
+    $collectionTitle
+      ? "transparent"
+      : $active
+      ? "var(--secondary-grey)"
+      : "#fff"};
 `;
 
 const StyledIconWrapper = styled.div`
-  width: 40px;
-  height: 40px;
-  border: 1px solid black;
+  color: #fff;
+  width: 34px;
+  height: 34px;
+  padding: 7px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: ${({ $color }) => $color};
+`;
+
+const Counter = styled.span`
+  font: var(--counter);
+  color: #000;
 `;

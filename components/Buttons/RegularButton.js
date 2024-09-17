@@ -19,14 +19,14 @@ const StyledRegularButton = styled.button`
 const variantRegularButtonStyles = {
   submit: css`
     color: #fff;
-    background-color: #000;
+    background-color: var(--primary-neutral);
   `,
   confirm: css`
     color: #fff;
-    background-color: #000;
+    background-color: var(--primary-neutral);
   `,
   warning: css`
-    color: #000;
-    background-color: #edafb8;
+    color: #fff;
+    background-color: var(--primary-red);
   `,
 };
