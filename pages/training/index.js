@@ -10,7 +10,6 @@ export default function HomePage({
   changeFlashcardSelection,
   handleDeleteCollection,
   getAllFlashcardsFromCollection,
-  modeSelection,
 }) {
   return (
     <>
@@ -34,7 +33,7 @@ export default function HomePage({
                 changeFlashcardSelection={changeFlashcardSelection}
                 handleDeleteCollection={handleDeleteCollection}
                 getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
-                modeSelection={modeSelection}
+                modeSelection="training"
               />
             );
           })}

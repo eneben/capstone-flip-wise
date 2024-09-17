@@ -1,27 +1,21 @@
 import styled from "styled-components";
 import Link from "next/link";
 
-export default function HomePage({ changeModeSelection }) {
+export default function HomePage() {
   return (
     <HomeWrapper>
       <StyledIntroduction>
         Welcome to BrainStack, your companion for mastering new skills and
         studying. Start stacking with knowledge today!
       </StyledIntroduction>
-      <StyledModeSelection
-        href="/learning"
-        onClick={() => changeModeSelection("learning")}
-      >
+      <StyledModeSelection href="/learning">
         <StyledModeName>Learning Mode</StyledModeName>
         <StyledDescription>
           Review unlearned flashcards, mark learned ones, and track progress by
           filtering unlearned, learned, or all cards.
         </StyledDescription>
       </StyledModeSelection>
-      <StyledModeSelection
-        href="/training"
-        onClick={() => changeModeSelection("training")}
-      >
+      <StyledModeSelection href="/training">
         <StyledModeName>Training Mode</StyledModeName>
         <StyledDescription>
           Cards move up or down five levels based on your answers. Focus more on

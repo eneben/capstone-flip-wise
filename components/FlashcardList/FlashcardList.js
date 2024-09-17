@@ -31,24 +31,26 @@ export default function FlashcardList({
       }
     });
   }
-  const flashcardsSortedByLevel = sortFlashcardsByLevel(flashcards);
 
   function sortFlashcardsById(flashcards) {
     return flashcards.sort((a, b) => {
-      a.id - b.id;
+      return a.id - b.id;
     });
   }
-  const flashcardsSortedById = sortFlashcardsById(flashcards);
+
+  let sortedFlashcards;
+  if (modeSelection === "training") {
+    sortedFlashcards = sortFlashcardsByLevel(flashcards);
+  } else {
+    sortedFlashcards = sortFlashcardsById(flashcards);
+  }
 
   return (
     <>
       <StyledHeadline>{headline}</StyledHeadline>
       <StyledSubheading>{subheading}</StyledSubheading>
       <FlashcardListWrapper>
-        {(modeSelection === "training"
-          ? flashcardsSortedByLevel
-          : flashcardsSortedById
-        ).map((flashcard) => {
+        {sortedFlashcards.map((flashcard) => {
           return (
             <Flashcard
               collectionColor={collectionColor}

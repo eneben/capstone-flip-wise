@@ -12,7 +12,6 @@ export default function CollectionPage({
   getAllFlashcardsFromCollection,
   handleIncreaseFlashcardLevel,
   handleDecreaseFlashcardLevel,
-  modeSelection,
 }) {
   const router = useRouter();
   const { id } = router.query;
@@ -37,7 +36,7 @@ export default function CollectionPage({
           collectionColor={collectionColor}
           handleIncreaseFlashcardLevel={handleIncreaseFlashcardLevel}
           handleDecreaseFlashcardLevel={handleDecreaseFlashcardLevel}
-          modeSelection={modeSelection}
+          modeSelection="training"
         />
       )}
       {(!allFlashcardsFromCollection ||

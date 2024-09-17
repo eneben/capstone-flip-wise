@@ -15,8 +15,8 @@ export default function Collection({
   flashcardSelection,
   changeFlashcardSelection,
   handleDeleteCollection,
-  modeSelection,
   getAllFlashcardsFromCollection,
+  modeSelection,
 }) {
   const [isDelete, setIsDelete] = useState(false);
 

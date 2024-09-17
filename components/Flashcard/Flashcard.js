@@ -114,7 +114,11 @@ export default function Flashcard({
 
               <Question>{question}</Question>
 
-              {modeSelection === "training" && <LevelBar level={level} />}
+              {modeSelection === "training" && (
+                <LevelBarWrapper>
+                  <LevelBar level={level} />
+                </LevelBarWrapper>
+              )}
 
               {isCorrect && (
                 <StyledCorrectIcon>
@@ -309,4 +313,10 @@ const StyledDeleteConfirmationDialogContainer = styled.div`
   @media (min-width: 768px) {
     padding-top: 40px;
   }
+`;
+
+const LevelBarWrapper = styled.div`
+  padding-top: 20px;
+  grid-column: 1 / 8;
+  grid-row: 3 / 4;
 `;

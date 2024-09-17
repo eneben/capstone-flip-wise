@@ -9,7 +9,6 @@ export default function LearningPage({
   flashcardSelection,
   changeFlashcardSelection,
   handleDeleteCollection,
-  modeSelection,
   getAllFlashcardsFromCollection,
 }) {
   return (
@@ -33,7 +32,7 @@ export default function LearningPage({
                 flashcardSelection={flashcardSelection}
                 changeFlashcardSelection={changeFlashcardSelection}
                 handleDeleteCollection={handleDeleteCollection}
-                modeSelection={modeSelection}
+                modeSelection="learning"
                 getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
               />
             );

@@ -13,7 +13,6 @@ export default function LearningCollectionPage({
   getCorrectFlashcardsFromCollection,
   flashcardSelection,
   changeFlashcardSelection,
-  modeSelection,
 }) {
   const router = useRouter();
   const { id } = router.query;
@@ -53,7 +52,7 @@ export default function LearningCollectionPage({
           changeCurrentFlashcard={changeCurrentFlashcard}
           changeActionMode={changeActionMode}
           collectionColor={collectionColor}
-          modeSelection={modeSelection}
+          modeSelection="learning"
         />
       )}
       {(!displayedFlashcards || displayedFlashcards.length === 0) && (

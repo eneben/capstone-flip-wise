@@ -24,17 +24,10 @@ export default function App({ Component, pageProps }) {
 
   const [actionMode, setActionMode] = useState("default");
 
-  const [modeSelection, setModeSelection] = useState(null);
-  console.log(" modeSelection: ", modeSelection);
-
   const [flashcardSelection, setFlashcardSelection] = useState("all");
 
   function changeFlashcardSelection(selection) {
     setFlashcardSelection(selection);
-  }
-
-  function changeModeSelection(selection) {
-    setModeSelection(selection);
   }
 
   function showToastMessage(message, variant, icon) {
@@ -260,8 +253,6 @@ export default function App({ Component, pageProps }) {
         }
         flashcardSelection={flashcardSelection}
         changeFlashcardSelection={changeFlashcardSelection}
-        changeModeSelection={changeModeSelection}
-        modeSelection={modeSelection}
         handleIncreaseFlashcardLevel={handleIncreaseFlashcardLevel}
         handleDecreaseFlashcardLevel={handleDecreaseFlashcardLevel}
       />
