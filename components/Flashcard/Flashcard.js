@@ -120,7 +120,7 @@ export default function Flashcard({
                 </LevelBarWrapper>
               )}
 
-              {isCorrect && (
+              {modeSelection === "learning" && isCorrect && (
                 <StyledCorrectIcon>
                   <MarkAsCorrect />
                 </StyledCorrectIcon>
