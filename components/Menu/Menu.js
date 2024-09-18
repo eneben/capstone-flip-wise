@@ -18,6 +18,9 @@ export default function Menu({
   const [isTrainingCollections, setIsTrainingCollections] = useState(false);
   const [isTrainingCollectionsClosing, setIsTrainingCollectionsClosing] =
     useState(false);
+  const [isGamingCollections, setIsGamingCollections] = useState(false);
+  const [isGamingCollectionsClosing, setIsGamingCollectionsClosing] =
+    useState(false);
 
   function handleToggleMenu(event) {
     event.stopPropagation();
@@ -29,6 +32,7 @@ export default function Menu({
     }
     setIsLearningCollectionsClosing(true);
     setIsTrainingCollectionsClosing(true);
+    setIsGamingCollectionsClosing(true);
   }
 
   useEffect(() => {
@@ -48,6 +52,9 @@ export default function Menu({
       if (isTrainingCollections) {
         setIsTrainingCollectionsClosing(true);
       }
+      if (isGamingCollections) {
+        setIsGamingCollectionsClosing(true);
+      }
     } else {
       setIsLearningCollectionsClosing(true);
     }
@@ -60,8 +67,26 @@ export default function Menu({
       if (isLearningCollections) {
         setIsLearningCollectionsClosing(true);
       }
+      if (isGamingCollections) {
+        setIsGamingCollectionsClosing(true);
+      }
     } else {
       setIsTrainingCollectionsClosing(true);
+    }
+  }
+
+  function handleToggleGamingCollections(event) {
+    event.stopPropagation();
+    if (!isGamingCollections) {
+      setIsGamingCollections(true);
+      if (isLearningCollections) {
+        setIsLearningCollectionsClosing(true);
+      }
+      if (isTrainingCollections) {
+        setIsTrainingCollectionsClosing(true);
+      }
+    } else {
+      setIsGamingCollectionsClosing(true);
     }
   }
 
@@ -84,6 +109,16 @@ export default function Menu({
       return () => clearTimeout(collectionsTimeoutId);
     }
   }, [isTrainingCollectionsClosing]);
+
+  useEffect(() => {
+    if (isGamingCollectionsClosing) {
+      const collectionsTimeoutId = setTimeout(() => {
+        setIsGamingCollections(false);
+        setIsGamingCollectionsClosing(false);
+      }, 290);
+      return () => clearTimeout(collectionsTimeoutId);
+    }
+  }, [isGamingCollectionsClosing]);
 
   return (
     <StyledMenuContainer>
@@ -109,6 +144,7 @@ export default function Menu({
                 Home
               </StyledNavigationLink>
             </StyledNavigationListItem>
+
             <StyledNavigationListItem>
               <StyledNavigationLink
                 href="/learning"
@@ -180,6 +216,47 @@ export default function Menu({
                           changeFlashcardSelection("all");
                           setIsMenuClosing(true);
                           setIsTrainingCollectionsClosing(true);
+                        }}
+                      >
+                        {collection.title} (
+                        {getAllFlashcardsFromCollection(collection.id).length})
+                      </StyledSubNavigationLink>
+                    </StyledSubNavigationListItem>
+                  );
+                })}
+              </StyledSubNavigationList>
+            )}
+
+            <StyledNavigationListItem>
+              <StyledNavigationLink
+                href="/gaming"
+                onClick={() => {
+                  changeFlashcardSelection("all");
+                  setIsMenuClosing(true);
+                  setIsGamingCollectionsClosing(true);
+                }}
+              >
+                Gaming Mode
+              </StyledNavigationLink>
+              <StyledSubMenuArrow
+                $isRotate={isGamingCollections}
+                onClick={handleToggleGamingCollections}
+              />
+            </StyledNavigationListItem>
+            {isGamingCollections && (
+              <StyledSubNavigationList>
+                {collections.map((collection) => {
+                  return (
+                    <StyledSubNavigationListItem
+                      key={collection.id}
+                      $isCollectionsClosing={isGamingCollectionsClosing}
+                    >
+                      <StyledSubNavigationLink
+                        href={`/gaming/${collection.id}`}
+                        onClick={() => {
+                          changeFlashcardSelection("all");
+                          setIsMenuClosing(true);
+                          setIsGamingCollectionsClosing(true);
                         }}
                       >
                         {collection.title} (
