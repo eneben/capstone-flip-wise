@@ -54,6 +54,7 @@ export default function FlashcardList({
 
   const currentFlashcard = modeSelection === "training" && sortedFlashcards[0];
   const nextFlashcard = modeSelection === "training" && sortedFlashcards[1];
+  const thirdFlashcard = modeSelection === "training" && sortedFlashcards[2];
 
   return (
     <>
@@ -88,8 +89,21 @@ export default function FlashcardList({
 
         {modeSelection === "training" && (
           <FlashcardStackWrapper>
-            <FlashcardStackShadow2 $collectionColor={collectionColor} />
-            <FlashcardStackShadow1 $collectionColor={collectionColor}>
+            <ThirdFlashcardWrapper>
+              <Flashcard
+                collectionColor={collectionColor}
+                handleDeleteFlashcard={handleDeleteFlashcard}
+                flashcard={thirdFlashcard}
+                onToggleCorrect={handleToggleCorrect}
+                changeCurrentFlashcard={changeCurrentFlashcard}
+                changeActionMode={changeActionMode}
+                modeSelection={modeSelection}
+                onIncreaseFlashcardLevel={handleIncreaseFlashcardLevel}
+                onDecreaseFlashcardLevel={handleDecreaseFlashcardLevel}
+              />
+            </ThirdFlashcardWrapper>
+            <ThirdFlashcardOpacity />
+            <SecondFlashcardWrapper>
               <Flashcard
                 collectionColor={collectionColor}
                 handleDeleteFlashcard={handleDeleteFlashcard}
@@ -101,7 +115,8 @@ export default function FlashcardList({
                 onIncreaseFlashcardLevel={handleIncreaseFlashcardLevel}
                 onDecreaseFlashcardLevel={handleDecreaseFlashcardLevel}
               />
-            </FlashcardStackShadow1>
+            </SecondFlashcardWrapper>
+            <SecondFlashcardOpacity />
             <Flashcard
               collectionColor={collectionColor}
               handleDeleteFlashcard={handleDeleteFlashcard}
@@ -167,8 +182,6 @@ const FlashcardStackShadow = styled.div`
   max-width: 500px;
   position: absolute;
   border-radius: 10px;
-  border: var(--border-thickness) solid
-    ${({ $collectionColor }) => $collectionColor};
 
   @media (min-width: 768px) {
     min-height: 300px;
@@ -176,14 +189,28 @@ const FlashcardStackShadow = styled.div`
   }
 `;
 
-const FlashcardStackShadow1 = styled(FlashcardStackShadow)`
+const SecondFlashcardWrapper = styled(FlashcardStackShadow)`
   top: 8px;
   left: 8px;
   background-color: var(--secondary-light-grey);
 `;
 
-const FlashcardStackShadow2 = styled(FlashcardStackShadow)`
+const ThirdFlashcardWrapper = styled(FlashcardStackShadow)`
   top: 16px;
   left: -8px;
   background-color: var(--secondary-grey);
+`;
+
+const SecondFlashcardOpacity = styled(FlashcardStackShadow)`
+  top: 8px;
+  left: 8px;
+  background-color: var(--secondary-light-grey);
+  opacity: 0.6;
+`;
+
+const ThirdFlashcardOpacity = styled(FlashcardStackShadow)`
+  top: 16px;
+  left: -8px;
+  background-color: var(--secondary-grey);
+  opacity: 0.6;
 `;
