@@ -52,6 +52,8 @@ export default function FlashcardList({
   const allLearned =
     modeSelection === "training" && areAllCardsLearned(sortedFlashcards);
 
+  const currentFlashcard = modeSelection === "training" && sortedFlashcards[0];
+
   return (
     <>
       <StyledHeadline>{headline}</StyledHeadline>
@@ -65,22 +67,37 @@ export default function FlashcardList({
       )}
 
       <FlashcardListWrapper>
-        {sortedFlashcards.map((flashcard) => {
-          return (
-            <Flashcard
-              collectionColor={collectionColor}
-              handleDeleteFlashcard={handleDeleteFlashcard}
-              key={flashcard.id}
-              flashcard={flashcard}
-              onToggleCorrect={handleToggleCorrect}
-              changeCurrentFlashcard={changeCurrentFlashcard}
-              changeActionMode={changeActionMode}
-              modeSelection={modeSelection}
-              onIncreaseFlashcardLevel={handleIncreaseFlashcardLevel}
-              onDecreaseFlashcardLevel={handleDecreaseFlashcardLevel}
-            />
-          );
-        })}
+        {modeSelection === "learning" &&
+          sortedFlashcards.map((flashcard) => {
+            return (
+              <Flashcard
+                collectionColor={collectionColor}
+                handleDeleteFlashcard={handleDeleteFlashcard}
+                key={flashcard.id}
+                flashcard={flashcard}
+                onToggleCorrect={handleToggleCorrect}
+                changeCurrentFlashcard={changeCurrentFlashcard}
+                changeActionMode={changeActionMode}
+                modeSelection={modeSelection}
+                onIncreaseFlashcardLevel={handleIncreaseFlashcardLevel}
+                onDecreaseFlashcardLevel={handleDecreaseFlashcardLevel}
+              />
+            );
+          })}
+
+        {modeSelection === "training" && (
+          <Flashcard
+            collectionColor={collectionColor}
+            handleDeleteFlashcard={handleDeleteFlashcard}
+            flashcard={currentFlashcard}
+            onToggleCorrect={handleToggleCorrect}
+            changeCurrentFlashcard={changeCurrentFlashcard}
+            changeActionMode={changeActionMode}
+            modeSelection={modeSelection}
+            onIncreaseFlashcardLevel={handleIncreaseFlashcardLevel}
+            onDecreaseFlashcardLevel={handleDecreaseFlashcardLevel}
+          />
+        )}
       </FlashcardListWrapper>
     </>
   );
