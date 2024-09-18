@@ -53,6 +53,7 @@ export default function FlashcardList({
     modeSelection === "training" && areAllCardsLearned(sortedFlashcards);
 
   const currentFlashcard = modeSelection === "training" && sortedFlashcards[0];
+  const nextFlashcard = modeSelection === "training" && sortedFlashcards[1];
 
   return (
     <>
@@ -86,17 +87,33 @@ export default function FlashcardList({
           })}
 
         {modeSelection === "training" && (
-          <Flashcard
-            collectionColor={collectionColor}
-            handleDeleteFlashcard={handleDeleteFlashcard}
-            flashcard={currentFlashcard}
-            onToggleCorrect={handleToggleCorrect}
-            changeCurrentFlashcard={changeCurrentFlashcard}
-            changeActionMode={changeActionMode}
-            modeSelection={modeSelection}
-            onIncreaseFlashcardLevel={handleIncreaseFlashcardLevel}
-            onDecreaseFlashcardLevel={handleDecreaseFlashcardLevel}
-          />
+          <FlashcardStackWrapper>
+            <FlashcardStackShadow2 $collectionColor={collectionColor} />
+            <FlashcardStackShadow1 $collectionColor={collectionColor}>
+              <Flashcard
+                collectionColor={collectionColor}
+                handleDeleteFlashcard={handleDeleteFlashcard}
+                flashcard={nextFlashcard}
+                onToggleCorrect={handleToggleCorrect}
+                changeCurrentFlashcard={changeCurrentFlashcard}
+                changeActionMode={changeActionMode}
+                modeSelection={modeSelection}
+                onIncreaseFlashcardLevel={handleIncreaseFlashcardLevel}
+                onDecreaseFlashcardLevel={handleDecreaseFlashcardLevel}
+              />
+            </FlashcardStackShadow1>
+            <Flashcard
+              collectionColor={collectionColor}
+              handleDeleteFlashcard={handleDeleteFlashcard}
+              flashcard={currentFlashcard}
+              onToggleCorrect={handleToggleCorrect}
+              changeCurrentFlashcard={changeCurrentFlashcard}
+              changeActionMode={changeActionMode}
+              modeSelection={modeSelection}
+              onIncreaseFlashcardLevel={handleIncreaseFlashcardLevel}
+              onDecreaseFlashcardLevel={handleDecreaseFlashcardLevel}
+            />
+          </FlashcardStackWrapper>
         )}
       </FlashcardListWrapper>
     </>
@@ -128,4 +145,45 @@ const StyledSuccessMessage = styled.p`
   text-align: center;
   color: var(--primary-green);
   padding: 0 30px 50px 30px;
+`;
+
+const FlashcardStackWrapper = styled.div`
+  margin: 0 auto;
+  width: 90vw;
+  height: 218px;
+  max-width: 500px;
+  position: relative;
+
+  @media (min-width: 768px) {
+    min-height: 300px;
+    max-height: 400px;
+  }
+`;
+
+const FlashcardStackShadow = styled.div`
+  margin: 0 auto;
+  width: 90vw;
+  height: 218px;
+  max-width: 500px;
+  position: absolute;
+  border-radius: 10px;
+  border: var(--border-thickness) solid
+    ${({ $collectionColor }) => $collectionColor};
+
+  @media (min-width: 768px) {
+    min-height: 300px;
+    max-height: 400px;
+  }
+`;
+
+const FlashcardStackShadow1 = styled(FlashcardStackShadow)`
+  top: 8px;
+  left: 8px;
+  background-color: var(--secondary-light-grey);
+`;
+
+const FlashcardStackShadow2 = styled(FlashcardStackShadow)`
+  top: 16px;
+  left: -8px;
+  background-color: var(--secondary-grey);
 `;
