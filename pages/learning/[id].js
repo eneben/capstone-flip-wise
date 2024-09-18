@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
-import FlashcardList from "@/components/FlashcardList/FlashcardList";
 import styled from "styled-components";
 import Footer from "@/components/Footer/Footer";
+import Flashcard from "@/components/Flashcard/Flashcard";
 
 export default function LearningCollectionPage({
   handleToggleCorrect,
@@ -36,24 +36,42 @@ export default function LearningCollectionPage({
   const collectionTitle = displayedFlashcards?.[0]?.collectionTitle;
   const collectionColor = displayedFlashcards?.[0]?.collectionColor;
 
+  function sortFlashcardsById(flashcards) {
+    return flashcards.sort((a, b) => {
+      return a.id - b.id;
+    });
+  }
+
+  const sortedFlashcards = sortFlashcardsById(displayedFlashcards);
+
   return (
     <>
       {allFlashcardsFromCollection.length > 0 && (
-        <FlashcardList
-          handleDeleteFlashcard={handleDeleteFlashcard}
-          headline={collectionTitle}
-          subheading={
-            (flashcardSelection === "all" && "All flashcards") ||
-            (flashcardSelection === "learned" && "Learned flashcards") ||
-            (flashcardSelection === "to-learn" && "Flashcards to learn")
-          }
-          flashcards={displayedFlashcards}
-          handleToggleCorrect={handleToggleCorrect}
-          changeCurrentFlashcard={changeCurrentFlashcard}
-          changeActionMode={changeActionMode}
-          collectionColor={collectionColor}
-          modeSelection="learning"
-        />
+        <>
+          <StyledHeadline>{collectionTitle}</StyledHeadline>
+          <StyledSubheading>
+            {(flashcardSelection === "all" && "All flashcards") ||
+              (flashcardSelection === "learned" && "Learned flashcards") ||
+              (flashcardSelection === "to-learn" && "Flashcards to learn")}
+          </StyledSubheading>
+
+          <FlashcardListWrapper>
+            {sortedFlashcards.map((flashcard) => {
+              return (
+                <Flashcard
+                  collectionColor={collectionColor}
+                  handleDeleteFlashcard={handleDeleteFlashcard}
+                  key={flashcard.id}
+                  flashcard={flashcard}
+                  onToggleCorrect={handleToggleCorrect}
+                  changeCurrentFlashcard={changeCurrentFlashcard}
+                  changeActionMode={changeActionMode}
+                  modeSelection="learning"
+                />
+              );
+            })}
+          </FlashcardListWrapper>
+        </>
       )}
       {(!displayedFlashcards || displayedFlashcards.length === 0) && (
         <StyledMessage>
@@ -83,4 +101,24 @@ const StyledMessage = styled.p`
   text-align: center;
   font-size: 1rem;
   padding: 40px 20px;
+`;
+
+const FlashcardListWrapper = styled.ul`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 15px;
+  list-style: none;
+`;
+
+const StyledHeadline = styled.h2`
+  font: var(--main-headline);
+  text-align: center;
+  padding-top: 35px;
+`;
+
+const StyledSubheading = styled.h3`
+  font: var(--sub-headline);
+  text-align: center;
+  padding: 5px 0 30px 0;
 `;
