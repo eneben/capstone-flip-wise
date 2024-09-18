@@ -1,9 +1,9 @@
 import styled, { css } from "styled-components";
 
-export default function RegularButton({ content, onClick, type, variant }) {
+export default function RegularButton({ children, onClick, type, variant }) {
   return (
     <StyledRegularButton type={type} onClick={onClick} $variant={variant}>
-      {content}
+      {children}
     </StyledRegularButton>
   );
 }

@@ -192,6 +192,46 @@ export default function App({ Component, pageProps }) {
     return incorrectFlashcardsFromCollection;
   }
 
+  function handleIncreaseFlashcardLevel(id) {
+    setFlashcards(
+      flashcards.map((flashcard) => {
+        if (flashcard.id === id) {
+          return flashcard.level < 5
+            ? {
+                ...flashcard,
+                level: flashcard.level + 1,
+                trainingDate: Date.now(),
+              }
+            : {
+                ...flashcard,
+                trainingDate: Date.now(),
+              };
+        }
+        return flashcard;
+      })
+    );
+  }
+
+  function handleDecreaseFlashcardLevel(id) {
+    setFlashcards(
+      flashcards.map((flashcard) => {
+        if (flashcard.id === id) {
+          return flashcard.level > 1
+            ? {
+                ...flashcard,
+                level: flashcard.level - 1,
+                trainingDate: Date.now(),
+              }
+            : {
+                ...flashcard,
+                trainingDate: Date.now(),
+              };
+        }
+        return flashcard;
+      })
+    );
+  }
+
   return (
     <Layout
       collections={collections}
@@ -225,6 +265,8 @@ export default function App({ Component, pageProps }) {
         }
         flashcardSelection={flashcardSelection}
         changeFlashcardSelection={changeFlashcardSelection}
+        handleIncreaseFlashcardLevel={handleIncreaseFlashcardLevel}
+        handleDecreaseFlashcardLevel={handleDecreaseFlashcardLevel}
       />
       <ToastMessageContainer
         toastMessages={toastMessages}

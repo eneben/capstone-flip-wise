@@ -4,7 +4,7 @@ import Link from "next/link";
 import RoundButton from "../Buttons/RoundButton";
 import Delete from "@/public/icons/Delete.svg";
 import DeleteConfirmationDialog from "../DeleteConfirmationDialog/DeleteConfirmationDialog";
-
+import LevelBar from "../LevelBar/LevelBar";
 import { useState } from "react";
 
 export default function Collection({
@@ -15,6 +15,8 @@ export default function Collection({
   flashcardSelection,
   changeFlashcardSelection,
   handleDeleteCollection,
+  getAllFlashcardsFromCollection,
+  modeSelection,
 }) {
   const [isDelete, setIsDelete] = useState(false);
 
@@ -26,12 +28,25 @@ export default function Collection({
     setIsDelete(!isDelete);
   }
 
+  const allFlashcardsFromCollection = getAllFlashcardsFromCollection(id);
+
+  function getAverageOfLevels() {
+    if (allFlashcardsFromCollection.length === 0) return 1;
+
+    const sumOfLevels = allFlashcardsFromCollection.reduce(
+      (accumulator, flashcard) => accumulator + flashcard.level,
+      0
+    );
+    const average = sumOfLevels / allFlashcardsFromCollection.length;
+    return average;
+  }
+
   return (
     <CollectionBoxWrapper>
       <CollectionBoxShadow2 />
       <CollectionBoxShadow1 />
       {isDelete && (
-        <CollectionBox $color={color} href={"/"}>
+        <CollectionBox $color={color} href={`/${modeSelection}`}>
           <StyledDeleteConfirmationDialogContainer>
             <DeleteConfirmationDialog
               onDeleteCollection={handleDeleteCollection}
@@ -44,49 +59,60 @@ export default function Collection({
       )}
 
       {!isDelete && (
-        <CollectionBox $color={color} href={`/${id}`}>
+        <CollectionBox $color={color} href={`/${modeSelection}/${id}`}>
           <StyledDeleteButtonContainer>
             <RoundButton
-              content={<Delete />}
               onClick={toggleDeleteConfirmation}
               type="button"
               variant="delete"
               actionMode={actionMode}
-            />
+            >
+              <Delete />
+            </RoundButton>
           </StyledDeleteButtonContainer>
           <CollectionName>{name}</CollectionName>
-          <IconIncorrectWrapper>
-            <CorrectCounter
-              getIncorrectFlashcardsFromCollection={
-                getIncorrectFlashcardsFromCollection
-              }
-              getCorrectFlashcardsFromCollection={
-                getCorrectFlashcardsFromCollection
-              }
-              id={id}
-              variant="incorrect"
-              collectionTitle={true}
-              actionMode={actionMode}
-              flashcardSelection={flashcardSelection}
-              changeFlashcardSelection={changeFlashcardSelection}
-            />
-          </IconIncorrectWrapper>
-          <IconCorrectWrapper>
-            <CorrectCounter
-              getCorrectFlashcardsFromCollection={
-                getCorrectFlashcardsFromCollection
-              }
-              getIncorrectFlashcardsFromCollection={
-                getIncorrectFlashcardsFromCollection
-              }
-              id={id}
-              variant="correct"
-              collectionTitle={true}
-              actionMode={actionMode}
-              flashcardSelection={flashcardSelection}
-              changeFlashcardSelection={changeFlashcardSelection}
-            />
-          </IconCorrectWrapper>
+
+          {modeSelection === "learning" && (
+            <>
+              <IconIncorrectWrapper>
+                <CorrectCounter
+                  getIncorrectFlashcardsFromCollection={
+                    getIncorrectFlashcardsFromCollection
+                  }
+                  getCorrectFlashcardsFromCollection={
+                    getCorrectFlashcardsFromCollection
+                  }
+                  id={id}
+                  variant="incorrect"
+                  collectionTitle={true}
+                  actionMode={actionMode}
+                  flashcardSelection={flashcardSelection}
+                  changeFlashcardSelection={changeFlashcardSelection}
+                />
+              </IconIncorrectWrapper>
+              <IconCorrectWrapper>
+                <CorrectCounter
+                  getCorrectFlashcardsFromCollection={
+                    getCorrectFlashcardsFromCollection
+                  }
+                  getIncorrectFlashcardsFromCollection={
+                    getIncorrectFlashcardsFromCollection
+                  }
+                  id={id}
+                  variant="correct"
+                  collectionTitle={true}
+                  actionMode={actionMode}
+                  flashcardSelection={flashcardSelection}
+                  changeFlashcardSelection={changeFlashcardSelection}
+                />
+              </IconCorrectWrapper>
+            </>
+          )}
+          {modeSelection === "training" && (
+            <LevelBarWrapper>
+              <LevelBar average={getAverageOfLevels()} />
+            </LevelBarWrapper>
+          )}
         </CollectionBox>
       )}
     </CollectionBoxWrapper>
@@ -175,6 +201,12 @@ const IconIncorrectWrapper = styled(IconWrapper)`
 
 const IconCorrectWrapper = styled(IconWrapper)`
   grid-column: 6 / 8;
+  grid-row: 3 / 4;
+`;
+
+const LevelBarWrapper = styled.div`
+  padding-top: 20px;
+  grid-column: 1 / 8;
   grid-row: 3 / 4;
 `;
 

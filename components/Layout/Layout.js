@@ -90,6 +90,7 @@ export default function Layout({
             href="/"
             onClick={() => {
               setIsFormClosing(true);
+              changeFlashcardSelection("all");
             }}
           >
             <LogoContainer>
@@ -100,12 +101,13 @@ export default function Layout({
           <FormToggleContainer>
             <RoundButton
               type="button"
-              content={<Plus />}
               variant="formToggle"
               name="menu"
               onClick={handleToggleForm}
               isRotate={actionMode === "create" || actionMode === "edit"}
-            />
+            >
+              <Plus />
+            </RoundButton>
           </FormToggleContainer>
           <Menu
             collections={collections}

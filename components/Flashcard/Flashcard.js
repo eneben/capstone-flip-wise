@@ -7,14 +7,18 @@ import Delete from "@/public/icons/Delete.svg";
 import Edit from "@/public/icons/Edit.svg";
 import RoundButton from "../Buttons/RoundButton";
 import DeleteConfirmationDialog from "../DeleteConfirmationDialog/DeleteConfirmationDialog";
+import LevelBar from "../LevelBar/LevelBar";
 
 export default function Flashcard({
   flashcard,
-  onToggleCorrect,
   handleDeleteFlashcard,
   changeCurrentFlashcard,
   changeActionMode,
   collectionColor,
+  modeSelection,
+  onIncreaseFlashcardLevel,
+  onDecreaseFlashcardLevel,
+  onToggleCorrect,
 }) {
   const [showAnswer, setShowAnswer] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
@@ -29,6 +33,7 @@ export default function Flashcard({
     collectionTitle: collection,
     id,
     isCorrect,
+    level,
   } = flashcard;
 
   function handleTouchStart(event) {
@@ -80,7 +85,6 @@ export default function Flashcard({
     event.stopPropagation();
     changeActionMode("edit");
     changeCurrentFlashcard(flashcard);
-    // window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   const contrastOptions = {
@@ -134,52 +138,86 @@ export default function Flashcard({
               >
                 {collection}
               </CollectionTitle>
-
               <StyledEditButtonContainer>
                 <RoundButton
-                  content={<Edit />}
                   onClick={setEditWithoutFlip}
                   type="button"
                   variant="edit"
-                />
+                >
+                  <Edit />
+                </RoundButton>
               </StyledEditButtonContainer>
-
               <StyledDeleteButtonContainer>
                 <RoundButton
-                  content={<Delete />}
                   onClick={toggleDeleteConfirmation}
                   type="button"
                   variant="delete"
-                />
+                >
+                  <Delete />
+                </RoundButton>
               </StyledDeleteButtonContainer>
 
               <Question>{question}</Question>
 
-              {isCorrect && (
+              {modeSelection === "training" && (
+                <LevelBarWrapper>
+                  <LevelBar level={level} />
+                </LevelBarWrapper>
+              )}
+
+              {modeSelection === "learning" && isCorrect && (
                 <StyledCorrectIcon>
                   <MarkAsCorrect />
                 </StyledCorrectIcon>
               )}
             </CardFront>
+
             <CardBack $collectionColor={collectionColor}>
               <StyledDeleteButtonContainer>
                 <RoundButton
-                  content={<Delete />}
                   onClick={toggleDeleteConfirmation}
                   type="button"
                   variant="delete"
-                />
+                >
+                  <Delete />
+                </RoundButton>
               </StyledDeleteButtonContainer>
               <Answer>{answer}</Answer>
 
-              <StyledMarkAsButtonContainer>
-                <RoundButton
-                  content={isCorrect ? <MarkAsIncorrect /> : <MarkAsCorrect />}
-                  onClick={() => onToggleCorrect(id)}
-                  type="button"
-                  variant={isCorrect ? "markAsIncorrect" : "markAsCorrect"}
-                />
-              </StyledMarkAsButtonContainer>
+              {modeSelection === "learning" && (
+                <StyledMarkAsButtonContainer>
+                  <RoundButton
+                    onClick={() => onToggleCorrect(id)}
+                    type="button"
+                    variant={isCorrect ? "markAsIncorrect" : "markAsCorrect"}
+                  >
+                    {isCorrect ? <MarkAsIncorrect /> : <MarkAsCorrect />}
+                  </RoundButton>
+                </StyledMarkAsButtonContainer>
+              )}
+
+              {modeSelection === "training" && (
+                <>
+                  <StyledIncorrectButtonContainer>
+                    <RoundButton
+                      onClick={() => onDecreaseFlashcardLevel(id)}
+                      type="button"
+                      variant={"markAsIncorrect"}
+                    >
+                      <MarkAsIncorrect />
+                    </RoundButton>
+                  </StyledIncorrectButtonContainer>
+                  <StyledCorrectButtonContainer>
+                    <RoundButton
+                      onClick={() => onIncreaseFlashcardLevel(id)}
+                      type="button"
+                      variant={"markAsCorrect"}
+                    >
+                      <MarkAsCorrect />
+                    </RoundButton>
+                  </StyledCorrectButtonContainer>
+                </>
+              )}
             </CardBack>
           </>
         )}
@@ -304,6 +342,16 @@ const StyledMarkAsButtonContainer = styled(RoundButtonContainer)`
   grid-row: 3 / 4;
 `;
 
+const StyledIncorrectButtonContainer = styled(RoundButtonContainer)`
+  grid-column: 6 / 7;
+  grid-row: 3 / 4;
+`;
+
+const StyledCorrectButtonContainer = styled(RoundButtonContainer)`
+  grid-column: 7 / 8;
+  grid-row: 3 / 4;
+`;
+
 const StyledDeleteConfirmationDialogContainer = styled.div`
   grid-column: 1 / 8;
   grid-row: 2 / 4;
@@ -311,4 +359,10 @@ const StyledDeleteConfirmationDialogContainer = styled.div`
   @media (min-width: 768px) {
     padding-top: 40px;
   }
+`;
+
+const LevelBarWrapper = styled.div`
+  padding-top: 20px;
+  grid-column: 1 / 8;
+  grid-row: 3 / 4;
 `;
