@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { findContrastColor } from "color-contrast-finder";
+import { motion } from "framer";
 import MarkAsIncorrect from "@/public/icons/MarkAsIncorrect.svg";
 import MarkAsCorrect from "@/public/icons/MarkAsCorrect.svg";
 import Delete from "@/public/icons/Delete.svg";
@@ -22,10 +23,6 @@ export default function Flashcard({
 }) {
   const [showAnswer, setShowAnswer] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
-  const [touchStartX, setTouchStartX] = useState(0);
-  const [touchEndX, setTouchEndX] = useState(0);
-  const [cardPosition, setCardPosition] = useState(0);
-  const minimumSwipeDistance = 50;
 
   const {
     question,
@@ -36,44 +33,25 @@ export default function Flashcard({
     level,
   } = flashcard;
 
-  function handleTouchStart(event) {
-    if (!showAnswer) return;
-    setTouchStartX(event.targetTouches[0].clientX);
-  }
-
-  function handleTouchMove(event) {
-    if (!showAnswer) return;
-    const touchX = event.targetTouches[0].clientX;
-    setCardPosition(touchX - touchStartX);
-    setTouchEndX(touchX);
-  }
-
-  function handleTouchEnd() {
-    if (!showAnswer) {
-      setCardPosition(0);
-
-      return;
-    }
-
-    const distance = touchStartX - touchEndX;
-
-    if (Math.abs(distance) > minimumSwipeDistance) {
-      if (distance < 0 && !isCorrect) {
-        console.log("Swiped right: Marked as correct");
-        onToggleCorrect(flashcard.id);
-      } else if (distance > 0 && isCorrect) {
-        console.log("Swiped left: Marked as incorrect");
-        onToggleCorrect(flashcard.id);
-      }
-    }
-
-    setCardPosition(0);
-    setTouchStartX(0);
-    setTouchEndX(0);
-  }
-
   function handleShowAnswer() {
     setShowAnswer(!showAnswer);
+  }
+
+  function handleSwipe(direction) {
+    if (direction === "right") {
+      onIncreaseFlashcardLevel(id);
+    } else if (direction === "left") {
+      onDecreaseFlashcardLevel(id);
+    }
+  }
+
+  function handleSwipeEnd(info) {
+    const { offset } = info;
+    if (offset.x > 50) {
+      handleSwipe("right");
+    } else if (offset.x < -50) {
+      handleSwipe("left");
+    }
   }
 
   function toggleDeleteConfirmation(event) {
@@ -97,132 +75,134 @@ export default function Flashcard({
   const titleColor = findContrastColor(contrastOptions);
 
   return (
-    <CardContainer
-      onClick={handleShowAnswer}
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
+    <motion.div
+      drag="x"
+      onSwipeEnd={handleSwipeEnd}
+      dragConstraints={{ left: 0, right: 0 }}
+      style={{ cursor: "grab" }}
     >
-      <StyledFlashcard $showAnswer={showAnswer} $cardPosition={cardPosition}>
-        {isDelete && (
-          <>
-            <CardFront $collectionColor={collectionColor}>
-              <StyledDeleteConfirmationDialogContainer>
-                <DeleteConfirmationDialog
-                  onDeleteFlashcard={handleDeleteFlashcard}
-                  toggleDeleteConfirmation={toggleDeleteConfirmation}
-                  id={id}
-                  variant="flashcard"
-                />
-              </StyledDeleteConfirmationDialogContainer>
-            </CardFront>
-            <CardBack $collectionColor={collectionColor}>
-              <StyledDeleteConfirmationDialogContainer>
-                <DeleteConfirmationDialog
-                  onDeleteFlashcard={handleDeleteFlashcard}
-                  toggleDeleteConfirmation={toggleDeleteConfirmation}
-                  id={id}
-                  variant="flashcard"
-                />
-              </StyledDeleteConfirmationDialogContainer>
-            </CardBack>
-          </>
-        )}
+      <CardContainer onClick={handleShowAnswer}>
+        <StyledFlashcard $showAnswer={showAnswer}>
+          {isDelete && (
+            <>
+              <CardFront $collectionColor={collectionColor}>
+                <StyledDeleteConfirmationDialogContainer>
+                  <DeleteConfirmationDialog
+                    onDeleteFlashcard={handleDeleteFlashcard}
+                    toggleDeleteConfirmation={toggleDeleteConfirmation}
+                    id={id}
+                    variant="flashcard"
+                  />
+                </StyledDeleteConfirmationDialogContainer>
+              </CardFront>
+              <CardBack $collectionColor={collectionColor}>
+                <StyledDeleteConfirmationDialogContainer>
+                  <DeleteConfirmationDialog
+                    onDeleteFlashcard={handleDeleteFlashcard}
+                    toggleDeleteConfirmation={toggleDeleteConfirmation}
+                    id={id}
+                    variant="flashcard"
+                  />
+                </StyledDeleteConfirmationDialogContainer>
+              </CardBack>
+            </>
+          )}
 
-        {!isDelete && (
-          <>
-            <CardFront $collectionColor={collectionColor}>
-              <CollectionTitle
-                $collectionColor={collectionColor}
-                $titleColor={titleColor}
-              >
-                {collection}
-              </CollectionTitle>
-              <StyledEditButtonContainer>
-                <RoundButton
-                  onClick={setEditWithoutFlip}
-                  type="button"
-                  variant="edit"
+          {!isDelete && (
+            <>
+              <CardFront $collectionColor={collectionColor}>
+                <CollectionTitle
+                  $collectionColor={collectionColor}
+                  $titleColor={titleColor}
                 >
-                  <Edit />
-                </RoundButton>
-              </StyledEditButtonContainer>
-              <StyledDeleteButtonContainer>
-                <RoundButton
-                  onClick={toggleDeleteConfirmation}
-                  type="button"
-                  variant="delete"
-                >
-                  <Delete />
-                </RoundButton>
-              </StyledDeleteButtonContainer>
-
-              <Question>{question}</Question>
-
-              {modeSelection === "training" && (
-                <LevelBarWrapper>
-                  <LevelBar level={level} />
-                </LevelBarWrapper>
-              )}
-
-              {modeSelection === "learning" && isCorrect && (
-                <StyledCorrectIcon>
-                  <MarkAsCorrect />
-                </StyledCorrectIcon>
-              )}
-            </CardFront>
-
-            <CardBack $collectionColor={collectionColor}>
-              <StyledDeleteButtonContainer>
-                <RoundButton
-                  onClick={toggleDeleteConfirmation}
-                  type="button"
-                  variant="delete"
-                >
-                  <Delete />
-                </RoundButton>
-              </StyledDeleteButtonContainer>
-              <Answer>{answer}</Answer>
-
-              {modeSelection === "learning" && (
-                <StyledMarkAsButtonContainer>
+                  {collection}
+                </CollectionTitle>
+                <StyledEditButtonContainer>
                   <RoundButton
-                    onClick={() => onToggleCorrect(id)}
+                    onClick={setEditWithoutFlip}
                     type="button"
-                    variant={isCorrect ? "markAsIncorrect" : "markAsCorrect"}
+                    variant="edit"
                   >
-                    {isCorrect ? <MarkAsIncorrect /> : <MarkAsCorrect />}
+                    <Edit />
                   </RoundButton>
-                </StyledMarkAsButtonContainer>
-              )}
+                </StyledEditButtonContainer>
+                <StyledDeleteButtonContainer>
+                  <RoundButton
+                    onClick={toggleDeleteConfirmation}
+                    type="button"
+                    variant="delete"
+                  >
+                    <Delete />
+                  </RoundButton>
+                </StyledDeleteButtonContainer>
 
-              {modeSelection === "training" && (
-                <>
-                  <StyledIncorrectButtonContainer>
+                <Question>{question}</Question>
+
+                {modeSelection === "training" && (
+                  <LevelBarWrapper>
+                    <LevelBar level={level} />
+                  </LevelBarWrapper>
+                )}
+
+                {modeSelection === "learning" && isCorrect && (
+                  <StyledCorrectIcon>
+                    <MarkAsCorrect />
+                  </StyledCorrectIcon>
+                )}
+              </CardFront>
+
+              <CardBack $collectionColor={collectionColor}>
+                <StyledDeleteButtonContainer>
+                  <RoundButton
+                    onClick={toggleDeleteConfirmation}
+                    type="button"
+                    variant="delete"
+                  >
+                    <Delete />
+                  </RoundButton>
+                </StyledDeleteButtonContainer>
+                <Answer>{answer}</Answer>
+
+                {modeSelection === "learning" && (
+                  <StyledMarkAsButtonContainer>
                     <RoundButton
-                      onClick={() => onDecreaseFlashcardLevel(id)}
+                      onClick={() => onToggleCorrect(id)}
                       type="button"
-                      variant={"markAsIncorrect"}
+                      variant={isCorrect ? "markAsIncorrect" : "markAsCorrect"}
                     >
-                      <MarkAsIncorrect />
+                      {isCorrect ? <MarkAsIncorrect /> : <MarkAsCorrect />}
                     </RoundButton>
-                  </StyledIncorrectButtonContainer>
-                  <StyledCorrectButtonContainer>
-                    <RoundButton
-                      onClick={() => onIncreaseFlashcardLevel(id)}
-                      type="button"
-                      variant={"markAsCorrect"}
-                    >
-                      <MarkAsCorrect />
-                    </RoundButton>
-                  </StyledCorrectButtonContainer>
-                </>
-              )}
-            </CardBack>
-          </>
-        )}
-      </StyledFlashcard>
-    </CardContainer>
+                  </StyledMarkAsButtonContainer>
+                )}
+
+                {modeSelection === "training" && (
+                  <>
+                    <StyledIncorrectButtonContainer>
+                      <RoundButton
+                        onClick={() => onDecreaseFlashcardLevel(id)}
+                        type="button"
+                        variant={"markAsIncorrect"}
+                      >
+                        <MarkAsIncorrect />
+                      </RoundButton>
+                    </StyledIncorrectButtonContainer>
+                    <StyledCorrectButtonContainer>
+                      <RoundButton
+                        onClick={() => onIncreaseFlashcardLevel(id)}
+                        type="button"
+                        variant={"markAsCorrect"}
+                      >
+                        <MarkAsCorrect />
+                      </RoundButton>
+                    </StyledCorrectButtonContainer>
+                  </>
+                )}
+              </CardBack>
+            </>
+          )}
+        </StyledFlashcard>
+      </CardContainer>
+    </motion.div>
   );
 }
 
@@ -238,10 +218,8 @@ const StyledFlashcard = styled.article`
   position: relative;
   transform-style: preserve-3d;
   transition: transform 0.3s, transform 0.6s;
-  transform: ${({ $showAnswer, $cardPosition }) =>
-    $showAnswer
-      ? `rotateY(180deg) translateX(${$cardPosition}px)`
-      : `rotateY(0deg) translateX(${$cardPosition}px)`};
+  transform: ${({ $showAnswer }) =>
+    $showAnswer ? "rotateY(180deg)" : "rotateY(0deg)"};
 
   cursor: pointer;
 
