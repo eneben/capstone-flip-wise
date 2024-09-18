@@ -195,13 +195,19 @@ export default function App({ Component, pageProps }) {
   function handleIncreaseFlashcardLevel(id) {
     setFlashcards(
       flashcards.map((flashcard) => {
-        return flashcard.id === id
-          ? {
-              ...flashcard,
-              level: flashcard.level + 1,
-              trainingDate: Date.now(),
-            }
-          : flashcard;
+        if (flashcard.id === id) {
+          return flashcard.level < 5
+            ? {
+                ...flashcard,
+                level: flashcard.level + 1,
+                trainingDate: Date.now(),
+              }
+            : {
+                ...flashcard,
+                trainingDate: Date.now(),
+              };
+        }
+        return flashcard;
       })
     );
   }
@@ -209,13 +215,19 @@ export default function App({ Component, pageProps }) {
   function handleDecreaseFlashcardLevel(id) {
     setFlashcards(
       flashcards.map((flashcard) => {
-        return flashcard.id === id
-          ? {
-              ...flashcard,
-              level: flashcard.level - 1,
-              trainingDate: Date.now(),
-            }
-          : flashcard;
+        if (flashcard.id === id) {
+          return flashcard.level > 1
+            ? {
+                ...flashcard,
+                level: flashcard.level - 1,
+                trainingDate: Date.now(),
+              }
+            : {
+                ...flashcard,
+                trainingDate: Date.now(),
+              };
+        }
+        return flashcard;
       })
     );
   }

@@ -6,7 +6,6 @@ export default function RoundButton({
   variant,
   isRotate,
   children,
-  disabled,
 }) {
   return (
     <StyledRoundButton
@@ -14,7 +13,6 @@ export default function RoundButton({
       onClick={onClick}
       $variant={variant}
       $isRotate={isRotate}
-      disabled={disabled}
     >
       {children}
     </StyledRoundButton>
@@ -32,11 +30,6 @@ const StyledRoundButton = styled.button`
   align-items: center;
   justify-content: center;
   ${(props) => variantRoundButtonStyles[props.$variant]}
-  ${({ disabled }) =>
-    disabled &&
-    css`
-      opacity: 0.4;
-    `}
 `;
 
 const variantRoundButtonStyles = {

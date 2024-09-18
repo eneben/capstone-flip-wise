@@ -45,7 +45,6 @@ export default function Flashcard({
     event.stopPropagation();
     changeActionMode("edit");
     changeCurrentFlashcard(flashcard);
-    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   const contrastOptions = {
@@ -159,7 +158,6 @@ export default function Flashcard({
                       onClick={() => onDecreaseFlashcardLevel(id)}
                       type="button"
                       variant={"markAsIncorrect"}
-                      disabled={level === 1}
                     >
                       <MarkAsIncorrect />
                     </RoundButton>
@@ -169,7 +167,6 @@ export default function Flashcard({
                       onClick={() => onIncreaseFlashcardLevel(id)}
                       type="button"
                       variant={"markAsCorrect"}
-                      disabled={level === 5}
                     >
                       <MarkAsCorrect />
                     </RoundButton>
