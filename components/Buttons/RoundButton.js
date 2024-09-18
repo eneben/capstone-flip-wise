@@ -1,11 +1,11 @@
 import styled, { css } from "styled-components";
 
 export default function RoundButton({
-  content,
   onClick,
   type,
   variant,
   isRotate,
+  children,
 }) {
   return (
     <StyledRoundButton
@@ -14,7 +14,7 @@ export default function RoundButton({
       $variant={variant}
       $isRotate={isRotate}
     >
-      {content}
+      {children}
     </StyledRoundButton>
   );
 }

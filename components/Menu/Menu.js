@@ -11,9 +11,13 @@ export default function Menu({
   getAllFlashcardsFromCollection,
 }) {
   const [isMenu, setIsMenu] = useState(false);
-  const [isCollections, setIsCollections] = useState(false);
   const [isMenuClosing, setIsMenuClosing] = useState(false);
-  const [isCollectionsClosing, setIsCollectionsClosing] = useState(false);
+  const [isLearningCollections, setIsLearningCollections] = useState(false);
+  const [isLearningCollectionsClosing, setIsLearningCollectionsClosing] =
+    useState(false);
+  const [isTrainingCollections, setIsTrainingCollections] = useState(false);
+  const [isTrainingCollectionsClosing, setIsTrainingCollectionsClosing] =
+    useState(false);
 
   function handleToggleMenu(event) {
     event.stopPropagation();
@@ -23,7 +27,8 @@ export default function Menu({
     } else {
       setIsMenuClosing(true);
     }
-    setIsCollectionsClosing(true);
+    setIsLearningCollectionsClosing(true);
+    setIsTrainingCollectionsClosing(true);
   }
 
   useEffect(() => {
@@ -36,24 +41,49 @@ export default function Menu({
     }
   }, [isMenuClosing]);
 
-  function handleToggleCollections(event) {
+  function handleToggleLearningCollections(event) {
     event.stopPropagation();
-    if (!isCollections) {
-      setIsCollections(true);
+    if (!isLearningCollections) {
+      setIsLearningCollections(true);
+      if (isTrainingCollections) {
+        setIsTrainingCollectionsClosing(true);
+      }
     } else {
-      setIsCollectionsClosing(true);
+      setIsLearningCollectionsClosing(true);
+    }
+  }
+
+  function handleToggleTrainingCollections(event) {
+    event.stopPropagation();
+    if (!isTrainingCollections) {
+      setIsTrainingCollections(true);
+      if (isLearningCollections) {
+        setIsLearningCollectionsClosing(true);
+      }
+    } else {
+      setIsTrainingCollectionsClosing(true);
     }
   }
 
   useEffect(() => {
-    if (isCollectionsClosing) {
+    if (isLearningCollectionsClosing) {
       const collectionsTimeoutId = setTimeout(() => {
-        setIsCollections(false);
-        setIsCollectionsClosing(false);
+        setIsLearningCollections(false);
+        setIsLearningCollectionsClosing(false);
       }, 290);
       return () => clearTimeout(collectionsTimeoutId);
     }
-  }, [isCollectionsClosing]);
+  }, [isLearningCollectionsClosing]);
+
+  useEffect(() => {
+    if (isTrainingCollectionsClosing) {
+      const collectionsTimeoutId = setTimeout(() => {
+        setIsTrainingCollections(false);
+        setIsTrainingCollectionsClosing(false);
+      }, 290);
+      return () => clearTimeout(collectionsTimeoutId);
+    }
+  }, [isTrainingCollectionsClosing]);
 
   return (
     <StyledMenuContainer>
@@ -70,31 +100,86 @@ export default function Menu({
               <StyledNavigationLink
                 href="/"
                 onClick={() => {
+                  changeFlashcardSelection("all");
                   setIsMenuClosing(true);
-                  setIsCollectionsClosing(true);
+                  setIsLearningCollectionsClosing(true);
+                  setIsTrainingCollectionsClosing(true);
                 }}
               >
-                Collections
+                Home
+              </StyledNavigationLink>
+            </StyledNavigationListItem>
+            <StyledNavigationListItem>
+              <StyledNavigationLink
+                href="/learning"
+                onClick={() => {
+                  changeFlashcardSelection("all");
+                  setIsMenuClosing(true);
+                  setIsLearningCollectionsClosing(true);
+                }}
+              >
+                Learning Mode
               </StyledNavigationLink>
               <StyledSubMenuArrow
-                $isRotate={isCollections}
-                onClick={handleToggleCollections}
+                $isRotate={isLearningCollections}
+                onClick={handleToggleLearningCollections}
               />
             </StyledNavigationListItem>
-            {isCollections && (
+            {isLearningCollections && (
               <StyledSubNavigationList>
                 {collections.map((collection) => {
                   return (
                     <StyledSubNavigationListItem
                       key={collection.id}
-                      $isCollectionsClosing={isCollectionsClosing}
+                      $isCollectionsClosing={isLearningCollectionsClosing}
                     >
                       <StyledSubNavigationLink
-                        href={`/${collection.id}`}
+                        href={`/learning/${collection.id}`}
                         onClick={() => {
                           changeFlashcardSelection("all");
                           setIsMenuClosing(true);
-                          setIsCollectionsClosing(true);
+                          setIsLearningCollectionsClosing(true);
+                        }}
+                      >
+                        {collection.title} (
+                        {getAllFlashcardsFromCollection(collection.id).length})
+                      </StyledSubNavigationLink>
+                    </StyledSubNavigationListItem>
+                  );
+                })}
+              </StyledSubNavigationList>
+            )}
+
+            <StyledNavigationListItem>
+              <StyledNavigationLink
+                href="/training"
+                onClick={() => {
+                  changeFlashcardSelection("all");
+                  setIsMenuClosing(true);
+                  setIsTrainingCollectionsClosing(true);
+                }}
+              >
+                Training Mode
+              </StyledNavigationLink>
+              <StyledSubMenuArrow
+                $isRotate={isTrainingCollections}
+                onClick={handleToggleTrainingCollections}
+              />
+            </StyledNavigationListItem>
+            {isTrainingCollections && (
+              <StyledSubNavigationList>
+                {collections.map((collection) => {
+                  return (
+                    <StyledSubNavigationListItem
+                      key={collection.id}
+                      $isCollectionsClosing={isTrainingCollectionsClosing}
+                    >
+                      <StyledSubNavigationLink
+                        href={`/training/${collection.id}`}
+                        onClick={() => {
+                          changeFlashcardSelection("all");
+                          setIsMenuClosing(true);
+                          setIsTrainingCollectionsClosing(true);
                         }}
                       >
                         {collection.title} (
