@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import { useState } from "react";
 import styled from "styled-components";
 import Flashcard from "@/components/Flashcard/Flashcard";
 
@@ -18,6 +19,8 @@ export default function CollectionPage({
 
   const collectionTitle = allFlashcardsFromCollection?.[0]?.collectionTitle;
   const collectionColor = allFlashcardsFromCollection?.[0]?.collectionColor;
+
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   function sortFlashcardsByLevel(flashcards) {
     return flashcards.sort((a, b) => {
@@ -45,9 +48,40 @@ export default function CollectionPage({
 
   const allLearned = areAllCardsLearned(sortedFlashcards);
 
-  const currentFlashcard = sortedFlashcards[0];
-  const nextFlashcard = sortedFlashcards[1];
-  const thirdFlashcard = sortedFlashcards[2];
+  function getFlashcardAtPosition(currentIndex, position, flashcards) {
+    const totalFlashcards = flashcards.length;
+    if (totalFlashcards === 0) return null;
+
+    const targetIndex = (currentIndex + position) % totalFlashcards;
+
+    return flashcards[targetIndex];
+  }
+
+  const currentFlashcard = getFlashcardAtPosition(
+    currentIndex,
+    0,
+    sortedFlashcards
+  );
+  const nextFlashcard = getFlashcardAtPosition(
+    currentIndex,
+    1,
+    sortedFlashcards
+  );
+  const thirdFlashcard = getFlashcardAtPosition(
+    currentIndex,
+    2,
+    sortedFlashcards
+  );
+
+  function handleSwipe(direction) {
+    if (direction === "right") {
+      handleIncreaseFlashcardLevel(currentFlashcard.id);
+    } else if (direction === "left") {
+      handleDecreaseFlashcardLevel(currentFlashcard.id);
+    }
+
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % sortedFlashcards.length);
+  }
 
   return (
     <>
@@ -103,6 +137,7 @@ export default function CollectionPage({
                 modeSelection="training"
                 onIncreaseFlashcardLevel={handleIncreaseFlashcardLevel}
                 onDecreaseFlashcardLevel={handleDecreaseFlashcardLevel}
+                onSwipe={handleSwipe}
               />
             </FlashcardStackWrapper>
           </FlashcardListWrapper>
