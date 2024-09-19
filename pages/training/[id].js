@@ -3,7 +3,6 @@ import styled from "styled-components";
 import Flashcard from "@/components/Flashcard/Flashcard";
 
 export default function TrainingCollectionPage({
-  handleToggleCorrect,
   handleDeleteFlashcard,
   changeActionMode,
   changeCurrentFlashcard,
@@ -70,7 +69,6 @@ export default function TrainingCollectionPage({
                   collectionColor={collectionColor}
                   handleDeleteFlashcard={handleDeleteFlashcard}
                   flashcard={thirdFlashcard}
-                  onToggleCorrect={handleToggleCorrect}
                   changeCurrentFlashcard={changeCurrentFlashcard}
                   changeActionMode={changeActionMode}
                   modeSelection="training"
@@ -84,7 +82,6 @@ export default function TrainingCollectionPage({
                   collectionColor={collectionColor}
                   handleDeleteFlashcard={handleDeleteFlashcard}
                   flashcard={secondFlashcard}
-                  onToggleCorrect={handleToggleCorrect}
                   changeCurrentFlashcard={changeCurrentFlashcard}
                   changeActionMode={changeActionMode}
                   modeSelection="training"
@@ -97,7 +94,6 @@ export default function TrainingCollectionPage({
                 collectionColor={collectionColor}
                 handleDeleteFlashcard={handleDeleteFlashcard}
                 flashcard={firstFlashcard}
-                onToggleCorrect={handleToggleCorrect}
                 changeCurrentFlashcard={changeCurrentFlashcard}
                 changeActionMode={changeActionMode}
                 modeSelection="training"
@@ -120,7 +116,7 @@ export default function TrainingCollectionPage({
 
 const StyledMessage = styled.p`
   text-align: center;
-  font-size: 1rem;
+  font-size: 1.3rem;
   padding: 40px 20px;
 `;
 
