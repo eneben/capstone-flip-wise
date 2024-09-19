@@ -3,6 +3,7 @@ import styled from "styled-components";
 import RegularButton from "@/components/Buttons/RegularButton";
 import ButtonWrapper from "@/components/Buttons/ButtonWrapper";
 import { useState } from "react";
+import { uid } from "uid";
 
 export default function TrainingCollectionPage({
   getAllFlashcardsFromCollection,
@@ -11,9 +12,17 @@ export default function TrainingCollectionPage({
   const { id } = router.query;
 
   const [isCancel, setIsCancel] = useState(false);
+  const [flippedCards, setFlippedCards] = useState({});
 
   function toggleCancel() {
     setIsCancel(!isCancel);
+  }
+
+  function toggleCardFlip(cardId) {
+    setFlippedCards({
+      ...flippedCards,
+      [cardId]: !flippedCards[cardId],
+    });
   }
 
   const allFlashcardsFromCollection = getAllFlashcardsFromCollection(id);
@@ -45,29 +54,29 @@ export default function TrainingCollectionPage({
 
   const memoryQuestions = nineRandomFlashcards.map((flashcard) => {
     return {
-      id: flashcard.id,
+      pairing: flashcard.id,
       content: flashcard.question,
       type: "question",
+      id: uid(),
     };
   });
 
   const memoryAnswers = nineRandomFlashcards.map((flashcard) => {
     return {
-      id: flashcard.id,
+      pairing: flashcard.id,
       content: flashcard.answer,
       type: "answer",
+      id: uid(),
     };
   });
 
-  const memoryCards = memoryQuestions.concat(memoryAnswers);
+  const memoryCards = [...memoryQuestions, ...memoryAnswers];
 
   function shuffleCards(cards) {
     return cards.sort(() => Math.random() - 0.5);
   }
 
   const shuffledMemoryCards = shuffleCards(memoryCards);
-
-  console.log(shuffledMemoryCards);
 
   return (
     <>
@@ -83,12 +92,18 @@ export default function TrainingCollectionPage({
           <StyledSubheading>Gaming Mode</StyledSubheading>
 
           <FlashcardMemoryGrid>
-            {shuffledMemoryCards.map((card, index) => (
-              <li key={index}>
-                <MemoryCard $collectionColor={collectionColor}>
-                  <MemoryCardContent>{card.content}</MemoryCardContent>
+            {shuffledMemoryCards.map((card) => (
+              <CardContainer
+                key={card.id}
+                onClick={() => toggleCardFlip(card.id)}
+              >
+                <MemoryCard $isFlipped={flippedCards[card.id]}>
+                  <MemoryCardBack $collectionColor={collectionColor} />
+                  <MemoryCardFront>
+                    <MemoryCardContent>{card.content}</MemoryCardContent>
+                  </MemoryCardFront>
                 </MemoryCard>
-              </li>
+              </CardContainer>
             ))}
           </FlashcardMemoryGrid>
 
@@ -133,6 +148,10 @@ export default function TrainingCollectionPage({
   );
 }
 
+const CardContainer = styled.li`
+  perspective: 1000px;
+`;
+
 const FlashcardMemoryGrid = styled.ul`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -141,13 +160,28 @@ const FlashcardMemoryGrid = styled.ul`
   list-style: none;
 `;
 
-const MemoryCard = styled.li`
+const MemoryCard = styled.article`
   list-style: none;
   width: 105px;
   height: 60px;
-  background-color: ${({ $collectionColor }) => $collectionColor};
   font-size: 12px;
   padding: 5px;
+  border-radius: 5px;
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+  transform: ${({ $showFront }) =>
+    $showFront ? "rotateY(180deg)" : "rotateY(0deg)"};
+`;
+
+const MemoryCardBack = styled.div`
+  backface-visibility: hidden;
+  background-color: ${({ $collectionColor }) => $collectionColor};
+`;
+
+const MemoryCardFront = styled.div`
+  backface-visibility: hidden;
+  background-color: #add8e6;
+  transform: rotateY(180deg);
 `;
 
 const MemoryCardContent = styled.p`
