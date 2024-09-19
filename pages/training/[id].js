@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import styled from "styled-components";
 import Flashcard from "@/components/Flashcard/Flashcard";
 
-export default function CollectionPage({
+export default function TrainingCollectionPage({
   handleToggleCorrect,
   handleDeleteFlashcard,
   changeActionMode,

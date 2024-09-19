@@ -108,6 +108,7 @@ export default function Collection({
               </IconCorrectWrapper>
             </>
           )}
+
           {modeSelection === "training" && (
             <LevelBarWrapper>
               <LevelBar average={getAverageOfLevels()} />
