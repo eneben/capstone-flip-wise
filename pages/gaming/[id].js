@@ -1,11 +1,20 @@
 import { useRouter } from "next/router";
 import styled from "styled-components";
+import RegularButton from "@/components/Buttons/RegularButton";
+import ButtonWrapper from "@/components/Buttons/ButtonWrapper";
+import { useState } from "react";
 
 export default function TrainingCollectionPage({
   getAllFlashcardsFromCollection,
 }) {
   const router = useRouter();
   const { id } = router.query;
+
+  const [isCancel, setIsCancel] = useState(false);
+
+  function toggleCancel() {
+    setIsCancel(!isCancel);
+  }
 
   const allFlashcardsFromCollection = getAllFlashcardsFromCollection(id);
 
@@ -82,6 +91,42 @@ export default function TrainingCollectionPage({
               </li>
             ))}
           </FlashcardMemoryGrid>
+
+          <CancelContainer>
+            {!isCancel && (
+              <RegularButton
+                type="button"
+                onClick={toggleCancel}
+                variant="confirm"
+              >
+                Cancel Game
+              </RegularButton>
+            )}
+
+            {isCancel && (
+              <>
+                <p>Are you sure you want to cancel the game?</p>
+                <ButtonWrapper>
+                  <RegularButton
+                    type="button"
+                    onClick={() => {
+                      router.push("/gaming/");
+                    }}
+                    variant="warning"
+                  >
+                    Yes
+                  </RegularButton>
+                  <RegularButton
+                    type="button"
+                    onClick={toggleCancel}
+                    variant="confirm"
+                  >
+                    No
+                  </RegularButton>
+                </ButtonWrapper>
+              </>
+            )}
+          </CancelContainer>
         </>
       )}
     </>
@@ -92,8 +137,7 @@ const FlashcardMemoryGrid = styled.ul`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(6, 1fr);
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-gap: 10px;
   list-style: none;
 `;
 
@@ -130,4 +174,11 @@ const StyledSubheading = styled.h3`
   font: var(--sub-headline);
   text-align: center;
   padding: 5px 0 30px 0;
+`;
+
+const CancelContainer = styled.section`
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 `;
