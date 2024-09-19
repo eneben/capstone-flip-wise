@@ -14,6 +14,9 @@ export default function TrainingCollectionPage({
   const [isCancel, setIsCancel] = useState(false);
   const [flippedCards, setFlippedCards] = useState({});
 
+  console.log("flippedCards: ", flippedCards);
+  // ALLE AUF TRUE - WARUM ???
+
   function toggleCancel() {
     setIsCancel(!isCancel);
   }
@@ -148,10 +151,6 @@ export default function TrainingCollectionPage({
   );
 }
 
-const CardContainer = styled.li`
-  perspective: 1000px;
-`;
-
 const FlashcardMemoryGrid = styled.ul`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -160,31 +159,41 @@ const FlashcardMemoryGrid = styled.ul`
   list-style: none;
 `;
 
+const CardContainer = styled.li`
+  perspective: 1000px;
+`;
+
 const MemoryCard = styled.article`
-  list-style: none;
   width: 105px;
   height: 60px;
   font-size: 12px;
-  padding: 5px;
   border-radius: 5px;
+  position: relative;
   transform-style: preserve-3d;
   transition: transform 0.6s;
-  transform: ${({ $showFront }) =>
-    $showFront ? "rotateY(180deg)" : "rotateY(0deg)"};
+  transform: ${({ $isFlipped }) =>
+    $isFlipped ? "rotateY(180deg)" : "rotateY(0deg)"};
 `;
 
 const MemoryCardBack = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
   backface-visibility: hidden;
   background-color: ${({ $collectionColor }) => $collectionColor};
 `;
 
 const MemoryCardFront = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
   backface-visibility: hidden;
   background-color: #add8e6;
   transform: rotateY(180deg);
 `;
 
 const MemoryCardContent = styled.p`
+  padding: 5px;
   text-overflow: ellipsis;
   overflow: hidden;
   display: -webkit-box;
