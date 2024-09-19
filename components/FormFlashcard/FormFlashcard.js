@@ -97,7 +97,7 @@ export default function FormFlashcard({
         <NewCollectionWrapper>
           <CollectionNameWrapper>
             <StyledLabel htmlFor="collectionName">Collection Name</StyledLabel>
-            <FormInput name="collectionName" maxlength="25" />
+            <FormInput name="collectionName" maxlength="23" />
           </CollectionNameWrapper>
           <CollectionColorWrapper>
             <StyledLabel htmlFor="collectionColor">Color</StyledLabel>

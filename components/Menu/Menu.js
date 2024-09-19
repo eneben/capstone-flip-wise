@@ -40,7 +40,7 @@ export default function Menu({
       const menuTimeoutId = setTimeout(() => {
         setIsMenu(false);
         setIsMenuClosing(false);
-      }, 190);
+      }, 390);
       return () => clearTimeout(menuTimeoutId);
     }
   }, [isMenuClosing]);
@@ -276,13 +276,13 @@ export default function Menu({
 }
 
 const menuAnimationIn = keyframes`
-0% { top: 65px; }
+0% { top: -76px; }
 100% { top: 100px; }
 `;
 
 const menuAnimationOut = keyframes`
 0% { top: 100px; }
-100% { top: 65px; }
+100% { top: -76px; }
 `;
 
 const subMenuAnimationOpen = keyframes`
@@ -312,7 +312,7 @@ const StyledButton = styled.button`
 
 const StyledCover = styled.div`
   background-color: #fff;
-  width: 220px;
+  width: 200px;
   height: 100px;
   position: absolute;
   top: 0;
@@ -332,14 +332,14 @@ const StyledNavigation = styled.nav`
   animation: ${(props) =>
     props.$isMenuClosing
       ? css`
-          ${menuAnimationOut} 0.2s ease-out
+          ${menuAnimationOut} 0.4s ease-out
         `
       : css`
-          ${menuAnimationIn} 0.2s ease-out
+          ${menuAnimationIn} 0.4s ease-out
         `};
   position: absolute;
   top: 100px;
-  width: 220px;
+  width: 200px;
   background-color: #fff;
   border: 1px solid #000;
   border-top: none;
@@ -361,6 +361,7 @@ const StyledNavigationListItem = styled.li`
   text-align: center;
   color: #fff;
   background-color: #000;
+  height: 44px;
 `;
 
 const StyledSubNavigationList = styled.ul`
