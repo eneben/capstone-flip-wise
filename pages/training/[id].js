@@ -45,8 +45,8 @@ export default function CollectionPage({
 
   const allLearned = areAllCardsLearned(sortedFlashcards);
 
-  const currentFlashcard = sortedFlashcards[0];
-  const nextFlashcard = sortedFlashcards[1];
+  const firstFlashcard = sortedFlashcards[0];
+  const secondFlashcard = sortedFlashcards[1];
   const thirdFlashcard = sortedFlashcards[2];
 
   return (
@@ -83,7 +83,7 @@ export default function CollectionPage({
                 <Flashcard
                   collectionColor={collectionColor}
                   handleDeleteFlashcard={handleDeleteFlashcard}
-                  flashcard={nextFlashcard}
+                  flashcard={secondFlashcard}
                   onToggleCorrect={handleToggleCorrect}
                   changeCurrentFlashcard={changeCurrentFlashcard}
                   changeActionMode={changeActionMode}
@@ -96,7 +96,7 @@ export default function CollectionPage({
               <Flashcard
                 collectionColor={collectionColor}
                 handleDeleteFlashcard={handleDeleteFlashcard}
-                flashcard={currentFlashcard}
+                flashcard={firstFlashcard}
                 onToggleCorrect={handleToggleCorrect}
                 changeCurrentFlashcard={changeCurrentFlashcard}
                 changeActionMode={changeActionMode}
