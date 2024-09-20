@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import Flashcard from "@/components/Flashcard/Flashcard";
 
@@ -15,12 +15,19 @@ export default function CollectionPage({
   const router = useRouter();
   const { id } = router.query;
 
-  const allFlashcardsFromCollection = getAllFlashcardsFromCollection(id);
+  const [sortedFlashcards, setSortedFlashcards] = useState([]);
 
-  const collectionTitle = allFlashcardsFromCollection?.[0]?.collectionTitle;
-  const collectionColor = allFlashcardsFromCollection?.[0]?.collectionColor;
+  useEffect(() => {
+    if (id) {
+      const allFlashcardsFromCollection = getAllFlashcardsFromCollection(id);
+      setSortedFlashcards(sortFlashcardsByLevel(allFlashcardsFromCollection));
+    }
+  }, [id, getAllFlashcardsFromCollection]);
 
-  const [currentIndex, setCurrentIndex] = useState(0);
+  // const allFlashcardsFromCollection = getAllFlashcardsFromCollection(id);
+
+  // const collectionTitle = allFlashcardsFromCollection?.[0]?.collectionTitle;
+  // const collectionColor = allFlashcardsFromCollection?.[0]?.collectionColor;
 
   function sortFlashcardsByLevel(flashcards) {
     return flashcards.sort((a, b) => {
@@ -40,7 +47,7 @@ export default function CollectionPage({
     });
   }
 
-  const sortedFlashcards = sortFlashcardsByLevel(allFlashcardsFromCollection);
+  // const sortedFlashcards = sortFlashcardsByLevel(allFlashcardsFromCollection);
 
   function areAllCardsLearned(flashcards) {
     return flashcards.length > 0 && flashcards[0].level === 5;
@@ -48,29 +55,15 @@ export default function CollectionPage({
 
   const allLearned = areAllCardsLearned(sortedFlashcards);
 
-  function getFlashcardAtPosition(currentIndex, position, flashcards) {
-    const totalFlashcards = flashcards.length;
-    if (totalFlashcards === 0) return null;
+  const currentFlashcard = sortedFlashcards[0];
+  const nextFlashcard = sortedFlashcards[1];
+  const thirdFlashcard = sortedFlashcards[2];
 
-    const targetIndex = (currentIndex + position) % totalFlashcards;
-
-    return flashcards[targetIndex];
-  }
-
-  const currentFlashcard = getFlashcardAtPosition(
-    currentIndex,
-    0,
-    sortedFlashcards
-  );
-  const nextFlashcard = getFlashcardAtPosition(
-    currentIndex,
-    1,
-    sortedFlashcards
-  );
-  const thirdFlashcard = getFlashcardAtPosition(
-    currentIndex,
-    2,
-    sortedFlashcards
+  console.log(
+    "current flashcard",
+    currentFlashcard,
+    "next flashcard",
+    nextFlashcard
   );
 
   function handleSwipe(direction) {
@@ -79,15 +72,16 @@ export default function CollectionPage({
     } else if (direction === "left") {
       handleDecreaseFlashcardLevel(currentFlashcard.id);
     }
-
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % sortedFlashcards.length);
   }
+  console.log(sortedFlashcards);
 
   return (
     <>
-      {allFlashcardsFromCollection.length > 0 && (
+      {sortedFlashcards.length > 0 && (
         <>
-          <StyledHeadline>{collectionTitle}</StyledHeadline>
+          <StyledHeadline>
+            {sortedFlashcards[0]?.collectionTitle}
+          </StyledHeadline>
           <StyledSubheading>Training Mode</StyledSubheading>
 
           {allLearned && (
@@ -101,7 +95,7 @@ export default function CollectionPage({
             <FlashcardStackWrapper>
               <ThirdFlashcardWrapper>
                 <Flashcard
-                  collectionColor={collectionColor}
+                  collectionColor={currentFlashcard?.collectionColor}
                   handleDeleteFlashcard={handleDeleteFlashcard}
                   flashcard={thirdFlashcard}
                   onToggleCorrect={handleToggleCorrect}
@@ -115,7 +109,7 @@ export default function CollectionPage({
               <ThirdFlashcardOpacity />
               <SecondFlashcardWrapper>
                 <Flashcard
-                  collectionColor={collectionColor}
+                  collectionColor={currentFlashcard?.collectionColor}
                   handleDeleteFlashcard={handleDeleteFlashcard}
                   flashcard={nextFlashcard}
                   onToggleCorrect={handleToggleCorrect}
@@ -128,7 +122,7 @@ export default function CollectionPage({
               </SecondFlashcardWrapper>
               <SecondFlashcardOpacity />
               <Flashcard
-                collectionColor={collectionColor}
+                collectionColor={currentFlashcard?.collectionColor}
                 handleDeleteFlashcard={handleDeleteFlashcard}
                 flashcard={currentFlashcard}
                 onToggleCorrect={handleToggleCorrect}
@@ -143,8 +137,7 @@ export default function CollectionPage({
           </FlashcardListWrapper>
         </>
       )}
-      {(!allFlashcardsFromCollection ||
-        allFlashcardsFromCollection.length === 0) && (
+      {(!sortedFlashcards || sortedFlashcards.length === 0) && (
         <StyledMessage>
           No flashcards in this collection found. Add some new!
         </StyledMessage>

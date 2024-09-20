@@ -48,28 +48,6 @@ export default function Flashcard({
   );
   const animControls = useAnimation();
 
-  // function handleSwipe(direction) {
-  //   if (direction === "right") {
-  //     onIncreaseFlashcardLevel(id);
-  //   } else if (direction === "left") {
-  //     onDecreaseFlashcardLevel(id);
-  //   }
-  // }
-
-  function handleDragEnd(event, info) {
-    if (!showAnswer) return;
-    const { offset } = info;
-    if (offset.x > 150) {
-      onSwipe("right");
-      animControls.start({ x: 200, opacity: 0 });
-    } else if (offset.x < -50) {
-      onSwipe("left");
-      animControls.start({ x: -200, opacity: 0 });
-    } else {
-      animControls.start({ x: 0 });
-    }
-  }
-
   function handleShowAnswer() {
     setShowAnswer(!showAnswer);
   }
@@ -101,9 +79,29 @@ export default function Flashcard({
           drag={showAnswer ? "x" : false}
           x={motionValue}
           rotate={rotateValue}
-          dragConstraints={{ left: 0, right: 0 }}
-          onDragEnd={handleDragEnd}
-          style={{ cursor: showAnswer ? "grab" : "default" }}
+          opacity={opacityValue}
+          dragConstraints={{ left: -5000, right: 5000 }}
+          onDragEnd={(event, info) => {
+            if (!showAnswer) return;
+            const { offset } = info;
+
+            if (offset.x > 150) {
+              onSwipe("right");
+              animControls.start({ x: 400, opacity: 0 }).then(() => {
+                motionValue.set(0);
+                animControls.start({ opacity: 1 });
+              });
+            } else if (offset.x < -50) {
+              onSwipe("left");
+              animControls.start({ x: -400, opacity: 0 }).then(() => {
+                motionValue.set(0);
+                animControls.start({ opacity: 1 });
+              });
+            } else {
+              animControls.start({ x: 0 });
+            }
+          }}
+          // style={{ cursor: showAnswer ? "grab" : "default" }}
         >
           <CardContainer onClick={handleShowAnswer}>
             <StyledFlashcard $showAnswer={showAnswer}>
