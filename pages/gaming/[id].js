@@ -94,7 +94,7 @@ export default function TrainingCollectionPage({
           <StyledHeadline>{collectionTitle}</StyledHeadline>
           <StyledSubheading>Gaming Mode</StyledSubheading>
 
-          <FlashcardMemoryGrid>
+          {/* <FlashcardMemoryGrid>
             {shuffledMemoryCards.map((card) => (
               <CardContainer
                 key={card.id}
@@ -108,7 +108,7 @@ export default function TrainingCollectionPage({
                 </MemoryCard>
               </CardContainer>
             ))}
-          </FlashcardMemoryGrid>
+          </FlashcardMemoryGrid> */}
 
           <CancelContainer>
             {!isCancel && (

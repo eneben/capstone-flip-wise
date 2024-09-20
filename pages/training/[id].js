@@ -18,8 +18,6 @@ export default function TrainingCollectionPage({
   const collectionTitle = allFlashcardsFromCollection?.[0]?.collectionTitle;
   const collectionColor = allFlashcardsFromCollection?.[0]?.collectionColor;
 
-  //trying out
-
   function sortFlashcardsByLevel(flashcards) {
     return flashcards.sort((a, b) => {
       if (a.level !== b.level) {
