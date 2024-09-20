@@ -59,13 +59,6 @@ export default function CollectionPage({
   const nextFlashcard = sortedFlashcards[1];
   const thirdFlashcard = sortedFlashcards[2];
 
-  console.log(
-    "current flashcard",
-    currentFlashcard,
-    "next flashcard",
-    nextFlashcard
-  );
-
   function handleSwipe(direction) {
     if (direction === "right") {
       handleIncreaseFlashcardLevel(currentFlashcard.id);
@@ -73,7 +66,6 @@ export default function CollectionPage({
       handleDecreaseFlashcardLevel(currentFlashcard.id);
     }
   }
-  console.log(sortedFlashcards);
 
   return (
     <>

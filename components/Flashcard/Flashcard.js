@@ -48,6 +48,32 @@ export default function Flashcard({
   );
   const animControls = useAnimation();
 
+  function handleDragEnd() {
+    (event, info) => {
+      const { offset } = info;
+
+      if (!showAnswer) return;
+
+      if (offset.x > 150) {
+        onSwipe("right");
+        animControls.start({ x: 400, opacity: 0 }).then(() => {
+          motionValue.set(0);
+          animControls.start({ x: 0, opacity: 1 });
+        });
+      } else if (offset.x < -50) {
+        onSwipe("left");
+        animControls.start({ x: -400, opacity: 0 }).then(() => {
+          motionValue.set(0);
+          animControls.start({ x: 0, opacity: 1 });
+        });
+      } else {
+        animControls.start({ x: 0, opacity: 1 });
+      }
+    };
+  }
+
+  console.log("motion value", motionValue);
+
   function handleShowAnswer() {
     setShowAnswer(!showAnswer);
   }
@@ -77,31 +103,12 @@ export default function Flashcard({
       {modeSelection === "training" ? (
         <motion.div
           drag={showAnswer ? "x" : false}
-          x={motionValue}
-          rotate={rotateValue}
-          opacity={opacityValue}
-          dragConstraints={{ left: -5000, right: 5000 }}
-          onDragEnd={(event, info) => {
-            if (!showAnswer) return;
-            const { offset } = info;
-
-            if (offset.x > 150) {
-              onSwipe("right");
-              animControls.start({ x: 400, opacity: 0 }).then(() => {
-                motionValue.set(0);
-                animControls.start({ opacity: 1 });
-              });
-            } else if (offset.x < -50) {
-              onSwipe("left");
-              animControls.start({ x: -400, opacity: 0 }).then(() => {
-                motionValue.set(0);
-                animControls.start({ opacity: 1 });
-              });
-            } else {
-              animControls.start({ x: 0 });
-            }
-          }}
-          // style={{ cursor: showAnswer ? "grab" : "default" }}
+          // x={motionValue}
+          // rotate={rotateValue}
+          // opacity={opacityValue}
+          dragConstraints={{ left: -1000, right: 1000 }}
+          style={{ x: motionValue, rotate: rotateValue }}
+          onDragEnd={handleDragEnd}
         >
           <CardContainer onClick={handleShowAnswer}>
             <StyledFlashcard $showAnswer={showAnswer}>
