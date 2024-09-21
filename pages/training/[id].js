@@ -18,16 +18,10 @@ export default function CollectionPage({
   const [sortedFlashcards, setSortedFlashcards] = useState([]);
 
   useEffect(() => {
-    if (id) {
-      const allFlashcardsFromCollection = getAllFlashcardsFromCollection(id);
-      setSortedFlashcards(sortFlashcardsByLevel(allFlashcardsFromCollection));
-    }
+    if (!id) return;
+    const allFlashcardsFromCollection = getAllFlashcardsFromCollection(id);
+    setSortedFlashcards(sortFlashcardsByLevel(allFlashcardsFromCollection));
   }, [id, getAllFlashcardsFromCollection]);
-
-  // const allFlashcardsFromCollection = getAllFlashcardsFromCollection(id);
-
-  // const collectionTitle = allFlashcardsFromCollection?.[0]?.collectionTitle;
-  // const collectionColor = allFlashcardsFromCollection?.[0]?.collectionColor;
 
   function sortFlashcardsByLevel(flashcards) {
     return flashcards.sort((a, b) => {
@@ -46,8 +40,6 @@ export default function CollectionPage({
       }
     });
   }
-
-  // const sortedFlashcards = sortFlashcardsByLevel(allFlashcardsFromCollection);
 
   function areAllCardsLearned(flashcards) {
     return flashcards.length > 0 && flashcards[0].level === 5;

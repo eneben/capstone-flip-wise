@@ -1,12 +1,7 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { findContrastColor } from "color-contrast-finder";
-import {
-  motion,
-  useMotionValue,
-  useTransform,
-  useAnimation,
-} from "framer-motion";
+import { motion, useMotionValue, useTransform } from "framer-motion";
 import MarkAsIncorrect from "@/public/icons/MarkAsIncorrect.svg";
 import MarkAsCorrect from "@/public/icons/MarkAsCorrect.svg";
 import Delete from "@/public/icons/Delete.svg";
@@ -40,39 +35,30 @@ export default function Flashcard({
   } = flashcard;
 
   const motionValue = useMotionValue(0);
-  const rotateValue = useTransform(motionValue, [-200, 200], [-50, 50]);
+  const rotateValue = useTransform(motionValue, [-300, 300], [-100, 100]);
   const opacityValue = useTransform(
     motionValue,
-    [-200, -150, 0, 150, 200],
-    [0, 1, 1, 1, 0]
+    [-150, -75, 0, 75, 150],
+    [0, 0, 1, 0, 0]
   );
-  const animControls = useAnimation();
 
   function handleDragEnd() {
-    (event, info) => {
-      const { offset } = info;
+    if (!showAnswer) return;
+    const x = motionValue.get();
 
-      if (!showAnswer) return;
+    console.log(x);
 
-      if (offset.x > 150) {
-        onSwipe("right");
-        animControls.start({ x: 400, opacity: 0 }).then(() => {
-          motionValue.set(0);
-          animControls.start({ x: 0, opacity: 1 });
-        });
-      } else if (offset.x < -50) {
-        onSwipe("left");
-        animControls.start({ x: -400, opacity: 0 }).then(() => {
-          motionValue.set(0);
-          animControls.start({ x: 0, opacity: 1 });
-        });
-      } else {
-        animControls.start({ x: 0, opacity: 1 });
-      }
-    };
+    if (x > 30) {
+      console.log("increase");
+      onSwipe("right");
+      onIncreaseFlashcardLevel(id);
+    } else if (x < -30) {
+      console.log("decrease");
+      onSwipe("left");
+      onDecreaseFlashcardLevel(id);
+    }
+    setShowAnswer(false);
   }
-
-  console.log("motion value", motionValue);
 
   function handleShowAnswer() {
     setShowAnswer(!showAnswer);
@@ -103,12 +89,16 @@ export default function Flashcard({
       {modeSelection === "training" ? (
         <motion.div
           drag={showAnswer ? "x" : false}
-          // x={motionValue}
-          // rotate={rotateValue}
-          // opacity={opacityValue}
-          dragConstraints={{ left: -1000, right: 1000 }}
-          style={{ x: motionValue, rotate: rotateValue }}
+          dragConstraints={{ left: 0, right: 0 }}
+          style={{ x: motionValue, rotate: rotateValue, opacity: opacityValue }}
           onDragEnd={handleDragEnd}
+          // transition={{
+          //   type: "spring", // Use a spring-based transition
+          //   stiffness: 100, // Adjust stiffness to control how "bouncy" it feels
+          //   damping: 50, // Adjust damping to control how fast it slows down
+          //   mass: 0.15, // Reduce the mass to slow down the movement
+          // }}
+          transition={{ type: "inertia", duration: 2 }}
         >
           <CardContainer onClick={handleShowAnswer}>
             <StyledFlashcard $showAnswer={showAnswer}>
