@@ -26,6 +26,19 @@ export default function App({ Component, pageProps }) {
 
   const [flashcardSelection, setFlashcardSelection] = useState("all");
 
+  const [isClickedFirstTime, setIsClickedFirstTime] = useState(false);
+
+  function handleFirstClick() {
+    if (!isClickedFirstTime) {
+      setIsClickedFirstTime(true);
+      showToastMessage(
+        "You can also swipe the Flashcard to the right to mark as correct or swipe to the left to mark as incorrect.",
+        "success",
+        MarkAsCorrect
+      );
+    }
+  }
+
   function changeFlashcardSelection(selection) {
     setFlashcardSelection(selection);
   }
@@ -277,6 +290,7 @@ export default function App({ Component, pageProps }) {
         changeFlashcardSelection={changeFlashcardSelection}
         handleIncreaseFlashcardLevel={handleIncreaseFlashcardLevel}
         handleDecreaseFlashcardLevel={handleDecreaseFlashcardLevel}
+        handleFirstClick={handleFirstClick}
       />
       <ToastMessageContainer
         toastMessages={toastMessages}

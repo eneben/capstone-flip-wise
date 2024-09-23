@@ -11,6 +11,7 @@ export default function CollectionPage({
   getAllFlashcardsFromCollection,
   handleIncreaseFlashcardLevel,
   handleDecreaseFlashcardLevel,
+  handleFirstClick,
 }) {
   const router = useRouter();
   const { id } = router.query;
@@ -88,6 +89,7 @@ export default function CollectionPage({
                   modeSelection="training"
                   onIncreaseFlashcardLevel={handleIncreaseFlashcardLevel}
                   onDecreaseFlashcardLevel={handleDecreaseFlashcardLevel}
+                  handleFirstClick={handleFirstClick}
                 />
               </ThirdFlashcardWrapper>
               <ThirdFlashcardOpacity />
@@ -102,6 +104,7 @@ export default function CollectionPage({
                   modeSelection="training"
                   onIncreaseFlashcardLevel={handleIncreaseFlashcardLevel}
                   onDecreaseFlashcardLevel={handleDecreaseFlashcardLevel}
+                  handleFirstClick={handleFirstClick}
                 />
               </SecondFlashcardWrapper>
               <SecondFlashcardOpacity />
@@ -116,6 +119,7 @@ export default function CollectionPage({
                 onIncreaseFlashcardLevel={handleIncreaseFlashcardLevel}
                 onDecreaseFlashcardLevel={handleDecreaseFlashcardLevel}
                 onSwipe={handleSwipe}
+                handleFirstClick={handleFirstClick}
               />
             </FlashcardStackWrapper>
           </FlashcardListWrapper>

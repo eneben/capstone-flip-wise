@@ -21,6 +21,7 @@ export default function Flashcard({
   onDecreaseFlashcardLevel,
   onToggleCorrect,
   onSwipe,
+  handleFirstClick,
 }) {
   const [showAnswer, setShowAnswer] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
@@ -73,6 +74,11 @@ export default function Flashcard({
     event.stopPropagation();
     changeActionMode("edit");
     changeCurrentFlashcard(flashcard);
+  }
+
+  function handleMarkAsCorrect(id) {
+    handleFirstClick();
+    onIncreaseFlashcardLevel(id);
   }
 
   const contrastOptions = {
@@ -209,7 +215,7 @@ export default function Flashcard({
                         </StyledIncorrectButtonContainer>
                         <StyledCorrectButtonContainer>
                           <RoundButton
-                            onClick={() => onIncreaseFlashcardLevel(id)}
+                            onClick={() => handleMarkAsCorrect(id)}
                             type="button"
                             variant={"markAsCorrect"}
                           >
