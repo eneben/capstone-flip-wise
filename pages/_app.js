@@ -7,6 +7,7 @@ import useLocalStorageState from "use-local-storage-state";
 import { uid } from "uid";
 import { useEffect, useState } from "react";
 import MarkAsCorrect from "@/public/icons/MarkAsCorrect.svg";
+import Info from "@/public/icons/Info.svg";
 import ToastMessageContainer from "@/components/ToastMessage/ToastMessageContainer";
 
 export default function App({ Component, pageProps }) {
@@ -32,9 +33,9 @@ export default function App({ Component, pageProps }) {
     if (!isClickedFirstTime) {
       setIsClickedFirstTime(true);
       showToastMessage(
-        "You can also swipe the Flashcard to the right to mark as correct or swipe to the left to mark as incorrect.",
-        "success",
-        MarkAsCorrect
+        `Swipe right for correct, left for incorrect.`,
+        "info",
+        Info
       );
     }
   }

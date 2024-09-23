@@ -81,6 +81,11 @@ export default function Flashcard({
     onIncreaseFlashcardLevel(id);
   }
 
+  function handleMarkAsInCorrect(id) {
+    handleFirstClick();
+    onDecreaseFlashcardLevel(id);
+  }
+
   const contrastOptions = {
     color: collectionColor,
     threshold: 0.5,
@@ -206,7 +211,7 @@ export default function Flashcard({
                       <>
                         <StyledIncorrectButtonContainer>
                           <RoundButton
-                            onClick={() => onDecreaseFlashcardLevel(id)}
+                            onClick={() => handleMarkAsInCorrect(id)}
                             type="button"
                             variant={"markAsIncorrect"}
                           >
