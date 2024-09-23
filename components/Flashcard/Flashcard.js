@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { findContrastColor } from "color-contrast-finder";
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import MarkAsIncorrect from "@/public/icons/MarkAsIncorrect.svg";
@@ -25,6 +25,8 @@ export default function Flashcard({
 }) {
   const [showAnswer, setShowAnswer] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  // const [isAnimating, setIsAnimating] = useState(false);
 
   const {
     question,
@@ -47,19 +49,38 @@ export default function Flashcard({
     if (!showAnswer) return;
     const x = motionValue.get();
 
-    console.log(x);
-
     if (x > 30) {
-      console.log("increase");
       onSwipe("right");
       onIncreaseFlashcardLevel(id);
     } else if (x < -30) {
-      console.log("decrease");
       onSwipe("left");
       onDecreaseFlashcardLevel(id);
     }
+    setIsVisible(false);
+    motionValue.set(0);
     setShowAnswer(false);
   }
+  // Mit useEffect lässt sich die nächste Karte drehen aber es kommt wieder eine Animation!
+  // Ohne ist die Animation richtig aber die nächte Karte lässt sich nicht swipen.
+  useEffect(() => {
+    motionValue.set(0);
+    setIsVisible(true);
+  }, [id]);
+
+  // function handleCorrectClick() {
+  //   onToggleCorrect(id);
+  //   handleClickAnimation();
+  // }
+
+  // function handleIncorrectClick() {
+  //   handleClickAnimation();
+  //   handleClickAnimation();
+  // }
+
+  // function handleClickAnimation() {
+  //   setIsAnimating(true);
+  //   setTimeout(() => setIsAnimating(false), 1000);
+  // }
 
   function handleShowAnswer() {
     setShowAnswer(!showAnswer);
@@ -97,19 +118,13 @@ export default function Flashcard({
 
   return (
     <>
-      {modeSelection === "training" ? (
+      {isVisible && modeSelection === "training" ? (
         <motion.div
           drag={showAnswer ? "x" : false}
           dragConstraints={{ left: 0, right: 0 }}
           style={{ x: motionValue, rotate: rotateValue, opacity: opacityValue }}
           onDragEnd={handleDragEnd}
-          // transition={{
-          //   type: "spring", // Use a spring-based transition
-          //   stiffness: 100, // Adjust stiffness to control how "bouncy" it feels
-          //   damping: 50, // Adjust damping to control how fast it slows down
-          //   mass: 0.15, // Reduce the mass to slow down the movement
-          // }}
-          transition={{ type: "inertia", duration: 2 }}
+          transition={{ type: "spring", duration: 0.5 }}
         >
           <CardContainer onClick={handleShowAnswer}>
             <StyledFlashcard $showAnswer={showAnswer}>
@@ -211,7 +226,10 @@ export default function Flashcard({
                       <>
                         <StyledIncorrectButtonContainer>
                           <RoundButton
-                            onClick={() => handleMarkAsInCorrect(id)}
+                            onClick={() => {
+                              handleMarkAsInCorrect(id);
+                              // handleIncorrectClick;
+                            }}
                             type="button"
                             variant={"markAsIncorrect"}
                           >
@@ -220,7 +238,10 @@ export default function Flashcard({
                         </StyledIncorrectButtonContainer>
                         <StyledCorrectButtonContainer>
                           <RoundButton
-                            onClick={() => handleMarkAsCorrect(id)}
+                            onClick={() => {
+                              handleMarkAsCorrect(id);
+                              // handleCorrectClick;
+                            }}
                             type="button"
                             variant={"markAsCorrect"}
                           >
