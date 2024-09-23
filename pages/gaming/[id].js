@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import styled from "styled-components";
 import RegularButton from "@/components/Buttons/RegularButton";
 import ButtonWrapper from "@/components/Buttons/ButtonWrapper";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { uid } from "uid";
 
 export default function TrainingCollectionPage({
@@ -66,7 +66,10 @@ export default function TrainingCollectionPage({
     return cards.sort(() => Math.random() - 0.5);
   }
 
-  const nineRandomFlashcards = getNineRandomFlashcards();
+  const nineRandomFlashcards = useMemo(
+    () => getNineRandomFlashcards(),
+    [allFlashcardsFromCollection]
+  );
 
   useEffect(() => {
     if (allFlashcardsFromCollection.length >= 9) {
