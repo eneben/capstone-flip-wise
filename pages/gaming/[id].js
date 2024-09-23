@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import styled from "styled-components";
 import RegularButton from "@/components/Buttons/RegularButton";
 import ButtonWrapper from "@/components/Buttons/ButtonWrapper";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { uid } from "uid";
 
 export default function TrainingCollectionPage({
@@ -13,9 +13,12 @@ export default function TrainingCollectionPage({
 
   const [isCancel, setIsCancel] = useState(false);
   const [flippedCards, setFlippedCards] = useState({});
+  const [shuffledMemoryCards, setShuffledMemoryCards] = useState([]);
 
-  console.log("flippedCards: ", flippedCards);
-  // ALLE AUF TRUE - WARUM ???
+  const allFlashcardsFromCollection = getAllFlashcardsFromCollection(id);
+
+  const collectionTitle = allFlashcardsFromCollection?.[0]?.collectionTitle;
+  const collectionColor = allFlashcardsFromCollection?.[0]?.collectionColor;
 
   function toggleCancel() {
     setIsCancel(!isCancel);
@@ -28,18 +31,9 @@ export default function TrainingCollectionPage({
     });
   }
 
-  const allFlashcardsFromCollection = getAllFlashcardsFromCollection(id);
-
-  const collectionTitle = allFlashcardsFromCollection?.[0]?.collectionTitle;
-  const collectionColor = allFlashcardsFromCollection?.[0]?.collectionColor;
-
   function getNineRandomFlashcards() {
-    if (allFlashcardsFromCollection.length < 9) {
-      return null;
-    }
     const randomFlashcards = [];
     const usedIndices = [];
-
     while (randomFlashcards.length < 9) {
       const randomIndex = Math.floor(
         Math.random() * allFlashcardsFromCollection.length
@@ -49,37 +43,43 @@ export default function TrainingCollectionPage({
         usedIndices.push(randomIndex);
       }
     }
-
     return randomFlashcards;
   }
-
-  const nineRandomFlashcards = getNineRandomFlashcards();
-
-  const memoryQuestions = nineRandomFlashcards.map((flashcard) => {
-    return {
-      pairing: flashcard.id,
-      content: flashcard.question,
-      type: "question",
-      id: uid(),
-    };
-  });
-
-  const memoryAnswers = nineRandomFlashcards.map((flashcard) => {
-    return {
-      pairing: flashcard.id,
-      content: flashcard.answer,
-      type: "answer",
-      id: uid(),
-    };
-  });
-
-  const memoryCards = [...memoryQuestions, ...memoryAnswers];
 
   function shuffleCards(cards) {
     return cards.sort(() => Math.random() - 0.5);
   }
 
-  const shuffledMemoryCards = shuffleCards(memoryCards);
+  const nineRandomFlashcards = getNineRandomFlashcards();
+
+  useEffect(() => {
+    if (allFlashcardsFromCollection < 9) {
+      return null;
+    }
+    if (allFlashcardsFromCollection.length >= 9) {
+      const memoryQuestions = nineRandomFlashcards.map((flashcard) => {
+        return {
+          pairing: flashcard.id,
+          content: flashcard.question,
+          type: "question",
+          id: uid(),
+        };
+      });
+
+      const memoryAnswers = nineRandomFlashcards.map((flashcard) => {
+        return {
+          pairing: flashcard.id,
+          content: flashcard.answer,
+          type: "answer",
+          id: uid(),
+        };
+      });
+
+      const memoryCards = [...memoryQuestions, ...memoryAnswers];
+
+      setShuffledMemoryCards(shuffleCards(memoryCards));
+    }
+  }, []);
 
   return (
     <>
@@ -94,7 +94,7 @@ export default function TrainingCollectionPage({
           <StyledHeadline>{collectionTitle}</StyledHeadline>
           <StyledSubheading>Gaming Mode</StyledSubheading>
 
-          {/* <FlashcardMemoryGrid>
+          <FlashcardMemoryGrid>
             {shuffledMemoryCards.map((card) => (
               <CardContainer
                 key={card.id}
@@ -108,7 +108,7 @@ export default function TrainingCollectionPage({
                 </MemoryCard>
               </CardContainer>
             ))}
-          </FlashcardMemoryGrid> */}
+          </FlashcardMemoryGrid>
 
           <CancelContainer>
             {!isCancel && (
@@ -167,7 +167,6 @@ const MemoryCard = styled.article`
   width: 105px;
   height: 60px;
   font-size: 12px;
-  border-radius: 5px;
   position: relative;
   transform-style: preserve-3d;
   transition: transform 0.6s;
@@ -179,6 +178,7 @@ const MemoryCardBack = styled.div`
   position: absolute;
   width: 100%;
   height: 100%;
+  border-radius: 5px;
   backface-visibility: hidden;
   background-color: ${({ $collectionColor }) => $collectionColor};
 `;
@@ -187,6 +187,7 @@ const MemoryCardFront = styled.div`
   position: absolute;
   width: 100%;
   height: 100%;
+  border-radius: 5px;
   backface-visibility: hidden;
   background-color: #add8e6;
   transform: rotateY(180deg);
