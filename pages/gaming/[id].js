@@ -20,6 +20,19 @@ export default function TrainingCollectionPage({
   const collectionTitle = allFlashcardsFromCollection?.[0]?.collectionTitle;
   const collectionColor = allFlashcardsFromCollection?.[0]?.collectionColor;
 
+  if (allFlashcardsFromCollection.length < 9) {
+    return (
+      <>
+        <StyledHeadline>{collectionTitle}</StyledHeadline>
+        <StyledSubheading>Gaming Mode</StyledSubheading>
+        <StyledMessage>
+          You need at least 9 flashcards in your collection to play the memory
+          game. <br /> Add flashcards to play.
+        </StyledMessage>
+      </>
+    );
+  }
+
   function toggleCancel() {
     setIsCancel(!isCancel);
   }
@@ -32,6 +45,9 @@ export default function TrainingCollectionPage({
   }
 
   function getNineRandomFlashcards() {
+    if (allFlashcardsFromCollection < 9) {
+      return null;
+    }
     const randomFlashcards = [];
     const usedIndices = [];
     while (randomFlashcards.length < 9) {
@@ -53,9 +69,6 @@ export default function TrainingCollectionPage({
   const nineRandomFlashcards = getNineRandomFlashcards();
 
   useEffect(() => {
-    if (allFlashcardsFromCollection < 9) {
-      return null;
-    }
     if (allFlashcardsFromCollection.length >= 9) {
       const memoryQuestions = nineRandomFlashcards.map((flashcard) => {
         return {
@@ -83,12 +96,6 @@ export default function TrainingCollectionPage({
 
   return (
     <>
-      {allFlashcardsFromCollection.length < 9 && (
-        <StyledMessage>
-          You need at least 9 flashcards in your collection to play the memory
-          game. <br /> Add flashcards to play.
-        </StyledMessage>
-      )}
       {allFlashcardsFromCollection.length >= 9 && (
         <>
           <StyledHeadline>{collectionTitle}</StyledHeadline>
