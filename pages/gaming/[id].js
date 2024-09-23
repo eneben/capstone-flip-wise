@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import styled from "styled-components";
 import RegularButton from "@/components/Buttons/RegularButton";
 import ButtonWrapper from "@/components/Buttons/ButtonWrapper";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { uid } from "uid";
 
 export default function TrainingCollectionPage({
@@ -20,32 +20,8 @@ export default function TrainingCollectionPage({
   const collectionTitle = allFlashcardsFromCollection?.[0]?.collectionTitle;
   const collectionColor = allFlashcardsFromCollection?.[0]?.collectionColor;
 
-  if (allFlashcardsFromCollection.length < 9) {
-    return (
-      <>
-        <StyledHeadline>{collectionTitle}</StyledHeadline>
-        <StyledSubheading>Gaming Mode</StyledSubheading>
-        <StyledMessage>
-          You need at least 9 flashcards in your collection to play the memory
-          game. <br /> Add flashcards to play.
-        </StyledMessage>
-      </>
-    );
-  }
-
-  function toggleCancel() {
-    setIsCancel(!isCancel);
-  }
-
-  function toggleCardFlip(cardId) {
-    setFlippedCards({
-      ...flippedCards,
-      [cardId]: !flippedCards[cardId],
-    });
-  }
-
-  function getNineRandomFlashcards() {
-    if (allFlashcardsFromCollection < 9) {
+  const getNineRandomFlashcards = useCallback(() => {
+    if (allFlashcardsFromCollection.length < 9) {
       return null;
     }
     const randomFlashcards = [];
@@ -60,16 +36,16 @@ export default function TrainingCollectionPage({
       }
     }
     return randomFlashcards;
-  }
-
-  function shuffleCards(cards) {
-    return cards.sort(() => Math.random() - 0.5);
-  }
+  }, [allFlashcardsFromCollection]);
 
   const nineRandomFlashcards = useMemo(
     () => getNineRandomFlashcards(),
-    [allFlashcardsFromCollection]
+    [getNineRandomFlashcards]
   );
+
+  const shuffleCards = useCallback((cards) => {
+    return cards.sort(() => Math.random() - 0.5);
+  }, []);
 
   useEffect(() => {
     if (allFlashcardsFromCollection.length >= 9) {
@@ -96,6 +72,30 @@ export default function TrainingCollectionPage({
       setShuffledMemoryCards(shuffleCards(memoryCards));
     }
   }, []);
+
+  if (allFlashcardsFromCollection.length < 9) {
+    return (
+      <>
+        <StyledHeadline>{collectionTitle}</StyledHeadline>
+        <StyledSubheading>Gaming Mode</StyledSubheading>
+        <StyledMessage>
+          You need at least 9 flashcards in your collection to play the memory
+          game. <br /> Add flashcards to play.
+        </StyledMessage>
+      </>
+    );
+  }
+
+  function toggleCancel() {
+    setIsCancel(!isCancel);
+  }
+
+  function toggleCardFlip(cardId) {
+    setFlippedCards({
+      ...flippedCards,
+      [cardId]: !flippedCards[cardId],
+    });
+  }
 
   return (
     <>
