@@ -13,7 +13,7 @@ export default function TrainingCollectionPage({
 
   const [isCancel, setIsCancel] = useState(false);
   const [flippedCards, setFlippedCards] = useState({});
-  const [shuffledMemoryCards, setShuffledMemoryCards] = useState([]);
+  const [memoryCards, setMemoryCards] = useState([]);
 
   const allFlashcardsFromCollection = useMemo(
     () => getAllFlashcardsFromCollection(id),
@@ -27,58 +27,42 @@ export default function TrainingCollectionPage({
     setIsCancel(!isCancel);
   }
 
-  const getNineRandomFlashcards = useCallback(() => {
-    if (allFlashcardsFromCollection.length < 9) {
-      return null;
-    }
-    const randomFlashcards = [];
-    const usedIndices = [];
-    while (randomFlashcards.length < 9) {
-      const randomIndex = Math.floor(
-        Math.random() * allFlashcardsFromCollection.length
-      );
-      if (!usedIndices.includes(randomIndex)) {
-        randomFlashcards.push(allFlashcardsFromCollection[randomIndex]);
-        usedIndices.push(randomIndex);
-      }
-    }
-    return randomFlashcards;
+  function toggleCardFlip(cardId) {
+    setFlippedCards({
+      ...flippedCards,
+      [cardId]: !flippedCards[cardId],
+    });
+  }
+
+  const setupMemoryCards = useCallback(() => {
+    if (allFlashcardsFromCollection.length < 9) return;
+
+    const shuffledFlashcards = [...allFlashcardsFromCollection].sort(
+      () => Math.random() - 0.5
+    );
+    const nineRandomFlashcards = shuffledFlashcards.slice(0, 9);
+
+    const newMemoryCards = nineRandomFlashcards.flatMap((flashcard) => [
+      {
+        pairing: flashcard.id,
+        content: flashcard.question,
+        type: "question",
+        id: uid(),
+      },
+      {
+        pairing: flashcard.id,
+        content: flashcard.answer,
+        type: "answer",
+        id: uid(),
+      },
+    ]);
+
+    setMemoryCards(newMemoryCards.sort(() => Math.random() - 0.5));
   }, [allFlashcardsFromCollection]);
 
-  const nineRandomFlashcards = useMemo(
-    () => getNineRandomFlashcards(),
-    [getNineRandomFlashcards]
-  );
-
-  const shuffleCards = useCallback((cards) => {
-    return cards.sort(() => Math.random() - 0.5);
-  }, []);
-
   useEffect(() => {
-    if (allFlashcardsFromCollection.length >= 9) {
-      const memoryQuestions = nineRandomFlashcards.map((flashcard) => {
-        return {
-          pairing: flashcard.id,
-          content: flashcard.question,
-          type: "question",
-          id: uid(),
-        };
-      });
-
-      const memoryAnswers = nineRandomFlashcards.map((flashcard) => {
-        return {
-          pairing: flashcard.id,
-          content: flashcard.answer,
-          type: "answer",
-          id: uid(),
-        };
-      });
-
-      const memoryCards = [...memoryQuestions, ...memoryAnswers];
-
-      setShuffledMemoryCards(shuffleCards(memoryCards));
-    }
-  }, []);
+    setupMemoryCards();
+  }, [setupMemoryCards]);
 
   if (allFlashcardsFromCollection.length < 9) {
     return (
@@ -86,18 +70,12 @@ export default function TrainingCollectionPage({
         <StyledHeadline>{collectionTitle}</StyledHeadline>
         <StyledSubheading>Gaming Mode</StyledSubheading>
         <StyledMessage>
-          You need at least 9 flashcards in your collection to play the memory
-          game. <br /> Add flashcards to play.
+          Unfortunately the memory is not available in this collection. You need
+          at least 9 flashcards in your collection to play the memory game.
+          <br /> Add flashcards to play.
         </StyledMessage>
       </>
     );
-  }
-
-  function toggleCardFlip(cardId) {
-    setFlippedCards({
-      ...flippedCards,
-      [cardId]: !flippedCards[cardId],
-    });
   }
 
   return (
@@ -108,7 +86,7 @@ export default function TrainingCollectionPage({
           <StyledSubheading>Gaming Mode</StyledSubheading>
 
           <FlashcardMemoryGrid>
-            {shuffledMemoryCards.map((card) => (
+            {memoryCards.map((card) => (
               <CardContainer
                 key={card.id}
                 onClick={() => toggleCardFlip(card.id)}
