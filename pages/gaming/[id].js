@@ -18,6 +18,8 @@ export default function TrainingCollectionPage({
   const [memoryCards, setMemoryCards] = useState([]);
   const [selectedCardId, setSelectedCardId] = useState(null);
 
+  console.log("selectedCardId", selectedCardId);
+
   const allFlashcardsFromCollection = useMemo(
     () => getAllFlashcardsFromCollection(id),
     [id, getAllFlashcardsFromCollection]
@@ -87,6 +89,8 @@ export default function TrainingCollectionPage({
     );
   }
 
+  const selectedCard = memoryCards.find((card) => card.id === selectedCardId);
+
   return (
     <>
       {allFlashcardsFromCollection.length >= 9 && (
@@ -94,26 +98,28 @@ export default function TrainingCollectionPage({
           <StyledHeadline>{collectionTitle}</StyledHeadline>
           <StyledSubheading>Gaming Mode</StyledSubheading>
 
-          <FlashcardMemoryGrid>
+          <StyledFlashcardMemoryGrid>
             {memoryCards.map((card) => (
-              <CardContainer
+              <StyledCardContainer
                 key={card.id}
                 onClick={() => {
                   toggleCardFlip(card.id);
                   handleCardEnlargement(card.id);
                 }}
               >
-                <MemoryCard $isFlipped={flippedCards[card.id]}>
-                  <MemoryCardBack $collectionColor={collectionColor} />
-                  <MemoryCardFront>
-                    <MemoryCardContent>{card.content}</MemoryCardContent>
-                  </MemoryCardFront>
-                </MemoryCard>
-              </CardContainer>
+                <StyledMemoryCard $isFlipped={flippedCards[card.id]}>
+                  <StyledMemoryCardBack $collectionColor={collectionColor} />
+                  <StyledMemoryCardFront>
+                    <StyledMemoryCardContent>
+                      {card.content}
+                    </StyledMemoryCardContent>
+                  </StyledMemoryCardFront>
+                </StyledMemoryCard>
+              </StyledCardContainer>
             ))}
-          </FlashcardMemoryGrid>
+          </StyledFlashcardMemoryGrid>
 
-          <CancelContainer>
+          <StyledCancelContainer>
             {!isCancel && (
               <RegularButton
                 type="button"
@@ -147,21 +153,26 @@ export default function TrainingCollectionPage({
                 </ButtonWrapper>
               </>
             )}
-          </CancelContainer>
+          </StyledCancelContainer>
 
           {selectedCardId && (
-            <OutgreyContainer onClick={() => setSelectedCardId(null)}>
-              <LargeFlashcard>
-                <RoundButton
-                  onClick={() => setSelectedCardId(null)}
-                  type="button"
-                  variant="edit"
-                >
-                  <MarkAsIncorrect />
-                  {/* Hier stattdessen anderes Icon einfügen, z.B. zwei Pfeile wie bei Vollbild beenden */}
-                </RoundButton>
-              </LargeFlashcard>
-            </OutgreyContainer>
+            <StyledOutgreyContainer onClick={() => setSelectedCardId(null)}>
+              <StyledLargeFlashcard $collectionColor={collectionColor}>
+                <StyledCloseButtonContainer>
+                  <RoundButton
+                    onClick={() => setSelectedCardId(null)}
+                    type="button"
+                    variant="edit"
+                  >
+                    <MarkAsIncorrect />
+                    {/* Hier stattdessen anderes Icon einfügen, z.B. zwei Pfeile wie bei Vollbild beenden */}
+                  </RoundButton>
+                </StyledCloseButtonContainer>
+                <StyledSelectedCardContent>
+                  {selectedCard.content}
+                </StyledSelectedCardContent>
+              </StyledLargeFlashcard>
+            </StyledOutgreyContainer>
           )}
         </>
       )}
@@ -169,7 +180,7 @@ export default function TrainingCollectionPage({
   );
 }
 
-const FlashcardMemoryGrid = styled.ul`
+const StyledFlashcardMemoryGrid = styled.ul`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(6, 1fr);
@@ -177,11 +188,11 @@ const FlashcardMemoryGrid = styled.ul`
   list-style: none;
 `;
 
-const CardContainer = styled.li`
+const StyledCardContainer = styled.li`
   perspective: 1000px;
 `;
 
-const MemoryCard = styled.article`
+const StyledMemoryCard = styled.article`
   width: 105px;
   height: 60px;
   font-size: 12px;
@@ -192,7 +203,7 @@ const MemoryCard = styled.article`
     $isFlipped ? "rotateY(180deg)" : "rotateY(0deg)"};
 `;
 
-const MemoryCardBack = styled.div`
+const StyledMemoryCardBack = styled.div`
   position: absolute;
   width: 100%;
   height: 100%;
@@ -201,7 +212,7 @@ const MemoryCardBack = styled.div`
   background-color: ${({ $collectionColor }) => $collectionColor};
 `;
 
-const MemoryCardFront = styled.div`
+const StyledMemoryCardFront = styled.div`
   position: absolute;
   width: 100%;
   height: 100%;
@@ -211,7 +222,7 @@ const MemoryCardFront = styled.div`
   transform: rotateY(180deg);
 `;
 
-const MemoryCardContent = styled.p`
+const StyledMemoryCardContent = styled.p`
   padding: 5px;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -238,13 +249,63 @@ const StyledSubheading = styled.h3`
   padding: 5px 0 30px 0;
 `;
 
-const CancelContainer = styled.section`
+const StyledCancelContainer = styled.section`
   padding: 15px;
   display: flex;
   align-items: center;
   flex-direction: column;
 `;
 
-const OutgreyContainer = styled.div``;
+const StyledOutgreyContainer = styled.div`
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  background-color: #00000088;
+`;
 
-const LargeFlashcard = styled.article``;
+const StyledLargeFlashcard = styled.article`
+  width: 90vw;
+  height: auto;
+  min-height: 218px;
+  max-width: 500px;
+  border-radius: 10px;
+  background-color: #fff;
+  opacity: 1;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: var(--grid-columns-card-and-title);
+  grid-template-rows: var(--grid-rows-card-and-title);
+  border: var(--border-thickness) solid
+    ${({ $collectionColor }) => $collectionColor};
+
+  @media (min-width: 768px) {
+    min-height: 300px;
+  }
+`;
+
+const StyledCloseButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  grid-column: 7 / 8;
+  grid-row: 1 / 2;
+`;
+
+const StyledSelectedCardContent = styled.p`
+  font: var(--question-answer);
+  padding: 10px;
+  white-space: normal;
+  grid-column: 1 / 8;
+  grid-row: 2 / 3;
+  align-self: center;
+
+  @media (min-width: 768px) {
+    font-size: 1.4rem;
+  }
+`;
