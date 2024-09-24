@@ -1,6 +1,8 @@
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import RegularButton from "@/components/Buttons/RegularButton";
+import RoundButton from "@/components/Buttons/RoundButton";
+import MarkAsIncorrect from "@/public/icons/MarkAsIncorrect.svg";
 import ButtonWrapper from "@/components/Buttons/ButtonWrapper";
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { uid } from "uid";
@@ -14,6 +16,7 @@ export default function TrainingCollectionPage({
   const [isCancel, setIsCancel] = useState(false);
   const [flippedCards, setFlippedCards] = useState({});
   const [memoryCards, setMemoryCards] = useState([]);
+  const [selectedCardId, setSelectedCardId] = useState(null);
 
   const allFlashcardsFromCollection = useMemo(
     () => getAllFlashcardsFromCollection(id),
@@ -24,14 +27,20 @@ export default function TrainingCollectionPage({
   const collectionColor = allFlashcardsFromCollection?.[0]?.collectionColor;
 
   function toggleCancel() {
-    setIsCancel(!isCancel);
+    setIsCancel((prevIsCancel) => !prevIsCancel);
   }
 
   function toggleCardFlip(cardId) {
-    setFlippedCards({
-      ...flippedCards,
-      [cardId]: !flippedCards[cardId],
-    });
+    setFlippedCards((prevFlippedCards) => ({
+      ...prevFlippedCards,
+      [cardId]: !prevFlippedCards[cardId],
+    }));
+  }
+
+  function handleCardEnlargement(cardId) {
+    setSelectedCardId((selectedCardId) =>
+      selectedCardId === cardId ? null : cardId
+    );
   }
 
   const setupMemoryCards = useCallback(() => {
@@ -89,7 +98,10 @@ export default function TrainingCollectionPage({
             {memoryCards.map((card) => (
               <CardContainer
                 key={card.id}
-                onClick={() => toggleCardFlip(card.id)}
+                onClick={() => {
+                  toggleCardFlip(card.id);
+                  handleCardEnlargement(card.id);
+                }}
               >
                 <MemoryCard $isFlipped={flippedCards[card.id]}>
                   <MemoryCardBack $collectionColor={collectionColor} />
@@ -136,6 +148,21 @@ export default function TrainingCollectionPage({
               </>
             )}
           </CancelContainer>
+
+          {selectedCardId && (
+            <OutgreyContainer onClick={() => setSelectedCardId(null)}>
+              <LargeFlashcard>
+                <RoundButton
+                  onClick={() => setSelectedCardId(null)}
+                  type="button"
+                  variant="edit"
+                >
+                  <MarkAsIncorrect />
+                  {/* Hier stattdessen anderes Icon einfügen, z.B. zwei Pfeile wie bei Vollbild beenden */}
+                </RoundButton>
+              </LargeFlashcard>
+            </OutgreyContainer>
+          )}
         </>
       )}
     </>
@@ -217,3 +244,7 @@ const CancelContainer = styled.section`
   align-items: center;
   flex-direction: column;
 `;
+
+const OutgreyContainer = styled.div``;
+
+const LargeFlashcard = styled.article``;
