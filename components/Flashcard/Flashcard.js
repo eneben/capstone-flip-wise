@@ -27,6 +27,7 @@ export default function Flashcard({
   const [isDelete, setIsDelete] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [swipeDirection, setSwipeDirection] = useState(null);
 
   const {
     question,
@@ -52,18 +53,21 @@ export default function Flashcard({
     if (x > 30) {
       onSwipe("right");
       onIncreaseFlashcardLevel(id);
+      setSwipeDirection("right");
       handleAnimationIcon();
     } else if (x < -30) {
       onSwipe("left");
       onDecreaseFlashcardLevel(id);
+      setSwipeDirection("left");
       handleAnimationIcon();
     }
     setIsVisible(false);
     motionValue.set(0);
     setShowAnswer(false);
   }
-  // Mit useEffect lässt sich die nächste Karte drehen aber es kommt wieder eine Animation!
-  // Ohne ist die Animation richtig aber die nächte Karte lässt sich nicht swipen.
+
+  // Die Animation ist richtig aber die nächte Karte lässt sich
+  // nicht swipen und die vorherige Karte blitzt nochmal auf.
   useEffect(() => {
     motionValue.set(0);
     setTimeout(() => {
@@ -80,6 +84,7 @@ export default function Flashcard({
     if (isAnimating) {
       timer = setTimeout(() => {
         setIsAnimating(false);
+        setSwipeDirection(null);
       }, 1000);
     }
     return () => clearTimeout(timer);
@@ -123,18 +128,17 @@ export default function Flashcard({
     <motion.div
       initial={{ opacity: 0, scale: 0.5 }}
       animate={{
-        scale: [0.8, 1.2, 1],
-        opacity: [0.6, 1, 0],
+        scale: [1, 2, 1],
+        opacity: [0.5, 1, 0],
       }}
-      transition={{ duration: 0.8 }}
+      transition={{ duration: 2 }}
       style={{
         position: "absolute",
-        top: "20%",
+        top: "50%",
         left: direction === "left" ? "10%" : "auto",
         right: direction === "right" ? "10%" : "auto",
         transform: "translateY(-50%)",
-        backgroundColor:
-          direction === "left" ? "var(--primary-red)" : "var(--primary-green)",
+        backgroundColor: direction === "left" ? "#000" : "#000",
         borderRadius: "50%",
         width: "50px",
         height: "50px",
@@ -285,8 +289,7 @@ export default function Flashcard({
               )}
             </StyledFlashcard>
           </CardContainer>
-          {onSwipe === "right" && <SwipeIcon direction="right" />}
-          {onSwipe === "left" && <SwipeIcon direction="left" />}
+          {swipeDirection && <SwipeIcon direction={swipeDirection} />}
         </motion.div>
       ) : (
         <CardContainer onClick={handleShowAnswer}>
