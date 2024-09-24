@@ -18,6 +18,8 @@ export default function TrainingCollectionPage({
   const [memoryCards, setMemoryCards] = useState([]);
   const [selectedCardId, setSelectedCardId] = useState(null);
 
+  console.log("flippedCards", flippedCards);
+
   console.log("selectedCardId", selectedCardId);
 
   const allFlashcardsFromCollection = useMemo(
@@ -40,9 +42,12 @@ export default function TrainingCollectionPage({
   }
 
   function handleCardEnlargement(cardId) {
+    // const isCardFlipped = flippedCards.includes(cardId);
+    // if (!isCardFlipped) {
     setSelectedCardId((selectedCardId) =>
       selectedCardId === cardId ? null : cardId
     );
+    // }
   }
 
   const setupMemoryCards = useCallback(() => {
