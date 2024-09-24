@@ -14,7 +14,7 @@ export default function TrainingCollectionPage({
   const { id } = router.query;
 
   const [isCancel, setIsCancel] = useState(false);
-  const [flippedCards, setFlippedCards] = useState({});
+  const [flippedCards, setFlippedCards] = useState([]);
   const [memoryCards, setMemoryCards] = useState([]);
   const [selectedCardId, setSelectedCardId] = useState(null);
 
@@ -35,19 +35,24 @@ export default function TrainingCollectionPage({
   }
 
   function toggleCardFlip(cardId) {
-    setFlippedCards((prevFlippedCards) => ({
-      ...prevFlippedCards,
-      [cardId]: !prevFlippedCards[cardId],
-    }));
+    setFlippedCards((prevFlippedCards) => {
+      if (prevFlippedCards.includes(cardId)) {
+        return prevFlippedCards.filter((id) => {
+          return id !== cardId;
+        });
+      } else {
+        return [...prevFlippedCards, cardId];
+      }
+    });
   }
 
   function handleCardEnlargement(cardId) {
-    // const isCardFlipped = flippedCards.includes(cardId);
-    // if (!isCardFlipped) {
-    setSelectedCardId((selectedCardId) =>
-      selectedCardId === cardId ? null : cardId
-    );
-    // }
+    const isCardFlipped = flippedCards.includes(cardId);
+    if (!isCardFlipped) {
+      setSelectedCardId((selectedCardId) =>
+        selectedCardId === cardId ? null : cardId
+      );
+    }
   }
 
   const setupMemoryCards = useCallback(() => {
@@ -112,7 +117,7 @@ export default function TrainingCollectionPage({
                   handleCardEnlargement(card.id);
                 }}
               >
-                <StyledMemoryCard $isFlipped={flippedCards[card.id]}>
+                <StyledMemoryCard $isFlipped={flippedCards.includes(card.id)}>
                   <StyledMemoryCardBack $collectionColor={collectionColor} />
                   <StyledMemoryCardFront>
                     <StyledMemoryCardContent>
