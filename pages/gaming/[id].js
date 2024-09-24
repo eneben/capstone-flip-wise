@@ -19,6 +19,11 @@ export default function TrainingCollectionPage({
   const [selectedCardId, setSelectedCardId] = useState(null);
 
   console.log("flippedCards", flippedCards);
+  // Flipped Cards zurücksetzen, wenn woanders hingegangen wird.
+
+  // Zusätzlich zu Cancel Game Button ein Start New Game Button?
+
+  // anderes Icon fürs Großansicht Schließen
 
   console.log("selectedCardId", selectedCardId);
 
@@ -45,15 +50,54 @@ export default function TrainingCollectionPage({
       }
     });
   }
+  // ist das überhaupt später noch ein Toggle?
 
   function handleCardEnlargement(cardId) {
-    const isCardFlipped = flippedCards.includes(cardId);
-    if (!isCardFlipped) {
-      setSelectedCardId((selectedCardId) =>
-        selectedCardId === cardId ? null : cardId
-      );
+    setSelectedCardId((selectedCardId) =>
+      selectedCardId === cardId ? null : cardId
+    );
+  }
+
+  function handleCardClick(cardId) {
+    if (flippedCards.includes(cardId)) {
+      handleCardEnlargement(cardId);
+    } else {
+      toggleCardFlip(cardId);
+      handleCardEnlargement(cardId);
     }
   }
+
+  useEffect(() => {
+    if (flippedCards.length === 2) {
+      checkPairing(flippedCards);
+    }
+  }, [flippedCards]);
+
+  function checkPairing(flippedCards) {
+    const [firstId, secondId] = flippedCards;
+    const firstCard = memoryCards.find((card) => card.id === firstId);
+    const secondCard = memoryCards.find((card) => card.id === secondId);
+
+    if (firstCard.pairing === secondCard.pairing) {
+      // Hintergrund grün
+    } else {
+      // Hintergrund rot
+    }
+
+    // Timeout in useEffect
+    setTimeout(() => {
+      if (firstCard.pairing === secondCard.pairing) {
+        // Karten unsichtbar und unklickbar machen
+        // flippedCards leeren
+      } else {
+        // Karten wieder zurückflippen (auch flippedCards leeren)
+      }
+    }, 3000);
+  }
+
+  // Logik: Wenn flippedCards zwei Karten enthält,
+  // muss ein Ergebnis angezeigt werden und das Array
+  // wieder gelöscht werden.
 
   const setupMemoryCards = useCallback(() => {
     if (allFlashcardsFromCollection.length < 9) return;
@@ -113,8 +157,7 @@ export default function TrainingCollectionPage({
               <StyledCardContainer
                 key={card.id}
                 onClick={() => {
-                  toggleCardFlip(card.id);
-                  handleCardEnlargement(card.id);
+                  handleCardClick(card.id);
                 }}
               >
                 <StyledMemoryCard $isFlipped={flippedCards.includes(card.id)}>
@@ -230,10 +273,10 @@ const StyledMemoryCardFront = styled.div`
   backface-visibility: hidden;
   background-color: #add8e6;
   transform: rotateY(180deg);
+  padding: 5px;
 `;
 
 const StyledMemoryCardContent = styled.p`
-  padding: 5px;
   text-overflow: ellipsis;
   overflow: hidden;
   display: -webkit-box;
