@@ -15,10 +15,17 @@ export default function TrainingCollectionPage({
   const [flippedCards, setFlippedCards] = useState({});
   const [shuffledMemoryCards, setShuffledMemoryCards] = useState([]);
 
-  const allFlashcardsFromCollection = getAllFlashcardsFromCollection(id);
+  const allFlashcardsFromCollection = useMemo(
+    () => getAllFlashcardsFromCollection(id),
+    [id, getAllFlashcardsFromCollection]
+  );
 
   const collectionTitle = allFlashcardsFromCollection?.[0]?.collectionTitle;
   const collectionColor = allFlashcardsFromCollection?.[0]?.collectionColor;
+
+  function toggleCancel() {
+    setIsCancel(!isCancel);
+  }
 
   const getNineRandomFlashcards = useCallback(() => {
     if (allFlashcardsFromCollection.length < 9) {
@@ -84,10 +91,6 @@ export default function TrainingCollectionPage({
         </StyledMessage>
       </>
     );
-  }
-
-  function toggleCancel() {
-    setIsCancel(!isCancel);
   }
 
   function toggleCardFlip(cardId) {
