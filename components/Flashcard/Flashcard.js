@@ -26,7 +26,7 @@ export default function Flashcard({
   const [showAnswer, setShowAnswer] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
-  // const [isAnimating, setIsAnimating] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
 
   const {
     question,
@@ -52,9 +52,11 @@ export default function Flashcard({
     if (x > 30) {
       onSwipe("right");
       onIncreaseFlashcardLevel(id);
+      handleAnimationIcon();
     } else if (x < -30) {
       onSwipe("left");
       onDecreaseFlashcardLevel(id);
+      handleAnimationIcon();
     }
     setIsVisible(false);
     motionValue.set(0);
@@ -64,23 +66,24 @@ export default function Flashcard({
   // Ohne ist die Animation richtig aber die nächte Karte lässt sich nicht swipen.
   useEffect(() => {
     motionValue.set(0);
-    setIsVisible(true);
+    setTimeout(() => {
+      setIsVisible(true);
+    }, 700);
+    return () => clearTimeout();
   }, [id]);
 
-  // function handleCorrectClick() {
-  //   onToggleCorrect(id);
-  //   handleClickAnimation();
-  // }
-
-  // function handleIncorrectClick() {
-  //   handleClickAnimation();
-  //   handleClickAnimation();
-  // }
-
-  // function handleClickAnimation() {
-  //   setIsAnimating(true);
-  //   setTimeout(() => setIsAnimating(false), 1000);
-  // }
+  function handleAnimationIcon() {
+    setIsAnimating(true);
+  }
+  useEffect(() => {
+    let timer;
+    if (isAnimating) {
+      timer = setTimeout(() => {
+        setIsAnimating(false);
+      }, 1000);
+    }
+    return () => clearTimeout(timer);
+  }, [isAnimating]);
 
   function handleShowAnswer() {
     setShowAnswer(!showAnswer);
@@ -115,6 +118,35 @@ export default function Flashcard({
   };
 
   const titleColor = findContrastColor(contrastOptions);
+
+  const SwipeIcon = ({ direction }) => (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.5 }}
+      animate={{
+        scale: [0.8, 1.2, 1],
+        opacity: [0.6, 1, 0],
+      }}
+      transition={{ duration: 0.8 }}
+      style={{
+        position: "absolute",
+        top: "20%",
+        left: direction === "left" ? "10%" : "auto",
+        right: direction === "right" ? "10%" : "auto",
+        transform: "translateY(-50%)",
+        backgroundColor:
+          direction === "left" ? "var(--primary-red)" : "var(--primary-green)",
+        borderRadius: "50%",
+        width: "50px",
+        height: "50px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.2)",
+      }}
+    >
+      {direction === "left" ? <MarkAsIncorrect /> : <MarkAsCorrect />}
+    </motion.div>
+  );
 
   return (
     <>
@@ -228,7 +260,6 @@ export default function Flashcard({
                           <RoundButton
                             onClick={() => {
                               handleMarkAsInCorrect(id);
-                              // handleIncorrectClick;
                             }}
                             type="button"
                             variant={"markAsIncorrect"}
@@ -240,7 +271,6 @@ export default function Flashcard({
                           <RoundButton
                             onClick={() => {
                               handleMarkAsCorrect(id);
-                              // handleCorrectClick;
                             }}
                             type="button"
                             variant={"markAsCorrect"}
@@ -255,6 +285,8 @@ export default function Flashcard({
               )}
             </StyledFlashcard>
           </CardContainer>
+          {onSwipe === "right" && <SwipeIcon direction="right" />}
+          {onSwipe === "left" && <SwipeIcon direction="left" />}
         </motion.div>
       ) : (
         <CardContainer onClick={handleShowAnswer}>
