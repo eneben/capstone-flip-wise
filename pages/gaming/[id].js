@@ -21,10 +21,6 @@ export default function TrainingCollectionPage({
   const [showOverlay, setShowOverlay] = useState(false);
   const [isGameWon, setIsGameWon] = useState(false);
 
-  // Flipped Cards zurücksetzen, wenn woanders hingegangen wird.
-
-  // funktion in useCallback, dann dependecy array bearbeiten
-
   function startNewGame() {
     setIsCancel(false);
     setFlippedCards([]);
@@ -73,6 +69,29 @@ export default function TrainingCollectionPage({
     }
   }
 
+  const checkPairing = useCallback(
+    (flippedCards) => {
+      const [firstId, secondId] = flippedCards;
+      const firstCard = memoryCards.find((card) => card.id === firstId);
+      const secondCard = memoryCards.find((card) => card.id === secondId);
+
+      if (firstCard.pairing === secondCard.pairing) {
+        setCardStatus((prevCardStatus) => ({
+          ...prevCardStatus,
+          [firstId]: "green",
+          [secondId]: "green",
+        }));
+      } else {
+        setCardStatus((prevCardStatus) => ({
+          ...prevCardStatus,
+          [firstId]: "red",
+          [secondId]: "red",
+        }));
+      }
+    },
+    [memoryCards, setCardStatus]
+  );
+
   useEffect(() => {
     if (flippedCards.length === 2) {
       checkPairing(flippedCards);
@@ -80,27 +99,7 @@ export default function TrainingCollectionPage({
         setShowOverlay(true);
       }
     }
-  }, [flippedCards, selectedCardId]);
-
-  function checkPairing(flippedCards) {
-    const [firstId, secondId] = flippedCards;
-    const firstCard = memoryCards.find((card) => card.id === firstId);
-    const secondCard = memoryCards.find((card) => card.id === secondId);
-
-    if (firstCard.pairing === secondCard.pairing) {
-      setCardStatus((prevCardStatus) => ({
-        ...prevCardStatus,
-        [firstId]: "green",
-        [secondId]: "green",
-      }));
-    } else {
-      setCardStatus((prevCardStatus) => ({
-        ...prevCardStatus,
-        [firstId]: "red",
-        [secondId]: "red",
-      }));
-    }
-  }
+  }, [flippedCards, selectedCardId, checkPairing]);
 
   function handleOverlayClick(flippedCards) {
     setShowOverlay(false);
@@ -137,6 +136,8 @@ export default function TrainingCollectionPage({
 
   const setupMemoryCards = useCallback(() => {
     if (allFlashcardsFromCollection.length < 9) return;
+
+    setFlippedCards([]);
 
     const shuffledFlashcards = [...allFlashcardsFromCollection].sort(
       () => Math.random() - 0.5
@@ -350,7 +351,7 @@ const StyledMemoryCardFront = styled.div`
       ? "#2a9d8f"
       : $status === "red"
       ? "#e76f51"
-      : "#add8e6"};
+      : "#3ca8dc"};
   transform: rotateY(180deg);
   padding: 5px;
 `;
