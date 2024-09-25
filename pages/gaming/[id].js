@@ -17,13 +17,13 @@ export default function TrainingCollectionPage({
   const [flippedCards, setFlippedCards] = useState([]);
   const [memoryCards, setMemoryCards] = useState([]);
   const [selectedCardId, setSelectedCardId] = useState(null);
+  const [cardStatus, setCardStatus] = useState({});
+  const [showOverlay, setShowOverlay] = useState(false);
 
   console.log("flippedCards", flippedCards);
   // Flipped Cards zurücksetzen, wenn woanders hingegangen wird.
 
   // Zusätzlich zu Cancel Game Button ein Start New Game Button?
-
-  // anderes Icon fürs Großansicht Schließen
 
   console.log("selectedCardId", selectedCardId);
 
@@ -59,6 +59,10 @@ export default function TrainingCollectionPage({
   }
 
   function handleCardClick(cardId) {
+    if (cardStatus[cardId] === "hidden") {
+      return;
+    }
+
     if (flippedCards.includes(cardId)) {
       handleCardEnlargement(cardId);
     } else {
@@ -70,8 +74,11 @@ export default function TrainingCollectionPage({
   useEffect(() => {
     if (flippedCards.length === 2) {
       checkPairing(flippedCards);
+      if (!selectedCardId) {
+        setShowOverlay(true);
+      }
     }
-  }, [flippedCards]);
+  }, [flippedCards, selectedCardId]);
 
   function checkPairing(flippedCards) {
     const [firstId, secondId] = flippedCards;
@@ -79,25 +86,43 @@ export default function TrainingCollectionPage({
     const secondCard = memoryCards.find((card) => card.id === secondId);
 
     if (firstCard.pairing === secondCard.pairing) {
-      // Hintergrund grün
+      setCardStatus((prevCardStatus) => ({
+        ...prevCardStatus,
+        [firstId]: "green",
+        [secondId]: "green",
+      }));
     } else {
-      // Hintergrund rot
+      setCardStatus((prevCardStatus) => ({
+        ...prevCardStatus,
+        [firstId]: "red",
+        [secondId]: "red",
+      }));
     }
-
-    // Timeout in useEffect
-    setTimeout(() => {
-      if (firstCard.pairing === secondCard.pairing) {
-        // Karten unsichtbar und unklickbar machen
-        // flippedCards leeren
-      } else {
-        // Karten wieder zurückflippen (auch flippedCards leeren)
-      }
-    }, 3000);
   }
 
-  // Logik: Wenn flippedCards zwei Karten enthält,
-  // muss ein Ergebnis angezeigt werden und das Array
-  // wieder gelöscht werden.
+  function handleOverlayClick(flippedCards) {
+    setShowOverlay(false);
+
+    const [firstId, secondId] = flippedCards;
+    const firstCard = memoryCards.find((card) => card.id === firstId);
+    const secondCard = memoryCards.find((card) => card.id === secondId);
+
+    if (firstCard.pairing === secondCard.pairing) {
+      setCardStatus((prevCardStatus) => ({
+        ...prevCardStatus,
+        [firstId]: "hidden",
+        [secondId]: "hidden",
+      }));
+    } else {
+      setCardStatus((prevCardStatus) => ({
+        ...prevCardStatus,
+        [firstId]: "blue",
+        [secondId]: "blue",
+      }));
+    }
+
+    setFlippedCards([]);
+  }
 
   const setupMemoryCards = useCallback(() => {
     if (allFlashcardsFromCollection.length < 9) return;
@@ -160,9 +185,12 @@ export default function TrainingCollectionPage({
                   handleCardClick(card.id);
                 }}
               >
-                <StyledMemoryCard $isFlipped={flippedCards.includes(card.id)}>
+                <StyledMemoryCard
+                  $isFlipped={flippedCards.includes(card.id)}
+                  $status={cardStatus[card.id]}
+                >
                   <StyledMemoryCardBack $collectionColor={collectionColor} />
-                  <StyledMemoryCardFront>
+                  <StyledMemoryCardFront $status={cardStatus[card.id]}>
                     <StyledMemoryCardContent>
                       {card.content}
                     </StyledMemoryCardContent>
@@ -218,7 +246,6 @@ export default function TrainingCollectionPage({
                     variant="edit"
                   >
                     <MarkAsIncorrect />
-                    {/* Hier stattdessen anderes Icon einfügen, z.B. zwei Pfeile wie bei Vollbild beenden */}
                   </RoundButton>
                 </StyledCloseButtonContainer>
                 <StyledSelectedCardContent>
@@ -226,6 +253,10 @@ export default function TrainingCollectionPage({
                 </StyledSelectedCardContent>
               </StyledLargeFlashcard>
             </StyledOutgreyContainer>
+          )}
+
+          {showOverlay && (
+            <StyledOverlay onClick={() => handleOverlayClick(flippedCards)} />
           )}
         </>
       )}
@@ -254,6 +285,7 @@ const StyledMemoryCard = styled.article`
   transition: transform 0.6s;
   transform: ${({ $isFlipped }) =>
     $isFlipped ? "rotateY(180deg)" : "rotateY(0deg)"};
+  visibility: ${({ $status }) => ($status === "hidden" ? "hidden" : "visible")};
 `;
 
 const StyledMemoryCardBack = styled.div`
@@ -271,7 +303,12 @@ const StyledMemoryCardFront = styled.div`
   height: 100%;
   border-radius: 5px;
   backface-visibility: hidden;
-  background-color: #add8e6;
+  background-color: ${({ $status }) =>
+    $status === "green"
+      ? "#2a9d8f"
+      : $status === "red"
+      ? "#e76f51"
+      : "#add8e6"};
   transform: rotateY(180deg);
   padding: 5px;
 `;
@@ -361,4 +398,14 @@ const StyledSelectedCardContent = styled.p`
   @media (min-width: 768px) {
     font-size: 1.4rem;
   }
+`;
+
+const StyledOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: transparent;
+  z-index: 100;
 `;
