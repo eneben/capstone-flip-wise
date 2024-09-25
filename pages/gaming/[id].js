@@ -22,12 +22,8 @@ export default function TrainingCollectionPage({
   const [isGameWon, setIsGameWon] = useState(false);
 
   function startNewGame() {
-    setIsCancel(false);
-    setFlippedCards([]);
     setMemoryCards([]);
-    setSelectedCardId(null);
     setCardStatus({});
-    setShowOverlay(false);
     setIsGameWon(false);
     setupMemoryCards();
   }
