@@ -20,14 +20,15 @@ export default function Flashcard({
   onIncreaseFlashcardLevel,
   onDecreaseFlashcardLevel,
   onToggleCorrect,
-  onSwipe,
   handleFirstClick,
 }) {
   const [showAnswer, setShowAnswer] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
-  const [isAnimating, setIsAnimating] = useState(false);
-  const [swipeDirection, setSwipeDirection] = useState(null);
+
+  // icon bubble animation
+  // const [isAnimating, setIsAnimating] = useState(false);
+  // const [swipeDirection, setSwipeDirection] = useState(null);
 
   const {
     question,
@@ -46,49 +47,44 @@ export default function Flashcard({
     [0, 0, 1, 0, 0]
   );
 
+  function resetState() {
+    setShowAnswer(false);
+    setIsDelete(false);
+    setIsVisible(true);
+  }
+
   function handleDragEnd() {
     if (!showAnswer) return;
     const x = motionValue.get();
 
     if (x > 30) {
-      onSwipe("right");
       onIncreaseFlashcardLevel(id);
-      setSwipeDirection("right");
-      handleAnimationIcon();
+      resetState();
+      // setSwipeDirection("right");
+      // handleAnimationIcon();
     } else if (x < -30) {
-      onSwipe("left");
       onDecreaseFlashcardLevel(id);
-      setSwipeDirection("left");
-      handleAnimationIcon();
+      resetState();
+      // setSwipeDirection("left");
+      // handleAnimationIcon();
     }
-    setIsVisible(false);
-    motionValue.set(0);
-    setShowAnswer(false);
   }
 
-  // Die Animation ist richtig aber die nächte Karte lässt sich
-  // nicht swipen und die vorherige Karte blitzt nochmal auf.
-  useEffect(() => {
-    motionValue.set(0);
-    setTimeout(() => {
-      setIsVisible(true);
-    }, 700);
-    return () => clearTimeout();
-  }, [id]);
+  // icon bubble function:
 
-  function handleAnimationIcon() {
-    setIsAnimating(true);
-  }
-  useEffect(() => {
-    let timer;
-    if (isAnimating) {
-      timer = setTimeout(() => {
-        setIsAnimating(false);
-        setSwipeDirection(null);
-      }, 4000);
-    }
-    return () => clearTimeout(timer);
-  }, [isAnimating]);
+  // function handleAnimationIcon() {
+  //   setIsAnimating(true);
+  // }
+  // useEffect(() => {
+  //   let timer;
+  //   if (isAnimating) {
+  //     timer = setTimeout(() => {
+  //       setIsAnimating(false);
+  //       setSwipeDirection(null);
+  //     }, 4000);
+  //   }
+  //   return () => clearTimeout(timer);
+  // }, [isAnimating]);
 
   function handleShowAnswer() {
     setShowAnswer(!showAnswer);
@@ -124,40 +120,42 @@ export default function Flashcard({
 
   const titleColor = findContrastColor(contrastOptions);
 
-  const SwipeIcon = ({ direction }) => (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.5 }}
-      animate={{
-        scale: [1, 2, 1.5],
-        opacity: [0.5, 1, 0.5, 0],
-      }}
-      transition={{ duration: 1 }}
-      style={{
-        position: "absolute",
-        top: "5%",
-        left: direction === "left" ? "5%" : "auto",
-        right: direction === "right" ? "5%" : "auto",
-        transform: "translateY(-50%)",
-        backgroundColor:
-          direction === "left" ? "var(--primary-red)" : "var(--primary-green)",
-        borderRadius: "50%",
-        width: "30px",
-        height: "30px",
-        color: "#fff",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.2)",
-        zIndex: 1000,
-      }}
-    >
-      {direction === "left" ? (
-        <MarkAsIncorrect style={{ color: "white" }} />
-      ) : (
-        <MarkAsCorrect style={{ color: "white" }} />
-      )}
-    </motion.div>
-  );
+  // icon bubble styling:
+
+  // const SwipeIcon = ({ direction }) => (
+  //   <motion.div
+  //     initial={{ opacity: 0, scale: 0.5 }}
+  //     animate={{
+  //       scale: [1, 2, 1.5],
+  //       opacity: [0.5, 1, 0.5, 0],
+  //     }}
+  //     transition={{ duration: 1 }}
+  //     style={{
+  //       position: "absolute",
+  //       top: "5%",
+  //       left: direction === "left" ? "5%" : "auto",
+  //       right: direction === "right" ? "5%" : "auto",
+  //       transform: "translateY(-50%)",
+  //       backgroundColor:
+  //         direction === "left" ? "var(--primary-red)" : "var(--primary-green)",
+  //       borderRadius: "50%",
+  //       width: "30px",
+  //       height: "30px",
+  //       color: "#fff",
+  //       display: "flex",
+  //       justifyContent: "center",
+  //       alignItems: "center",
+  //       boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.2)",
+  //       zIndex: 1000,
+  //     }}
+  //   >
+  //     {direction === "left" ? (
+  //       <MarkAsIncorrect style={{ color: "white" }} />
+  //     ) : (
+  //       <MarkAsCorrect style={{ color: "white" }} />
+  //     )}
+  //   </motion.div>
+  // );
 
   return (
     <>
@@ -296,12 +294,12 @@ export default function Flashcard({
               )}
             </StyledFlashcard>
           </CardContainer>
-          {isAnimating && (
+          {/* {isAnimating && (
             <>
               {swipeDirection === "right" && <SwipeIcon direction="right" />}
               {swipeDirection === "left" && <SwipeIcon direction="left" />}
             </>
-          )}
+          )} */}
         </motion.div>
       ) : (
         <CardContainer onClick={handleShowAnswer}>
