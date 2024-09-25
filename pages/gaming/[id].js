@@ -21,12 +21,20 @@ export default function TrainingCollectionPage({
   const [showOverlay, setShowOverlay] = useState(false);
   const [isGameWon, setIsGameWon] = useState(false);
 
-  console.log("flippedCards", flippedCards);
   // Flipped Cards zurücksetzen, wenn woanders hingegangen wird.
 
-  // Zusätzlich zu Cancel Game Button ein Start New Game Button?
+  // funktion in useCallback, dann dependecy array bearbeiten
 
-  console.log("selectedCardId", selectedCardId);
+  function startNewGame() {
+    setIsCancel(false);
+    setFlippedCards([]);
+    setMemoryCards([]);
+    setSelectedCardId(null);
+    setCardStatus({});
+    setShowOverlay(false);
+    setIsGameWon(false);
+    setupMemoryCards();
+  }
 
   const allFlashcardsFromCollection = useMemo(
     () => getAllFlashcardsFromCollection(id),
@@ -42,16 +50,9 @@ export default function TrainingCollectionPage({
 
   function handleCardFlip(cardId) {
     setFlippedCards((prevFlippedCards) => {
-      if (prevFlippedCards.includes(cardId)) {
-        return prevFlippedCards.filter((id) => {
-          return id !== cardId;
-        });
-      } else {
-        return [...prevFlippedCards, cardId];
-      }
+      return [...prevFlippedCards, cardId];
     });
   }
-  // ist das überhaupt später noch ein Toggle?
 
   function handleCardEnlargement(cardId) {
     setSelectedCardId((selectedCardId) =>
@@ -126,7 +127,7 @@ export default function TrainingCollectionPage({
 
     const allCardStatusHidden = memoryCards.every(
       (card) =>
-        cardStatus[card.id] === "hidden" || flippedCards.includes[card.id]
+        cardStatus[card.id] === "hidden" || flippedCards.includes(card.id)
     );
 
     if (allCardStatusHidden) {
@@ -276,11 +277,28 @@ export default function TrainingCollectionPage({
           )}
 
           {isGameWon && (
-            <>
+            <StyledWinningSection>
               <StyledSuccessMessage>
                 YAY, YOU WON! <span aria-label="party-popper-emoji">🎉</span>
               </StyledSuccessMessage>
-            </>
+
+              <RegularButton
+                type="button"
+                onClick={startNewGame}
+                variant="confirm"
+              >
+                New Game
+              </RegularButton>
+              <RegularButton
+                type="button"
+                onClick={() => {
+                  router.push("/");
+                }}
+                variant="confirm"
+              >
+                Home
+              </RegularButton>
+            </StyledWinningSection>
           )}
         </>
       )}
@@ -429,9 +447,17 @@ const StyledOverlay = styled.div`
   z-index: 100;
 `;
 
+const StyledWinningSection = styled.section`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+`;
+
 const StyledSuccessMessage = styled.p`
   font: var(--main-headline);
   text-align: center;
   color: var(--primary-green);
-  padding: 0 30px 50px 30px;
+  padding: 30px;
 `;
