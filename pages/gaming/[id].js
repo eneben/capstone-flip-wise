@@ -19,6 +19,7 @@ export default function TrainingCollectionPage({
   const [selectedCardId, setSelectedCardId] = useState(null);
   const [cardStatus, setCardStatus] = useState({});
   const [showOverlay, setShowOverlay] = useState(false);
+  const [isGameWon, setIsGameWon] = useState(false);
 
   console.log("flippedCards", flippedCards);
   // Flipped Cards zurücksetzen, wenn woanders hingegangen wird.
@@ -39,7 +40,7 @@ export default function TrainingCollectionPage({
     setIsCancel((prevIsCancel) => !prevIsCancel);
   }
 
-  function toggleCardFlip(cardId) {
+  function handleCardFlip(cardId) {
     setFlippedCards((prevFlippedCards) => {
       if (prevFlippedCards.includes(cardId)) {
         return prevFlippedCards.filter((id) => {
@@ -66,7 +67,7 @@ export default function TrainingCollectionPage({
     if (flippedCards.includes(cardId)) {
       handleCardEnlargement(cardId);
     } else {
-      toggleCardFlip(cardId);
+      handleCardFlip(cardId);
       handleCardEnlargement(cardId);
     }
   }
@@ -122,6 +123,15 @@ export default function TrainingCollectionPage({
     }
 
     setFlippedCards([]);
+
+    const allCardStatusHidden = memoryCards.every(
+      (card) =>
+        cardStatus[card.id] === "hidden" || flippedCards.includes[card.id]
+    );
+
+    if (allCardStatusHidden) {
+      setIsGameWon(true);
+    }
   }
 
   const setupMemoryCards = useCallback(() => {
@@ -158,7 +168,6 @@ export default function TrainingCollectionPage({
     return (
       <>
         <StyledHeadline>{collectionTitle}</StyledHeadline>
-        <StyledSubheading>Gaming Mode</StyledSubheading>
         <StyledMessage>
           Unfortunately the memory is not available in this collection. You need
           at least 9 flashcards in your collection to play the memory game.
@@ -175,88 +184,103 @@ export default function TrainingCollectionPage({
       {allFlashcardsFromCollection.length >= 9 && (
         <>
           <StyledHeadline>{collectionTitle}</StyledHeadline>
-          <StyledSubheading>Gaming Mode</StyledSubheading>
 
-          <StyledFlashcardMemoryGrid>
-            {memoryCards.map((card) => (
-              <StyledCardContainer
-                key={card.id}
-                onClick={() => {
-                  handleCardClick(card.id);
-                }}
-              >
-                <StyledMemoryCard
-                  $isFlipped={flippedCards.includes(card.id)}
-                  $status={cardStatus[card.id]}
-                >
-                  <StyledMemoryCardBack $collectionColor={collectionColor} />
-                  <StyledMemoryCardFront $status={cardStatus[card.id]}>
-                    <StyledMemoryCardContent>
-                      {card.content}
-                    </StyledMemoryCardContent>
-                  </StyledMemoryCardFront>
-                </StyledMemoryCard>
-              </StyledCardContainer>
-            ))}
-          </StyledFlashcardMemoryGrid>
-
-          <StyledCancelContainer>
-            {!isCancel && (
-              <RegularButton
-                type="button"
-                onClick={toggleCancel}
-                variant="confirm"
-              >
-                Cancel Game
-              </RegularButton>
-            )}
-
-            {isCancel && (
-              <>
-                <p>Are you sure you want to cancel the game?</p>
-                <ButtonWrapper>
-                  <RegularButton
-                    type="button"
+          {!isGameWon && (
+            <>
+              <StyledFlashcardMemoryGrid>
+                {memoryCards.map((card) => (
+                  <StyledCardContainer
+                    key={card.id}
                     onClick={() => {
-                      router.push("/gaming/");
+                      handleCardClick(card.id);
                     }}
-                    variant="warning"
                   >
-                    Yes
-                  </RegularButton>
+                    <StyledMemoryCard
+                      $isFlipped={flippedCards.includes(card.id)}
+                      $status={cardStatus[card.id]}
+                    >
+                      <StyledMemoryCardBack
+                        $collectionColor={collectionColor}
+                      />
+                      <StyledMemoryCardFront $status={cardStatus[card.id]}>
+                        <StyledMemoryCardContent>
+                          {card.content}
+                        </StyledMemoryCardContent>
+                      </StyledMemoryCardFront>
+                    </StyledMemoryCard>
+                  </StyledCardContainer>
+                ))}
+              </StyledFlashcardMemoryGrid>
+
+              <StyledCancelContainer>
+                {!isCancel && (
                   <RegularButton
                     type="button"
                     onClick={toggleCancel}
                     variant="confirm"
                   >
-                    No
+                    Cancel Game
                   </RegularButton>
-                </ButtonWrapper>
-              </>
-            )}
-          </StyledCancelContainer>
+                )}
 
-          {selectedCardId && (
-            <StyledOutgreyContainer onClick={() => setSelectedCardId(null)}>
-              <StyledLargeFlashcard $collectionColor={collectionColor}>
-                <StyledCloseButtonContainer>
-                  <RoundButton
-                    onClick={() => setSelectedCardId(null)}
-                    type="button"
-                    variant="edit"
-                  >
-                    <MarkAsIncorrect />
-                  </RoundButton>
-                </StyledCloseButtonContainer>
-                <StyledSelectedCardContent>
-                  {selectedCard.content}
-                </StyledSelectedCardContent>
-              </StyledLargeFlashcard>
-            </StyledOutgreyContainer>
+                {isCancel && (
+                  <>
+                    <p>Are you sure you want to cancel the game?</p>
+                    <ButtonWrapper>
+                      <RegularButton
+                        type="button"
+                        onClick={() => {
+                          router.push("/gaming/");
+                        }}
+                        variant="warning"
+                      >
+                        Yes
+                      </RegularButton>
+                      <RegularButton
+                        type="button"
+                        onClick={toggleCancel}
+                        variant="confirm"
+                      >
+                        No
+                      </RegularButton>
+                    </ButtonWrapper>
+                  </>
+                )}
+              </StyledCancelContainer>
+
+              {selectedCardId && (
+                <StyledOutgreyContainer onClick={() => setSelectedCardId(null)}>
+                  <StyledLargeFlashcard $collectionColor={collectionColor}>
+                    <StyledCloseButtonContainer>
+                      <RoundButton
+                        onClick={() => setSelectedCardId(null)}
+                        type="button"
+                        variant="edit"
+                      >
+                        <MarkAsIncorrect />
+                      </RoundButton>
+                    </StyledCloseButtonContainer>
+                    <StyledSelectedCardContent>
+                      {selectedCard.content}
+                    </StyledSelectedCardContent>
+                  </StyledLargeFlashcard>
+                </StyledOutgreyContainer>
+              )}
+
+              {showOverlay && (
+                <StyledOverlay
+                  onClick={() => handleOverlayClick(flippedCards)}
+                />
+              )}
+            </>
           )}
 
-          {showOverlay && (
-            <StyledOverlay onClick={() => handleOverlayClick(flippedCards)} />
+          {isGameWon && (
+            <>
+              <StyledSuccessMessage>
+                YAY, YOU WON! <span aria-label="party-popper-emoji">🎉</span>
+              </StyledSuccessMessage>
+            </>
           )}
         </>
       )}
@@ -331,12 +355,7 @@ const StyledHeadline = styled.h2`
   font: var(--main-headline);
   text-align: center;
   padding-top: 35px;
-`;
-
-const StyledSubheading = styled.h3`
-  font: var(--sub-headline);
-  text-align: center;
-  padding: 5px 0 30px 0;
+  padding-bottom: 30px;
 `;
 
 const StyledCancelContainer = styled.section`
@@ -408,4 +427,11 @@ const StyledOverlay = styled.div`
   right: 0;
   background-color: transparent;
   z-index: 100;
+`;
+
+const StyledSuccessMessage = styled.p`
+  font: var(--main-headline);
+  text-align: center;
+  color: var(--primary-green);
+  padding: 0 30px 50px 30px;
 `;
