@@ -163,7 +163,13 @@ export default function Flashcard({
         <motion.div
           drag={showAnswer ? "x" : false}
           dragConstraints={{ left: 0, right: 0 }}
-          style={{ x: motionValue, rotate: rotateValue, opacity: opacityValue }}
+          style={{
+            x: motionValue,
+            rotate: rotateValue,
+            opacity: opacityValue,
+            gridRow: "1 / 1",
+            gridColumn: "1 / 1",
+          }}
           onDragEnd={handleDragEnd}
           transition={{ type: "spring", duration: 0.5 }}
         >
