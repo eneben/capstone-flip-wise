@@ -3,30 +3,31 @@ import MarkAsIncorrect from "@/public/icons/MarkAsIncorrect.svg";
 import MarkAsCorrect from "@/public/icons/MarkAsCorrect.svg";
 
 export default function BubbleAnimation({ swipeDirection }) {
+  if (!swipeDirection) return null;
+
   const SwipeIcon = ({ direction }) => (
     <motion.div
-      initial={{ opacity: 0, scale: 0.5 }}
+      initial={{ opacity: 0, scale: 0.8 }}
       animate={{
-        scale: [1, 2, 1.5],
-        opacity: [0.5, 1, 0.5, 0],
+        scale: [1, 1.1, 1],
+        opacity: [0.0, 0.7, 0.5, 0],
       }}
-      transition={{ duration: 1 }}
+      transition={{ duration: 1.5, ease: "easeOut" }}
       style={{
         position: "absolute",
-        top: "50%",
-        left: direction === "left" ? "10%" : "auto",
-        right: direction === "right" ? "10%" : "auto",
-        transform: "translateY(-50%)",
+        top: "-50px",
+        left: direction === "left" ? "7%" : "auto",
+        right: direction === "right" ? "7%" : "auto",
         backgroundColor:
           direction === "left" ? "var(--primary-red)" : "var(--primary-green)",
         borderRadius: "50%",
-        width: "30px",
-        height: "30px",
+        width: "40px",
+        height: "40px",
         color: "#fff",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.2)",
+        boxShadow: "0px 0px 7.5px rgba(0, 0, 0, 0.1)",
         zIndex: 1000,
       }}
     >

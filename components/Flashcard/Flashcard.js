@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { findContrastColor } from "color-contrast-finder";
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import MarkAsIncorrect from "@/public/icons/MarkAsIncorrect.svg";
@@ -22,12 +22,13 @@ export default function Flashcard({
   onDecreaseFlashcardLevel,
   onToggleCorrect,
   handleFirstClick,
+  swipeDirection,
+  isAnimating,
+  handleSwipeAnimation,
 }) {
   const [showAnswer, setShowAnswer] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
-
-  // const [swipeDirection, setSwipeDirection] = useState(null);
 
   const {
     question,
@@ -43,28 +44,30 @@ export default function Flashcard({
   const opacityValue = useTransform(
     motionValue,
     [-150, -75, 0, 75, 150],
-    [0, 0, 1, 0, 0]
+    [0, 0.5, 1, 0, 0]
   );
 
   function resetState() {
     setShowAnswer(false);
     setIsDelete(false);
     setIsVisible(true);
-    // setSwipeDirection(null);
   }
 
   function handleDragEnd() {
-    if (!showAnswer) return;
+    if (!showAnswer || isAnimating) return;
     const x = motionValue.get();
+    console.log("Drag ended. Motion value:", x);
 
     if (x > 30) {
-      // setSwipeDirection("right");
       onIncreaseFlashcardLevel(id);
+      handleSwipeAnimation("right");
       resetState();
+      console.log("Swiped right, triggering animation.");
     } else if (x < -30) {
-      // setSwipeDirection("left");
       onDecreaseFlashcardLevel(id);
+      handleSwipeAnimation("left");
       resetState();
+      console.log("Swiped left, triggering animation.");
     }
   }
 
@@ -104,7 +107,7 @@ export default function Flashcard({
 
   return (
     <>
-      {/* {swipeDirection && <BubbleAnimation swipeDirection={swipeDirection} />} */}
+      {isAnimating && <BubbleAnimation swipeDirection={swipeDirection} />}
       {isVisible && modeSelection === "training" ? (
         <motion.div
           drag={showAnswer ? "x" : false}

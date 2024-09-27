@@ -16,7 +16,28 @@ export default function CollectionPage({
   const router = useRouter();
   const { id } = router.query;
 
+  const [swipeDirection, setSwipeDirection] = useState(null);
+  const [isAnimating, setIsAnimating] = useState(false);
+
   const [sortedFlashcards, setSortedFlashcards] = useState([]);
+
+  function handleSwipeAnimation(direction) {
+    if (isAnimating) return;
+    setSwipeDirection(direction);
+    setIsAnimating(true);
+  }
+
+  useEffect(() => {
+    let timeoutId;
+    if (isAnimating) {
+      timeoutId = setTimeout(() => {
+        setIsAnimating(false);
+      }, 1100);
+    }
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [isAnimating]);
 
   useEffect(() => {
     if (!id) return;
@@ -82,6 +103,9 @@ export default function CollectionPage({
                     onIncreaseFlashcardLevel={handleIncreaseFlashcardLevel}
                     onDecreaseFlashcardLevel={handleDecreaseFlashcardLevel}
                     handleFirstClick={handleFirstClick}
+                    swipeDirection={swipeDirection}
+                    isAnimating={isAnimating}
+                    handleSwipeAnimation={handleSwipeAnimation}
                   />
                 ))}
               </FlashcardListWrapper>
