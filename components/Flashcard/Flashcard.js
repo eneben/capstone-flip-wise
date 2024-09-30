@@ -33,7 +33,9 @@ export default function Flashcard({
   } = flashcard;
 
   function handleShowAnswer() {
-    setShowAnswer(!showAnswer);
+    if (!isDelete) {
+      setShowAnswer(!showAnswer);
+    }
   }
 
   function toggleDeleteConfirmation(event) {
