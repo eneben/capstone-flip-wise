@@ -80,17 +80,6 @@ export default function TrainingCollectionPage({
           [firstId]: "green",
           [secondId]: "green",
         }));
-
-        // const allCardStatusHidden = memoryCards.every(
-        //   (card) =>
-        //     cardStatus[card.id] === "hidden" ||
-        //     card.id === firstId ||
-        //     card.id === secondId
-        // );
-
-        // if (allCardStatusHidden) {
-        //   setIsGameWon(true);
-        // }
       } else {
         setCardStatus((prevCardStatus) => ({
           ...prevCardStatus,
@@ -102,13 +91,16 @@ export default function TrainingCollectionPage({
     [memoryCards, setCardStatus]
   );
 
-  // const allCardStatusHidden = memoryCards.every(
-  //   (card) => cardStatus[card.id] === "hidden" || flippedCards.includes(card.id)
-  // );
+  function checkWinning() {
+    const allCardStatusHidden = memoryCards.every(
+      (card) =>
+        cardStatus[card.id] === "hidden" || flippedCards.includes(card.id)
+    );
 
-  // if (allCardStatusHidden) {
-  //   setIsGameWon(true);
-  // }
+    if (allCardStatusHidden) {
+      setIsGameWon(true);
+    }
+  }
 
   useEffect(() => {
     if (flippedCards.length === 2) {
@@ -136,15 +128,6 @@ export default function TrainingCollectionPage({
     }
 
     setFlippedCards([]);
-
-    // const allCardStatusHidden = memoryCards.every(
-    //   (card) =>
-    //     cardStatus[card.id] === "hidden" || flippedCards.includes(card.id)
-    // );
-
-    // if (allCardStatusHidden) {
-    //   setIsGameWon(true);
-    // }
   }
 
   const setupMemoryCards = useCallback(() => {
@@ -264,11 +247,19 @@ export default function TrainingCollectionPage({
               </StyledCancelContainer>
 
               {selectedCardId && (
-                <StyledOutgreyContainer onClick={() => setSelectedCardId(null)}>
+                <StyledOutgreyContainer
+                  onClick={() => {
+                    setSelectedCardId(null);
+                    checkWinning();
+                  }}
+                >
                   <StyledLargeFlashcard $collectionColor={collectionColor}>
                     <StyledCloseButtonContainer>
                       <RoundButton
-                        onClick={() => setSelectedCardId(null)}
+                        onClick={() => {
+                          setSelectedCardId(null);
+                          checkWinning();
+                        }}
                         type="button"
                         variant="edit"
                       >
