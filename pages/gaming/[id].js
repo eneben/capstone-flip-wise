@@ -13,17 +13,19 @@ export default function TrainingCollectionPage({
   const router = useRouter();
   const { id } = router.query;
 
-  const [isCancel, setIsCancel] = useState(false);
+  // const [isCancel, setIsCancel] = useState(false);
   const [flippedCards, setFlippedCards] = useState([]);
   const [memoryCards, setMemoryCards] = useState([]);
   const [selectedCardId, setSelectedCardId] = useState(null);
   const [cardStatus, setCardStatus] = useState({});
-  const [isGameWon, setIsGameWon] = useState(false);
+  // const [isGameWon, setIsGameWon] = useState(false);
+  const [gameStatus, setGameStatus] = useState("playing");
 
   function startNewGame() {
     setMemoryCards([]);
     setCardStatus({});
-    setIsGameWon(false);
+    // setIsGameWon(false);
+    setGameStatus("playing");
     setupMemoryCards();
   }
 
@@ -35,9 +37,9 @@ export default function TrainingCollectionPage({
   const collectionTitle = allFlashcardsFromCollection?.[0]?.collectionTitle;
   const collectionColor = allFlashcardsFromCollection?.[0]?.collectionColor;
 
-  function toggleCancel() {
-    setIsCancel((prevIsCancel) => !prevIsCancel);
-  }
+  // function toggleCancel() {
+  //   setIsCancel((prevIsCancel) => !prevIsCancel);
+  // }
 
   function handleCardFlip(cardId) {
     setFlippedCards((prevFlippedCards) => {
@@ -98,7 +100,8 @@ export default function TrainingCollectionPage({
     );
 
     if (allCardStatusHidden) {
-      setIsGameWon(true);
+      // setIsGameWon(true);
+      setGameStatus("won");
     }
   }
 
@@ -183,7 +186,8 @@ export default function TrainingCollectionPage({
         <>
           <StyledHeadline>{collectionTitle}</StyledHeadline>
 
-          {!isGameWon && (
+          {gameStatus !== "won" && (
+            // {!isGameWon && (
             <>
               <StyledFlashcardMemoryGrid>
                 {memoryCards.map((card) => (
@@ -192,10 +196,10 @@ export default function TrainingCollectionPage({
                     onClick={() => {
                       handleCardClick(card.id);
                     }}
+                    $status={cardStatus[card.id]}
                   >
                     <StyledMemoryCard
                       $isFlipped={flippedCards.includes(card.id)}
-                      $status={cardStatus[card.id]}
                     >
                       <StyledMemoryCardBack
                         $collectionColor={collectionColor}
@@ -211,17 +215,20 @@ export default function TrainingCollectionPage({
               </StyledFlashcardMemoryGrid>
 
               <StyledCancelContainer>
-                {!isCancel && (
+                {gameStatus === "playing" && (
+                  // {!isCancel && (
                   <RegularButton
                     type="button"
-                    onClick={toggleCancel}
+                    // onClick={toggleCancel}
+                    onClick={() => setGameStatus("cancel")}
                     variant="confirm"
                   >
                     Cancel Game
                   </RegularButton>
                 )}
 
-                {isCancel && (
+                {gameStatus === "cancel" && (
+                  // {isCancel && (
                   <>
                     <p>Are you sure you want to cancel the game?</p>
                     <ButtonWrapper>
@@ -236,7 +243,8 @@ export default function TrainingCollectionPage({
                       </RegularButton>
                       <RegularButton
                         type="button"
-                        onClick={toggleCancel}
+                        // onClick={toggleCancel}
+                        onClick={() => setGameStatus("playing")}
                         variant="confirm"
                       >
                         No
@@ -275,7 +283,8 @@ export default function TrainingCollectionPage({
             </>
           )}
 
-          {isGameWon && (
+          {gameStatus === "won" && (
+            // {isGameWon && (
             <StyledWinningSection>
               <StyledSuccessMessage>
                 YAY, YOU WON! <span aria-label="party-popper-emoji">🎉</span>
@@ -317,6 +326,7 @@ const StyledFlashcardMemoryGrid = styled.section`
 const StyledCardContainer = styled.button`
   perspective: 1000px;
   border: none;
+  visibility: ${({ $status }) => ($status === "hidden" ? "hidden" : "visible")};
 `;
 
 const StyledMemoryCard = styled.article`
@@ -324,13 +334,11 @@ const StyledMemoryCard = styled.article`
   min-height: 60px;
   max-height: 125px;
   aspect-ratio: 1.75 / 1;
-  font-size: 12px;
   position: relative;
   transform-style: preserve-3d;
   transition: transform 0.6s;
   transform: ${({ $isFlipped }) =>
     $isFlipped ? "rotateY(180deg)" : "rotateY(0deg)"};
-  visibility: ${({ $status }) => ($status === "hidden" ? "hidden" : "visible")};
 `;
 
 const StyledMemoryCardBack = styled.div`
@@ -356,6 +364,10 @@ const StyledMemoryCardFront = styled.div`
       : "#3ca8dc"};
   transform: rotateY(180deg);
   padding: 5px;
+
+  @media (min-width: 768px) {
+    padding: 10px;<main class="Layout__MainContainer-sc-828fdfa1-0 kAtCpw">
+  }
 `;
 
 const StyledMemoryCardContent = styled.p`
@@ -365,6 +377,17 @@ const StyledMemoryCardContent = styled.p`
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
+  text-align: left;
+  font-size: calc(6px + 2vw);
+
+  @media (min-width: 615px) {
+    -webkit-line-clamp: 4;
+    font-size: calc(4px + 2vw);
+  }
+
+  @media (min-width: 768px) {
+    font-size: 18.3px;
+  }
 `;
 
 const StyledMessage = styled.p`
