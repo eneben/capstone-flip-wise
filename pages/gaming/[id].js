@@ -316,8 +316,8 @@ const StyledCardContainer = styled.li`
 `;
 
 const StyledMemoryCard = styled.article`
-  width: 105px;
-  height: 60px;
+  min-width: 105px;
+  min-height: 60px;
   font-size: 12px;
   position: relative;
   transform-style: preserve-3d;
@@ -353,6 +353,7 @@ const StyledMemoryCardFront = styled.div`
 `;
 
 const StyledMemoryCardContent = styled.p`
+  color: #fff;
   text-overflow: ellipsis;
   overflow: hidden;
   display: -webkit-box;
