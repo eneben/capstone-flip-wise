@@ -77,14 +77,14 @@ export default function TrainingCollectionPage({
       if (firstCard.pairing === secondCard.pairing) {
         setCardStatus((prevCardStatus) => ({
           ...prevCardStatus,
-          [firstId]: "green",
-          [secondId]: "green",
+          [firstId]: "matching",
+          [secondId]: "matching",
         }));
       } else {
         setCardStatus((prevCardStatus) => ({
           ...prevCardStatus,
-          [firstId]: "red",
-          [secondId]: "red",
+          [firstId]: "mismatching",
+          [secondId]: "mismatching",
         }));
       }
     },
@@ -122,8 +122,8 @@ export default function TrainingCollectionPage({
     } else {
       setCardStatus((prevCardStatus) => ({
         ...prevCardStatus,
-        [firstId]: "blue",
-        [secondId]: "blue",
+        [firstId]: "flipped",
+        [secondId]: "flipped",
       }));
     }
 
@@ -305,18 +305,18 @@ export default function TrainingCollectionPage({
   );
 }
 
-const StyledFlashcardMemoryGrid = styled.ul`
+const StyledFlashcardMemoryGrid = styled.section`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(6, 1fr);
   grid-gap: 10px;
-  list-style: none;
   margin: 0 auto;
   max-width: 676.25px;
 `;
 
-const StyledCardContainer = styled.li`
+const StyledCardContainer = styled.button`
   perspective: 1000px;
+  border: none;
 `;
 
 const StyledMemoryCard = styled.article`
@@ -349,9 +349,9 @@ const StyledMemoryCardFront = styled.div`
   border-radius: 5px;
   backface-visibility: hidden;
   background-color: ${({ $status }) =>
-    $status === "green"
+    $status === "matching"
       ? "#2a9d8f"
-      : $status === "red"
+      : $status === "mismatching"
       ? "#e76f51"
       : "#3ca8dc"};
   transform: rotateY(180deg);
