@@ -15,13 +15,9 @@ export default function TrainingCollectionPage({
 
   const [isCancel, setIsCancel] = useState(false);
   const [flippedCards, setFlippedCards] = useState([]);
-
-  console.log("flippedCards: ", flippedCards);
-
   const [memoryCards, setMemoryCards] = useState([]);
   const [selectedCardId, setSelectedCardId] = useState(null);
   const [cardStatus, setCardStatus] = useState({});
-  // const [showOverlay, setShowOverlay] = useState(false);
   const [isGameWon, setIsGameWon] = useState(false);
 
   function startNewGame() {
@@ -60,7 +56,6 @@ export default function TrainingCollectionPage({
       return;
     }
 
-    // hier: wenn zwei karten im array sind oben, dann overlayClick ausführen, dann overlay löschen
     if (flippedCards.length === 2) {
       processCardMatch(flippedCards);
     }
@@ -99,15 +94,10 @@ export default function TrainingCollectionPage({
   useEffect(() => {
     if (flippedCards.length === 2) {
       checkPairing(flippedCards);
-      // if (!selectedCardId) {
-      //   setShowOverlay(true);
-      // }
     }
   }, [flippedCards, selectedCardId, checkPairing]);
 
   function processCardMatch(flippedCards) {
-    // setShowOverlay(false);
-
     const [firstId, secondId] = flippedCards;
     const firstCard = memoryCards.find((card) => card.id === firstId);
     const secondCard = memoryCards.find((card) => card.id === secondId);
@@ -272,12 +262,6 @@ export default function TrainingCollectionPage({
                   </StyledLargeFlashcard>
                 </StyledOutgreyContainer>
               )}
-
-              {/* {showOverlay && (
-                <StyledOverlay
-                  onClick={() => handleOverlayClick(flippedCards)}
-                />
-              )} */}
             </>
           )}
 
@@ -441,16 +425,6 @@ const StyledSelectedCardContent = styled.p`
   @media (min-width: 768px) {
     font-size: 1.4rem;
   }
-`;
-
-const StyledOverlay = styled.div`
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: transparent;
-  z-index: 100;
 `;
 
 const StyledWinningSection = styled.section`
