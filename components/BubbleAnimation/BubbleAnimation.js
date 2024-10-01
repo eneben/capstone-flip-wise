@@ -15,7 +15,7 @@ export default function BubbleAnimation({ swipeDirection }) {
       transition={{ duration: 1.5, ease: "easeOut" }}
       style={{
         position: "absolute",
-        top: "-68px",
+        top: "-65px",
         left: direction === "left" ? "2%" : "auto",
         right: direction === "right" ? "2%" : "auto",
         backgroundColor:

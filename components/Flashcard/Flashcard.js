@@ -58,7 +58,7 @@ export default function Flashcard({
     if (isAnimating) {
       timeoutId = setTimeout(() => {
         setIsAnimating(false);
-      }, 1100);
+      }, 1000);
     }
     return () => {
       clearTimeout(timeoutId);
