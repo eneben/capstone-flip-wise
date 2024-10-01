@@ -311,6 +311,8 @@ const StyledFlashcardMemoryGrid = styled.ul`
   grid-template-rows: repeat(6, 1fr);
   grid-gap: 10px;
   list-style: none;
+  margin: 0 auto;
+  max-width: 676.25px;
 `;
 
 const StyledCardContainer = styled.li`
@@ -320,6 +322,8 @@ const StyledCardContainer = styled.li`
 const StyledMemoryCard = styled.article`
   min-width: 105px;
   min-height: 60px;
+  max-height: 125px;
+  aspect-ratio: 1.75 / 1;
   font-size: 12px;
   position: relative;
   transform-style: preserve-3d;
