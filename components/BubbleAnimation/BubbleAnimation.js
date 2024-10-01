@@ -3,6 +3,8 @@ import MarkAsIncorrect from "@/public/icons/MarkAsIncorrect.svg";
 import MarkAsCorrect from "@/public/icons/MarkAsCorrect.svg";
 
 export default function BubbleAnimation({ swipeDirection }) {
+  console.log("bubble animation rendered");
+
   if (!swipeDirection) return null;
 
   const SwipeIcon = ({ direction }) => (

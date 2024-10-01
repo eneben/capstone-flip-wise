@@ -13,11 +13,14 @@ export default function CollectionPage({
   handleDecreaseFlashcardLevel,
   handleFirstClick,
 }) {
+  console.log("id rendered");
+
   const router = useRouter();
   const { id } = router.query;
 
   const [swipeDirection, setSwipeDirection] = useState(null);
   const [isAnimating, setIsAnimating] = useState(false);
+  console.log("is animating", isAnimating);
 
   const [sortedFlashcards, setSortedFlashcards] = useState([]);
 
