@@ -13,8 +13,6 @@ export default function CollectionPage({
   handleDecreaseFlashcardLevel,
   handleFirstClick,
 }) {
-  console.log("id rendered");
-
   const router = useRouter();
   const { id } = router.query;
 
