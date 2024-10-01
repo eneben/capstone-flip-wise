@@ -56,7 +56,7 @@ export default function TrainingCollectionPage({
       return;
     }
 
-    if (flippedCards.length === 2) {
+    if (flippedCards.length === 2 && !flippedCards.includes(cardId)) {
       processCardMatch(flippedCards);
     }
 
@@ -81,20 +81,16 @@ export default function TrainingCollectionPage({
           [secondId]: "green",
         }));
 
-        // hier überprüfung ob spiel gewonnen wurde
+        // const allCardStatusHidden = memoryCards.every(
+        //   (card) =>
+        //     cardStatus[card.id] === "hidden" ||
+        //     card.id === firstId ||
+        //     card.id === secondId
+        // );
 
-        const allCardStatusHidden = memoryCards.every(
-          (card) =>
-            cardStatus[card.id] === "hidden" ||
-            card.id === firstId ||
-            card.id === secondId
-        );
-
-        if (allCardStatusHidden) {
-          // setTimeout(() => {
-          setIsGameWon(true);
-          // }, 1500);
-        }
+        // if (allCardStatusHidden) {
+        //   setIsGameWon(true);
+        // }
       } else {
         setCardStatus((prevCardStatus) => ({
           ...prevCardStatus,
@@ -107,8 +103,7 @@ export default function TrainingCollectionPage({
   );
 
   // const allCardStatusHidden = memoryCards.every(
-  //   (card) =>
-  //     cardStatus[card.id] === "hidden" || flippedCards.includes(card.id)
+  //   (card) => cardStatus[card.id] === "hidden" || flippedCards.includes(card.id)
   // );
 
   // if (allCardStatusHidden) {
