@@ -80,6 +80,21 @@ export default function TrainingCollectionPage({
           [firstId]: "green",
           [secondId]: "green",
         }));
+
+        // hier überprüfung ob spiel gewonnen wurde
+
+        const allCardStatusHidden = memoryCards.every(
+          (card) =>
+            cardStatus[card.id] === "hidden" ||
+            card.id === firstId ||
+            card.id === secondId
+        );
+
+        if (allCardStatusHidden) {
+          // setTimeout(() => {
+          setIsGameWon(true);
+          // }, 1500);
+        }
       } else {
         setCardStatus((prevCardStatus) => ({
           ...prevCardStatus,
@@ -90,6 +105,15 @@ export default function TrainingCollectionPage({
     },
     [memoryCards, setCardStatus]
   );
+
+  // const allCardStatusHidden = memoryCards.every(
+  //   (card) =>
+  //     cardStatus[card.id] === "hidden" || flippedCards.includes(card.id)
+  // );
+
+  // if (allCardStatusHidden) {
+  //   setIsGameWon(true);
+  // }
 
   useEffect(() => {
     if (flippedCards.length === 2) {
@@ -118,14 +142,14 @@ export default function TrainingCollectionPage({
 
     setFlippedCards([]);
 
-    const allCardStatusHidden = memoryCards.every(
-      (card) =>
-        cardStatus[card.id] === "hidden" || flippedCards.includes(card.id)
-    );
+    // const allCardStatusHidden = memoryCards.every(
+    //   (card) =>
+    //     cardStatus[card.id] === "hidden" || flippedCards.includes(card.id)
+    // );
 
-    if (allCardStatusHidden) {
-      setIsGameWon(true);
-    }
+    // if (allCardStatusHidden) {
+    //   setIsGameWon(true);
+    // }
   }
 
   const setupMemoryCards = useCallback(() => {
