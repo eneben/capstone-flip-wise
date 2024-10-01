@@ -29,7 +29,7 @@ export default function BubbleAnimation({ swipeDirection }) {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        boxShadow: "0px 0px 7.5px rgba(0, 0, 0, 0.1)",
+        boxShadow: "0px 0px 7.5px rgba(0, 0, 0, 0.3)",
         zIndex: 1000,
       }}
     >

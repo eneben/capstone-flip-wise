@@ -22,9 +22,9 @@ export default function Flashcard({
   onDecreaseFlashcardLevel,
   onToggleCorrect,
   handleFirstClick,
-  swipeDirection,
-  isAnimating,
-  handleSwipeAnimation,
+  // swipeDirection,
+  // isAnimating,
+  // handleSwipeAnimation,
 }) {
   const [showAnswer, setShowAnswer] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
@@ -46,6 +46,28 @@ export default function Flashcard({
     [-150, -75, 0, 75, 150],
     [0, 0.5, 1, 0, 0]
   );
+
+  const [swipeDirection, setSwipeDirection] = useState(null);
+  const [isAnimating, setIsAnimating] = useState(false);
+  console.log("is animating", isAnimating);
+
+  function handleSwipeAnimation(direction) {
+    if (isAnimating) return;
+    setSwipeDirection(direction);
+    setIsAnimating(true);
+  }
+
+  useEffect(() => {
+    let timeoutId;
+    if (isAnimating) {
+      timeoutId = setTimeout(() => {
+        setIsAnimating(false);
+      }, 1100);
+    }
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [isAnimating]);
 
   function resetState() {
     setShowAnswer(false);
