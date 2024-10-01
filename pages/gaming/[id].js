@@ -15,10 +15,13 @@ export default function TrainingCollectionPage({
 
   const [isCancel, setIsCancel] = useState(false);
   const [flippedCards, setFlippedCards] = useState([]);
+
+  console.log("flippedCards: ", flippedCards);
+
   const [memoryCards, setMemoryCards] = useState([]);
   const [selectedCardId, setSelectedCardId] = useState(null);
   const [cardStatus, setCardStatus] = useState({});
-  const [showOverlay, setShowOverlay] = useState(false);
+  // const [showOverlay, setShowOverlay] = useState(false);
   const [isGameWon, setIsGameWon] = useState(false);
 
   function startNewGame() {
@@ -57,6 +60,11 @@ export default function TrainingCollectionPage({
       return;
     }
 
+    // hier: wenn zwei karten im array sind oben, dann overlayClick ausführen, dann overlay löschen
+    if (flippedCards.length === 2) {
+      processCardMatch(flippedCards);
+    }
+
     if (flippedCards.includes(cardId)) {
       handleCardEnlargement(cardId);
     } else {
@@ -91,14 +99,14 @@ export default function TrainingCollectionPage({
   useEffect(() => {
     if (flippedCards.length === 2) {
       checkPairing(flippedCards);
-      if (!selectedCardId) {
-        setShowOverlay(true);
-      }
+      // if (!selectedCardId) {
+      //   setShowOverlay(true);
+      // }
     }
   }, [flippedCards, selectedCardId, checkPairing]);
 
-  function handleOverlayClick(flippedCards) {
-    setShowOverlay(false);
+  function processCardMatch(flippedCards) {
+    // setShowOverlay(false);
 
     const [firstId, secondId] = flippedCards;
     const firstCard = memoryCards.find((card) => card.id === firstId);
@@ -265,11 +273,11 @@ export default function TrainingCollectionPage({
                 </StyledOutgreyContainer>
               )}
 
-              {showOverlay && (
+              {/* {showOverlay && (
                 <StyledOverlay
                   onClick={() => handleOverlayClick(flippedCards)}
                 />
-              )}
+              )} */}
             </>
           )}
 
