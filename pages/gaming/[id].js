@@ -366,7 +366,7 @@ const StyledMemoryCardFront = styled.div`
   padding: 5px;
 
   @media (min-width: 768px) {
-    padding: 10px;<main class="Layout__MainContainer-sc-828fdfa1-0 kAtCpw">
+    padding: 10px;
   }
 `;
 
