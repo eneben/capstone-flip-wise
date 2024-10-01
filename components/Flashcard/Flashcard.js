@@ -22,9 +22,6 @@ export default function Flashcard({
   onDecreaseFlashcardLevel,
   onToggleCorrect,
   handleFirstClick,
-  // swipeDirection,
-  // isAnimating,
-  // handleSwipeAnimation,
 }) {
   const [showAnswer, setShowAnswer] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
@@ -49,7 +46,6 @@ export default function Flashcard({
 
   const [swipeDirection, setSwipeDirection] = useState(null);
   const [isAnimating, setIsAnimating] = useState(false);
-  console.log("is animating", isAnimating);
 
   function handleSwipeAnimation(direction) {
     if (isAnimating) return;
@@ -78,18 +74,15 @@ export default function Flashcard({
   function handleDragEnd() {
     if (!showAnswer || isAnimating) return;
     const x = motionValue.get();
-    console.log("Drag ended. Motion value:", x);
 
     if (x > 30) {
       onIncreaseFlashcardLevel(id);
       handleSwipeAnimation("right");
       resetState();
-      console.log("Swiped right, triggering animation.");
     } else if (x < -30) {
       onDecreaseFlashcardLevel(id);
       handleSwipeAnimation("left");
       resetState();
-      console.log("Swiped left, triggering animation.");
     }
   }
 
