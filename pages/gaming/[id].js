@@ -13,18 +13,15 @@ export default function TrainingCollectionPage({
   const router = useRouter();
   const { id } = router.query;
 
-  // const [isCancel, setIsCancel] = useState(false);
   const [flippedCards, setFlippedCards] = useState([]);
   const [memoryCards, setMemoryCards] = useState([]);
   const [selectedCardId, setSelectedCardId] = useState(null);
   const [cardStatus, setCardStatus] = useState({});
-  // const [isGameWon, setIsGameWon] = useState(false);
   const [gameStatus, setGameStatus] = useState("playing");
 
   function startNewGame() {
     setMemoryCards([]);
     setCardStatus({});
-    // setIsGameWon(false);
     setGameStatus("playing");
     setupMemoryCards();
   }
@@ -36,10 +33,6 @@ export default function TrainingCollectionPage({
 
   const collectionTitle = allFlashcardsFromCollection?.[0]?.collectionTitle;
   const collectionColor = allFlashcardsFromCollection?.[0]?.collectionColor;
-
-  // function toggleCancel() {
-  //   setIsCancel((prevIsCancel) => !prevIsCancel);
-  // }
 
   function handleCardFlip(cardId) {
     setFlippedCards((prevFlippedCards) => {
@@ -100,7 +93,6 @@ export default function TrainingCollectionPage({
     );
 
     if (allCardStatusHidden) {
-      // setIsGameWon(true);
       setGameStatus("won");
     }
   }
@@ -187,7 +179,6 @@ export default function TrainingCollectionPage({
           <StyledHeadline>{collectionTitle}</StyledHeadline>
 
           {gameStatus !== "won" && (
-            // {!isGameWon && (
             <>
               <StyledFlashcardMemoryGrid>
                 {memoryCards.map((card) => (
@@ -216,10 +207,8 @@ export default function TrainingCollectionPage({
 
               <StyledCancelContainer>
                 {gameStatus === "playing" && (
-                  // {!isCancel && (
                   <RegularButton
                     type="button"
-                    // onClick={toggleCancel}
                     onClick={() => setGameStatus("cancel")}
                     variant="confirm"
                   >
@@ -228,7 +217,6 @@ export default function TrainingCollectionPage({
                 )}
 
                 {gameStatus === "cancel" && (
-                  // {isCancel && (
                   <>
                     <p>Are you sure you want to cancel the game?</p>
                     <ButtonWrapper>
@@ -243,7 +231,6 @@ export default function TrainingCollectionPage({
                       </RegularButton>
                       <RegularButton
                         type="button"
-                        // onClick={toggleCancel}
                         onClick={() => setGameStatus("playing")}
                         variant="confirm"
                       >
@@ -284,7 +271,6 @@ export default function TrainingCollectionPage({
           )}
 
           {gameStatus === "won" && (
-            // {isGameWon && (
             <StyledWinningSection>
               <StyledSuccessMessage>
                 YAY, YOU WON! <span aria-label="party-popper-emoji">🎉</span>
