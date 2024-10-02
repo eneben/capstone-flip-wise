@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import Flashcard from "@/components/Flashcard/Flashcard";
 
@@ -9,14 +10,18 @@ export default function TrainingCollectionPage({
   getAllFlashcardsFromCollection,
   handleIncreaseFlashcardLevel,
   handleDecreaseFlashcardLevel,
+  handleFirstClick,
 }) {
   const router = useRouter();
   const { id } = router.query;
 
-  const allFlashcardsFromCollection = getAllFlashcardsFromCollection(id);
+  const [sortedFlashcards, setSortedFlashcards] = useState([]);
 
-  const collectionTitle = allFlashcardsFromCollection?.[0]?.collectionTitle;
-  const collectionColor = allFlashcardsFromCollection?.[0]?.collectionColor;
+  useEffect(() => {
+    if (!id) return;
+    const allFlashcardsFromCollection = getAllFlashcardsFromCollection(id);
+    setSortedFlashcards(sortFlashcardsByLevel(allFlashcardsFromCollection));
+  }, [id, getAllFlashcardsFromCollection]);
 
   function sortFlashcardsByLevel(flashcards) {
     return flashcards.sort((a, b) => {
@@ -36,76 +41,53 @@ export default function TrainingCollectionPage({
     });
   }
 
-  const sortedFlashcards = sortFlashcardsByLevel(allFlashcardsFromCollection);
-
   function areAllCardsLearned(flashcards) {
     return flashcards.length > 0 && flashcards[0].level === 5;
   }
 
   const allLearned = areAllCardsLearned(sortedFlashcards);
 
-  const firstFlashcard = sortedFlashcards[0];
-  const secondFlashcard = sortedFlashcards[1];
-  const thirdFlashcard = sortedFlashcards[2];
-
   return (
     <>
-      {allFlashcardsFromCollection.length > 0 && (
+      {sortedFlashcards.length > 0 && (
         <>
-          <StyledHeadline>{collectionTitle}</StyledHeadline>
-          <StyledSubheading>Training Mode</StyledSubheading>
+          <OverflowWrapper>
+            <StyledHeadline>
+              {sortedFlashcards[0]?.collectionTitle}
+            </StyledHeadline>
+            <StyledSubheading>Training Mode</StyledSubheading>
 
-          {allLearned && (
-            <StyledSuccessMessage>
-              You have trained all flashcards up to the last level, BrainStack
-              Champion! <span aria-label="party-popper-emoji">🎉</span>
-            </StyledSuccessMessage>
-          )}
+            {allLearned && (
+              <StyledSuccessMessage>
+                You have trained all flashcards up to the last level, BrainStack
+                Champion! <span aria-label="party-popper-emoji">🎉</span>
+              </StyledSuccessMessage>
+            )}
 
-          <FlashcardListWrapper>
-            <FlashcardStackWrapper>
-              <ThirdFlashcardWrapper>
-                <Flashcard
-                  collectionColor={collectionColor}
-                  handleDeleteFlashcard={handleDeleteFlashcard}
-                  flashcard={thirdFlashcard}
-                  changeCurrentFlashcard={changeCurrentFlashcard}
-                  changeActionMode={changeActionMode}
-                  modeSelection="training"
-                  onIncreaseFlashcardLevel={handleIncreaseFlashcardLevel}
-                  onDecreaseFlashcardLevel={handleDecreaseFlashcardLevel}
-                />
-              </ThirdFlashcardWrapper>
-              <ThirdFlashcardOpacity />
-              <SecondFlashcardWrapper>
-                <Flashcard
-                  collectionColor={collectionColor}
-                  handleDeleteFlashcard={handleDeleteFlashcard}
-                  flashcard={secondFlashcard}
-                  changeCurrentFlashcard={changeCurrentFlashcard}
-                  changeActionMode={changeActionMode}
-                  modeSelection="training"
-                  onIncreaseFlashcardLevel={handleIncreaseFlashcardLevel}
-                  onDecreaseFlashcardLevel={handleDecreaseFlashcardLevel}
-                />
-              </SecondFlashcardWrapper>
-              <SecondFlashcardOpacity />
-              <Flashcard
-                collectionColor={collectionColor}
-                handleDeleteFlashcard={handleDeleteFlashcard}
-                flashcard={firstFlashcard}
-                changeCurrentFlashcard={changeCurrentFlashcard}
-                changeActionMode={changeActionMode}
-                modeSelection="training"
-                onIncreaseFlashcardLevel={handleIncreaseFlashcardLevel}
-                onDecreaseFlashcardLevel={handleDecreaseFlashcardLevel}
-              />
-            </FlashcardStackWrapper>
-          </FlashcardListWrapper>
+            <FlascardStackWrapper>
+              <FlashcardStackShadow2 />
+              <FlashcardStackShadow1 />
+              <FlashcardListWrapper>
+                {sortedFlashcards.toReversed().map((flashcard) => (
+                  <Flashcard
+                    key={flashcard.id}
+                    collectionColor={flashcard?.collectionColor}
+                    handleDeleteFlashcard={handleDeleteFlashcard}
+                    flashcard={flashcard}
+                    changeCurrentFlashcard={changeCurrentFlashcard}
+                    changeActionMode={changeActionMode}
+                    modeSelection="training"
+                    onIncreaseFlashcardLevel={handleIncreaseFlashcardLevel}
+                    onDecreaseFlashcardLevel={handleDecreaseFlashcardLevel}
+                    onFirstClick={handleFirstClick}
+                  />
+                ))}
+              </FlashcardListWrapper>
+            </FlascardStackWrapper>
+          </OverflowWrapper>
         </>
       )}
-      {(!allFlashcardsFromCollection ||
-        allFlashcardsFromCollection.length === 0) && (
+      {(!sortedFlashcards || sortedFlashcards.length === 0) && (
         <StyledMessage>
           No flashcards in this collection found. Add some new!
         </StyledMessage>
@@ -118,14 +100,6 @@ const StyledMessage = styled.p`
   text-align: center;
   font-size: 1.3rem;
   padding: 40px 20px;
-`;
-
-const FlashcardListWrapper = styled.ul`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  gap: 15px;
-  list-style: none;
 `;
 
 const StyledHeadline = styled.h2`
@@ -147,7 +121,16 @@ const StyledSuccessMessage = styled.p`
   padding: 0 30px 50px 30px;
 `;
 
-const FlashcardStackWrapper = styled.div`
+const OverflowWrapper = styled.div`
+  position: fixed;
+  overflow: hidden;
+  top: 100px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+`;
+
+const FlascardStackWrapper = styled.div`
   margin: 0 auto;
   width: 90vw;
   height: 218px;
@@ -174,28 +157,21 @@ const FlashcardStackShadow = styled.div`
   }
 `;
 
-const SecondFlashcardWrapper = styled(FlashcardStackShadow)`
+const FlashcardStackShadow1 = styled(FlashcardStackShadow)`
   top: 8px;
   left: 8px;
   background-color: var(--secondary-light-grey);
 `;
 
-const ThirdFlashcardWrapper = styled(FlashcardStackShadow)`
+const FlashcardStackShadow2 = styled(FlashcardStackShadow)`
   top: 16px;
   left: -8px;
   background-color: var(--secondary-grey);
 `;
 
-const SecondFlashcardOpacity = styled(FlashcardStackShadow)`
-  top: 8px;
-  left: 8px;
-  background-color: var(--secondary-light-grey);
-  opacity: 0.6;
-`;
-
-const ThirdFlashcardOpacity = styled(FlashcardStackShadow)`
-  top: 16px;
-  left: -8px;
-  background-color: var(--secondary-grey);
-  opacity: 0.6;
+const FlashcardListWrapper = styled.ul`
+  display: grid;
+  flex-direction: column;
+  list-style: none;
+  align-items: center;
 `;
