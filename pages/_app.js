@@ -7,6 +7,7 @@ import useLocalStorageState from "use-local-storage-state";
 import { uid } from "uid";
 import { useEffect, useState } from "react";
 import MarkAsCorrect from "@/public/icons/MarkAsCorrect.svg";
+import Info from "@/public/icons/Info.svg";
 import ToastMessageContainer from "@/components/ToastMessage/ToastMessageContainer";
 
 export default function App({ Component, pageProps }) {
@@ -25,6 +26,19 @@ export default function App({ Component, pageProps }) {
   const [actionMode, setActionMode] = useState("default");
 
   const [flashcardSelection, setFlashcardSelection] = useState("all");
+
+  const [isClickedFirstTime, setIsClickedFirstTime] = useState(false);
+
+  function handleFirstClick() {
+    if (!isClickedFirstTime) {
+      setIsClickedFirstTime(true);
+      showToastMessage(
+        `Swipe right for correct, left for incorrect.`,
+        "info",
+        Info
+      );
+    }
+  }
 
   function changeFlashcardSelection(selection) {
     setFlashcardSelection(selection);
@@ -267,6 +281,7 @@ export default function App({ Component, pageProps }) {
         changeFlashcardSelection={changeFlashcardSelection}
         handleIncreaseFlashcardLevel={handleIncreaseFlashcardLevel}
         handleDecreaseFlashcardLevel={handleDecreaseFlashcardLevel}
+        handleFirstClick={handleFirstClick}
       />
       <ToastMessageContainer
         toastMessages={toastMessages}
