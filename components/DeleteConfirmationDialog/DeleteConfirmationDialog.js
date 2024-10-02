@@ -20,17 +20,16 @@ export default function DeleteConfirmationDialog({
   return (
     <>
       <ConfirmationQuestion>
-        {variant === "flashcard" && "Do you want to delete this flashcard?"}
-        {variant === "collection" && "Do you want to delete this collection?"}
+        Do you want to delete this {variant}?
       </ConfirmationQuestion>
       <ButtonWrapper>
-        <RegularButton onClick={handleDelete} type="button" variant="confirm">
+        <RegularButton onClick={handleDelete} type="button" variant="warning">
           Yes
         </RegularButton>
         <RegularButton
           onClick={toggleDeleteConfirmation}
           type="button"
-          variant="warning"
+          variant="confirm"
         >
           No
         </RegularButton>

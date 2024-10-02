@@ -3,8 +3,7 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 import Flashcard from "@/components/Flashcard/Flashcard";
 
-export default function CollectionPage({
-  handleToggleCorrect,
+export default function TrainingCollectionPage({
   handleDeleteFlashcard,
   changeActionMode,
   changeCurrentFlashcard,
@@ -75,7 +74,6 @@ export default function CollectionPage({
                     collectionColor={flashcard?.collectionColor}
                     handleDeleteFlashcard={handleDeleteFlashcard}
                     flashcard={flashcard}
-                    onToggleCorrect={handleToggleCorrect}
                     changeCurrentFlashcard={changeCurrentFlashcard}
                     changeActionMode={changeActionMode}
                     modeSelection="training"
@@ -100,7 +98,7 @@ export default function CollectionPage({
 
 const StyledMessage = styled.p`
   text-align: center;
-  font-size: 1rem;
+  font-size: 1.3rem;
   padding: 40px 20px;
 `;
 

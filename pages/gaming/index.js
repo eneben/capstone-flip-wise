@@ -1,6 +1,6 @@
 import CollectionList from "@/components/CollectionList/CollectionList";
 
-export default function TrainingPage({
+export default function GamingPage({
   collections,
   actionMode,
   getCorrectFlashcardsFromCollection,
@@ -13,7 +13,7 @@ export default function TrainingPage({
   return (
     <>
       <CollectionList
-        modeSelection="training"
+        modeSelection="gaming"
         collections={collections}
         actionMode={actionMode}
         getCorrectFlashcardsFromCollection={getCorrectFlashcardsFromCollection}

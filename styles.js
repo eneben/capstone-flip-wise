@@ -27,6 +27,7 @@ export default createGlobalStyle`
     --primary-red: #e76f51;
     --primary-green: #2a9d8f;
     --primary-neutral: #264653;
+    --primary-blue: #3ca8dc;
     --secondary-grey: #dee3e5;
     --secondary-mid-grey: #bec7cb;
     --secondary-light-grey: #f4f6f6;
