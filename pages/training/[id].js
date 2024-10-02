@@ -81,7 +81,7 @@ export default function CollectionPage({
                     modeSelection="training"
                     onIncreaseFlashcardLevel={handleIncreaseFlashcardLevel}
                     onDecreaseFlashcardLevel={handleDecreaseFlashcardLevel}
-                    handleFirstClick={handleFirstClick}
+                    onFirstClick={handleFirstClick}
                   />
                 ))}
               </FlashcardListWrapper>

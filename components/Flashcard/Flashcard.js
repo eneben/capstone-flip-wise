@@ -21,11 +21,13 @@ export default function Flashcard({
   onIncreaseFlashcardLevel,
   onDecreaseFlashcardLevel,
   onToggleCorrect,
-  handleFirstClick,
+  onFirstClick,
 }) {
   const [showAnswer, setShowAnswer] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
+  const [swipeDirection, setSwipeDirection] = useState(null);
+  const [isAnimating, setIsAnimating] = useState(false);
 
   const {
     question,
@@ -43,9 +45,6 @@ export default function Flashcard({
     [-150, -75, 0, 75, 150],
     [0, 0.5, 1, 0, 0]
   );
-
-  const [swipeDirection, setSwipeDirection] = useState(null);
-  const [isAnimating, setIsAnimating] = useState(false);
 
   function handleSwipeAnimation(direction) {
     if (isAnimating) return;
@@ -65,7 +64,7 @@ export default function Flashcard({
     };
   }, [isAnimating]);
 
-  function resetState() {
+  function resetFlashcardStates() {
     setShowAnswer(false);
     setIsDelete(false);
     setIsVisible(true);
@@ -78,21 +77,21 @@ export default function Flashcard({
     if (x > 30) {
       onIncreaseFlashcardLevel(id);
       handleSwipeAnimation("right");
-      resetState();
+      resetFlashcardStates();
     } else if (x < -30) {
       onDecreaseFlashcardLevel(id);
       handleSwipeAnimation("left");
-      resetState();
+      resetFlashcardStates();
     }
   }
 
   function handleShowAnswer() {
-    setShowAnswer(!showAnswer);
+    setShowAnswer((prevShowAnswer) => !prevShowAnswer);
   }
 
   function toggleDeleteConfirmation(event) {
     event.stopPropagation();
-    setIsDelete(!isDelete);
+    setIsDelete((prevIsDelete) => !prevIsDelete);
   }
 
   function setEditWithoutFlip(event) {
@@ -102,12 +101,12 @@ export default function Flashcard({
   }
 
   function handleMarkAsCorrect(id) {
-    handleFirstClick();
+    onFirstClick();
     onIncreaseFlashcardLevel(id);
   }
 
   function handleMarkAsInCorrect(id) {
-    handleFirstClick();
+    onFirstClick();
     onDecreaseFlashcardLevel(id);
   }
 
@@ -124,18 +123,15 @@ export default function Flashcard({
     <>
       {isAnimating && <BubbleAnimation swipeDirection={swipeDirection} />}
       {isVisible && modeSelection === "training" ? (
-        <motion.div
+        <StyledSwipeContainer
           drag={showAnswer ? "x" : false}
           dragConstraints={{ left: 0, right: 0 }}
           style={{
             x: motionValue,
             rotate: rotateValue,
             opacity: opacityValue,
-            gridRow: "1 / 1",
-            gridColumn: "1 / 1",
           }}
           onDragEnd={handleDragEnd}
-          transition={{ type: "spring", duration: 0.5 }}
         >
           <CardContainer onClick={handleShowAnswer}>
             <StyledFlashcard $showAnswer={showAnswer}>
@@ -264,7 +260,7 @@ export default function Flashcard({
               )}
             </StyledFlashcard>
           </CardContainer>
-        </motion.div>
+        </StyledSwipeContainer>
       ) : (
         <CardContainer onClick={handleShowAnswer}>
           <StyledFlashcard $showAnswer={showAnswer}>
@@ -531,4 +527,10 @@ const LevelBarWrapper = styled.div`
   padding-top: 20px;
   grid-column: 1 / 8;
   grid-row: 3 / 4;
+`;
+
+const StyledSwipeContainer = styled(motion.div)`
+  grid-row: 1 / 1;
+  grid-column: 1 / 1;
+  transition: 0.5s spring;
 `;
