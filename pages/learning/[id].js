@@ -99,7 +99,7 @@ export default function LearningCollectionPage({
 
 const StyledMessage = styled.p`
   text-align: center;
-  font-size: 1rem;
+  font-size: 1.3rem;
   padding: 40px 20px;
 `;
 

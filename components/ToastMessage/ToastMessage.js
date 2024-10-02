@@ -108,4 +108,7 @@ const variantToastMessageStyles = {
   error: css`
     background-color: var(--primary-red);
   `,
+  info: css`
+    background-color: var(--primary-neutral);
+  `,
 };

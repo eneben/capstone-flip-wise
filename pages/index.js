@@ -22,6 +22,13 @@ export default function HomePage() {
           what you don&apos;t know and reinforce knowledge efficiently.
         </StyledDescription>
       </StyledModeSelection>
+      <StyledModeSelection href="/gaming">
+        <StyledModeName>Gaming Mode</StyledModeName>
+        <StyledDescription>
+          Learn in a playful way by sorting the front and back of the flashcard
+          in a memory game. We think learning should be fun.
+        </StyledDescription>
+      </StyledModeSelection>
     </HomeWrapper>
   );
 }

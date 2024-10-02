@@ -27,6 +27,7 @@ export default createGlobalStyle`
     --primary-red: #e76f51;
     --primary-green: #2a9d8f;
     --primary-neutral: #264653;
+    --primary-blue: #3ca8dc;
     --secondary-grey: #dee3e5;
     --secondary-mid-grey: #bec7cb;
     --secondary-light-grey: #f4f6f6;
@@ -45,6 +46,11 @@ export default createGlobalStyle`
 
     --grid-columns-card-and-title: 54px 54px 24px 1fr 24px 54px 54px; 
     --grid-rows-card-and-title: 54px 1fr 54px;
+
+    ::-webkit-scrollbar { display: none; };
+
+scrollbar-width: none; 
+overflow: auto;
 }
 
   body {
@@ -56,8 +62,9 @@ export default createGlobalStyle`
       var(--secondary-light-grey) 15px,
       var(--secondary-light-grey) 30px
   ); 
-  /* overflow: hidden; */
+
   }
+
 
 input, select, button {
   font-family: inherit;

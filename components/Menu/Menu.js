@@ -18,6 +18,9 @@ export default function Menu({
   const [isTrainingCollections, setIsTrainingCollections] = useState(false);
   const [isTrainingCollectionsClosing, setIsTrainingCollectionsClosing] =
     useState(false);
+  const [isGamingCollections, setIsGamingCollections] = useState(false);
+  const [isGamingCollectionsClosing, setIsGamingCollectionsClosing] =
+    useState(false);
 
   function handleToggleMenu(event) {
     event.stopPropagation();
@@ -29,6 +32,7 @@ export default function Menu({
     }
     setIsLearningCollectionsClosing(true);
     setIsTrainingCollectionsClosing(true);
+    setIsGamingCollectionsClosing(true);
   }
 
   useEffect(() => {
@@ -36,7 +40,7 @@ export default function Menu({
       const menuTimeoutId = setTimeout(() => {
         setIsMenu(false);
         setIsMenuClosing(false);
-      }, 190);
+      }, 390);
       return () => clearTimeout(menuTimeoutId);
     }
   }, [isMenuClosing]);
@@ -47,6 +51,9 @@ export default function Menu({
       setIsLearningCollections(true);
       if (isTrainingCollections) {
         setIsTrainingCollectionsClosing(true);
+      }
+      if (isGamingCollections) {
+        setIsGamingCollectionsClosing(true);
       }
     } else {
       setIsLearningCollectionsClosing(true);
@@ -60,8 +67,26 @@ export default function Menu({
       if (isLearningCollections) {
         setIsLearningCollectionsClosing(true);
       }
+      if (isGamingCollections) {
+        setIsGamingCollectionsClosing(true);
+      }
     } else {
       setIsTrainingCollectionsClosing(true);
+    }
+  }
+
+  function handleToggleGamingCollections(event) {
+    event.stopPropagation();
+    if (!isGamingCollections) {
+      setIsGamingCollections(true);
+      if (isLearningCollections) {
+        setIsLearningCollectionsClosing(true);
+      }
+      if (isTrainingCollections) {
+        setIsTrainingCollectionsClosing(true);
+      }
+    } else {
+      setIsGamingCollectionsClosing(true);
     }
   }
 
@@ -84,6 +109,16 @@ export default function Menu({
       return () => clearTimeout(collectionsTimeoutId);
     }
   }, [isTrainingCollectionsClosing]);
+
+  useEffect(() => {
+    if (isGamingCollectionsClosing) {
+      const collectionsTimeoutId = setTimeout(() => {
+        setIsGamingCollections(false);
+        setIsGamingCollectionsClosing(false);
+      }, 290);
+      return () => clearTimeout(collectionsTimeoutId);
+    }
+  }, [isGamingCollectionsClosing]);
 
   return (
     <StyledMenuContainer>
@@ -109,6 +144,7 @@ export default function Menu({
                 Home
               </StyledNavigationLink>
             </StyledNavigationListItem>
+
             <StyledNavigationListItem>
               <StyledNavigationLink
                 href="/learning"
@@ -190,6 +226,47 @@ export default function Menu({
                 })}
               </StyledSubNavigationList>
             )}
+
+            <StyledNavigationListItem>
+              <StyledNavigationLink
+                href="/gaming"
+                onClick={() => {
+                  changeFlashcardSelection("all");
+                  setIsMenuClosing(true);
+                  setIsGamingCollectionsClosing(true);
+                }}
+              >
+                Gaming Mode
+              </StyledNavigationLink>
+              <StyledSubMenuArrow
+                $isRotate={isGamingCollections}
+                onClick={handleToggleGamingCollections}
+              />
+            </StyledNavigationListItem>
+            {isGamingCollections && (
+              <StyledSubNavigationList>
+                {collections.map((collection) => {
+                  return (
+                    <StyledSubNavigationListItem
+                      key={collection.id}
+                      $isCollectionsClosing={isGamingCollectionsClosing}
+                    >
+                      <StyledSubNavigationLink
+                        href={`/gaming/${collection.id}`}
+                        onClick={() => {
+                          changeFlashcardSelection("all");
+                          setIsMenuClosing(true);
+                          setIsGamingCollectionsClosing(true);
+                        }}
+                      >
+                        {collection.title} (
+                        {getAllFlashcardsFromCollection(collection.id).length})
+                      </StyledSubNavigationLink>
+                    </StyledSubNavigationListItem>
+                  );
+                })}
+              </StyledSubNavigationList>
+            )}
           </StyledNavigationList>
         </StyledNavigation>
       )}
@@ -199,13 +276,13 @@ export default function Menu({
 }
 
 const menuAnimationIn = keyframes`
-0% { top: 65px; }
+0% { top: -76px; }
 100% { top: 100px; }
 `;
 
 const menuAnimationOut = keyframes`
 0% { top: 100px; }
-100% { top: 65px; }
+100% { top: -76px; }
 `;
 
 const subMenuAnimationOpen = keyframes`
@@ -235,7 +312,7 @@ const StyledButton = styled.button`
 
 const StyledCover = styled.div`
   background-color: #fff;
-  width: 220px;
+  width: 200px;
   height: 100px;
   position: absolute;
   top: 0;
@@ -255,14 +332,14 @@ const StyledNavigation = styled.nav`
   animation: ${(props) =>
     props.$isMenuClosing
       ? css`
-          ${menuAnimationOut} 0.2s ease-out
+          ${menuAnimationOut} 0.4s ease-out
         `
       : css`
-          ${menuAnimationIn} 0.2s ease-out
+          ${menuAnimationIn} 0.4s ease-out
         `};
   position: absolute;
   top: 100px;
-  width: 220px;
+  width: 200px;
   background-color: #fff;
   border: 1px solid #000;
   border-top: none;
@@ -284,6 +361,7 @@ const StyledNavigationListItem = styled.li`
   text-align: center;
   color: #fff;
   background-color: #000;
+  height: 44px;
 `;
 
 const StyledSubNavigationList = styled.ul`
