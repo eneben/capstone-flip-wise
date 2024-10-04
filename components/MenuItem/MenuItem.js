@@ -1,5 +1,43 @@
-export default function MenuItem({ content, collections, isSubmenu, page }) {
-  const [isCollections, setIsCollections] = useState(false);
+import SubMenuArrow from "@/public/icons/SubMenuArrow.svg";
+import { useState, useEffect, useCallback } from "react";
+import styled, { keyframes, css } from "styled-components";
+import Link from "next/link";
+
+export default function MenuItem({
+  content,
+  menuItemName,
+  collections,
+  hasSubmenu,
+  page,
+  submenuMode,
+  changeSubmenuMode,
+  changeIsMenuClosing,
+  changeFlashcardSelection,
+  getAllFlashcardsFromCollection,
+}) {
+  const [isCollectionsClosing, setIsCollectionsClosing] = useState(false);
+
+  const cachedChangeSubmenuMode = useCallback(changeSubmenuMode, [
+    changeSubmenuMode,
+  ]);
+
+  function toggleSubmenuMode() {
+    if (submenuMode === "default") {
+      changeSubmenuMode(menuItemName);
+    } else {
+      setIsCollectionsClosing(true);
+    }
+  }
+
+  useEffect(() => {
+    if (isCollectionsClosing) {
+      const collectionsTimeoutId = setTimeout(() => {
+        setIsCollectionsClosing(false);
+        cachedChangeSubmenuMode("default");
+      }, 290);
+      return () => clearTimeout(collectionsTimeoutId);
+    }
+  }, [isCollectionsClosing, cachedChangeSubmenuMode]);
 
   return (
     <>
@@ -8,22 +46,21 @@ export default function MenuItem({ content, collections, isSubmenu, page }) {
           href={`/${page}`}
           onClick={() => {
             changeFlashcardSelection("all");
-            setIsMenuClosing(true);
-            setIsCollectionsClosing(true);
+            changeIsMenuClosing();
           }}
         >
           {content}
         </StyledNavigationLink>
 
-        {isSubmenu && (
+        {hasSubmenu && (
           <StyledSubMenuArrow
-            $isRotate={isCollections}
-            onClick={handleToggleCollections}
+            $isRotate={submenuMode === menuItemName}
+            onClick={toggleSubmenuMode}
           />
         )}
       </StyledNavigationListItem>
 
-      {isCollections && (
+      {submenuMode === menuItemName && (
         <StyledSubNavigationList>
           {collections.map((collection) => {
             return (
@@ -35,8 +72,8 @@ export default function MenuItem({ content, collections, isSubmenu, page }) {
                   href={`/${page}/${collection.id}`}
                   onClick={() => {
                     changeFlashcardSelection("all");
-                    setIsMenuClosing(true);
-                    setIsCollectionsClosing(true);
+                    changeIsMenuClosing();
+                    // setIsCollectionsClosing(true);
                   }}
                 >
                   {collection.title} (
