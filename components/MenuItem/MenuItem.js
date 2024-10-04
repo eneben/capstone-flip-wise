@@ -11,9 +11,10 @@ export default function MenuItem({
   page,
   submenuMode,
   changeSubmenuMode,
-  changeIsMenuClosing,
+  onToggleMenu,
   changeFlashcardSelection,
   getAllFlashcardsFromCollection,
+  closingTrigger,
 }) {
   const [isCollectionsClosing, setIsCollectionsClosing] = useState(false);
 
@@ -22,7 +23,7 @@ export default function MenuItem({
   ]);
 
   function toggleSubmenuMode() {
-    if (submenuMode === "default") {
+    if (submenuMode !== menuItemName) {
       changeSubmenuMode(menuItemName);
     } else {
       setIsCollectionsClosing(true);
@@ -34,10 +35,14 @@ export default function MenuItem({
       const collectionsTimeoutId = setTimeout(() => {
         setIsCollectionsClosing(false);
         cachedChangeSubmenuMode("default");
-      }, 290);
+      }, 280);
       return () => clearTimeout(collectionsTimeoutId);
     }
   }, [isCollectionsClosing, cachedChangeSubmenuMode]);
+
+  useEffect(() => {
+    setIsCollectionsClosing(true);
+  }, [closingTrigger]);
 
   return (
     <>
@@ -46,7 +51,7 @@ export default function MenuItem({
           href={`/${page}`}
           onClick={() => {
             changeFlashcardSelection("all");
-            changeIsMenuClosing();
+            onToggleMenu();
           }}
         >
           {content}
@@ -72,8 +77,7 @@ export default function MenuItem({
                   href={`/${page}/${collection.id}`}
                   onClick={() => {
                     changeFlashcardSelection("all");
-                    changeIsMenuClosing();
-                    // setIsCollectionsClosing(true);
+                    onToggleMenu();
                   }}
                 >
                   {collection.title} (

@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import MenuIcon from "@/public/icons/Menu.svg";
-import SubMenuArrow from "@/public/icons/SubMenuArrow.svg";
 import MenuItem from "../MenuItem/MenuItem";
 import styled, { keyframes, css } from "styled-components";
-import Link from "next/link";
 
 export default function Menu({
   collections,
@@ -15,24 +13,20 @@ export default function Menu({
   const [isMenuClosing, setIsMenuClosing] = useState(false);
 
   const [submenuMode, setSubmenuMode] = useState("default");
+  const [closingTrigger, setClosingTrigger] = useState(false);
 
   function changeSubmenuMode(mode) {
     setSubmenuMode(mode);
   }
 
-  function changeIsMenuClosing() {
-    setIsMenuClosing(true);
-  }
-
-  function handleToggleMenu(event) {
-    event.stopPropagation();
+  function handleToggleMenu() {
+    setClosingTrigger(!closingTrigger);
     if (!isMenu) {
       startClosingForm();
       setIsMenu(true);
     } else {
       setIsMenuClosing(true);
     }
-    changeSubmenuMode("default");
   }
 
   useEffect(() => {
@@ -40,7 +34,7 @@ export default function Menu({
       const menuTimeoutId = setTimeout(() => {
         setIsMenu(false);
         setIsMenuClosing(false);
-      }, 390);
+      }, 380);
       return () => clearTimeout(menuTimeoutId);
     }
   }, [isMenuClosing]);
@@ -58,16 +52,14 @@ export default function Menu({
           <StyledNavigationList>
             <MenuItem
               content="Home"
-              name="home"
+              menuItemName="home"
               collections={collections}
               hasSubmenu={false}
               page=""
-              menuMode="default"
               submenuMode={submenuMode}
               changeSubmenuMode={changeSubmenuMode}
-              changeIsMenuClosing={changeIsMenuClosing}
+              onToggleMenu={handleToggleMenu}
               changeFlashcardSelection={changeFlashcardSelection}
-              getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
             />
 
             <MenuItem
@@ -79,9 +71,10 @@ export default function Menu({
               menuMode="learning"
               submenuMode={submenuMode}
               changeSubmenuMode={changeSubmenuMode}
-              changeIsMenuClosing={changeIsMenuClosing}
+              onToggleMenu={handleToggleMenu}
               changeFlashcardSelection={changeFlashcardSelection}
               getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
+              closingTrigger={closingTrigger}
             />
           </StyledNavigationList>
         </StyledNavigation>
