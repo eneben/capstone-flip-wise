@@ -76,6 +76,36 @@ export default function Menu({
               getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
               closingTrigger={closingTrigger}
             />
+
+            <MenuItem
+              content="Training Mode"
+              menuItemName="training"
+              collections={collections}
+              hasSubmenu={true}
+              page="training"
+              menuMode="training"
+              submenuMode={submenuMode}
+              changeSubmenuMode={changeSubmenuMode}
+              onToggleMenu={handleToggleMenu}
+              changeFlashcardSelection={changeFlashcardSelection}
+              getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
+              closingTrigger={closingTrigger}
+            />
+
+            <MenuItem
+              content="Gaming Mode"
+              menuItemName="gaming"
+              collections={collections}
+              hasSubmenu={true}
+              page="gaming"
+              menuMode="gaming"
+              submenuMode={submenuMode}
+              changeSubmenuMode={changeSubmenuMode}
+              onToggleMenu={handleToggleMenu}
+              changeFlashcardSelection={changeFlashcardSelection}
+              getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
+              closingTrigger={closingTrigger}
+            />
           </StyledNavigationList>
         </StyledNavigation>
       )}
