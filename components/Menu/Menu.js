@@ -34,7 +34,8 @@ export default function Menu({
       const menuTimeoutId = setTimeout(() => {
         setIsMenu(false);
         setIsMenuClosing(false);
-      }, 380);
+        changeSubmenuMode("default");
+      }, 280);
       return () => clearTimeout(menuTimeoutId);
     }
   }, [isMenuClosing]);
@@ -171,10 +172,10 @@ const StyledNavigation = styled.nav`
   animation: ${(props) =>
     props.$isMenuClosing
       ? css`
-          ${menuAnimationOut} 0.4s ease-out
+          ${menuAnimationOut} 0.3s ease-out
         `
       : css`
-          ${menuAnimationIn} 0.4s ease-out
+          ${menuAnimationIn} 0.3s ease-out
         `};
   position: absolute;
   top: 100px;

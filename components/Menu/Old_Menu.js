@@ -94,6 +94,7 @@ export default function Menu({
     if (isLearningCollectionsClosing) {
       const collectionsTimeoutId = setTimeout(() => {
         setIsLearningCollections(false);
+
         setIsLearningCollectionsClosing(false);
       }, 290);
       return () => clearTimeout(collectionsTimeoutId);
