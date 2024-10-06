@@ -1,7 +1,7 @@
 import GlobalStyle from "../styles";
 import { SWRConfig } from "swr";
 import Layout from "@/components/Layout/Layout";
-import styled from "styled-components";
+// import styled from "styled-components";
 // import initialFlashcards from "@/assets/flashcards.json";
 // import initialCollections from "@/assets/collections.json";
 // import useLocalStorageState from "use-local-storage-state";
@@ -265,7 +265,7 @@ export default function App({ Component, pageProps }) {
 
   function getCollection(collectionId) {
     const collectionToFind = collections.find((collection) => {
-      return collection.id === collectionId;
+      return collection._id === collectionId;
     });
     return {
       title: collectionToFind.title,
@@ -447,9 +447,9 @@ export default function App({ Component, pageProps }) {
   );
 }
 
-const BackgroundColor = styled.div`
-  margin: 0 auto;
-  min-height: 100vh;
-  max-width: 800px;
-  background-color: #fff;
-`;
+// const BackgroundColor = styled.div`
+//   margin: 0 auto;
+//   min-height: 100vh;
+//   max-width: 800px;
+//   background-color: #fff;
+// `;
