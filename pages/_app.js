@@ -1,12 +1,14 @@
 import GlobalStyle from "../styles";
 import { SWRConfig } from "swr";
-import Layout from "@/components/Layout/Layout";
 import useSWR from "swr";
+import Layout from "@/components/Layout/Layout";
 import { uid } from "uid";
 import { useEffect, useState } from "react";
 import MarkAsCorrect from "@/public/icons/MarkAsCorrect.svg";
 import Info from "@/public/icons/Info.svg";
 import ToastMessageContainer from "@/components/ToastMessage/ToastMessageContainer";
+
+const fetcher = (url) => fetch(url).then((response) => response.json());
 
 export default function App({ Component, pageProps }) {
   console.log("App rendered");
@@ -16,16 +18,26 @@ export default function App({ Component, pageProps }) {
     isLoading: flashcardIsLoading,
     error: flashcardError,
     mutate: mutateFlashcards,
-  } = useSWR("/api/flashcards");
+  } = useSWR("/api/flashcards", fetcher, { fallbackData: [] });
 
   const {
     data: collections,
     isLoading: collectionIsLoading,
     error: collectionError,
     mutate: mutateCollections,
-  } = useSWR("/api/collections");
+  } = useSWR("/api/collections", fetcher, { fallbackData: [] });
 
-  console.log("collections: ", collections);
+  console.log("FIRST TRY:");
+  console.log("collections:", collections);
+  console.log("flashcards:", flashcards);
+
+  if (flashcardError) {
+    console.error("Flashcard fetch error:", flashcardError);
+  }
+
+  if (collectionError) {
+    console.error("Collection fetch error:", collectionError);
+  }
 
   const [toastMessages, setToastMessages] = useState([]);
 
@@ -327,26 +339,17 @@ export default function App({ Component, pageProps }) {
     mutateFlashcards();
   }
 
-  console.log("über dem early return");
+  console.log("collections:", collections);
+  console.log("flashcards:", flashcards);
 
   if (!flashcards || !collections) {
     return <p>Loading...</p>;
   }
 
-  console.log("über dem normalen return");
+  console.log("unter dem early return");
 
   return (
-    <SWRConfig
-      value={{
-        fetcher: async (...args) => {
-          const response = await fetch(...args);
-          if (!response.ok) {
-            throw new Error(`Request with ${JSON.stringify(args)} failed.`);
-          }
-          return await response.json();
-        },
-      }}
-    >
+    <SWRConfig value={{ fetcher }}>
       <Layout
         collections={collections}
         actionMode={actionMode}
