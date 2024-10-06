@@ -61,7 +61,7 @@ export default function LearningCollectionPage({
                 <Flashcard
                   collectionColor={collectionColor}
                   handleDeleteFlashcard={handleDeleteFlashcard}
-                  key={flashcard.id}
+                  key={flashcard._id}
                   flashcard={flashcard}
                   onToggleCorrect={handleToggleCorrect}
                   changeCurrentFlashcard={changeCurrentFlashcard}

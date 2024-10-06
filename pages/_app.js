@@ -8,8 +8,6 @@ import MarkAsCorrect from "@/public/icons/MarkAsCorrect.svg";
 import Info from "@/public/icons/Info.svg";
 import ToastMessageContainer from "@/components/ToastMessage/ToastMessageContainer";
 
-// const fetcher = (url) => fetch(url).then((response) => response.json());
-
 async function fetcher(url, retries = 3) {
   for (let i = 0; i < retries; i++) {
     const response = await fetch(url);
