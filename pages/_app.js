@@ -8,7 +8,22 @@ import MarkAsCorrect from "@/public/icons/MarkAsCorrect.svg";
 import Info from "@/public/icons/Info.svg";
 import ToastMessageContainer from "@/components/ToastMessage/ToastMessageContainer";
 
-const fetcher = (url) => fetch(url).then((response) => response.json());
+// const fetcher = (url) => fetch(url).then((response) => response.json());
+
+async function fetcher(url, retries = 3) {
+  for (let i = 0; i < retries; i++) {
+    const response = await fetch(url);
+    if (response.ok) {
+      return await response.json();
+    }
+    console.error(`Request failed: ${response.status}`);
+    if (i === retries - 1) {
+      throw new Error(
+        `Request with ${JSON.stringify(url)} failed after ${retries} retries.`
+      );
+    }
+  }
+}
 
 export default function App({ Component, pageProps }) {
   console.log("App rendered");
