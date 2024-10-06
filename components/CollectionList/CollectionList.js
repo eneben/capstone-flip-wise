@@ -1,9 +1,9 @@
 import Collection from "@/components/Collection/Collection";
 import styled from "styled-components";
+import useSWR from "swr";
 
 export default function CollectionList({
   modeSelection,
-  collections,
   actionMode,
   getCorrectFlashcardsFromCollection,
   getIncorrectFlashcardsFromCollection,
@@ -12,6 +12,8 @@ export default function CollectionList({
   handleDeleteCollection,
   getAllFlashcardsFromCollection,
 }) {
+  const { collections } = useSWR("/api/collections", { fallbackData: [] });
+
   const capitalizedModeSelection =
     modeSelection.charAt(0).toUpperCase() + modeSelection.slice(1);
 
@@ -24,7 +26,7 @@ export default function CollectionList({
           {collections.map((collection) => {
             return (
               <Collection
-                key={collection.id}
+                key={collection._id}
                 collection={collection}
                 actionMode={actionMode}
                 getCorrectFlashcardsFromCollection={

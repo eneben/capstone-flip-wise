@@ -1,9 +1,11 @@
 import GlobalStyle from "../styles";
+import { SWRConfig } from "swr";
 import Layout from "@/components/Layout/Layout";
 import styled from "styled-components";
-import initialFlashcards from "@/assets/flashcards.json";
-import initialCollections from "@/assets/collections.json";
-import useLocalStorageState from "use-local-storage-state";
+// import initialFlashcards from "@/assets/flashcards.json";
+// import initialCollections from "@/assets/collections.json";
+// import useLocalStorageState from "use-local-storage-state";
+import useSWR from "swr";
 import { uid } from "uid";
 import { useEffect, useState } from "react";
 import MarkAsCorrect from "@/public/icons/MarkAsCorrect.svg";
@@ -11,13 +13,24 @@ import Info from "@/public/icons/Info.svg";
 import ToastMessageContainer from "@/components/ToastMessage/ToastMessageContainer";
 
 export default function App({ Component, pageProps }) {
-  const [flashcards, setFlashcards] = useLocalStorageState("flashcards", {
-    defaultValue: initialFlashcards,
-  });
+  // const [flashcards, setFlashcards] = useLocalStorageState("flashcards", {
+  //   defaultValue: initialFlashcards,
+  // });
 
-  const [collections, setCollections] = useLocalStorageState("collections", {
-    defaultValue: initialCollections,
-  });
+  // const [collections, setCollections] = useLocalStorageState("collections", {
+  //   defaultValue: initialCollections,
+  // });
+
+  const {
+    data: flashcards,
+    flashcardIsLoading,
+    flashcardError,
+  } = useSWR("/api/flashcards");
+  const {
+    data: collections,
+    collectionIsLoading,
+    collectionError,
+  } = useSWR("/api/collections");
 
   const [toastMessages, setToastMessages] = useState([]);
 
@@ -78,24 +91,34 @@ export default function App({ Component, pageProps }) {
     setActionMode(mode);
   }
 
-  function handleEditFlashcard(newFlashcard) {
+  async function handleEditFlashcard(newFlashcard) {
     if (!currentFlashcard) {
       console.error("No flashcard selected for editing.");
-
       return;
     }
     const updatedFlashcard = {
       ...newFlashcard,
-      id: currentFlashcard.id,
+      _id: currentFlashcard._id,
       isCorrect: currentFlashcard.isCorrect,
     };
-    setFlashcards(
-      flashcards.map((flashcard) => {
-        return flashcard.id === updatedFlashcard.id
-          ? updatedFlashcard
-          : flashcard;
-      })
-    );
+    // setFlashcards(
+    //   flashcards.map((flashcard) => {
+    //     return flashcard.id === updatedFlashcard.id
+    //       ? updatedFlashcard
+    //       : flashcard;
+    //   })
+    // );
+
+    await fetch(`/api/flashcards/${currentFlashcard._id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedFlashcard),
+    });
+
+    if (isLoading || error) return <h2>Loading...</h2>;
+
     changeActionMode("default");
     showToastMessage(
       "Flashcard updated successfully!",
@@ -104,14 +127,24 @@ export default function App({ Component, pageProps }) {
     );
   }
 
-  function handleCreateFlashcard(newFlashcard) {
-    setFlashcards([
-      {
-        id: uid(),
-        ...newFlashcard,
+  async function handleCreateFlashcard(newFlashcard) {
+    // setFlashcards([
+    //   {
+    //     id: uid(),
+    //     ...newFlashcard,
+    //   },
+    //   ...flashcards,
+    // ]);
+
+    await fetch("api/flashcards", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
-      ...flashcards,
-    ]);
+      body: JSON.stringify(newFlashcard),
+    });
+    if (isLoading || error) return <h2>Loading...</h2>;
+
     setActionMode("default");
     showToastMessage(
       "Flashcard created successfully!",
@@ -119,6 +152,9 @@ export default function App({ Component, pageProps }) {
       MarkAsCorrect
     );
   }
+
+  // wie geht das hier bei der toggleCorrect-funktion?
+  // ist ja auch ein crud-update.
 
   function handleToggleCorrect(id) {
     setFlashcards(
@@ -130,12 +166,23 @@ export default function App({ Component, pageProps }) {
     );
   }
 
-  function handleDeleteFlashcard(id) {
-    setFlashcards(
-      flashcards.filter((flashcard) => {
-        return flashcard.id !== id;
-      })
-    );
+  async function handleDeleteFlashcard(id) {
+    // setFlashcards(
+    //   flashcards.filter((flashcard) => {
+    //     return flashcard.id !== id;
+    //   })
+    // );
+    try {
+      const response = await fetch(`/api/flashcards/${_id}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) {
+        throw new Error("Failed to delete the flashcard.");
+      }
+    } catch (error) {
+      console.error("Error deleting flashcard: " + error.message);
+    }
+
     showToastMessage(
       "Flashcard deleted successfully!",
       "success",
@@ -143,23 +190,40 @@ export default function App({ Component, pageProps }) {
     );
   }
 
-  function handleDeleteCollection(id) {
-    setCollections(
-      collections.filter((collection) => {
-        return collection.id !== id;
-      })
-    );
-    setFlashcards(
-      flashcards.filter((flashcard) => {
-        return flashcard.collectionId !== id;
-      })
-    );
+  async function handleDeleteCollection(id) {
+    // setCollections(
+    //   collections.filter((collection) => {
+    //     return collection.id !== id;
+    //   })
+    // );
+
+    try {
+      const response = await fetch(`/api/collections/${_id}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) {
+        throw new Error("Failed to delete the collection.");
+      }
+    } catch (error) {
+      console.error("Error deleting collection: " + error.message);
+    }
+
+    // setFlashcards(
+    //   flashcards.filter((flashcard) => {
+    //     return flashcard.collectionId !== id;
+    //   })
+    // );
+
+    // wie mache ich die flashcard-delete-funktion nicht anhand der id sondern anhand der collectionId?
+
     showToastMessage(
       "Collection deleted successfully!",
       "success",
       MarkAsCorrect
     );
   }
+
+  // BIS HIER, NOCH NICHT WEITER GEGUCKT!!!
 
   function handleAddCollection(newCollection) {
     setCollections([newCollection, ...collections]);
@@ -246,48 +310,66 @@ export default function App({ Component, pageProps }) {
     );
   }
 
+  if (!flashcards || !collections) {
+    return <p>Loading...</p>;
+  }
+
   return (
-    <Layout
-      collections={collections}
-      actionMode={actionMode}
-      changeActionMode={changeActionMode}
-      currentFlashcard={currentFlashcard}
-      handleEditFlashcard={handleEditFlashcard}
-      handleCreateFlashcard={handleCreateFlashcard}
-      changeFlashcardSelection={changeFlashcardSelection}
-      handleAddCollection={handleAddCollection}
-      getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
+    <SWRConfig
+      value={{
+        fetcher: async (...args) => {
+          const response = await fetch(...args);
+          if (!response.ok) {
+            throw new Error(`Request with ${JSON.stringify(args)} failed.`);
+          }
+          return await response.json();
+        },
+      }}
     >
-      <GlobalStyle />
-      <Component
-        {...pageProps}
-        flashcardsWithCollection={flashcardsWithCollection}
-        handleToggleCorrect={handleToggleCorrect}
+      <Layout
         collections={collections}
-        handleDeleteFlashcard={handleDeleteFlashcard}
-        handleDeleteCollection={handleDeleteCollection}
-        currentFlashcard={currentFlashcard}
-        changeCurrentFlashcard={changeCurrentFlashcard}
         actionMode={actionMode}
         changeActionMode={changeActionMode}
+        currentFlashcard={currentFlashcard}
         handleEditFlashcard={handleEditFlashcard}
         handleCreateFlashcard={handleCreateFlashcard}
-        getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
-        getCorrectFlashcardsFromCollection={getCorrectFlashcardsFromCollection}
-        getIncorrectFlashcardsFromCollection={
-          getIncorrectFlashcardsFromCollection
-        }
-        flashcardSelection={flashcardSelection}
         changeFlashcardSelection={changeFlashcardSelection}
-        handleIncreaseFlashcardLevel={handleIncreaseFlashcardLevel}
-        handleDecreaseFlashcardLevel={handleDecreaseFlashcardLevel}
-        handleFirstClick={handleFirstClick}
-      />
-      <ToastMessageContainer
-        toastMessages={toastMessages}
-        hideToastMessage={hideToastMessage}
-      />
-    </Layout>
+        handleAddCollection={handleAddCollection}
+        getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
+      >
+        <GlobalStyle />
+        <Component
+          {...pageProps}
+          flashcardsWithCollection={flashcardsWithCollection}
+          handleToggleCorrect={handleToggleCorrect}
+          collections={collections}
+          handleDeleteFlashcard={handleDeleteFlashcard}
+          handleDeleteCollection={handleDeleteCollection}
+          currentFlashcard={currentFlashcard}
+          changeCurrentFlashcard={changeCurrentFlashcard}
+          actionMode={actionMode}
+          changeActionMode={changeActionMode}
+          handleEditFlashcard={handleEditFlashcard}
+          handleCreateFlashcard={handleCreateFlashcard}
+          getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
+          getCorrectFlashcardsFromCollection={
+            getCorrectFlashcardsFromCollection
+          }
+          getIncorrectFlashcardsFromCollection={
+            getIncorrectFlashcardsFromCollection
+          }
+          flashcardSelection={flashcardSelection}
+          changeFlashcardSelection={changeFlashcardSelection}
+          handleIncreaseFlashcardLevel={handleIncreaseFlashcardLevel}
+          handleDecreaseFlashcardLevel={handleDecreaseFlashcardLevel}
+          handleFirstClick={handleFirstClick}
+        />
+        <ToastMessageContainer
+          toastMessages={toastMessages}
+          hideToastMessage={hideToastMessage}
+        />
+      </Layout>
+    </SWRConfig>
   );
 }
 
