@@ -252,12 +252,12 @@ export default function App({ Component, pageProps }) {
 
   console.log("unter handleAddCollection");
 
-  const flashcardsWithCollection = flashcards.map((flashcard) => {
+  const flashcardsWithCollection = (flashcards || []).map((flashcard) => {
     const collection = getCollection(flashcard.collectionId);
     return {
       ...flashcard,
-      collectionTitle: collection.title,
-      collectionColor: collection.color,
+      collectionTitle: collection?.title || "Unknown Collection",
+      collectionColor: collection?.color || "#bec7cb",
     };
   });
 
@@ -327,13 +327,13 @@ export default function App({ Component, pageProps }) {
     mutateFlashcards();
   }
 
-  console.log("1. kommt hier was an?");
+  console.log("über dem early return");
 
   if (!flashcards || !collections) {
     return <p>Loading...</p>;
   }
 
-  console.log("2. kommt hier was an?");
+  console.log("über dem normalen return");
 
   return (
     <SWRConfig
