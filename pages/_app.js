@@ -23,13 +23,15 @@ export default function App({ Component, pageProps }) {
 
   const {
     data: flashcards,
-    flashcardIsLoading,
-    flashcardError,
+    isLoading: flashcardIsLoading,
+    error: flashcardError,
+    mutate: mutateFlashcards,
   } = useSWR("/api/flashcards");
   const {
     data: collections,
-    collectionIsLoading,
-    collectionError,
+    isLoading: collectionIsLoading,
+    error: collectionError,
+    mutate: mutateCollections,
   } = useSWR("/api/collections");
 
   const [toastMessages, setToastMessages] = useState([]);
@@ -117,8 +119,8 @@ export default function App({ Component, pageProps }) {
       body: JSON.stringify(updatedFlashcard),
     });
 
-    if (isLoading || error) return <h2>Loading...</h2>;
-
+    if (flashcardIsLoading || flashcardError) return <h2>Loading...</h2>;
+    mutateFlashcards();
     changeActionMode("default");
     showToastMessage(
       "Flashcard updated successfully!",
@@ -143,8 +145,8 @@ export default function App({ Component, pageProps }) {
       },
       body: JSON.stringify(newFlashcard),
     });
-    if (isLoading || error) return <h2>Loading...</h2>;
-
+    if (flashcardIsLoading || flashcardError) return <h2>Loading...</h2>;
+    mutateFlashcards();
     setActionMode("default");
     showToastMessage(
       "Flashcard created successfully!",
@@ -153,17 +155,32 @@ export default function App({ Component, pageProps }) {
     );
   }
 
-  // wie geht das hier bei der toggleCorrect-funktion?
-  // ist ja auch ein crud-update.
+  async function handleToggleCorrect(id) {
+    // setFlashcards(
+    //   flashcards.map((flashcard) => {
+    //     return flashcard.id === id
+    //       ? { ...flashcard, isCorrect: !flashcard.isCorrect }
+    //       : flashcard;
+    //   })
+    // );
+    const flashcardToToggle = flashcards.find((flashcard) => {
+      return flashcard._id === id;
+    });
 
-  function handleToggleCorrect(id) {
-    setFlashcards(
-      flashcards.map((flashcard) => {
-        return flashcard.id === id
-          ? { ...flashcard, isCorrect: !flashcard.isCorrect }
-          : flashcard;
-      })
-    );
+    const updatedFlashcard = {
+      ...flashcardToToggle,
+      isCorrect: !flashcardToToggle.isCorrect,
+    };
+
+    await fetch(`/api/flashcards/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedFlashcard),
+    });
+
+    mutateFlashcards();
   }
 
   async function handleDeleteFlashcard(id) {
@@ -179,21 +196,27 @@ export default function App({ Component, pageProps }) {
       if (!response.ok) {
         throw new Error("Failed to delete the flashcard.");
       }
+      mutateFlashcards();
+      showToastMessage(
+        "Flashcard deleted successfully!",
+        "success",
+        MarkAsCorrect
+      );
     } catch (error) {
       console.error("Error deleting flashcard: " + error.message);
     }
-
-    showToastMessage(
-      "Flashcard deleted successfully!",
-      "success",
-      MarkAsCorrect
-    );
   }
 
   async function handleDeleteCollection(id) {
     // setCollections(
     //   collections.filter((collection) => {
     //     return collection.id !== id;
+    //   })
+    // );
+
+    // setFlashcards(
+    //   flashcards.filter((flashcard) => {
+    //     return flashcard.collectionId !== id;
     //   })
     // );
 
@@ -204,17 +227,7 @@ export default function App({ Component, pageProps }) {
       if (!collectionsResponse.ok) {
         throw new Error("Failed to delete the collection.");
       }
-    } catch (error) {
-      console.error("Error deleting collection: " + error.message);
-    }
 
-    // setFlashcards(
-    //   flashcards.filter((flashcard) => {
-    //     return flashcard.collectionId !== id;
-    //   })
-    // );
-
-    try {
       const flashcardsResponse = await fetch(
         `/api/flashcards?collectionId=${id}`,
         {
@@ -224,21 +237,30 @@ export default function App({ Component, pageProps }) {
       if (!flashcardsResponse.ok) {
         throw new Error("Failed to delete the flashcard.");
       }
-    } catch (error) {
-      console.error("Error deleting flashcard: " + error.message);
-    }
 
-    showToastMessage(
-      "Collection deleted successfully!",
-      "success",
-      MarkAsCorrect
-    );
+      mutateCollections();
+      mutateFlashcards();
+      showToastMessage(
+        "Collection deleted successfully!",
+        "success",
+        MarkAsCorrect
+      );
+    } catch (error) {
+      console.error("Error deleting collection: " + error.message);
+    }
   }
 
-  // BIS HIER, NOCH NICHT WEITER GEGUCKT!!!
-
-  function handleAddCollection(newCollection) {
-    setCollections([newCollection, ...collections]);
+  async function handleAddCollection(newCollection) {
+    // setCollections([newCollection, ...collections]);
+    await fetch("api/collections", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newCollection),
+    });
+    if (collectionIsLoading || collectionError) return <h2>Loading...</h2>;
+    mutateCollections();
   }
 
   function getCollection(collectionId) {
@@ -282,44 +304,84 @@ export default function App({ Component, pageProps }) {
     return incorrectFlashcardsFromCollection;
   }
 
-  function handleIncreaseFlashcardLevel(id) {
-    setFlashcards(
-      flashcards.map((flashcard) => {
-        if (flashcard.id === id) {
-          return flashcard.level < 5
-            ? {
-                ...flashcard,
-                level: flashcard.level + 1,
-                trainingDate: Date.now(),
-              }
-            : {
-                ...flashcard,
-                trainingDate: Date.now(),
-              };
-        }
-        return flashcard;
-      })
-    );
+  async function handleIncreaseFlashcardLevel(id) {
+    // setFlashcards(
+    //   flashcards.map((flashcard) => {
+    //     if (flashcard.id === id) {
+    //       return flashcard.level < 5
+    //         ? {
+    //             ...flashcard,
+    //             level: flashcard.level + 1,
+    //             trainingDate: Date.now(),
+    //           }
+    //         : {
+    //             ...flashcard,
+    //             trainingDate: Date.now(),
+    //           };
+    //     }
+    //     return flashcard;
+    //   })
+    // );
+
+    const flashcard = flashcards.find((flashcard) => {
+      return flashcard._id === id;
+    });
+
+    const updatedFlashcard = {
+      ...flashcard,
+      level: flashcard.level < 5 ? flashcard.level + 1 : flashcard.level,
+      trainingDate: Date.now(),
+    };
+
+    await fetch(`/api/flashcards/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedFlashcard),
+    });
+
+    mutateFlashcards();
   }
 
-  function handleDecreaseFlashcardLevel(id) {
-    setFlashcards(
-      flashcards.map((flashcard) => {
-        if (flashcard.id === id) {
-          return flashcard.level > 1
-            ? {
-                ...flashcard,
-                level: flashcard.level - 1,
-                trainingDate: Date.now(),
-              }
-            : {
-                ...flashcard,
-                trainingDate: Date.now(),
-              };
-        }
-        return flashcard;
-      })
-    );
+  async function handleDecreaseFlashcardLevel(id) {
+    // setFlashcards(
+    //   flashcards.map((flashcard) => {
+    //     if (flashcard.id === id) {
+    //       return flashcard.level > 1
+    //         ? {
+    //             ...flashcard,
+    //             level: flashcard.level - 1,
+    //             trainingDate: Date.now(),
+    //           }
+    //         : {
+    //             ...flashcard,
+    //             trainingDate: Date.now(),
+    //           };
+    //     }
+    //     return flashcard;
+    //   })
+    // );
+
+    const flashcard = flashcards.find((flashcard) => {
+      return flashcard._id === id;
+    });
+
+    const updatedFlashcard = {
+      ...flashcard,
+      level: flashcard.level > 1 ? flashcard.level - 1 : flashcard.level,
+      trainingDate: Date.now(),
+    };
+
+    await fetch(`/api/flashcards/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedFlashcard),
+    });
+
+    mutateFlashcards();
   }
 
   if (!flashcards || !collections) {
