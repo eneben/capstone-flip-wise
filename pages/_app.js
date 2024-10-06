@@ -173,7 +173,7 @@ export default function App({ Component, pageProps }) {
     //   })
     // );
     try {
-      const response = await fetch(`/api/flashcards/${_id}`, {
+      const response = await fetch(`/api/flashcards/${id}`, {
         method: "DELETE",
       });
       if (!response.ok) {
@@ -198,10 +198,10 @@ export default function App({ Component, pageProps }) {
     // );
 
     try {
-      const response = await fetch(`/api/collections/${_id}`, {
+      const collectionsResponse = await fetch(`/api/collections/${id}`, {
         method: "DELETE",
       });
-      if (!response.ok) {
+      if (!collectionsResponse.ok) {
         throw new Error("Failed to delete the collection.");
       }
     } catch (error) {
@@ -214,7 +214,19 @@ export default function App({ Component, pageProps }) {
     //   })
     // );
 
-    // wie mache ich die flashcard-delete-funktion nicht anhand der id sondern anhand der collectionId?
+    try {
+      const flashcardsResponse = await fetch(
+        `/api/flashcards?collectionId=${id}`,
+        {
+          method: "DELETE",
+        }
+      );
+      if (!flashcardsResponse.ok) {
+        throw new Error("Failed to delete the flashcard.");
+      }
+    } catch (error) {
+      console.error("Error deleting flashcard: " + error.message);
+    }
 
     showToastMessage(
       "Collection deleted successfully!",
