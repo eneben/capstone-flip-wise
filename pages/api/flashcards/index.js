@@ -1,5 +1,7 @@
 // Für das Erstellen neuer Flashcards.
 
+// GET & POST
+
 import dbConnect from "@/db/connect.js";
 import Flashcard from "@/db/models/Flashcard.js";
 
