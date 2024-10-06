@@ -9,6 +9,8 @@ import Info from "@/public/icons/Info.svg";
 import ToastMessageContainer from "@/components/ToastMessage/ToastMessageContainer";
 
 export default function App({ Component, pageProps }) {
+  console.log("App rendered");
+
   const {
     data: flashcards,
     isLoading: flashcardIsLoading,
@@ -22,6 +24,8 @@ export default function App({ Component, pageProps }) {
     error: collectionError,
     mutate: mutateCollections,
   } = useSWR("/api/collections");
+
+  console.log("collections: ", collections);
 
   const [toastMessages, setToastMessages] = useState([]);
 
@@ -111,6 +115,8 @@ export default function App({ Component, pageProps }) {
     );
   }
 
+  console.log("weiter unten in der app.js");
+
   async function handleCreateFlashcard(newFlashcard) {
     try {
       const response = await fetch("api/flashcards", {
@@ -139,6 +145,8 @@ export default function App({ Component, pageProps }) {
     }
   }
 
+  console.log("unter handleCreateFlashcard");
+
   async function handleToggleCorrect(id) {
     const flashcardToToggle = flashcards.find((flashcard) => {
       return flashcard._id === id;
@@ -160,6 +168,8 @@ export default function App({ Component, pageProps }) {
     mutateFlashcards();
   }
 
+  console.log("unter handleToggleCorrect");
+
   async function handleDeleteFlashcard(id) {
     try {
       const response = await fetch(`/api/flashcards/${id}`, {
@@ -178,6 +188,7 @@ export default function App({ Component, pageProps }) {
       console.error("Error deleting flashcard: " + error.message);
     }
   }
+  console.log("unter handleDeleteFlashcard");
 
   async function handleDeleteCollection(id) {
     try {
@@ -210,6 +221,8 @@ export default function App({ Component, pageProps }) {
     }
   }
 
+  console.log("unter handleDeleteCollection");
+
   async function handleAddCollection(newCollection) {
     try {
       const response = await fetch("api/collections", {
@@ -225,153 +238,158 @@ export default function App({ Component, pageProps }) {
     } catch (error) {
       console.error("An error occurred: ", error);
     }
+  }
 
-    function getCollection(collectionId) {
-      const collectionToFind = collections.find((collection) => {
-        return collection._id === collectionId;
-      });
-      return {
-        title: collectionToFind.title,
-        color: collectionToFind.color,
-      };
-    }
+  function getCollection(collectionId) {
+    const collectionToFind = collections.find((collection) => {
+      return collection._id === collectionId;
+    });
+    return {
+      title: collectionToFind.title,
+      color: collectionToFind.color,
+    };
+  }
 
-    const flashcardsWithCollection = flashcards.map((flashcard) => {
-      const collection = getCollection(flashcard.collectionId);
-      return {
-        ...flashcard,
-        collectionTitle: collection.title,
-        collectionColor: collection.color,
-      };
+  console.log("unter handleAddCollection");
+
+  const flashcardsWithCollection = flashcards.map((flashcard) => {
+    const collection = getCollection(flashcard.collectionId);
+    return {
+      ...flashcard,
+      collectionTitle: collection.title,
+      collectionColor: collection.color,
+    };
+  });
+
+  function getAllFlashcardsFromCollection(id) {
+    const allFlashcardsFromCollection = flashcardsWithCollection.filter(
+      (flashcard) => flashcard.collectionId === id
+    );
+    return allFlashcardsFromCollection;
+  }
+
+  function getCorrectFlashcardsFromCollection(id) {
+    const allFlashcardsFromCollection = getAllFlashcardsFromCollection(id);
+    const correctFlashcardsFromCollection = allFlashcardsFromCollection.filter(
+      (flashcard) => flashcard.isCorrect === true
+    );
+    return correctFlashcardsFromCollection;
+  }
+
+  function getIncorrectFlashcardsFromCollection(id) {
+    const allFlashcardsFromCollection = getAllFlashcardsFromCollection(id);
+    const incorrectFlashcardsFromCollection =
+      allFlashcardsFromCollection.filter((flashcard) => !flashcard.isCorrect);
+    return incorrectFlashcardsFromCollection;
+  }
+
+  async function handleIncreaseFlashcardLevel(id) {
+    const flashcard = flashcards.find((flashcard) => {
+      return flashcard._id === id;
     });
 
-    function getAllFlashcardsFromCollection(id) {
-      const allFlashcardsFromCollection = flashcardsWithCollection.filter(
-        (flashcard) => flashcard.collectionId === id
-      );
-      return allFlashcardsFromCollection;
-    }
+    const updatedFlashcard = {
+      ...flashcard,
+      level: flashcard.level < 5 ? flashcard.level + 1 : flashcard.level,
+      trainingDate: Date.now(),
+    };
 
-    function getCorrectFlashcardsFromCollection(id) {
-      const allFlashcardsFromCollection = getAllFlashcardsFromCollection(id);
-      const correctFlashcardsFromCollection =
-        allFlashcardsFromCollection.filter(
-          (flashcard) => flashcard.isCorrect === true
-        );
-      return correctFlashcardsFromCollection;
-    }
+    await fetch(`/api/flashcards/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedFlashcard),
+    });
 
-    function getIncorrectFlashcardsFromCollection(id) {
-      const allFlashcardsFromCollection = getAllFlashcardsFromCollection(id);
-      const incorrectFlashcardsFromCollection =
-        allFlashcardsFromCollection.filter((flashcard) => !flashcard.isCorrect);
-      return incorrectFlashcardsFromCollection;
-    }
+    mutateFlashcards();
+  }
 
-    async function handleIncreaseFlashcardLevel(id) {
-      const flashcard = flashcards.find((flashcard) => {
-        return flashcard._id === id;
-      });
+  async function handleDecreaseFlashcardLevel(id) {
+    const flashcard = flashcards.find((flashcard) => {
+      return flashcard._id === id;
+    });
 
-      const updatedFlashcard = {
-        ...flashcard,
-        level: flashcard.level < 5 ? flashcard.level + 1 : flashcard.level,
-        trainingDate: Date.now(),
-      };
+    const updatedFlashcard = {
+      ...flashcard,
+      level: flashcard.level > 1 ? flashcard.level - 1 : flashcard.level,
+      trainingDate: Date.now(),
+    };
 
-      await fetch(`/api/flashcards/${id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
+    await fetch(`/api/flashcards/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedFlashcard),
+    });
+
+    mutateFlashcards();
+  }
+
+  console.log("1. kommt hier was an?");
+
+  if (!flashcards || !collections) {
+    return <p>Loading...</p>;
+  }
+
+  console.log("2. kommt hier was an?");
+
+  return (
+    <SWRConfig
+      value={{
+        fetcher: async (...args) => {
+          const response = await fetch(...args);
+          if (!response.ok) {
+            throw new Error(`Request with ${JSON.stringify(args)} failed.`);
+          }
+          return await response.json();
         },
-        body: JSON.stringify(updatedFlashcard),
-      });
-
-      mutateFlashcards();
-    }
-
-    async function handleDecreaseFlashcardLevel(id) {
-      const flashcard = flashcards.find((flashcard) => {
-        return flashcard._id === id;
-      });
-
-      const updatedFlashcard = {
-        ...flashcard,
-        level: flashcard.level > 1 ? flashcard.level - 1 : flashcard.level,
-        trainingDate: Date.now(),
-      };
-
-      await fetch(`/api/flashcards/${id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(updatedFlashcard),
-      });
-
-      mutateFlashcards();
-    }
-
-    if (!flashcards || !collections) {
-      return <p>Loading...</p>;
-    }
-
-    return (
-      <SWRConfig
-        value={{
-          fetcher: async (...args) => {
-            const response = await fetch(...args);
-            if (!response.ok) {
-              throw new Error(`Request with ${JSON.stringify(args)} failed.`);
-            }
-            return await response.json();
-          },
-        }}
+      }}
+    >
+      <Layout
+        collections={collections}
+        actionMode={actionMode}
+        changeActionMode={changeActionMode}
+        currentFlashcard={currentFlashcard}
+        handleEditFlashcard={handleEditFlashcard}
+        handleCreateFlashcard={handleCreateFlashcard}
+        changeFlashcardSelection={changeFlashcardSelection}
+        handleAddCollection={handleAddCollection}
+        getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
       >
-        <Layout
+        <GlobalStyle />
+        <Component
+          {...pageProps}
+          flashcardsWithCollection={flashcardsWithCollection}
+          handleToggleCorrect={handleToggleCorrect}
           collections={collections}
+          handleDeleteFlashcard={handleDeleteFlashcard}
+          handleDeleteCollection={handleDeleteCollection}
+          currentFlashcard={currentFlashcard}
+          changeCurrentFlashcard={changeCurrentFlashcard}
           actionMode={actionMode}
           changeActionMode={changeActionMode}
-          currentFlashcard={currentFlashcard}
           handleEditFlashcard={handleEditFlashcard}
           handleCreateFlashcard={handleCreateFlashcard}
-          changeFlashcardSelection={changeFlashcardSelection}
-          handleAddCollection={handleAddCollection}
           getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
-        >
-          <GlobalStyle />
-          <Component
-            {...pageProps}
-            flashcardsWithCollection={flashcardsWithCollection}
-            handleToggleCorrect={handleToggleCorrect}
-            collections={collections}
-            handleDeleteFlashcard={handleDeleteFlashcard}
-            handleDeleteCollection={handleDeleteCollection}
-            currentFlashcard={currentFlashcard}
-            changeCurrentFlashcard={changeCurrentFlashcard}
-            actionMode={actionMode}
-            changeActionMode={changeActionMode}
-            handleEditFlashcard={handleEditFlashcard}
-            handleCreateFlashcard={handleCreateFlashcard}
-            getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
-            getCorrectFlashcardsFromCollection={
-              getCorrectFlashcardsFromCollection
-            }
-            getIncorrectFlashcardsFromCollection={
-              getIncorrectFlashcardsFromCollection
-            }
-            flashcardSelection={flashcardSelection}
-            changeFlashcardSelection={changeFlashcardSelection}
-            handleIncreaseFlashcardLevel={handleIncreaseFlashcardLevel}
-            handleDecreaseFlashcardLevel={handleDecreaseFlashcardLevel}
-            handleFirstClick={handleFirstClick}
-          />
-          <ToastMessageContainer
-            toastMessages={toastMessages}
-            hideToastMessage={hideToastMessage}
-          />
-        </Layout>
-      </SWRConfig>
-    );
-  }
+          getCorrectFlashcardsFromCollection={
+            getCorrectFlashcardsFromCollection
+          }
+          getIncorrectFlashcardsFromCollection={
+            getIncorrectFlashcardsFromCollection
+          }
+          flashcardSelection={flashcardSelection}
+          changeFlashcardSelection={changeFlashcardSelection}
+          handleIncreaseFlashcardLevel={handleIncreaseFlashcardLevel}
+          handleDecreaseFlashcardLevel={handleDecreaseFlashcardLevel}
+          handleFirstClick={handleFirstClick}
+        />
+        <ToastMessageContainer
+          toastMessages={toastMessages}
+          hideToastMessage={hideToastMessage}
+        />
+      </Layout>
+    </SWRConfig>
+  );
 }
