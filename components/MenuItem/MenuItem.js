@@ -24,8 +24,6 @@ export default function MenuItem({
 
   const collectionsLength = collections.length;
 
-  console.log(collectionsLength);
-
   function toggleSubmenuMode() {
     if (submenuMode !== menuItemName) {
       changeSubmenuMode(menuItemName);
@@ -39,10 +37,10 @@ export default function MenuItem({
       const collectionsTimeoutId = setTimeout(() => {
         setIsCollectionsClosing(false);
         cachedChangeSubmenuMode("default");
-      }, 380);
+      }, collectionsLength * 38);
       return () => clearTimeout(collectionsTimeoutId);
     }
-  }, [isCollectionsClosing, cachedChangeSubmenuMode]);
+  }, [isCollectionsClosing, cachedChangeSubmenuMode, collectionsLength]);
 
   useEffect(() => {
     setIsCollectionsClosing(true);
@@ -76,6 +74,7 @@ export default function MenuItem({
               <StyledSubNavigationListItem
                 key={collection.id}
                 $isCollectionsClosing={isCollectionsClosing}
+                $collectionsLength={collectionsLength}
               >
                 <StyledSubNavigationLink
                   href={`/${page}/${collection.id}`}
@@ -127,10 +126,10 @@ const StyledSubNavigationListItem = styled.li`
   animation: ${(props) =>
     props.$isCollectionsClosing
       ? css`
-          ${subMenuAnimationClose} 0.4s ease-out
+          ${subMenuAnimationClose} ${props.$collectionsLength * 0.04}s ease-out
         `
       : css`
-          ${subMenuAnimationOpen} 0.4s ease-out
+          ${subMenuAnimationOpen} ${props.$collectionsLength * 0.04}s ease-out
         `};
   height: 35px;
   border-top: 1px solid #000;
