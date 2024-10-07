@@ -8,7 +8,7 @@ const flashcardSchema = new Schema({
   question: { type: String, required: true },
   answer: { type: String, required: true },
   level: { type: Number, required: true },
-  isCorrect: { type: Boolean, required: false },
+  isCorrect: { type: Boolean },
 });
 
 const Flashcard =
