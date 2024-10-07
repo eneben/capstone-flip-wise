@@ -22,6 +22,10 @@ export default function MenuItem({
     changeSubmenuMode,
   ]);
 
+  const collectionsLength = collections.length;
+
+  console.log(collectionsLength);
+
   function toggleSubmenuMode() {
     if (submenuMode !== menuItemName) {
       changeSubmenuMode(menuItemName);
@@ -35,7 +39,7 @@ export default function MenuItem({
       const collectionsTimeoutId = setTimeout(() => {
         setIsCollectionsClosing(false);
         cachedChangeSubmenuMode("default");
-      }, 280);
+      }, 380);
       return () => clearTimeout(collectionsTimeoutId);
     }
   }, [isCollectionsClosing, cachedChangeSubmenuMode]);
@@ -123,10 +127,10 @@ const StyledSubNavigationListItem = styled.li`
   animation: ${(props) =>
     props.$isCollectionsClosing
       ? css`
-          ${subMenuAnimationClose} 0.3s ease-out
+          ${subMenuAnimationClose} 0.4s ease-out
         `
       : css`
-          ${subMenuAnimationOpen} 0.3s ease-out
+          ${subMenuAnimationOpen} 0.4s ease-out
         `};
   height: 35px;
   border-top: 1px solid #000;
