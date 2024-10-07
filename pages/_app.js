@@ -270,8 +270,8 @@ export default function App({ Component, pageProps }) {
       return collection._id === collectionId;
     });
     return {
-      title: collectionToFind.title,
-      color: collectionToFind.color,
+      title: collectionToFind?.title || "Unknown Title",
+      color: collectionToFind?.color || "#bec7cb",
     };
   }
 
