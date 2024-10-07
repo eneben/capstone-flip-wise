@@ -5,8 +5,10 @@ import Layout from "@/components/Layout/Layout";
 import { uid } from "uid";
 import { useEffect, useState } from "react";
 import MarkAsCorrect from "@/public/icons/MarkAsCorrect.svg";
+import MarkAsIncorrect from "@/public/icons/MarkAsIncorrect.svg";
 import Info from "@/public/icons/Info.svg";
 import ToastMessageContainer from "@/components/ToastMessage/ToastMessageContainer";
+import LoadingSpinner from "@/components/LoadingSpinner/LoadingSpinner";
 
 async function fetcher(url, retries = 3) {
   for (let i = 0; i < retries; i++) {
@@ -24,8 +26,6 @@ async function fetcher(url, retries = 3) {
 }
 
 export default function App({ Component, pageProps }) {
-  console.log("App rendered");
-
   const {
     data: flashcards,
     isLoading: flashcardIsLoading,
@@ -39,10 +39,6 @@ export default function App({ Component, pageProps }) {
     error: collectionError,
     mutate: mutateCollections,
   } = useSWR("/api/collections", fetcher, { fallbackData: [] });
-
-  console.log("FIRST TRY:");
-  console.log("collections:", collections);
-  console.log("flashcards:", flashcards);
 
   if (flashcardError) {
     console.error("Flashcard fetch error:", flashcardError);
@@ -103,6 +99,20 @@ export default function App({ Component, pageProps }) {
     }
   }, [toastMessages]);
 
+  if (
+    !flashcards ||
+    !collections ||
+    flashcardIsLoading ||
+    collectionIsLoading
+  ) {
+    return (
+      <Layout>
+        <GlobalStyle />
+        <LoadingSpinner />
+      </Layout>
+    );
+  }
+
   function changeCurrentFlashcard(flashcard) {
     setCurrentFlashcard(flashcard);
   }
@@ -114,6 +124,12 @@ export default function App({ Component, pageProps }) {
   async function handleEditFlashcard(newFlashcard) {
     if (!currentFlashcard) {
       console.error("No flashcard selected for editing.");
+      showToastMessage(
+        "No flashcard selected for editing.",
+        "error",
+        MarkAsIncorrect
+      );
+
       return;
     }
     const updatedFlashcard = {
@@ -130,7 +146,7 @@ export default function App({ Component, pageProps }) {
       body: JSON.stringify(updatedFlashcard),
     });
 
-    if (flashcardIsLoading || flashcardError) return <h2>Loading...</h2>;
+    if (flashcardIsLoading || flashcardError) return <LoadingSpinner />;
     mutateFlashcards();
     changeActionMode("default");
     showToastMessage(
@@ -139,8 +155,6 @@ export default function App({ Component, pageProps }) {
       MarkAsCorrect
     );
   }
-
-  console.log("weiter unten in der app.js");
 
   async function handleCreateFlashcard(newFlashcard) {
     try {
@@ -152,7 +166,7 @@ export default function App({ Component, pageProps }) {
         body: JSON.stringify(newFlashcard),
       });
       if (!response.ok) throw new Error("Failed to create flashcard");
-      if (flashcardIsLoading || flashcardError) return <h2>Loading...</h2>;
+      if (flashcardIsLoading || flashcardError) return <LoadingSpinner />;
       mutateFlashcards();
       setActionMode("default");
       showToastMessage(
@@ -162,15 +176,9 @@ export default function App({ Component, pageProps }) {
       );
     } catch (error) {
       console.error("An error occurred: ", error);
-      // showToastMessage(
-      //   "Error creating flashcard",
-      //   "error",
-      //   Warning-Icon
-      // );
+      showToastMessage("Error creating flashcard", "error", MarkAsIncorrect);
     }
   }
-
-  console.log("unter handleCreateFlashcard");
 
   async function handleToggleCorrect(id) {
     const flashcardToToggle = flashcards.find((flashcard) => {
@@ -193,8 +201,6 @@ export default function App({ Component, pageProps }) {
     mutateFlashcards();
   }
 
-  console.log("unter handleToggleCorrect");
-
   async function handleDeleteFlashcard(id) {
     try {
       const response = await fetch(`/api/flashcards/${id}`, {
@@ -211,9 +217,9 @@ export default function App({ Component, pageProps }) {
       );
     } catch (error) {
       console.error("Error deleting flashcard: " + error.message);
+      showToastMessage("Error deleting flashcard", "error", MarkAsIncorrect);
     }
   }
-  console.log("unter handleDeleteFlashcard");
 
   async function handleDeleteCollection(id) {
     try {
@@ -243,10 +249,9 @@ export default function App({ Component, pageProps }) {
       );
     } catch (error) {
       console.error("Error deleting collection: " + error.message);
+      showToastMessage("Error deleting collection", "error", MarkAsIncorrect);
     }
   }
-
-  console.log("unter handleDeleteCollection");
 
   async function handleAddCollection(newCollection) {
     try {
@@ -258,10 +263,11 @@ export default function App({ Component, pageProps }) {
         body: JSON.stringify(newCollection),
       });
       if (!response.ok) throw new Error("Failed to add collection");
-      if (collectionIsLoading || collectionError) return <h2>Loading...</h2>;
+      if (collectionIsLoading || collectionError) return <LoadingSpinner />;
       mutateCollections();
     } catch (error) {
       console.error("An error occurred: ", error);
+      showToastMessage("An error occured.", "error", MarkAsIncorrect);
     }
   }
 
@@ -270,19 +276,17 @@ export default function App({ Component, pageProps }) {
       return collection._id === collectionId;
     });
     return {
-      title: collectionToFind?.title || "Unknown Title",
-      color: collectionToFind?.color || "#bec7cb",
+      title: collectionToFind.title,
+      color: collectionToFind.color,
     };
   }
 
-  console.log("unter handleAddCollection");
-
-  const flashcardsWithCollection = (flashcards || []).map((flashcard) => {
+  const flashcardsWithCollection = flashcards.map((flashcard) => {
     const collection = getCollection(flashcard.collectionId);
     return {
       ...flashcard,
-      collectionTitle: collection?.title || "Unknown Collection",
-      collectionColor: collection?.color || "#bec7cb",
+      collectionTitle: collection.title,
+      collectionColor: collection.color,
     };
   });
 
@@ -351,15 +355,6 @@ export default function App({ Component, pageProps }) {
 
     mutateFlashcards();
   }
-
-  console.log("collections:", collections);
-  console.log("flashcards:", flashcards);
-
-  if (!flashcards || !collections) {
-    return <p>Loading...</p>;
-  }
-
-  console.log("unter dem early return");
 
   return (
     <SWRConfig value={{ fetcher }}>

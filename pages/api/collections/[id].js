@@ -1,7 +1,3 @@
-// Für das Abrufen aller Flashcards einer spezifischen Collection.
-
-// Get by ID, PUT, DELETE
-
 import dbConnect from "@/db/connect.js";
 import Collection from "@/db/models/Collection.js";
 
@@ -39,23 +35,6 @@ export default async function handler(request, response) {
       return;
     }
   }
-
-  //   if (request.method === "PATCH") {
-  //     try {
-  //       const updatedCollection = request.body;
-  //       if (!updatedCollection) {
-  //         response.status(404).json({ status: "Not Found" });
-  //         return;
-  //       }
-  //       await Collection.updateOne({ _id: id }, { $set: updatedCollection });
-  //       response.status(200).json({ message: "Collection updated." });
-  //     } catch (error) {
-  //       response
-  //         .status(400)
-  //         .json({ error: "Error updating collection: " + error.message });
-  //       return;
-  //     }
-  //   }
 
   if (request.method === "DELETE") {
     try {

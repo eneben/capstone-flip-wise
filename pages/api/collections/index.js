@@ -1,7 +1,3 @@
-// Für das Abrufen aller Collections
-
-// GET & POST
-
 import dbConnect from "@/db/connect.js";
 import Collection from "@/db/models/Collection.js";
 
@@ -14,23 +10,15 @@ export default async function handler(request, response) {
       .json({ error: "Database connection error: " + error.message });
   }
 
-  console.log("MongoDB connected");
-
   if (request.method === "GET") {
     try {
       const collections = await Collection.find();
       response.status(200).json(collections);
-
-      console.log("Collections fetched:", collections);
-
       return;
     } catch (error) {
       response
         .status(500)
         .json({ error: "Error retrieving collections: " + error.message });
-
-      console.log("Error fetching collections:", error);
-
       return;
     }
   }

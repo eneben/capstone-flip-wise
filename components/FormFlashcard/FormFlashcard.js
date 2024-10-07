@@ -86,7 +86,7 @@ export default function FormFlashcard({
         <option value="newCollection">+ Add New Collection</option>
         {collections.map((collection) => {
           return (
-            <option key={collection.id} value={collection.id}>
+            <option key={collection._id} value={collection._id}>
               {collection.title}
             </option>
           );

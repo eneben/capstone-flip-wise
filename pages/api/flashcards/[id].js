@@ -1,7 +1,3 @@
-// Für das Bearbeiten und Löschen einzelner Flashcards.
-
-// GET by ID, PUT, DELETE
-
 import dbConnect from "@/db/connect.js";
 import Flashcard from "@/db/models/Flashcard.js";
 
