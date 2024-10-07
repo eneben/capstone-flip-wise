@@ -9,13 +9,12 @@ import { useState } from "react";
 
 export default function Collection({
   collection,
-  actionMode,
   getCorrectFlashcardsFromCollection,
   getIncorrectFlashcardsFromCollection,
+  getAllFlashcardsFromCollection,
   flashcardSelection,
   changeFlashcardSelection,
   handleDeleteCollection,
-  getAllFlashcardsFromCollection,
   modeSelection,
 }) {
   const [isDelete, setIsDelete] = useState(false);
@@ -65,7 +64,6 @@ export default function Collection({
               onClick={toggleDeleteConfirmation}
               type="button"
               variant="delete"
-              actionMode={actionMode}
             >
               <Delete />
             </RoundButton>
@@ -85,7 +83,6 @@ export default function Collection({
                   id={id}
                   variant="incorrect"
                   collectionTitle={true}
-                  actionMode={actionMode}
                   flashcardSelection={flashcardSelection}
                   changeFlashcardSelection={changeFlashcardSelection}
                 />
@@ -101,7 +98,6 @@ export default function Collection({
                   id={id}
                   variant="correct"
                   collectionTitle={true}
-                  actionMode={actionMode}
                   flashcardSelection={flashcardSelection}
                   changeFlashcardSelection={changeFlashcardSelection}
                 />

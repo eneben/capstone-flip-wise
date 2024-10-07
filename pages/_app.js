@@ -290,10 +290,3 @@ export default function App({ Component, pageProps }) {
     </Layout>
   );
 }
-
-const BackgroundColor = styled.div`
-  margin: 0 auto;
-  min-height: 100vh;
-  max-width: 800px;
-  background-color: #fff;
-`;

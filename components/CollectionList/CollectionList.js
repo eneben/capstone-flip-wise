@@ -4,7 +4,6 @@ import styled from "styled-components";
 export default function CollectionList({
   modeSelection,
   collections,
-  actionMode,
   getCorrectFlashcardsFromCollection,
   getIncorrectFlashcardsFromCollection,
   flashcardSelection,
@@ -26,7 +25,6 @@ export default function CollectionList({
               <Collection
                 key={collection.id}
                 collection={collection}
-                actionMode={actionMode}
                 getCorrectFlashcardsFromCollection={
                   getCorrectFlashcardsFromCollection
                 }
