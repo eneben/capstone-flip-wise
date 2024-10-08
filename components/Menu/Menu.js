@@ -20,12 +20,12 @@ export default function Menu({
   }
 
   function handleToggleMenu() {
-    setClosingTrigger(!closingTrigger);
     if (!isMenu) {
       startClosingForm();
       setIsMenu(true);
     } else {
       setIsMenuClosing(true);
+      setClosingTrigger(!closingTrigger);
     }
   }
 

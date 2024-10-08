@@ -1,5 +1,5 @@
 import SubMenuArrow from "@/public/icons/SubMenuArrow.svg";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import styled, { keyframes, css } from "styled-components";
 import Link from "next/link";
 
