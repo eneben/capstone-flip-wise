@@ -230,6 +230,8 @@ export default function App({ Component, pageProps }) {
       const collectionsResponse = await fetch(`/api/collections/${id}`, {
         method: "DELETE",
       });
+      console.log(await collectionsResponse.json());
+
       if (!collectionsResponse.ok) {
         throw new Error("Failed to delete the collection.");
       }
@@ -240,6 +242,8 @@ export default function App({ Component, pageProps }) {
       //     method: "DELETE",
       //   }
       // );
+      // console.log(await flashcardsResponse.json());
+
       // if (!flashcardsResponse.ok) {
       //   throw new Error("Failed to delete the flashcard.");
       // }
@@ -267,15 +271,23 @@ export default function App({ Component, pageProps }) {
         },
         body: JSON.stringify(newCollection),
       });
-      console.log("response: ", response);
+      console.log("handleAddCollectionResponse: ", response);
       if (!response.ok) throw new Error("Failed to add collection");
       if (collectionIsLoading || collectionError) return <LoadingSpinner />;
+
+      const responseData = await response.json();
+      console.log("handleAddCollectionResponseDATA: ", responseData);
+
+      const newCollectionId = responseData._id;
+      console.log("New Collection ID: ", newCollectionId);
+
       mutateCollections();
       showToastMessage(
         "Collection created successfully!",
         "success",
         MarkAsCorrect
       );
+      return newCollectionId;
     } catch (error) {
       console.error("An error occurred: ", error);
       showToastMessage("An error occured.", "error", MarkAsIncorrect);
@@ -287,8 +299,8 @@ export default function App({ Component, pageProps }) {
       return collection._id === collectionId;
     });
     return {
-      title: collectionToFind.title,
-      color: collectionToFind.color,
+      title: collectionToFind?.title || "Unknown title",
+      color: collectionToFind?.color || "#264653",
     };
   }
 

@@ -1,5 +1,6 @@
 import dbConnect from "@/db/connect.js";
 import Collection from "@/db/models/Collection.js";
+import Flashcard from "@/db/models/Flashcard";
 
 export default async function handler(request, response) {
   try {
@@ -40,6 +41,7 @@ export default async function handler(request, response) {
     console.log("id: ", id);
 
     try {
+      await Flashcard.deleteMany({ collectionId: id });
       await Collection.findByIdAndDelete(id);
       response.status(200).json({ message: "Collection deleted." });
       return;

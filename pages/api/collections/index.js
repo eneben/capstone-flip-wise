@@ -26,8 +26,8 @@ export default async function handler(request, response) {
   if (request.method === "POST") {
     try {
       const newCollection = request.body;
-      await Collection.create(newCollection);
-      response.status(201).json({ status: "Collection created" });
+      const createdCollection = await Collection.create(newCollection);
+      response.status(201).json(createdCollection);
       return;
     } catch (error) {
       return response
