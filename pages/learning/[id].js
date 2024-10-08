@@ -38,7 +38,7 @@ export default function LearningCollectionPage({
 
   function sortFlashcardsById(flashcards) {
     return flashcards.sort((a, b) => {
-      return a.id - b.id;
+      return b._id.localeCompare(a._id);
     });
   }
 
