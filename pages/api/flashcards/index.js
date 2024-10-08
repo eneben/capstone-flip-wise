@@ -25,8 +25,12 @@ export default async function handler(request, response) {
 
   if (request.method === "POST") {
     try {
-      const newFlashcard = request.body;
-      await Flashcard.create(newFlashcard);
+      const flashcardData = request.body;
+      console.log("newFlashcard: ", newFlashcard);
+
+      const newFlashcard = new Flashcard(flashcardData);
+
+      await Flashcard.save();
       response.status(201).json({ status: "Flashcard created" });
       return;
     } catch (error) {

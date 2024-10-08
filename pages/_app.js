@@ -136,6 +136,7 @@ export default function App({ Component, pageProps }) {
       ...newFlashcard,
       _id: currentFlashcard._id,
       isCorrect: currentFlashcard.isCorrect,
+      level: currentFlashcard.level,
     };
 
     await fetch(`/api/flashcards/${currentFlashcard._id}`, {
@@ -157,14 +158,17 @@ export default function App({ Component, pageProps }) {
   }
 
   async function handleCreateFlashcard(newFlashcard) {
+    console.log("handleCreateFlashcard wird ausgeführt");
+    console.log("newFlashcard: ", newFlashcard);
     try {
-      const response = await fetch("api/flashcards", {
+      const response = await fetch("/api/flashcards", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(newFlashcard),
       });
+      console.log("response: ", response);
       if (!response.ok) throw new Error("Failed to create flashcard");
       if (flashcardIsLoading || flashcardError) return <LoadingSpinner />;
       mutateFlashcards();
@@ -176,7 +180,8 @@ export default function App({ Component, pageProps }) {
       );
     } catch (error) {
       console.error("An error occurred: ", error);
-      showToastMessage("Error creating flashcard", "error", MarkAsIncorrect);
+      // showToastMessage("Error creating flashcard", "error", MarkAsIncorrect);
+      showToastMessage("Error", "error", MarkAsIncorrect);
     }
   }
 

@@ -29,8 +29,7 @@ export default function FormFlashcard({
     event.preventDefault();
 
     const formData = Object.fromEntries(new FormData(event.target));
-    const { collectionName, collectionColor, question, answer, collectionId } =
-      formData;
+    const { collectionName, collectionColor, question, answer } = formData;
     let newFlashcard;
 
     if (showNewCollectionFields) {
@@ -47,12 +46,13 @@ export default function FormFlashcard({
         answer,
       };
     } else {
-      newFlashcard = { ...formData };
+      newFlashcard = { ...formData, level: 1 };
     }
 
     onSubmitFlashcard(newFlashcard);
     setShowNewCollectionFields(false);
     event.target.reset();
+    changeActionMode("default");
   }
 
   return (
