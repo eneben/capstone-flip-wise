@@ -37,7 +37,6 @@ export default function FormFlashcard({
         title: collectionName,
         color: collectionColor,
       };
-      console.log("newCollection: ", newCollection);
       const newCollectionId = await onAddCollection(newCollection);
 
       newFlashcard = {

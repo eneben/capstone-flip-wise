@@ -147,7 +147,6 @@ export default function App({ Component, pageProps }) {
       body: JSON.stringify(updatedFlashcard),
     });
 
-    if (flashcardIsLoading || flashcardError) return <LoadingSpinner />;
     mutateFlashcards();
     changeActionMode("default");
     showToastMessage(
@@ -167,7 +166,6 @@ export default function App({ Component, pageProps }) {
         body: JSON.stringify(newFlashcard),
       });
       if (!response.ok) throw new Error("Failed to create flashcard");
-      if (flashcardIsLoading || flashcardError) return <LoadingSpinner />;
       mutateFlashcards();
       setActionMode("default");
       showToastMessage(
@@ -224,29 +222,14 @@ export default function App({ Component, pageProps }) {
   }
 
   async function handleDeleteCollection(id) {
-    console.log("id in der handlerfunction: ", id);
-
     try {
       const collectionsResponse = await fetch(`/api/collections/${id}`, {
         method: "DELETE",
       });
-      console.log(await collectionsResponse.json());
 
       if (!collectionsResponse.ok) {
         throw new Error("Failed to delete the collection.");
       }
-
-      // const flashcardsResponse = await fetch(
-      //   `/api/flashcards?collectionId=${id}`,
-      //   {
-      //     method: "DELETE",
-      //   }
-      // );
-      // console.log(await flashcardsResponse.json());
-
-      // if (!flashcardsResponse.ok) {
-      //   throw new Error("Failed to delete the flashcard.");
-      // }
 
       mutateCollections();
       mutateFlashcards();
@@ -262,7 +245,6 @@ export default function App({ Component, pageProps }) {
   }
 
   async function handleAddCollection(newCollection) {
-    console.log("new collection in handleAdd: ", newCollection);
     try {
       const response = await fetch("/api/collections", {
         method: "POST",
@@ -271,16 +253,9 @@ export default function App({ Component, pageProps }) {
         },
         body: JSON.stringify(newCollection),
       });
-      console.log("handleAddCollectionResponse: ", response);
       if (!response.ok) throw new Error("Failed to add collection");
-      if (collectionIsLoading || collectionError) return <LoadingSpinner />;
-
       const responseData = await response.json();
-      console.log("handleAddCollectionResponseDATA: ", responseData);
-
       const newCollectionId = responseData._id;
-      console.log("New Collection ID: ", newCollectionId);
-
       mutateCollections();
       showToastMessage(
         "Collection created successfully!",

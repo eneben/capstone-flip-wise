@@ -38,8 +38,6 @@ export default async function handler(request, response) {
   }
 
   if (request.method === "DELETE") {
-    console.log("id: ", id);
-
     try {
       await Flashcard.deleteMany({ collectionId: id });
       await Collection.findByIdAndDelete(id);
