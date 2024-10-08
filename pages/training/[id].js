@@ -1,6 +1,12 @@
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
+import {
+  StyledMessage,
+  StyledHeadline,
+  StyledSubheading,
+  StyledSuccessMessage,
+} from "@/styledComponents";
 import Flashcard from "@/components/Flashcard/Flashcard";
 
 export default function TrainingCollectionPage({
@@ -67,7 +73,7 @@ export default function TrainingCollectionPage({
             <FlascardStackWrapper>
               <FlashcardStackShadow2 />
               <FlashcardStackShadow1 />
-              <FlashcardListWrapper>
+              <FlashcardListGridWrapper>
                 {sortedFlashcards.toReversed().map((flashcard) => (
                   <Flashcard
                     key={flashcard.id}
@@ -82,7 +88,7 @@ export default function TrainingCollectionPage({
                     onFirstClick={handleFirstClick}
                   />
                 ))}
-              </FlashcardListWrapper>
+              </FlashcardListGridWrapper>
             </FlascardStackWrapper>
           </OverflowWrapper>
         </>
@@ -96,29 +102,11 @@ export default function TrainingCollectionPage({
   );
 }
 
-const StyledMessage = styled.p`
-  text-align: center;
-  font-size: 1.3rem;
-  padding: 40px 20px;
-`;
-
-const StyledHeadline = styled.h2`
-  font: var(--main-headline);
-  text-align: center;
-  padding-top: 35px;
-`;
-
-const StyledSubheading = styled.h3`
-  font: var(--sub-headline);
-  text-align: center;
-  padding: 5px 0 30px 0;
-`;
-
-const StyledSuccessMessage = styled.p`
-  font: var(--main-headline);
-  text-align: center;
-  color: var(--primary-green);
-  padding: 0 30px 50px 30px;
+const FlashcardListGridWrapper = styled.ul`
+  display: grid;
+  flex-direction: column;
+  list-style: none;
+  align-items: center;
 `;
 
 const OverflowWrapper = styled.div`
@@ -167,11 +155,4 @@ const FlashcardStackShadow2 = styled(FlashcardStackShadow)`
   top: 16px;
   left: -8px;
   background-color: var(--secondary-grey);
-`;
-
-const FlashcardListWrapper = styled.ul`
-  display: grid;
-  flex-direction: column;
-  list-style: none;
-  align-items: center;
 `;

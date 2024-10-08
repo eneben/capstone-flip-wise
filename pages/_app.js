@@ -87,6 +87,7 @@ export default function App({ Component, pageProps }) {
     const updatedFlashcard = {
       ...newFlashcard,
       id: currentFlashcard.id,
+      level: currentFlashcard.level,
       isCorrect: currentFlashcard.isCorrect,
     };
     setFlashcards(
@@ -108,6 +109,7 @@ export default function App({ Component, pageProps }) {
     setFlashcards([
       {
         id: uid(),
+        level: 1,
         ...newFlashcard,
       },
       ...flashcards,

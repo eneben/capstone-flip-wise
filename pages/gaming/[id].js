@@ -4,6 +4,11 @@ import RegularButton from "@/components/Buttons/RegularButton";
 import RoundButton from "@/components/Buttons/RoundButton";
 import MarkAsIncorrect from "@/public/icons/MarkAsIncorrect.svg";
 import ButtonWrapper from "@/components/Buttons/ButtonWrapper";
+import {
+  StyledMessage,
+  StyledHeadlineWithPadding,
+  StyledSuccessMessage,
+} from "@/styledComponents";
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { uid } from "uid";
 
@@ -160,7 +165,7 @@ export default function TrainingCollectionPage({
   if (allFlashcardsFromCollection.length < 9) {
     return (
       <>
-        <StyledHeadline>{collectionTitle}</StyledHeadline>
+        <StyledHeadlineWithPadding>{collectionTitle}</StyledHeadlineWithPadding>
         <StyledMessage>
           Unfortunately the memory is not available in this collection. You need
           at least 9 flashcards in your collection to play the memory game.
@@ -176,7 +181,9 @@ export default function TrainingCollectionPage({
     <>
       {allFlashcardsFromCollection.length >= 9 && (
         <>
-          <StyledHeadline>{collectionTitle}</StyledHeadline>
+          <StyledHeadlineWithPadding>
+            {collectionTitle}
+          </StyledHeadlineWithPadding>
 
           {gameStatus !== "won" && (
             <>
@@ -376,19 +383,6 @@ const StyledMemoryCardContent = styled.p`
   }
 `;
 
-const StyledMessage = styled.p`
-  text-align: center;
-  font-size: 1.3rem;
-  padding: 40px 20px;
-`;
-
-const StyledHeadline = styled.h2`
-  font: var(--main-headline);
-  text-align: center;
-  padding-top: 35px;
-  padding-bottom: 30px;
-`;
-
 const StyledCancelContainer = styled.section`
   padding: 15px;
   display: flex;
@@ -456,11 +450,4 @@ const StyledWinningSection = styled.section`
   gap: 20px;
   align-items: center;
   justify-content: center;
-`;
-
-const StyledSuccessMessage = styled.p`
-  font: var(--main-headline);
-  text-align: center;
-  color: var(--primary-green);
-  padding: 30px;
 `;
