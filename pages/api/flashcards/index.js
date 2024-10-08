@@ -25,12 +25,9 @@ export default async function handler(request, response) {
 
   if (request.method === "POST") {
     try {
-      const flashcardData = request.body;
+      const newFlashcard = request.body;
       console.log("newFlashcard: ", newFlashcard);
-
-      const newFlashcard = new Flashcard(flashcardData);
-
-      await Flashcard.save();
+      await Flashcard.create(newFlashcard);
       response.status(201).json({ status: "Flashcard created" });
       return;
     } catch (error) {
@@ -40,3 +37,20 @@ export default async function handler(request, response) {
     }
   }
 }
+
+// if (request.method === "POST") {
+//   try {
+//     const flashcardData = request.body;
+//     console.log("newFlashcard: ", newFlashcard);
+
+//     const newFlashcard = new Flashcard(flashcardData);
+
+//     await Flashcard.save();
+//     response.status(201).json({ status: "Flashcard created" });
+//     return;
+//   } catch (error) {
+//     return response
+//       .status(400)
+//       .json({ error: "Error creating flashcard: " + error.message });
+//   }
+// }
