@@ -34,14 +34,15 @@ export default function FormFlashcard({
 
     if (showNewCollectionFields) {
       const newCollection = {
-        id: uid(),
+        // id: uid(),
         title: collectionName,
         color: collectionColor,
       };
+      console.log("newCollection: ", newCollection);
       onAddCollection(newCollection);
 
       newFlashcard = {
-        collectionId: newCollection.id,
+        collectionId: newCollection._id,
         question,
         answer,
       };

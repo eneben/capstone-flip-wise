@@ -37,6 +37,8 @@ export default async function handler(request, response) {
   }
 
   if (request.method === "DELETE") {
+    console.log("id: ", id);
+
     try {
       await Collection.findByIdAndDelete(id);
       response.status(200).json({ message: "Collection deleted." });

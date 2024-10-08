@@ -158,8 +158,6 @@ export default function App({ Component, pageProps }) {
   }
 
   async function handleCreateFlashcard(newFlashcard) {
-    console.log("handleCreateFlashcard wird ausgeführt");
-    console.log("newFlashcard: ", newFlashcard);
     try {
       const response = await fetch("/api/flashcards", {
         method: "POST",
@@ -168,7 +166,6 @@ export default function App({ Component, pageProps }) {
         },
         body: JSON.stringify(newFlashcard),
       });
-      console.log("response: ", response);
       if (!response.ok) throw new Error("Failed to create flashcard");
       if (flashcardIsLoading || flashcardError) return <LoadingSpinner />;
       mutateFlashcards();
@@ -227,6 +224,8 @@ export default function App({ Component, pageProps }) {
   }
 
   async function handleDeleteCollection(id) {
+    console.log("id in der handlerfunction: ", id);
+
     try {
       const collectionsResponse = await fetch(`/api/collections/${id}`, {
         method: "DELETE",
@@ -235,15 +234,15 @@ export default function App({ Component, pageProps }) {
         throw new Error("Failed to delete the collection.");
       }
 
-      const flashcardsResponse = await fetch(
-        `/api/flashcards?collectionId=${id}`,
-        {
-          method: "DELETE",
-        }
-      );
-      if (!flashcardsResponse.ok) {
-        throw new Error("Failed to delete the flashcard.");
-      }
+      // const flashcardsResponse = await fetch(
+      //   `/api/flashcards?collectionId=${id}`,
+      //   {
+      //     method: "DELETE",
+      //   }
+      // );
+      // if (!flashcardsResponse.ok) {
+      //   throw new Error("Failed to delete the flashcard.");
+      // }
 
       mutateCollections();
       mutateFlashcards();
@@ -259,17 +258,24 @@ export default function App({ Component, pageProps }) {
   }
 
   async function handleAddCollection(newCollection) {
+    console.log("new collection in handleAdd: ", newCollection);
     try {
-      const response = await fetch("api/collections", {
+      const response = await fetch("/api/collections", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(newCollection),
       });
+      console.log("response: ", response);
       if (!response.ok) throw new Error("Failed to add collection");
       if (collectionIsLoading || collectionError) return <LoadingSpinner />;
       mutateCollections();
+      showToastMessage(
+        "Collection created successfully!",
+        "success",
+        MarkAsCorrect
+      );
     } catch (error) {
       console.error("An error occurred: ", error);
       showToastMessage("An error occured.", "error", MarkAsIncorrect);
