@@ -81,7 +81,6 @@ const MessageContentWrapper = styled.div`
   display: grid;
   grid-template-columns: 25px 1fr;
   align-items: center;
-
   padding: 5px 0px 0px 0px;
   gap: 10px;
 `;
