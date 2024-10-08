@@ -43,7 +43,7 @@ export default async function handler(request, response) {
         response.status(404).json({ status: "Not Found" });
         return;
       }
-      await Flashcard.updateOne({ _id: id }, { $set: updatedFlashcard });
+      await Flashcard.findByIdAndUpdate(id, updatedFlashcard);
       response.status(200).json({ message: "Flashcard updated." });
     } catch (error) {
       response
