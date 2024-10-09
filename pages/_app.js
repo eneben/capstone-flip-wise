@@ -90,7 +90,7 @@ export default function App({ Component, pageProps }) {
   useEffect(() => {
     if (toastMessages.length > 0) {
       const timers = toastMessages.map((message) =>
-        setTimeout(() => hideToastMessage(message.id), 20000)
+        setTimeout(() => hideToastMessage(message.id), 5500)
       );
 
       return () => {
