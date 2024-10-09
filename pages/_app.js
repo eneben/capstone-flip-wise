@@ -1,23 +1,52 @@
 import GlobalStyle from "../styles";
+import { SWRConfig } from "swr";
+import useSWR from "swr";
 import Layout from "@/components/Layout/Layout";
-import styled from "styled-components";
-import initialFlashcards from "@/assets/flashcards.json";
-import initialCollections from "@/assets/collections.json";
-import useLocalStorageState from "use-local-storage-state";
 import { uid } from "uid";
 import { useEffect, useState } from "react";
 import MarkAsCorrect from "@/public/icons/MarkAsCorrect.svg";
+import MarkAsIncorrect from "@/public/icons/MarkAsIncorrect.svg";
 import Info from "@/public/icons/Info.svg";
 import ToastMessageContainer from "@/components/ToastMessage/ToastMessageContainer";
+import LoadingSpinner from "@/components/LoadingSpinner/LoadingSpinner";
+
+async function fetcher(url, retries = 3) {
+  for (let i = 0; i < retries; i++) {
+    const response = await fetch(url);
+    if (response.ok) {
+      return await response.json();
+    }
+    console.error(`Request failed: ${response.status}`);
+    if (i === retries - 1) {
+      throw new Error(
+        `Request with ${JSON.stringify(url)} failed after ${retries} retries.`
+      );
+    }
+  }
+}
 
 export default function App({ Component, pageProps }) {
-  const [flashcards, setFlashcards] = useLocalStorageState("flashcards", {
-    defaultValue: initialFlashcards,
-  });
+  const {
+    data: flashcards,
+    isLoading: flashcardIsLoading,
+    error: flashcardError,
+    mutate: mutateFlashcards,
+  } = useSWR("/api/flashcards", fetcher, { fallbackData: [] });
 
-  const [collections, setCollections] = useLocalStorageState("collections", {
-    defaultValue: initialCollections,
-  });
+  const {
+    data: collections,
+    isLoading: collectionIsLoading,
+    error: collectionError,
+    mutate: mutateCollections,
+  } = useSWR("/api/collections", fetcher, { fallbackData: [] });
+
+  if (flashcardError) {
+    console.error("Flashcard fetch error:", flashcardError);
+  }
+
+  if (collectionError) {
+    console.error("Collection fetch error:", collectionError);
+  }
 
   const [toastMessages, setToastMessages] = useState([]);
 
@@ -70,6 +99,20 @@ export default function App({ Component, pageProps }) {
     }
   }, [toastMessages]);
 
+  if (
+    !flashcards ||
+    !collections ||
+    flashcardIsLoading ||
+    collectionIsLoading
+  ) {
+    return (
+      <Layout>
+        <GlobalStyle />
+        <LoadingSpinner />
+      </Layout>
+    );
+  }
+
   function changeCurrentFlashcard(flashcard) {
     setCurrentFlashcard(flashcard);
   }
@@ -78,24 +121,33 @@ export default function App({ Component, pageProps }) {
     setActionMode(mode);
   }
 
-  function handleEditFlashcard(newFlashcard) {
+  async function handleEditFlashcard(newFlashcard) {
     if (!currentFlashcard) {
       console.error("No flashcard selected for editing.");
+      showToastMessage(
+        "No flashcard selected for editing.",
+        "error",
+        MarkAsIncorrect
+      );
 
       return;
     }
     const updatedFlashcard = {
       ...newFlashcard,
-      id: currentFlashcard.id,
+      _id: currentFlashcard._id,
       isCorrect: currentFlashcard.isCorrect,
+      level: currentFlashcard.level,
     };
-    setFlashcards(
-      flashcards.map((flashcard) => {
-        return flashcard.id === updatedFlashcard.id
-          ? updatedFlashcard
-          : flashcard;
-      })
-    );
+
+    await fetch(`/api/flashcards/${currentFlashcard._id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedFlashcard),
+    });
+
+    mutateFlashcards();
     changeActionMode("default");
     showToastMessage(
       "Flashcard updated successfully!",
@@ -104,74 +156,126 @@ export default function App({ Component, pageProps }) {
     );
   }
 
-  function handleCreateFlashcard(newFlashcard) {
-    setFlashcards([
-      {
-        id: uid(),
-        ...newFlashcard,
+  async function handleCreateFlashcard(newFlashcard) {
+    try {
+      const response = await fetch("/api/flashcards", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newFlashcard),
+      });
+      if (!response.ok) throw new Error("Failed to create flashcard");
+      mutateFlashcards();
+      setActionMode("default");
+      showToastMessage(
+        "Flashcard created successfully!",
+        "success",
+        MarkAsCorrect
+      );
+    } catch (error) {
+      console.error("An error occurred: ", error);
+      // showToastMessage("Error creating flashcard", "error", MarkAsIncorrect);
+      showToastMessage("Error", "error", MarkAsIncorrect);
+    }
+  }
+
+  async function handleToggleCorrect(id) {
+    const flashcardToToggle = flashcards.find((flashcard) => {
+      return flashcard._id === id;
+    });
+
+    const updatedFlashcard = {
+      ...flashcardToToggle,
+      isCorrect: !flashcardToToggle.isCorrect,
+    };
+
+    await fetch(`/api/flashcards/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
       },
-      ...flashcards,
-    ]);
-    setActionMode("default");
-    showToastMessage(
-      "Flashcard created successfully!",
-      "success",
-      MarkAsCorrect
-    );
+      body: JSON.stringify(updatedFlashcard),
+    });
+
+    mutateFlashcards();
   }
 
-  function handleToggleCorrect(id) {
-    setFlashcards(
-      flashcards.map((flashcard) => {
-        return flashcard.id === id
-          ? { ...flashcard, isCorrect: !flashcard.isCorrect }
-          : flashcard;
-      })
-    );
+  async function handleDeleteFlashcard(id) {
+    try {
+      const response = await fetch(`/api/flashcards/${id}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) {
+        throw new Error("Failed to delete the flashcard.");
+      }
+      mutateFlashcards();
+      showToastMessage(
+        "Flashcard deleted successfully!",
+        "success",
+        MarkAsCorrect
+      );
+    } catch (error) {
+      console.error("Error deleting flashcard: " + error.message);
+      showToastMessage("Error deleting flashcard", "error", MarkAsIncorrect);
+    }
   }
 
-  function handleDeleteFlashcard(id) {
-    setFlashcards(
-      flashcards.filter((flashcard) => {
-        return flashcard.id !== id;
-      })
-    );
-    showToastMessage(
-      "Flashcard deleted successfully!",
-      "success",
-      MarkAsCorrect
-    );
+  async function handleDeleteCollection(id) {
+    try {
+      const collectionsResponse = await fetch(`/api/collections/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!collectionsResponse.ok) {
+        throw new Error("Failed to delete the collection.");
+      }
+
+      mutateCollections();
+      mutateFlashcards();
+      showToastMessage(
+        "Collection deleted successfully!",
+        "success",
+        MarkAsCorrect
+      );
+    } catch (error) {
+      console.error("Error deleting collection: " + error.message);
+      showToastMessage("Error deleting collection", "error", MarkAsIncorrect);
+    }
   }
 
-  function handleDeleteCollection(id) {
-    setCollections(
-      collections.filter((collection) => {
-        return collection.id !== id;
-      })
-    );
-    setFlashcards(
-      flashcards.filter((flashcard) => {
-        return flashcard.collectionId !== id;
-      })
-    );
-    showToastMessage(
-      "Collection deleted successfully!",
-      "success",
-      MarkAsCorrect
-    );
-  }
-
-  function handleAddCollection(newCollection) {
-    setCollections([newCollection, ...collections]);
+  async function handleAddCollection(newCollection) {
+    try {
+      const response = await fetch("/api/collections", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newCollection),
+      });
+      if (!response.ok) throw new Error("Failed to add collection");
+      const responseData = await response.json();
+      const newCollectionId = responseData._id;
+      mutateCollections();
+      showToastMessage(
+        "Collection created successfully!",
+        "success",
+        MarkAsCorrect
+      );
+      return newCollectionId;
+    } catch (error) {
+      console.error("An error occurred: ", error);
+      showToastMessage("An error occured.", "error", MarkAsIncorrect);
+    }
   }
 
   function getCollection(collectionId) {
     const collectionToFind = collections.find((collection) => {
-      return collection.id === collectionId;
+      return collection._id === collectionId;
     });
     return {
-      title: collectionToFind.title,
-      color: collectionToFind.color,
+      title: collectionToFind?.title || "Unknown title",
+      color: collectionToFind?.color || "#264653",
     };
   }
 
@@ -206,94 +310,95 @@ export default function App({ Component, pageProps }) {
     return incorrectFlashcardsFromCollection;
   }
 
-  function handleIncreaseFlashcardLevel(id) {
-    setFlashcards(
-      flashcards.map((flashcard) => {
-        if (flashcard.id === id) {
-          return flashcard.level < 5
-            ? {
-                ...flashcard,
-                level: flashcard.level + 1,
-                trainingDate: Date.now(),
-              }
-            : {
-                ...flashcard,
-                trainingDate: Date.now(),
-              };
-        }
-        return flashcard;
-      })
-    );
+  async function handleIncreaseFlashcardLevel(id) {
+    const flashcard = flashcards.find((flashcard) => {
+      return flashcard._id === id;
+    });
+
+    const updatedFlashcard = {
+      ...flashcard,
+      level: flashcard.level < 5 ? flashcard.level + 1 : flashcard.level,
+      trainingDate: Date.now(),
+    };
+
+    await fetch(`/api/flashcards/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedFlashcard),
+    });
+
+    mutateFlashcards();
   }
 
-  function handleDecreaseFlashcardLevel(id) {
-    setFlashcards(
-      flashcards.map((flashcard) => {
-        if (flashcard.id === id) {
-          return flashcard.level > 1
-            ? {
-                ...flashcard,
-                level: flashcard.level - 1,
-                trainingDate: Date.now(),
-              }
-            : {
-                ...flashcard,
-                trainingDate: Date.now(),
-              };
-        }
-        return flashcard;
-      })
-    );
+  async function handleDecreaseFlashcardLevel(id) {
+    const flashcard = flashcards.find((flashcard) => {
+      return flashcard._id === id;
+    });
+
+    const updatedFlashcard = {
+      ...flashcard,
+      level: flashcard.level > 1 ? flashcard.level - 1 : flashcard.level,
+      trainingDate: Date.now(),
+    };
+
+    await fetch(`/api/flashcards/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedFlashcard),
+    });
+
+    mutateFlashcards();
   }
 
   return (
-    <Layout
-      collections={collections}
-      actionMode={actionMode}
-      changeActionMode={changeActionMode}
-      currentFlashcard={currentFlashcard}
-      handleEditFlashcard={handleEditFlashcard}
-      handleCreateFlashcard={handleCreateFlashcard}
-      changeFlashcardSelection={changeFlashcardSelection}
-      handleAddCollection={handleAddCollection}
-      getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
-    >
-      <GlobalStyle />
-      <Component
-        {...pageProps}
-        flashcardsWithCollection={flashcardsWithCollection}
-        handleToggleCorrect={handleToggleCorrect}
+    <SWRConfig value={{ fetcher }}>
+      <Layout
         collections={collections}
-        handleDeleteFlashcard={handleDeleteFlashcard}
-        handleDeleteCollection={handleDeleteCollection}
-        currentFlashcard={currentFlashcard}
-        changeCurrentFlashcard={changeCurrentFlashcard}
         actionMode={actionMode}
         changeActionMode={changeActionMode}
+        currentFlashcard={currentFlashcard}
         handleEditFlashcard={handleEditFlashcard}
         handleCreateFlashcard={handleCreateFlashcard}
-        getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
-        getCorrectFlashcardsFromCollection={getCorrectFlashcardsFromCollection}
-        getIncorrectFlashcardsFromCollection={
-          getIncorrectFlashcardsFromCollection
-        }
-        flashcardSelection={flashcardSelection}
         changeFlashcardSelection={changeFlashcardSelection}
-        handleIncreaseFlashcardLevel={handleIncreaseFlashcardLevel}
-        handleDecreaseFlashcardLevel={handleDecreaseFlashcardLevel}
-        handleFirstClick={handleFirstClick}
-      />
-      <ToastMessageContainer
-        toastMessages={toastMessages}
-        hideToastMessage={hideToastMessage}
-      />
-    </Layout>
+        handleAddCollection={handleAddCollection}
+        getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
+      >
+        <GlobalStyle />
+        <Component
+          {...pageProps}
+          flashcardsWithCollection={flashcardsWithCollection}
+          handleToggleCorrect={handleToggleCorrect}
+          collections={collections}
+          handleDeleteFlashcard={handleDeleteFlashcard}
+          handleDeleteCollection={handleDeleteCollection}
+          currentFlashcard={currentFlashcard}
+          changeCurrentFlashcard={changeCurrentFlashcard}
+          actionMode={actionMode}
+          changeActionMode={changeActionMode}
+          handleEditFlashcard={handleEditFlashcard}
+          handleCreateFlashcard={handleCreateFlashcard}
+          getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
+          getCorrectFlashcardsFromCollection={
+            getCorrectFlashcardsFromCollection
+          }
+          getIncorrectFlashcardsFromCollection={
+            getIncorrectFlashcardsFromCollection
+          }
+          flashcardSelection={flashcardSelection}
+          changeFlashcardSelection={changeFlashcardSelection}
+          handleIncreaseFlashcardLevel={handleIncreaseFlashcardLevel}
+          handleDecreaseFlashcardLevel={handleDecreaseFlashcardLevel}
+          handleFirstClick={handleFirstClick}
+        />
+        <ToastMessageContainer
+          toastMessages={toastMessages}
+          hideToastMessage={hideToastMessage}
+        />
+      </Layout>
+    </SWRConfig>
   );
 }
-
-const BackgroundColor = styled.div`
-  margin: 0 auto;
-  min-height: 100vh;
-  max-width: 800px;
-  background-color: #fff;
-`;

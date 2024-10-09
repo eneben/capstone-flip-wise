@@ -70,7 +70,7 @@ export default function TrainingCollectionPage({
               <FlashcardListWrapper>
                 {sortedFlashcards.toReversed().map((flashcard) => (
                   <Flashcard
-                    key={flashcard.id}
+                    key={flashcard._id}
                     collectionColor={flashcard?.collectionColor}
                     handleDeleteFlashcard={handleDeleteFlashcard}
                     flashcard={flashcard}

@@ -166,11 +166,11 @@ export default function Menu({
                 {collections.map((collection) => {
                   return (
                     <StyledSubNavigationListItem
-                      key={collection.id}
+                      key={collection._id}
                       $isCollectionsClosing={isLearningCollectionsClosing}
                     >
                       <StyledSubNavigationLink
-                        href={`/learning/${collection.id}`}
+                        href={`/learning/${collection._id}`}
                         onClick={() => {
                           changeFlashcardSelection("all");
                           setIsMenuClosing(true);
@@ -178,7 +178,7 @@ export default function Menu({
                         }}
                       >
                         {collection.title} (
-                        {getAllFlashcardsFromCollection(collection.id).length})
+                        {getAllFlashcardsFromCollection(collection._id).length})
                       </StyledSubNavigationLink>
                     </StyledSubNavigationListItem>
                   );
@@ -207,11 +207,11 @@ export default function Menu({
                 {collections.map((collection) => {
                   return (
                     <StyledSubNavigationListItem
-                      key={collection.id}
+                      key={collection._id}
                       $isCollectionsClosing={isTrainingCollectionsClosing}
                     >
                       <StyledSubNavigationLink
-                        href={`/training/${collection.id}`}
+                        href={`/training/${collection._id}`}
                         onClick={() => {
                           changeFlashcardSelection("all");
                           setIsMenuClosing(true);
@@ -219,7 +219,7 @@ export default function Menu({
                         }}
                       >
                         {collection.title} (
-                        {getAllFlashcardsFromCollection(collection.id).length})
+                        {getAllFlashcardsFromCollection(collection._id).length})
                       </StyledSubNavigationLink>
                     </StyledSubNavigationListItem>
                   );
@@ -248,11 +248,11 @@ export default function Menu({
                 {collections.map((collection) => {
                   return (
                     <StyledSubNavigationListItem
-                      key={collection.id}
+                      key={collection._id}
                       $isCollectionsClosing={isGamingCollectionsClosing}
                     >
                       <StyledSubNavigationLink
-                        href={`/gaming/${collection.id}`}
+                        href={`/gaming/${collection._id}`}
                         onClick={() => {
                           changeFlashcardSelection("all");
                           setIsMenuClosing(true);
@@ -260,7 +260,7 @@ export default function Menu({
                         }}
                       >
                         {collection.title} (
-                        {getAllFlashcardsFromCollection(collection.id).length})
+                        {getAllFlashcardsFromCollection(collection._id).length})
                       </StyledSubNavigationLink>
                     </StyledSubNavigationListItem>
                   );

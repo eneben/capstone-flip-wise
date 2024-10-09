@@ -33,7 +33,7 @@ export default function Flashcard({
     question,
     answer,
     collectionTitle: collection,
-    id,
+    _id: id,
     isCorrect,
     level,
   } = flashcard;
