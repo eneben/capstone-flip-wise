@@ -9,6 +9,7 @@ import MarkAsIncorrect from "@/public/icons/MarkAsIncorrect.svg";
 import Info from "@/public/icons/Info.svg";
 import ToastMessageContainer from "@/components/ToastMessage/ToastMessageContainer";
 import LoadingSpinner from "@/components/LoadingSpinner/LoadingSpinner";
+import { color } from "framer-motion";
 
 async function fetcher(url, retries = 3) {
   for (let i = 0; i < retries; i++) {
@@ -51,6 +52,8 @@ export default function App({ Component, pageProps }) {
   const [toastMessages, setToastMessages] = useState([]);
 
   const [currentFlashcard, setCurrentFlashcard] = useState(null);
+
+  const [currentCollection, setCurrentCollection] = useState(null);
 
   const [actionMode, setActionMode] = useState("default");
 
@@ -117,6 +120,10 @@ export default function App({ Component, pageProps }) {
     setCurrentFlashcard(flashcard);
   }
 
+  function changeCurrentCollection(collection) {
+    setCurrentCollection(collection);
+  }
+
   function changeActionMode(mode) {
     setActionMode(mode);
   }
@@ -151,6 +158,40 @@ export default function App({ Component, pageProps }) {
     changeActionMode("default");
     showToastMessage(
       "Flashcard updated successfully!",
+      "success",
+      MarkAsCorrect
+    );
+  }
+
+  async function handleEditCollection(newCollection) {
+    if (!currentCollection) {
+      console.error("No collection selected for editing.");
+      showToastMessage(
+        "No collection selected for editing.",
+        "error",
+        MarkAsIncorrect
+      );
+
+      return;
+    }
+    const updatedCollection = {
+      ...newCollection,
+      title: currentCollection.title,
+      color: currentCollection.color,
+    };
+
+    await fetch(`/api/collections/${currentCollection._id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedCollection),
+    });
+
+    mutateFlashcards();
+    changeActionMode("default");
+    showToastMessage(
+      "Collection updated successfully!",
       "success",
       MarkAsCorrect
     );
