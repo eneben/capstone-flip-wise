@@ -1,6 +1,6 @@
 import Collection from "@/components/Collection/Collection";
 import styled from "styled-components";
-import { StyledHeadlineWithPadding } from "@/styledComponents";
+import { StyledHeadlineWithPadding, StyledMessage } from "@/styledComponents";
 
 export default function CollectionList({
   modeSelection,
@@ -61,10 +61,4 @@ const CollectionsWrapper = styled.ul`
   flex-direction: column;
   gap: 30px;
   list-style: none;
-`;
-
-const StyledMessage = styled.p`
-  text-align: center;
-  font-size: 1rem;
-  padding: 40px 20px;
 `;
