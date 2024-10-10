@@ -18,6 +18,7 @@ export default function FormCollection({
     const { collectionName, collectionColor } = formData;
 
     let updatedCollection = {
+      ...currentCollection,
       title: collectionName,
       color: collectionColor,
     };
@@ -41,10 +42,7 @@ export default function FormCollection({
           <FormInput
             name="collectionName"
             maxlength="23"
-            // defaultValue={
-            //   actionMode === "editCollection" ? currentCollection.title : ""
-            // }
-            defaultValue={currentCollection?.title || ""}
+            defaultValue={currentCollection?.title || "Test"}
             required
           />
         </CollectionNameWrapper>
@@ -54,9 +52,6 @@ export default function FormCollection({
             type="color"
             id="collectionColor"
             name="collectionColor"
-            // defaultValue={
-            //   actionMode === "editCollection" ? currentCollection.color : ""
-            // }
             defaultValue={currentCollection?.color || "#000"}
             required
           />

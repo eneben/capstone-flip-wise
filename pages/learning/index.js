@@ -11,7 +11,10 @@ export default function LearningPage({
   getAllFlashcardsFromCollection,
   changeCurrentCollection,
   handleEditCollection,
+  currentCollection,
 }) {
+  console.log("current Collection", currentCollection);
+
   return (
     <>
       <CollectionList
@@ -28,6 +31,7 @@ export default function LearningPage({
         changeActionMode={changeActionMode}
         changeCurrentCollection={changeCurrentCollection}
         handleEditCollection={handleEditCollection}
+        currentCollection={currentCollection}
       />
     </>
   );

@@ -88,14 +88,12 @@ export default function Layout({
 
       {actionMode === "editCollection" && (
         <FormCollection
-          collections={collections}
           headline="Edit Collection"
           actionMode={actionMode}
           changeActionMode={changeActionMode}
           currentCollection={currentCollection}
           onEditCollection={handleEditCollection}
           isFormClosing={isFormClosing}
-          onAddCollection={handleAddCollection}
         />
       )}
 
@@ -124,7 +122,11 @@ export default function Layout({
               variant="formToggle"
               name="menu"
               onClick={handleToggleForm}
-              isRotate={actionMode === "create" || actionMode === "edit"}
+              isRotate={
+                actionMode === "create" ||
+                actionMode === "edit" ||
+                actionMode === "editCollection"
+              }
             >
               <Plus />
             </RoundButton>

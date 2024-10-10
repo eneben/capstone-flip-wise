@@ -14,6 +14,7 @@ export default function CollectionList({
   getAllFlashcardsFromCollection,
   changeCurrentCollection,
   handleEditCollection,
+  currentCollection,
 }) {
   const capitalizedModeSelection =
     modeSelection.charAt(0).toUpperCase() + modeSelection.slice(1);
@@ -45,6 +46,7 @@ export default function CollectionList({
                 changeActionMode={changeActionMode}
                 changeCurrentCollection={changeCurrentCollection}
                 handleEditCollection={handleEditCollection}
+                currentCollection={currentCollection}
               />
             );
           })}

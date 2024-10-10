@@ -175,26 +175,38 @@ export default function App({ Component, pageProps }) {
       return;
     }
     const updatedCollection = {
-      ...newCollection,
-      title: currentCollection.title,
-      color: currentCollection.color,
+      ...currentCollection,
+      title: newCollection.title,
+      color: newCollection.color,
     };
 
-    await fetch(`/api/collections/${currentCollection._id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(updatedCollection),
-    });
+    try {
+      const response = await fetch(
+        `/api/collections/${currentCollection._id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedCollection),
+        }
+      );
 
-    mutateCollections();
-    changeActionMode("default");
-    showToastMessage(
-      "Collection updated successfully!",
-      "success",
-      MarkAsCorrect
-    );
+      if (!response.ok) {
+        throw new Error("Failed to update collection");
+      }
+
+      mutateCollections();
+      changeActionMode("default");
+      showToastMessage(
+        "Collection updated successfully!",
+        "success",
+        MarkAsCorrect
+      );
+    } catch (error) {
+      console.error("Error updating collection:", error);
+      showToastMessage("Error updating collection.", "error", MarkAsIncorrect);
+    }
   }
 
   async function handleCreateFlashcard(newFlashcard) {

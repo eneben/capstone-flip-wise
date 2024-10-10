@@ -11,6 +11,7 @@ export default function TrainingPage({
   getAllFlashcardsFromCollection,
   changeCurrentCollection,
   handleEditCollection,
+  currentCollection,
 }) {
   return (
     <>
@@ -28,6 +29,7 @@ export default function TrainingPage({
         changeActionMode={changeActionMode}
         changeCurrentCollection={changeCurrentCollection}
         handleEditCollection={handleEditCollection}
+        currentCollection={currentCollection}
       />
     </>
   );
