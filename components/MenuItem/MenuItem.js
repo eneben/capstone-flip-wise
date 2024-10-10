@@ -72,19 +72,19 @@ export default function MenuItem({
           {collections.map((collection) => {
             return (
               <StyledSubNavigationListItem
-                key={collection.id}
+                key={collection._id}
                 $isCollectionsClosing={isCollectionsClosing}
                 $collectionsLength={collectionsLength}
               >
                 <StyledSubNavigationLink
-                  href={`/${page}/${collection.id}`}
+                  href={`/${page}/${collection._id}`}
                   onClick={() => {
                     changeFlashcardSelection("all");
                     onToggleMenu();
                   }}
                 >
                   {collection.title} (
-                  {getAllFlashcardsFromCollection(collection.id).length})
+                  {getAllFlashcardsFromCollection(collection._id).length})
                 </StyledSubNavigationLink>
               </StyledSubNavigationListItem>
             );

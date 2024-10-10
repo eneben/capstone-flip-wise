@@ -43,7 +43,7 @@ export default function LearningCollectionPage({
 
   function sortFlashcardsById(flashcards) {
     return flashcards.sort((a, b) => {
-      return a.id - b.id;
+      return b._id.localeCompare(a._id);
     });
   }
 
@@ -66,7 +66,7 @@ export default function LearningCollectionPage({
                 <Flashcard
                   collectionColor={collectionColor}
                   handleDeleteFlashcard={handleDeleteFlashcard}
-                  key={flashcard.id}
+                  key={flashcard._id}
                   flashcard={flashcard}
                   onToggleCorrect={handleToggleCorrect}
                   changeCurrentFlashcard={changeCurrentFlashcard}

@@ -25,7 +25,7 @@ export default function FormFlashcard({
     }
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
 
     const formData = Object.fromEntries(new FormData(event.target));
@@ -34,24 +34,25 @@ export default function FormFlashcard({
 
     if (showNewCollectionFields) {
       const newCollection = {
-        id: uid(),
         title: collectionName,
         color: collectionColor,
       };
-      onAddCollection(newCollection);
+      const newCollectionId = await onAddCollection(newCollection);
 
       newFlashcard = {
-        collectionId: newCollection.id,
+        collectionId: newCollectionId,
         question,
         answer,
+        level: 1,
       };
     } else {
-      newFlashcard = { ...formData };
+      newFlashcard = { ...formData, level: 1 };
     }
 
     onSubmitFlashcard(newFlashcard);
     setShowNewCollectionFields(false);
     event.target.reset();
+    changeActionMode("default");
   }
 
   return (
@@ -85,7 +86,7 @@ export default function FormFlashcard({
         <option value="newCollection">+ Add New Collection</option>
         {collections.map((collection) => {
           return (
-            <option key={collection.id} value={collection.id}>
+            <option key={collection._id} value={collection._id}>
               {collection.title}
             </option>
           );

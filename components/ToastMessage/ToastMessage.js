@@ -78,16 +78,17 @@ const StyledProgressBar = styled.div`
 `;
 
 const MessageContentWrapper = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: 25px 1fr;
   align-items: center;
-  justify-content: space-between;
   padding: 5px 0px 0px 0px;
   gap: 10px;
 `;
 
 const StyledIconWrapper = styled.div`
   color: #fff;
-  width: 25px;
+  width: 22px;
+  height: 22px;
   padding: 2px;
   border-radius: 50%;
   display: flex;

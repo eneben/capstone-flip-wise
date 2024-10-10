@@ -26,7 +26,7 @@ export default function CollectionList({
           {collections.map((collection) => {
             return (
               <Collection
-                key={collection.id}
+                key={collection._id}
                 collection={collection}
                 getCorrectFlashcardsFromCollection={
                   getCorrectFlashcardsFromCollection

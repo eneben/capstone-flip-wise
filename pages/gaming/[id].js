@@ -142,13 +142,13 @@ export default function TrainingCollectionPage({
 
     const newMemoryCards = nineRandomFlashcards.flatMap((flashcard) => [
       {
-        pairing: flashcard.id,
+        pairing: flashcard._id,
         content: flashcard.question,
         type: "question",
         id: uid(),
       },
       {
-        pairing: flashcard.id,
+        pairing: flashcard._id,
         content: flashcard.answer,
         type: "answer",
         id: uid(),

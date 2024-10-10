@@ -19,7 +19,7 @@ export default function Collection({
 }) {
   const [isDelete, setIsDelete] = useState(false);
 
-  const { title: name, color, id } = collection;
+  const { title: name, color, _id: id } = collection;
 
   function toggleDeleteConfirmation(event) {
     event.preventDefault();
