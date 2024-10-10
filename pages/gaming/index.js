@@ -15,7 +15,6 @@ export default function GamingPage({
       <CollectionList
         modeSelection="gaming"
         collections={collections}
-        actionMode={actionMode}
         getCorrectFlashcardsFromCollection={getCorrectFlashcardsFromCollection}
         getIncorrectFlashcardsFromCollection={
           getIncorrectFlashcardsFromCollection

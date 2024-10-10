@@ -5,7 +5,7 @@ import Menu from "../Menu/Menu";
 import Plus from "@/public/icons/Plus.svg";
 import RoundButton from "../Buttons/RoundButton";
 import FormFlashcard from "@/components/FormFlashcard/FormFlashcard";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 export default function Layout({
   children,
@@ -23,6 +23,10 @@ export default function Layout({
 }) {
   const [isFormClosing, setIsFormClosing] = useState(false);
 
+  const cachedChangeActionMode = useCallback(changeActionMode, [
+    changeActionMode,
+  ]);
+
   function handleToggleForm() {
     if (actionMode === "create") {
       setIsFormClosing(true);
@@ -37,11 +41,11 @@ export default function Layout({
     if (isFormClosing) {
       const formTimeoutId = setTimeout(() => {
         setIsFormClosing(false);
-        changeActionMode("default");
+        cachedChangeActionMode("default");
       }, 490);
       return () => clearTimeout(formTimeoutId);
     }
-  }, [isFormClosing]);
+  }, [isFormClosing, cachedChangeActionMode]);
 
   function startClosingForm() {
     setIsFormClosing(true);

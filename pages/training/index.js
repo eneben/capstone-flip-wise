@@ -15,7 +15,6 @@ export default function TrainingPage({
       <CollectionList
         modeSelection="training"
         collections={collections}
-        actionMode={actionMode}
         getCorrectFlashcardsFromCollection={getCorrectFlashcardsFromCollection}
         getIncorrectFlashcardsFromCollection={
           getIncorrectFlashcardsFromCollection
