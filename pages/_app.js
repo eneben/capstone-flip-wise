@@ -175,7 +175,6 @@ export default function App({ Component, pageProps }) {
       );
     } catch (error) {
       console.error("An error occurred: ", error);
-      // showToastMessage("Error creating flashcard", "error", MarkAsIncorrect);
       showToastMessage("Error", "error", MarkAsIncorrect);
     }
   }

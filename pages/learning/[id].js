@@ -1,5 +1,10 @@
 import { useRouter } from "next/router";
 import styled from "styled-components";
+import {
+  StyledMessage,
+  StyledHeadline,
+  StyledSubheading,
+} from "@/styledComponents";
 import Footer from "@/components/Footer/Footer";
 import Flashcard from "@/components/Flashcard/Flashcard";
 
@@ -55,7 +60,7 @@ export default function LearningCollectionPage({
               (flashcardSelection === "to-learn" && "Flashcards to learn")}
           </StyledSubheading>
 
-          <FlashcardListWrapper>
+          <FlashcardListFlexWrapper>
             {sortedFlashcards.map((flashcard) => {
               return (
                 <Flashcard
@@ -70,7 +75,7 @@ export default function LearningCollectionPage({
                 />
               );
             })}
-          </FlashcardListWrapper>
+          </FlashcardListFlexWrapper>
         </>
       )}
       {(!displayedFlashcards || displayedFlashcards.length === 0) && (
@@ -97,28 +102,10 @@ export default function LearningCollectionPage({
   );
 }
 
-const StyledMessage = styled.p`
-  text-align: center;
-  font-size: 1.3rem;
-  padding: 40px 20px;
-`;
-
-const FlashcardListWrapper = styled.ul`
+const FlashcardListFlexWrapper = styled.ul`
   display: flex;
   align-items: center;
   flex-direction: column;
   gap: 15px;
   list-style: none;
-`;
-
-const StyledHeadline = styled.h2`
-  font: var(--main-headline);
-  text-align: center;
-  padding-top: 35px;
-`;
-
-const StyledSubheading = styled.h3`
-  font: var(--sub-headline);
-  text-align: center;
-  padding: 5px 0 30px 0;
 `;
