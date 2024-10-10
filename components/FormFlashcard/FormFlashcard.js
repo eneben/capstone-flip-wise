@@ -11,7 +11,9 @@ export default function FormFlashcard({
   actionMode,
   changeActionMode,
   currentFlashcard,
+  currentCollection,
   onSubmitFlashcard,
+  onSubmitCollection,
   isFormClosing,
   onAddCollection,
 }) {

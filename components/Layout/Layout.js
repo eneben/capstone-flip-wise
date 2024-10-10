@@ -13,8 +13,10 @@ export default function Layout({
   actionMode,
   changeActionMode,
   currentFlashcard,
+  currentCollection,
   handleCreateFlashcard,
   handleEditFlashcard,
+  handleEditCollection,
   changeFlashcardSelection,
   handleAddCollection,
   getAllFlashcardsFromCollection,
@@ -73,7 +75,9 @@ export default function Layout({
           actionMode={actionMode}
           changeActionMode={changeActionMode}
           currentFlashcard={currentFlashcard}
+          currentCollection={currentCollection}
           onSubmitFlashcard={handleEditFlashcard}
+          onSubmitCollection={handleEditCollection}
           isFormClosing={isFormClosing}
           onAddCollection={handleAddCollection}
         />

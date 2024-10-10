@@ -29,6 +29,12 @@ export default function Collection({
     setIsDelete(!isDelete);
   }
 
+  function setEditWithoutFlip(event) {
+    event.stopPropagation();
+    changeActionMode("edit");
+    changeCurrentCollection(collection);
+  }
+
   const allFlashcardsFromCollection = getAllFlashcardsFromCollection(id);
 
   function getAverageOfLevels() {
@@ -63,7 +69,7 @@ export default function Collection({
         <CollectionBox $color={color} href={`/${modeSelection}/${id}`}>
           <StyledEditButtonContainer>
             <RoundButton
-              // onClick={setEditWithoutFlip}
+              onClick={setEditWithoutFlip}
               type="button"
               variant="edit"
             >

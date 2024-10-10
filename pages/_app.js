@@ -216,7 +216,6 @@ export default function App({ Component, pageProps }) {
       );
     } catch (error) {
       console.error("An error occurred: ", error);
-      // showToastMessage("Error creating flashcard", "error", MarkAsIncorrect);
       showToastMessage("Error", "error", MarkAsIncorrect);
     }
   }
@@ -402,10 +401,12 @@ export default function App({ Component, pageProps }) {
         actionMode={actionMode}
         changeActionMode={changeActionMode}
         currentFlashcard={currentFlashcard}
+        currentCollection={currentCollection}
         handleEditFlashcard={handleEditFlashcard}
         handleCreateFlashcard={handleCreateFlashcard}
         changeFlashcardSelection={changeFlashcardSelection}
         handleAddCollection={handleAddCollection}
+        handleEditCollection={handleEditCollection}
         getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
       >
         <GlobalStyle />
@@ -416,7 +417,10 @@ export default function App({ Component, pageProps }) {
           collections={collections}
           handleDeleteFlashcard={handleDeleteFlashcard}
           handleDeleteCollection={handleDeleteCollection}
+          handleEditCollection={handleEditCollection}
           currentFlashcard={currentFlashcard}
+          currentCollection={currentCollection}
+          changeCurrentCollection={changeCurrentCollection}
           changeCurrentFlashcard={changeCurrentFlashcard}
           actionMode={actionMode}
           changeActionMode={changeActionMode}
