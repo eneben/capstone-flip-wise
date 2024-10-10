@@ -1,6 +1,6 @@
 import Collection from "@/components/Collection/Collection";
 import styled from "styled-components";
-import { StyledHeadlineWithPadding } from "@/styledComponents";
+import { StyledHeadlineWithPadding, StyledMessage } from "@/styledComponents";
 
 export default function CollectionList({
   modeSelection,
@@ -9,8 +9,10 @@ export default function CollectionList({
   getIncorrectFlashcardsFromCollection,
   flashcardSelection,
   changeFlashcardSelection,
+  changeActionMode,
   handleDeleteCollection,
   getAllFlashcardsFromCollection,
+  changeCurrentCollection,
 }) {
   const capitalizedModeSelection =
     modeSelection.charAt(0).toUpperCase() + modeSelection.slice(1);
@@ -39,6 +41,8 @@ export default function CollectionList({
                 handleDeleteCollection={handleDeleteCollection}
                 getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
                 modeSelection={modeSelection}
+                changeActionMode={changeActionMode}
+                changeCurrentCollection={changeCurrentCollection}
               />
             );
           })}
@@ -61,10 +65,4 @@ const CollectionsWrapper = styled.ul`
   flex-direction: column;
   gap: 30px;
   list-style: none;
-`;
-
-const StyledMessage = styled.p`
-  text-align: center;
-  font-size: 1rem;
-  padding: 40px 20px;
 `;

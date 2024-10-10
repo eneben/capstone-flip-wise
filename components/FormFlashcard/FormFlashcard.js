@@ -3,7 +3,6 @@ import RegularButton from "../Buttons/RegularButton";
 import ButtonWrapper from "../Buttons/ButtonWrapper";
 import FormInput from "./FormInput";
 import { useState } from "react";
-import { uid } from "uid";
 
 export default function FormFlashcard({
   collections,
@@ -11,9 +10,7 @@ export default function FormFlashcard({
   actionMode,
   changeActionMode,
   currentFlashcard,
-  currentCollection,
   onSubmitFlashcard,
-  onSubmitCollection,
   isFormClosing,
   onAddCollection,
 }) {

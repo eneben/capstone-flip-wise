@@ -5,6 +5,7 @@ import Menu from "../Menu/Menu";
 import Plus from "@/public/icons/Plus.svg";
 import RoundButton from "../Buttons/RoundButton";
 import FormFlashcard from "@/components/FormFlashcard/FormFlashcard";
+import FormCollection from "@/components/FormCollection/FormCollection";
 import { useState, useEffect, useCallback } from "react";
 
 export default function Layout({
@@ -30,7 +31,7 @@ export default function Layout({
   function handleToggleForm() {
     if (actionMode === "create") {
       setIsFormClosing(true);
-    } else if (actionMode === "edit") {
+    } else if (actionMode === "edit" || actionMode === "editCollection") {
       setIsFormClosing(true);
     } else {
       changeActionMode("create");
@@ -79,8 +80,19 @@ export default function Layout({
           actionMode={actionMode}
           changeActionMode={changeActionMode}
           currentFlashcard={currentFlashcard}
-          currentCollection={currentCollection}
           onSubmitFlashcard={handleEditFlashcard}
+          isFormClosing={isFormClosing}
+          onAddCollection={handleAddCollection}
+        />
+      )}
+
+      {actionMode === "editCollection" && (
+        <FormCollection
+          collections={collections}
+          headline="Edit Collection"
+          actionMode={actionMode}
+          changeActionMode={changeActionMode}
+          currentCollection={currentCollection}
           onSubmitCollection={handleEditCollection}
           isFormClosing={isFormClosing}
           onAddCollection={handleAddCollection}

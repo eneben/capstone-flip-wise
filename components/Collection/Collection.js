@@ -15,8 +15,10 @@ export default function Collection({
   getAllFlashcardsFromCollection,
   flashcardSelection,
   changeFlashcardSelection,
+  changeActionMode,
   handleDeleteCollection,
   modeSelection,
+  changeCurrentCollection,
 }) {
   const [isDelete, setIsDelete] = useState(false);
 
@@ -28,9 +30,10 @@ export default function Collection({
     setIsDelete(!isDelete);
   }
 
-  function setEditWithoutFlip(event) {
+  function setEditCollection(event) {
+    event.preventDefault();
     event.stopPropagation();
-    changeActionMode("edit");
+    changeActionMode("editCollection");
     changeCurrentCollection(collection);
   }
 
@@ -68,7 +71,7 @@ export default function Collection({
         <CollectionBox $color={color} href={`/${modeSelection}/${id}`}>
           <StyledEditButtonContainer>
             <RoundButton
-              onClick={setEditWithoutFlip}
+              onClick={setEditCollection}
               type="button"
               variant="edit"
             >

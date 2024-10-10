@@ -188,7 +188,7 @@ export default function App({ Component, pageProps }) {
       body: JSON.stringify(updatedCollection),
     });
 
-    mutateFlashcards();
+    mutateCollections();
     changeActionMode("default");
     showToastMessage(
       "Collection updated successfully!",
