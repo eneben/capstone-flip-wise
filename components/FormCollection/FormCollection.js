@@ -8,32 +8,27 @@ export default function FormCollection({
   actionMode,
   changeActionMode,
   currentCollection,
-  onSubmitCollection,
   isFormClosing,
-  onAddCollection,
+  onEditCollection,
 }) {
-  // const [showNewCollectionFields, setShowNewCollectionFields] = useState(false);
-
-  // function handleCollectionChange(event) {
-  //   if (event.target.value === "newCollection") {
-  //     setShowNewCollectionFields(true);
-  //   } else {
-  //     setShowNewCollectionFields(false);
-  //   }
-  // }
-
   async function handleSubmit(event) {
     event.preventDefault();
 
     const formData = Object.fromEntries(new FormData(event.target));
     const { collectionName, collectionColor } = formData;
-    let newCollection;
 
-    const newCollectionId = await onAddCollection(newCollection);
+    let updatedCollection = {
+      title: collectionName,
+      color: collectionColor,
+    };
 
-    onSubmitCollection(newCollection);
-    event.target.reset();
-    changeActionMode("default");
+    try {
+      await onEditCollection(updatedCollection);
+      event.target.reset();
+      changeActionMode("default");
+    } catch (error) {
+      console.error("Error while editing collection:", error);
+    }
   }
 
   return (
@@ -46,11 +41,10 @@ export default function FormCollection({
           <FormInput
             name="collectionName"
             maxlength="23"
-            defaultValue={
-              actionMode === "editCollection"
-                ? currentCollection.collectionName
-                : ""
-            }
+            // defaultValue={
+            //   actionMode === "editCollection" ? currentCollection.title : ""
+            // }
+            defaultValue={currentCollection?.title || ""}
             required
           />
         </CollectionNameWrapper>
@@ -60,11 +54,10 @@ export default function FormCollection({
             type="color"
             id="collectionColor"
             name="collectionColor"
-            defaultValue={
-              actionMode === "editCollection"
-                ? currentCollection.collectionColor
-                : ""
-            }
+            // defaultValue={
+            //   actionMode === "editCollection" ? currentCollection.color : ""
+            // }
+            defaultValue={currentCollection?.color || "#000"}
             required
           />
         </CollectionColorWrapper>

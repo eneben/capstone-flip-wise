@@ -93,7 +93,7 @@ export default function Layout({
           actionMode={actionMode}
           changeActionMode={changeActionMode}
           currentCollection={currentCollection}
-          onSubmitCollection={handleEditCollection}
+          onEditCollection={handleEditCollection}
           isFormClosing={isFormClosing}
           onAddCollection={handleAddCollection}
         />
