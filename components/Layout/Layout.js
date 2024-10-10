@@ -6,6 +6,7 @@ import Plus from "@/public/icons/Plus.svg";
 import RoundButton from "../Buttons/RoundButton";
 import FormFlashcard from "@/components/FormFlashcard/FormFlashcard";
 import { useState, useEffect, useCallback } from "react";
+import Login from "@/components/Login/Login";
 
 export default function Layout({
   children,
@@ -113,6 +114,9 @@ export default function Layout({
               <Plus />
             </RoundButton>
           </FormToggleContainer>
+
+          <Login />
+
           <Menu
             collections={collections}
             startClosingForm={startClosingForm}
