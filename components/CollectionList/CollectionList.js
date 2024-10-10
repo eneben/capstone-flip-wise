@@ -1,9 +1,9 @@
 import Collection from "@/components/Collection/Collection";
 import styled from "styled-components";
+import { StyledHeadlineWithPadding } from "@/styledComponents";
 
 export default function CollectionList({
   modeSelection,
-  actionMode,
   collections,
   getCorrectFlashcardsFromCollection,
   getIncorrectFlashcardsFromCollection,
@@ -17,7 +17,9 @@ export default function CollectionList({
 
   return (
     <>
-      <StyledHeadline>{capitalizedModeSelection} Mode</StyledHeadline>
+      <StyledHeadlineWithPadding>
+        {capitalizedModeSelection} Mode
+      </StyledHeadlineWithPadding>
 
       {collections.length > 0 && (
         <CollectionsWrapper>
@@ -26,7 +28,6 @@ export default function CollectionList({
               <Collection
                 key={collection._id}
                 collection={collection}
-                actionMode={actionMode}
                 getCorrectFlashcardsFromCollection={
                   getCorrectFlashcardsFromCollection
                 }
@@ -60,12 +61,6 @@ const CollectionsWrapper = styled.ul`
   flex-direction: column;
   gap: 30px;
   list-style: none;
-`;
-
-const StyledHeadline = styled.h2`
-  text-align: center;
-  padding: 35px 0 30px 0;
-  font-size: 1.7rem;
 `;
 
 const StyledMessage = styled.p`

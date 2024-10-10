@@ -15,7 +15,6 @@ export default function LearningPage({
       <CollectionList
         modeSelection="learning"
         collections={collections}
-        actionMode={actionMode}
         getCorrectFlashcardsFromCollection={getCorrectFlashcardsFromCollection}
         getIncorrectFlashcardsFromCollection={
           getIncorrectFlashcardsFromCollection

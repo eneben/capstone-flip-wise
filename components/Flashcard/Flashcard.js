@@ -86,7 +86,9 @@ export default function Flashcard({
   }
 
   function handleShowAnswer() {
-    setShowAnswer((prevShowAnswer) => !prevShowAnswer);
+    if (!isDelete) {
+      setShowAnswer((prevShowAnswer) => !prevShowAnswer);
+    }
   }
 
   function toggleDeleteConfirmation(event) {
