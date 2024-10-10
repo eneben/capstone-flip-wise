@@ -5,6 +5,7 @@ import Menu from "../Menu/Menu";
 import Plus from "@/public/icons/Plus.svg";
 import RoundButton from "../Buttons/RoundButton";
 import FormFlashcard from "@/components/FormFlashcard/FormFlashcard";
+import FormCollection from "@/components/FormCollection/FormCollection";
 import { useState, useEffect, useCallback } from "react";
 
 export default function Layout({
@@ -13,8 +14,10 @@ export default function Layout({
   actionMode,
   changeActionMode,
   currentFlashcard,
+  currentCollection,
   handleCreateFlashcard,
   handleEditFlashcard,
+  handleEditCollection,
   changeFlashcardSelection,
   handleAddCollection,
   getAllFlashcardsFromCollection,
@@ -28,7 +31,7 @@ export default function Layout({
   function handleToggleForm() {
     if (actionMode === "create") {
       setIsFormClosing(true);
-    } else if (actionMode === "edit") {
+    } else if (actionMode === "edit" || actionMode === "editCollection") {
       setIsFormClosing(true);
     } else {
       changeActionMode("create");
@@ -83,6 +86,17 @@ export default function Layout({
         />
       )}
 
+      {actionMode === "editCollection" && (
+        <FormCollection
+          headline="Edit Collection"
+          actionMode={actionMode}
+          changeActionMode={changeActionMode}
+          currentCollection={currentCollection}
+          onEditCollection={handleEditCollection}
+          isFormClosing={isFormClosing}
+        />
+      )}
+
       <FormToggleContainer>
         <FormButtonShadow />
       </FormToggleContainer>
@@ -108,7 +122,11 @@ export default function Layout({
               variant="formToggle"
               name="menu"
               onClick={handleToggleForm}
-              isRotate={actionMode === "create" || actionMode === "edit"}
+              isRotate={
+                actionMode === "create" ||
+                actionMode === "edit" ||
+                actionMode === "editCollection"
+              }
             >
               <Plus />
             </RoundButton>
