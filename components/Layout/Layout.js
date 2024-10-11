@@ -115,7 +115,7 @@ export default function Layout({
             </RoundButton>
           </FormToggleContainer>
 
-          <Login />
+          {/* <Login /> */}
 
           <Menu
             collections={collections}

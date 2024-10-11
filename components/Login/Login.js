@@ -17,4 +17,5 @@ export default function Login() {
       <button onClick={() => signIn()}>Sign in</button>
     </>
   );
+  return <>HAHA</>;
 }

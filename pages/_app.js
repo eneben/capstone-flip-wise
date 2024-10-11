@@ -30,6 +30,8 @@ export default function App({
   Component,
   pageProps: { session, ...pageProps },
 }) {
+  console.log("Session data:", session);
+
   const {
     data: flashcards,
     isLoading: flashcardIsLoading,
@@ -110,10 +112,14 @@ export default function App({
     collectionIsLoading
   ) {
     return (
-      <Layout>
-        <GlobalStyle />
-        <LoadingSpinner />
-      </Layout>
+      <SessionProvider session={session}>
+        <SWRConfig value={{ fetcher }}>
+          <Layout>
+            <GlobalStyle />
+            <LoadingSpinner />
+          </Layout>
+        </SWRConfig>
+      </SessionProvider>
     );
   }
 
