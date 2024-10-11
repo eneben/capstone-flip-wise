@@ -2,7 +2,6 @@ import CollectionList from "@/components/CollectionList/CollectionList";
 
 export default function TrainingPage({
   collections,
-  actionMode,
   getCorrectFlashcardsFromCollection,
   getIncorrectFlashcardsFromCollection,
   flashcardSelection,

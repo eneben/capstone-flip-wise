@@ -2,7 +2,6 @@ import CollectionList from "@/components/CollectionList/CollectionList";
 
 export default function GamingPage({
   collections,
-  actionMode,
   getCorrectFlashcardsFromCollection,
   getIncorrectFlashcardsFromCollection,
   flashcardSelection,
