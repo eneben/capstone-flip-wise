@@ -50,7 +50,7 @@ export default function Login({ position }) {
       <>
         <StyledButton $position={position} onClick={() => setIsSigning("out")}>
           <StyledWrapper>
-            <LogoutIcon />
+            <StyledLogoutIcon $position={position} />
             {position === "menu" && <p>Logout</p>}
           </StyledWrapper>
         </StyledButton>
@@ -62,7 +62,7 @@ export default function Login({ position }) {
     <>
       <StyledButton $position={position} onClick={() => setIsSigning("in")}>
         <StyledWrapper>
-          <LoginIcon />
+          <StyledLoginIcon $position={position} />
           {position === "menu" && <p>Login</p>}
         </StyledWrapper>
       </StyledButton>
@@ -85,4 +85,14 @@ const StyledWrapper = styled.div`
   gap: 10px;
   font-size: 1.1rem;
   font-weight: 500;
+`;
+
+const StyledLogoutIcon = styled(LogoutIcon)`
+  width: ${({ $position }) => ($position === "header" ? "35px" : "30px")};
+  height: ${({ $position }) => ($position === "header" ? "35px" : "30px")};
+`;
+
+const StyledLoginIcon = styled(LoginIcon)`
+  width: ${({ $position }) => ($position === "header" ? "35px" : "30px")};
+  height: ${({ $position }) => ($position === "header" ? "35px" : "30px")};
 `;
