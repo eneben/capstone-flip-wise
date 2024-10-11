@@ -5,7 +5,10 @@ export default function FormInput({
   maxlength,
   actionMode,
   currentFlashcard,
+  currentCollection,
 }) {
+  console.log("currentFlashcard", currentFlashcard);
+
   return (
     <StyledInput
       id={name}
@@ -13,7 +16,13 @@ export default function FormInput({
       maxLength={maxlength}
       type="text"
       required
-      defaultValue={actionMode === "edit" ? currentFlashcard[name] : ""}
+      defaultValue={
+        actionMode === "edit"
+          ? currentFlashcard[name]
+          : actionMode === "editCollection"
+          ? currentCollection.title
+          : ""
+      }
     />
   );
 }

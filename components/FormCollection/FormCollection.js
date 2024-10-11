@@ -42,8 +42,8 @@ export default function FormCollection({
           <FormInput
             name="collectionName"
             maxlength="23"
-            defaultValue={currentCollection?.title || "Test"}
-            required
+            currentCollection={currentCollection}
+            actionMode={actionMode}
           />
         </CollectionNameWrapper>
         <CollectionColorWrapper>
