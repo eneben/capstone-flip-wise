@@ -2,18 +2,16 @@ import styled from "styled-components";
 
 export default function FormInput({
   name,
-  maxlength,
+  maxLength,
   actionMode,
   currentFlashcard,
   currentCollection,
 }) {
-  console.log("currentFlashcard", currentFlashcard);
-
   return (
     <StyledInput
       id={name}
       name={name}
-      maxLength={maxlength}
+      maxLength={maxLength}
       type="text"
       required
       defaultValue={

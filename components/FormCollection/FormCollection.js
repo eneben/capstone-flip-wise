@@ -23,13 +23,9 @@ export default function FormCollection({
       color: collectionColor,
     };
 
-    try {
-      await onEditCollection(updatedCollection);
-      event.target.reset();
-      changeActionMode("default");
-    } catch (error) {
-      console.error("Error while editing collection:", error);
-    }
+    await onEditCollection(updatedCollection);
+    event.target.reset();
+    changeActionMode("default");
   }
 
   return (
@@ -41,7 +37,7 @@ export default function FormCollection({
           <StyledLabel htmlFor="collectionName">Collection Name</StyledLabel>
           <FormInput
             name="collectionName"
-            maxlength="23"
+            maxLength="23"
             currentCollection={currentCollection}
             actionMode={actionMode}
           />
