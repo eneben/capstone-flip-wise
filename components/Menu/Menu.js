@@ -44,7 +44,7 @@ export default function Menu({
   return (
     <StyledMenuContainer>
       <StyledButtonSection>
-        <Login />
+        <Login position="header" />
 
         <StyledButton
           type="button"
@@ -66,7 +66,6 @@ export default function Menu({
               collections={collections}
               hasSubmenu={false}
               page=""
-              submenuMode={submenuMode}
               changeSubmenuMode={changeSubmenuMode}
               onToggleMenu={handleToggleMenu}
               changeFlashcardSelection={changeFlashcardSelection}
@@ -78,7 +77,6 @@ export default function Menu({
               collections={collections}
               hasSubmenu={true}
               page="learning"
-              menuMode="learning"
               submenuMode={submenuMode}
               changeSubmenuMode={changeSubmenuMode}
               onToggleMenu={handleToggleMenu}
@@ -93,7 +91,6 @@ export default function Menu({
               collections={collections}
               hasSubmenu={true}
               page="training"
-              menuMode="training"
               submenuMode={submenuMode}
               changeSubmenuMode={changeSubmenuMode}
               onToggleMenu={handleToggleMenu}
@@ -108,7 +105,6 @@ export default function Menu({
               collections={collections}
               hasSubmenu={true}
               page="gaming"
-              menuMode="gaming"
               submenuMode={submenuMode}
               changeSubmenuMode={changeSubmenuMode}
               onToggleMenu={handleToggleMenu}
@@ -116,6 +112,28 @@ export default function Menu({
               getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
               closingTrigger={closingTrigger}
             />
+
+            {/* <MenuItem
+              content={<Login position="menu" />}
+              menuItemName="login"
+              page=""
+              collections={collections}
+              changeSubmenuMode={changeSubmenuMode} default
+              onToggleMenu={handleToggleMenu} <--
+              changeFlashcardSelection={changeFlashcardSelection} all
+              getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
+              closingTrigger={closingTrigger}
+            /> */}
+
+            <StyledMenuLogin
+              onClick={() => {
+                changeSubmenuMode("default");
+                changeFlashcardSelection("all");
+                handleToggleMenu();
+              }}
+            >
+              <Login position="menu" />
+            </StyledMenuLogin>
           </StyledNavigationList>
         </StyledNavigation>
       )}
@@ -125,23 +143,13 @@ export default function Menu({
 }
 
 const menuAnimationIn = keyframes`
-0% { top: -76px; }
+0% { top: -120px; }
 100% { top: 100px; }
 `;
 
 const menuAnimationOut = keyframes`
 0% { top: 100px; }
-100% { top: -76px; }
-`;
-
-const subMenuAnimationOpen = keyframes`
-0% { height: 0px; opacity: 0;}
-100% { height: 35px; opacity: 1;}
-`;
-
-const subMenuAnimationClose = keyframes`
-0% { height: 35px; opacity: 1;}
-100% { height: 0px; opacity: 0;}
+100% { top: -120px; }
 `;
 
 const StyledMenuContainer = styled.div`
@@ -216,4 +224,16 @@ const StyledOutsideClickArea = styled.div`
   bottom: 0;
   background-color: #000;
   opacity: 0;
+`;
+
+const StyledMenuLogin = styled.li`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 1.1rem;
+  font-weight: 500;
+  text-align: center;
+  color: #fff;
+  background-color: #000;
+  height: 44px;
 `;
