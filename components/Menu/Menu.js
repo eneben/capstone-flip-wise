@@ -118,9 +118,9 @@ export default function Menu({
               menuItemName="login"
               page=""
               collections={collections}
-              changeSubmenuMode={changeSubmenuMode} default
-              onToggleMenu={handleToggleMenu} <--
-              changeFlashcardSelection={changeFlashcardSelection} all
+              changeSubmenuMode={changeSubmenuMode}
+              onToggleMenu={handleToggleMenu}
+              changeFlashcardSelection={changeFlashcardSelection}
               getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
               closingTrigger={closingTrigger}
             /> */}
