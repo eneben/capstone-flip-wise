@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import MenuIcon from "@/public/icons/Menu.svg";
 import MenuItem from "../MenuItem/MenuItem";
 import styled, { keyframes, css } from "styled-components";
+import Login from "../Login/Login";
 
 export default function Menu({
   collections,
@@ -42,9 +43,17 @@ export default function Menu({
 
   return (
     <StyledMenuContainer>
-      <StyledButton type="button" name="menuButton" onClick={handleToggleMenu}>
-        <MenuIcon />
-      </StyledButton>
+      <StyledButtonSection>
+        <Login />
+
+        <StyledButton
+          type="button"
+          name="menuButton"
+          onClick={handleToggleMenu}
+        >
+          <MenuIcon />
+        </StyledButton>
+      </StyledButtonSection>
 
       {isMenu && <StyledOutsideClickArea onClick={handleToggleMenu} />}
 
@@ -139,6 +148,13 @@ const StyledMenuContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+`;
+
+const StyledButtonSection = styled.section`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
 `;
 
 const StyledButton = styled.button`

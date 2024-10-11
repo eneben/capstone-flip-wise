@@ -30,8 +30,6 @@ export default function App({
   Component,
   pageProps: { session, ...pageProps },
 }) {
-  console.log("Session data:", session);
-
   const {
     data: flashcards,
     isLoading: flashcardIsLoading,

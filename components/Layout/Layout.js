@@ -115,8 +115,6 @@ export default function Layout({
             </RoundButton>
           </FormToggleContainer>
 
-          <Login />
-
           <Menu
             collections={collections}
             startClosingForm={startClosingForm}

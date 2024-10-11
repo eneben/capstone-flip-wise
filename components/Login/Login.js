@@ -1,21 +1,36 @@
 import { useSession, signIn, signOut } from "next-auth/react";
+import LoginIcon from "@/public/icons/LoginIcon.svg";
+import LogoutIcon from "@/public/icons/LogoutIcon.svg";
+import styled from "styled-components";
 
 export default function Login() {
   const { data: session } = useSession();
 
+  console.log("Session data:", session);
+
   if (session) {
     return (
       <>
-        Signed in as {session.user.email} <br />
-        <button onClick={() => signOut()}>Sign out</button>
+        <StyledButton onClick={() => signOut()}>
+          <LogoutIcon />
+        </StyledButton>
       </>
     );
   }
   return (
     <>
-      Not signed in <br />
-      <button onClick={() => signIn()}>Sign in</button>
+      <StyledButton onClick={() => signIn()}>
+        <LoginIcon />
+      </StyledButton>
     </>
   );
-  return <>HAHA</>;
 }
+
+const StyledButton = styled.button`
+  color: #000;
+  width: 35px;
+  height: 35px;
+  z-index: 1;
+  background-color: #fff;
+  border: none;
+`;
