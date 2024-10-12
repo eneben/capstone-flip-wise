@@ -4,7 +4,6 @@ import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 export const authOptions = {
-  // Configure one or more authentication providers
   providers: [
     process.env.VERCEL_ENV === "preview"
       ? CredentialsProvider({
@@ -23,8 +22,8 @@ export const authOptions = {
               credentials.password === "katze123"
             ) {
               return {
-                name: "John Doe",
-                email: "test@example.com",
+                name: "Horst Detlef",
+                email: "horst@detlef.com",
                 id: "a1b2c3d4",
               };
             } else {
@@ -42,13 +41,11 @@ export const authOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       authorization: { params: { scope: "openid" } },
     }),
-    // ...add more providers here
   ],
   callbacks: {
-    async session({ session }) {
-      return {
-        ...session,
-      };
+    async session({ session, token }) {
+      session.user.id = token.sub;
+      return session;
     },
   },
 };

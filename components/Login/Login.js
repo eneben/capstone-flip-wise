@@ -15,8 +15,6 @@ export default function Login({
 
   const [isSigning, setIsSigning] = useState("");
 
-  console.log("Session data:", session);
-
   function handleLogout() {
     signOut();
     changeShowLogOutDialog(false);

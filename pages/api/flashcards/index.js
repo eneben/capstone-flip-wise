@@ -6,6 +6,10 @@ import Flashcard from "@/db/models/Flashcard.js";
 export default async function handler(request, response) {
   const session = await getServerSession(request, response, authOptions);
 
+  if (session) {
+    console.log("ID: ", session.user.id);
+  }
+
   try {
     await dbConnect();
   } catch (error) {
