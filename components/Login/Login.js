@@ -2,7 +2,7 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import LoginIcon from "@/public/icons/LoginIcon.svg";
 import LogoutIcon from "@/public/icons/LogoutIcon.svg";
 import styled from "styled-components";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import RegularButton from "../Buttons/RegularButton";
 import ButtonWrapper from "../Buttons/ButtonWrapper";
 
