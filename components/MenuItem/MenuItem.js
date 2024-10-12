@@ -152,7 +152,7 @@ const StyledSubNavigationListItem = styled.li`
 
 const StyledNavigationLink = styled(Link)`
   text-decoration: none;
-  color: ${({ disabled }) => (disabled ? "var(--secondary-mid-grey)" : "#fff")};
+  color: ${({ disabled }) => (disabled ? "#838383" : "#fff")};
   cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
 `;
 
@@ -164,5 +164,5 @@ const StyledSubNavigationLink = styled(Link)`
 const StyledSubMenuArrow = styled(SubMenuArrow)`
   rotate: ${(props) => (props.$isRotate ? "1.5turn" : "0")};
   transition: 0.3s ease-out;
-  color: ${({ disabled }) => (disabled ? "var(--secondary-mid-grey)" : "#fff")};
+  color: ${({ disabled }) => (disabled ? "#838383" : "#fff")};
 `;
