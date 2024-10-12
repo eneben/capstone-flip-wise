@@ -10,6 +10,7 @@ import RoundButton from "../Buttons/RoundButton";
 import DeleteConfirmationDialog from "../DeleteConfirmationDialog/DeleteConfirmationDialog";
 import LevelBar from "../LevelBar/LevelBar";
 import BubbleAnimation from "../BubbleAnimation/BubbleAnimation";
+import { useSession } from "next-auth/react";
 
 export default function Flashcard({
   flashcard,
@@ -23,6 +24,8 @@ export default function Flashcard({
   onToggleCorrect,
   onFirstClick,
 }) {
+  const { data: session } = useSession();
+
   const [showAnswer, setShowAnswer] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
@@ -176,6 +179,8 @@ export default function Flashcard({
                         onClick={setEditWithoutFlip}
                         type="button"
                         variant="edit"
+                        disabled={!session}
+                        grayout={!session}
                       >
                         <Edit />
                       </RoundButton>
@@ -185,6 +190,8 @@ export default function Flashcard({
                         onClick={toggleDeleteConfirmation}
                         type="button"
                         variant="delete"
+                        disabled={!session}
+                        grayout={!session}
                       >
                         <Delete />
                       </RoundButton>
@@ -211,6 +218,8 @@ export default function Flashcard({
                         onClick={toggleDeleteConfirmation}
                         type="button"
                         variant="delete"
+                        disabled={!session}
+                        grayout={!session}
                       >
                         <Delete />
                       </RoundButton>
@@ -225,6 +234,8 @@ export default function Flashcard({
                           variant={
                             isCorrect ? "markAsIncorrect" : "markAsCorrect"
                           }
+                          disabled={!session}
+                          grayout={!session}
                         >
                           {isCorrect ? <MarkAsIncorrect /> : <MarkAsCorrect />}
                         </RoundButton>
@@ -305,6 +316,8 @@ export default function Flashcard({
                       onClick={setEditWithoutFlip}
                       type="button"
                       variant="edit"
+                      disabled={!session}
+                      grayout={!session}
                     >
                       <Edit />
                     </RoundButton>
@@ -314,6 +327,8 @@ export default function Flashcard({
                       onClick={toggleDeleteConfirmation}
                       type="button"
                       variant="delete"
+                      disabled={!session}
+                      grayout={!session}
                     >
                       <Delete />
                     </RoundButton>
@@ -340,6 +355,8 @@ export default function Flashcard({
                       onClick={toggleDeleteConfirmation}
                       type="button"
                       variant="delete"
+                      disabled={!session}
+                      grayout={!session}
                     >
                       <Delete />
                     </RoundButton>
@@ -354,6 +371,8 @@ export default function Flashcard({
                         variant={
                           isCorrect ? "markAsIncorrect" : "markAsCorrect"
                         }
+                        disabled={!session}
+                        grayout={!session}
                       >
                         {isCorrect ? <MarkAsIncorrect /> : <MarkAsCorrect />}
                       </RoundButton>

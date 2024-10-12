@@ -1,4 +1,17 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+
+export const StyledSignedOutContainer = styled.div`
+  opacity: 0.4;
+  pointer-events: none;
+
+  ${({ $isFlexProp }) =>
+    $isFlexProp &&
+    css`
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    `}
+`;
 
 export const StyledMessage = styled.p`
   text-align: center;
@@ -30,4 +43,10 @@ export const StyledSuccessMessage = styled.p`
   text-align: center;
   color: var(--primary-green);
   padding: 0 30px 50px 30px;
+`;
+
+export const StyledAccessDeniedMessage = styled.h2`
+  font: var(--sub-headline);
+  text-align: center;
+  padding: 100px 30px;
 `;

@@ -15,6 +15,7 @@ export default function MenuItem({
   changeFlashcardSelection,
   getAllFlashcardsFromCollection,
   closingTrigger,
+  disabled,
 }) {
   const [isCollectionsClosing, setIsCollectionsClosing] = useState(false);
 
@@ -50,10 +51,13 @@ export default function MenuItem({
     <>
       <StyledNavigationListItem>
         <StyledNavigationLink
-          href={`/${page}`}
+          disabled={disabled}
+          href={disabled ? "#" : `/${page}`}
           onClick={() => {
-            changeFlashcardSelection("all");
-            onToggleMenu();
+            if (!disabled) {
+              changeFlashcardSelection("all");
+              onToggleMenu();
+            }
           }}
         >
           {content}
@@ -62,7 +66,12 @@ export default function MenuItem({
         {hasSubmenu && (
           <StyledSubMenuArrow
             $isRotate={submenuMode === menuItemName}
-            onClick={toggleSubmenuMode}
+            onClick={() => {
+              if (!disabled) {
+                toggleSubmenuMode();
+              }
+            }}
+            disabled={disabled}
           />
         )}
       </StyledNavigationListItem>
@@ -77,6 +86,7 @@ export default function MenuItem({
                 $collectionsLength={collectionsLength}
               >
                 <StyledSubNavigationLink
+                  disabled={disabled}
                   href={`/${page}/${collection._id}`}
                   onClick={() => {
                     changeFlashcardSelection("all");
@@ -142,7 +152,8 @@ const StyledSubNavigationListItem = styled.li`
 
 const StyledNavigationLink = styled(Link)`
   text-decoration: none;
-  color: #fff;
+  color: ${({ disabled }) => (disabled ? "var(--secondary-mid-grey)" : "#fff")};
+  cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
 `;
 
 const StyledSubNavigationLink = styled(Link)`
@@ -153,4 +164,5 @@ const StyledSubNavigationLink = styled(Link)`
 const StyledSubMenuArrow = styled(SubMenuArrow)`
   rotate: ${(props) => (props.$isRotate ? "1.5turn" : "0")};
   transition: 0.3s ease-out;
+  color: ${({ disabled }) => (disabled ? "var(--secondary-mid-grey)" : "#fff")};
 `;

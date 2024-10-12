@@ -1,7 +1,21 @@
 import styled from "styled-components";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { StyledSignedOutContainer } from "@/styledComponents";
 
 export default function HomePage() {
+  const { data: session } = useSession();
+
+  function SignedOutContainer({ isSignedOut, children }) {
+    return isSignedOut ? (
+      <StyledSignedOutContainer $isFlexProp={true}>
+        {children}
+      </StyledSignedOutContainer>
+    ) : (
+      <>{children}</>
+    );
+  }
+
   return (
     <HomeWrapper>
       <StyledIntroduction>
@@ -15,20 +29,23 @@ export default function HomePage() {
           filtering unlearned, learned, or all cards.
         </StyledDescription>
       </StyledModeSelection>
-      <StyledModeSelection href="/training" $color="blue">
-        <StyledModeName $color="blue">Training Mode</StyledModeName>
-        <StyledDescription>
-          Cards move up or down five levels based on your answers. Focus more on
-          what you don&apos;t know and reinforce knowledge efficiently.
-        </StyledDescription>
-      </StyledModeSelection>
-      <StyledModeSelection href="/gaming" $color="red">
-        <StyledModeName $color="red">Gaming Mode</StyledModeName>
-        <StyledDescription>
-          Learn in a playful way by sorting the front and back of the flashcard
-          in a memory game. We think learning should be fun.
-        </StyledDescription>
-      </StyledModeSelection>
+
+      <SignedOutContainer isSignedOut={!session}>
+        <StyledModeSelection href="/training" $color="blue">
+          <StyledModeName $color="blue">Training Mode</StyledModeName>
+          <StyledDescription>
+            Cards move up or down five levels based on your answers. Focus more
+            on what you don&apos;t know and reinforce knowledge efficiently.
+          </StyledDescription>
+        </StyledModeSelection>
+        <StyledModeSelection href="/gaming" $color="red">
+          <StyledModeName $color="red">Gaming Mode</StyledModeName>
+          <StyledDescription>
+            Learn in a playful way by sorting the front and back of the
+            flashcard in a memory game. We think learning should be fun.
+          </StyledDescription>
+        </StyledModeSelection>
+      </SignedOutContainer>
     </HomeWrapper>
   );
 }

@@ -6,6 +6,7 @@ import Delete from "@/public/icons/Delete.svg";
 import DeleteConfirmationDialog from "../DeleteConfirmationDialog/DeleteConfirmationDialog";
 import LevelBar from "../LevelBar/LevelBar";
 import { useState } from "react";
+import { useSession } from "next-auth/react";
 
 export default function Collection({
   collection,
@@ -17,6 +18,8 @@ export default function Collection({
   handleDeleteCollection,
   modeSelection,
 }) {
+  const { data: session } = useSession();
+
   const [isDelete, setIsDelete] = useState(false);
 
   const { title: name, color, _id: id } = collection;
@@ -64,6 +67,8 @@ export default function Collection({
               onClick={toggleDeleteConfirmation}
               type="button"
               variant="delete"
+              disabled={!session}
+              grayout={!session}
             >
               <Delete />
             </RoundButton>

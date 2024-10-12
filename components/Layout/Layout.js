@@ -6,7 +6,7 @@ import Plus from "@/public/icons/Plus.svg";
 import RoundButton from "../Buttons/RoundButton";
 import FormFlashcard from "@/components/FormFlashcard/FormFlashcard";
 import { useState, useEffect, useCallback } from "react";
-import Login from "@/components/Login/Login";
+import { useSession } from "next-auth/react";
 
 export default function Layout({
   children,
@@ -20,6 +20,8 @@ export default function Layout({
   handleAddCollection,
   getAllFlashcardsFromCollection,
 }) {
+  const { data: session } = useSession();
+
   const [isFormClosing, setIsFormClosing] = useState(false);
 
   const cachedChangeActionMode = useCallback(changeActionMode, [
@@ -110,6 +112,7 @@ export default function Layout({
               name="menu"
               onClick={handleToggleForm}
               isRotate={actionMode === "create" || actionMode === "edit"}
+              disabled={!session}
             >
               <Plus />
             </RoundButton>

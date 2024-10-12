@@ -3,6 +3,7 @@ import MenuIcon from "@/public/icons/Menu.svg";
 import MenuItem from "../MenuItem/MenuItem";
 import styled, { keyframes, css } from "styled-components";
 import Login from "../Login/Login";
+import { useSession } from "next-auth/react";
 
 export default function Menu({
   collections,
@@ -10,6 +11,8 @@ export default function Menu({
   changeFlashcardSelection,
   getAllFlashcardsFromCollection,
 }) {
+  const { data: session } = useSession();
+
   const [isMenu, setIsMenu] = useState(false);
   const [isMenuClosing, setIsMenuClosing] = useState(false);
 
@@ -97,6 +100,7 @@ export default function Menu({
               changeFlashcardSelection={changeFlashcardSelection}
               getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
               closingTrigger={closingTrigger}
+              disabled={!session}
             />
 
             <MenuItem
@@ -111,19 +115,8 @@ export default function Menu({
               changeFlashcardSelection={changeFlashcardSelection}
               getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
               closingTrigger={closingTrigger}
+              disabled={!session}
             />
-
-            {/* <MenuItem
-              content={<Login position="menu" />}
-              menuItemName="login"
-              page=""
-              collections={collections}
-              changeSubmenuMode={changeSubmenuMode}
-              onToggleMenu={handleToggleMenu}
-              changeFlashcardSelection={changeFlashcardSelection}
-              getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
-              closingTrigger={closingTrigger}
-            /> */}
 
             <StyledMenuLogin
               onClick={() => {

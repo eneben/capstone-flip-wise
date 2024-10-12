@@ -6,8 +6,10 @@ import {
   StyledHeadline,
   StyledSubheading,
   StyledSuccessMessage,
+  StyledAccessDeniedMessage,
 } from "@/styledComponents";
 import Flashcard from "@/components/Flashcard/Flashcard";
+import { useSession } from "next-auth/react";
 
 export default function TrainingCollectionPage({
   handleDeleteFlashcard,
@@ -18,6 +20,7 @@ export default function TrainingCollectionPage({
   handleDecreaseFlashcardLevel,
   handleFirstClick,
 }) {
+  const { status } = useSession();
   const router = useRouter();
   const { id } = router.query;
 
@@ -52,6 +55,14 @@ export default function TrainingCollectionPage({
   }
 
   const allLearned = areAllCardsLearned(sortedFlashcards);
+
+  if (status !== "authenticated") {
+    return (
+      <StyledAccessDeniedMessage>
+        Please log in to access this page.
+      </StyledAccessDeniedMessage>
+    );
+  }
 
   return (
     <>

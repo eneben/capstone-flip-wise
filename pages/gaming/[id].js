@@ -8,13 +8,17 @@ import {
   StyledMessage,
   StyledHeadlineWithPadding,
   StyledSuccessMessage,
+  StyledAccessDeniedMessage,
 } from "@/styledComponents";
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { uid } from "uid";
+import { useSession } from "next-auth/react";
 
 export default function TrainingCollectionPage({
   getAllFlashcardsFromCollection,
 }) {
+  const { status } = useSession();
+
   const router = useRouter();
   const { id } = router.query;
 
@@ -161,6 +165,14 @@ export default function TrainingCollectionPage({
   useEffect(() => {
     setupMemoryCards();
   }, [setupMemoryCards]);
+
+  if (status !== "authenticated") {
+    return (
+      <StyledAccessDeniedMessage>
+        Please log in to access this page.
+      </StyledAccessDeniedMessage>
+    );
+  }
 
   if (allFlashcardsFromCollection.length < 9) {
     return (
