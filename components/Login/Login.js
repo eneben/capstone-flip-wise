@@ -2,65 +2,73 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import LoginIcon from "@/public/icons/LoginIcon.svg";
 import LogoutIcon from "@/public/icons/LogoutIcon.svg";
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import RegularButton from "../Buttons/RegularButton";
 import ButtonWrapper from "../Buttons/ButtonWrapper";
 
-export default function Login({ position }) {
+export default function Login({
+  position,
+  changeShowLogOutDialog,
+  showLogOutDialog,
+}) {
   const { data: session } = useSession();
 
-  // const [isSigning, setIsSigning] = useState("");
-  const [showLogOutDialog, setShowLogOutDialog] = useState(false);
+  const [isSigning, setIsSigning] = useState("");
 
   console.log("Session data:", session);
 
-  // useEffect(() => {
-  //   if (isSigning === "in") {
-  //     handleSignIn();
-  //   }
-
-  //   function handleSignIn() {
-  //     const signInTimeout = setTimeout(() => {
-  //       signIn();
-  //       setIsSigning("");
-  //     }, 300);
-
-  //     return () => {
-  //       clearTimeout(signInTimeout);
-  //     };
-  //   }
-  // }, [isSigning]);
-
-  // useEffect(() => {
-  //   if (isSigning === "out") {
-  //     handleSignOut();
-  //   }
-
-  //   function handleSignOut() {
-  //     const signOutTimeout = setTimeout(() => {
-  //       signOut();
-  //       setIsSigning("");
-  //     }, 300);
-
-  //     return () => {
-  //       clearTimeout(signOutTimeout);
-  //     };
-  //   }
-  // }, [isSigning]);
-
-  function toggleLogOutDialog() {
-    setShowLogOutDialog(!showLogOutDialog);
-  }
-
   function handleLogout() {
     signOut();
-    toggleLogOutDialog();
+    changeShowLogOutDialog(false);
   }
+
+  useEffect(() => {
+    if (isSigning === "in") {
+      handleTimedOutSignIn();
+    }
+
+    function handleTimedOutSignIn() {
+      const signInTimeout = setTimeout(() => {
+        signIn();
+        setIsSigning("");
+      }, 300);
+
+      return () => {
+        clearTimeout(signInTimeout);
+      };
+    }
+  }, [isSigning]);
+
+  useEffect(() => {
+    if (isSigning === "out") {
+      handleTimedOutLogOutDialog();
+    }
+
+    function handleTimedOutLogOutDialog() {
+      const signOutTimeout = setTimeout(() => {
+        changeShowLogOutDialog(true);
+        setIsSigning("");
+      }, 300);
+
+      return () => {
+        clearTimeout(signOutTimeout);
+      };
+    }
+  }, [isSigning, changeShowLogOutDialog]);
 
   if (session) {
     return (
       <>
-        <StyledButton $position={position} onClick={() => toggleLogOutDialog()}>
+        <StyledButton
+          $position={position}
+          onClick={() => {
+            if (position === "header") {
+              changeShowLogOutDialog(true);
+            } else if (position === "menu") {
+              setIsSigning("out");
+            }
+          }}
+        >
           <StyledWrapper>
             <StyledLogoutIcon $position={position} />
             {position === "menu" && <p>Logout</p>}
@@ -80,7 +88,7 @@ export default function Login({ position }) {
                   Yes
                 </RegularButton>
                 <RegularButton
-                  onClick={() => toggleLogOutDialog()}
+                  onClick={() => changeShowLogOutDialog(false)}
                   type="button"
                   variant="confirm"
                 >
@@ -96,7 +104,16 @@ export default function Login({ position }) {
 
   return (
     <>
-      <StyledButton $position={position} onClick={() => signIn()}>
+      <StyledButton
+        $position={position}
+        onClick={() => {
+          if (position === "header") {
+            signIn();
+          } else if (position === "menu") {
+            setIsSigning("in");
+          }
+        }}
+      >
         <StyledWrapper>
           <StyledLoginIcon $position={position} />
           {position === "menu" && <p>Login</p>}

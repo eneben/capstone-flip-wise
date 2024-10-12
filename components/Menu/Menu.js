@@ -19,6 +19,12 @@ export default function Menu({
   const [submenuMode, setSubmenuMode] = useState("default");
   const [closingTrigger, setClosingTrigger] = useState(false);
 
+  const [showLogOutDialog, setShowLogOutDialog] = useState(false);
+
+  function changeShowLogOutDialog(value) {
+    setShowLogOutDialog(value);
+  }
+
   function changeSubmenuMode(mode) {
     setSubmenuMode(mode);
   }
@@ -47,7 +53,11 @@ export default function Menu({
   return (
     <StyledMenuContainer>
       <StyledButtonSection>
-        <Login position="header" />
+        <Login
+          position="header"
+          changeShowLogOutDialog={changeShowLogOutDialog}
+          showLogOutDialog={showLogOutDialog}
+        />
 
         <StyledButton
           type="button"
@@ -125,7 +135,11 @@ export default function Menu({
                 handleToggleMenu();
               }}
             >
-              <Login position="menu" />
+              <Login
+                position="menu"
+                changeShowLogOutDialog={changeShowLogOutDialog}
+                showLogOutDialog={showLogOutDialog}
+              />
             </StyledMenuLogin>
           </StyledNavigationList>
         </StyledNavigation>
