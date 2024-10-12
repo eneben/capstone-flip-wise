@@ -92,7 +92,7 @@ export default function Login({
                   type="button"
                   variant="confirm"
                 >
-                  No
+                  Cancel
                 </RegularButton>
               </ButtonWrapper>
             </ModalContainer>

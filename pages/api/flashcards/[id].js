@@ -1,7 +1,11 @@
 import dbConnect from "@/db/connect.js";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/pages/api/auth/[...nextauth].js";
 import Flashcard from "@/db/models/Flashcard.js";
 
 export default async function handler(request, response) {
+  const session = await getServerSession(request, response, authOptions);
+
   try {
     await dbConnect();
   } catch (error) {
@@ -25,7 +29,6 @@ export default async function handler(request, response) {
         response.status(404).json({ status: "Not Found" });
         return;
       }
-
       response.status(200).json(flashcard);
       return;
     } catch (error) {
@@ -38,13 +41,18 @@ export default async function handler(request, response) {
 
   if (request.method === "PATCH") {
     try {
-      const updatedFlashcard = request.body;
-      if (!updatedFlashcard) {
-        response.status(404).json({ status: "Not Found" });
+      if (session) {
+        const updatedFlashcard = request.body;
+        if (!updatedFlashcard) {
+          response.status(404).json({ status: "Not Found" });
+          return;
+        }
+        await Flashcard.findByIdAndUpdate(id, updatedFlashcard);
+        response.status(200).json({ message: "Flashcard updated." });
+      } else {
+        response.status(401).json({ status: "Not authorized" });
         return;
       }
-      await Flashcard.findByIdAndUpdate(id, updatedFlashcard);
-      response.status(200).json({ message: "Flashcard updated." });
     } catch (error) {
       response
         .status(400)
@@ -55,9 +63,14 @@ export default async function handler(request, response) {
 
   if (request.method === "DELETE") {
     try {
-      await Flashcard.findByIdAndDelete(id);
-      response.status(200).json({ message: "Flashcard deleted." });
-      return;
+      if (session) {
+        await Flashcard.findByIdAndDelete(id);
+        response.status(200).json({ message: "Flashcard deleted." });
+        return;
+      } else {
+        response.status(401).json({ status: "Not authorized" });
+        return;
+      }
     } catch (error) {
       response
         .status(400)

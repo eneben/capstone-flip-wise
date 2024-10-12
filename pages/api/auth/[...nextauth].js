@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import GithubProvider from "next-auth/providers/github";
+import GoogleProvider from "next-auth/providers/google";
 
 console.log("wird das aufgerufen?");
 
@@ -11,15 +12,17 @@ export const authOptions = {
       clientSecret: process.env.GITHUB_SECRET,
       authorization: { params: { scope: "read:user" } },
     }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      authorization: { params: { scope: "openid" } },
+    }),
     // ...add more providers here
   ],
   callbacks: {
-    async session({ session, token }) {
+    async session({ session }) {
       return {
         ...session,
-        user: {
-          name: session.user.name,
-        },
       };
     },
   },

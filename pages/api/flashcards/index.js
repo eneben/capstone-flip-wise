@@ -1,7 +1,11 @@
 import dbConnect from "@/db/connect.js";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/pages/api/auth/[...nextauth].js";
 import Flashcard from "@/db/models/Flashcard.js";
 
 export default async function handler(request, response) {
+  const session = await getServerSession(request, response, authOptions);
+
   try {
     await dbConnect();
   } catch (error) {
@@ -25,10 +29,15 @@ export default async function handler(request, response) {
 
   if (request.method === "POST") {
     try {
-      const newFlashcard = request.body;
-      await Flashcard.create(newFlashcard);
-      response.status(201).json({ status: "Flashcard created" });
-      return;
+      if (session) {
+        const newFlashcard = request.body;
+        await Flashcard.create(newFlashcard);
+        response.status(201).json({ status: "Flashcard created" });
+        return;
+      } else {
+        response.status(401).json({ status: "Not authorized" });
+        return;
+      }
     } catch (error) {
       return response
         .status(400)
