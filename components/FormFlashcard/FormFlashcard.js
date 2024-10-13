@@ -1,8 +1,7 @@
-import styled, { keyframes, css } from "styled-components";
-import RegularButton from "../Buttons/RegularButton";
-import ButtonWrapper from "../Buttons/ButtonWrapper";
-import FormInput from "./FormInput";
+import { styled, css, keyframes } from "styled-components";
 import { useState } from "react";
+import FormManual from "../FormManual/FormManual";
+import FormAI from "../FormAI/FormAI";
 
 export default function FormFlashcard({
   collections,
@@ -13,8 +12,11 @@ export default function FormFlashcard({
   onSubmitFlashcard,
   isFormClosing,
   onAddCollection,
+  getAiFlashcards,
+  changeShowInfoModal,
 }) {
   const [showNewCollectionFields, setShowNewCollectionFields] = useState(false);
+  const [formMode, setFormMode] = useState("ai");
 
   function handleCollectionChange(event) {
     if (event.target.value === "newCollection") {
@@ -27,105 +29,105 @@ export default function FormFlashcard({
   async function handleSubmit(event) {
     event.preventDefault();
 
-    const formData = Object.fromEntries(new FormData(event.target));
-    const { collectionName, collectionColor, question, answer } = formData;
-    let newFlashcard;
+    // Hier beginnt der Code für das FormManual
+    if (formMode === "manual") {
+      const formData = Object.fromEntries(new FormData(event.target));
+      const { collectionName, collectionColor, question, answer } = formData;
+      let newFlashcard;
 
-    if (showNewCollectionFields) {
-      const newCollection = {
-        title: collectionName,
-        color: collectionColor,
-      };
-      const newCollectionId = await onAddCollection(newCollection);
+      if (showNewCollectionFields) {
+        const newCollection = {
+          title: collectionName,
+          color: collectionColor,
+        };
+        const newCollectionId = await onAddCollection(newCollection);
 
-      newFlashcard = {
-        collectionId: newCollectionId,
-        question,
-        answer,
-        level: 1,
-      };
-    } else {
-      newFlashcard = { ...formData, level: 1 };
+        newFlashcard = {
+          collectionId: newCollectionId,
+          question,
+          answer,
+          level: 1,
+        };
+      } else {
+        newFlashcard = { ...formData, level: 1 };
+      }
+
+      onSubmitFlashcard(newFlashcard);
+      setShowNewCollectionFields(false);
+      event.target.reset();
+      changeActionMode("default");
     }
+    // Hier endet der Code für das FormManual
 
-    onSubmitFlashcard(newFlashcard);
-    setShowNewCollectionFields(false);
-    event.target.reset();
-    changeActionMode("default");
+    // Hier beginnt der Code für das FormAI
+    if (formMode === "ai") {
+      const formData = Object.fromEntries(new FormData(event.target));
+      const {
+        collectionId,
+        collectionName,
+        collectionColor,
+        textInput,
+        numberOfFlashcards,
+      } = formData;
+      getAiFlashcards(
+        collectionId,
+        collectionName,
+        collectionColor,
+        textInput,
+        numberOfFlashcards
+      );
+      changeActionMode("default");
+    }
+    // Hier endet der Code für das FormAI
   }
 
   return (
-    <StyledForm onSubmit={handleSubmit} $isFormClosing={isFormClosing}>
-      <StyledFormHeadline>{headline}</StyledFormHeadline>
-      <StyledLabel htmlFor="question">Question</StyledLabel>
-      <FormInput
-        name="question"
-        actionMode={actionMode}
-        currentFlashcard={currentFlashcard}
-        maxlength="100"
-      />
-      <StyledLabel htmlFor="answer">Answer</StyledLabel>
-      <FormInput
-        name="answer"
-        actionMode={actionMode}
-        currentFlashcard={currentFlashcard}
-        maxlength="70"
-      />
-      <StyledLabel htmlFor="collection">Collection</StyledLabel>
-      <StyledSelect
-        id="collection"
-        name="collectionId"
-        required
-        defaultValue={
-          actionMode === "edit" ? currentFlashcard.collectionId : ""
-        }
-        onChange={handleCollectionChange}
-      >
-        <option value="">--Please choose a collection:--</option>
-        <option value="newCollection">+ Add New Collection</option>
-        {collections.map((collection) => {
-          return (
-            <option key={collection._id} value={collection._id}>
-              {collection.title}
-            </option>
-          );
-        })}
-      </StyledSelect>
-
-      {showNewCollectionFields && (
-        <NewCollectionWrapper>
-          <CollectionNameWrapper>
-            <StyledLabel htmlFor="collectionName">Collection Name</StyledLabel>
-            <FormInput name="collectionName" maxlength="23" />
-          </CollectionNameWrapper>
-          <CollectionColorWrapper>
-            <StyledLabel htmlFor="collectionColor">Color</StyledLabel>
-            <StyledColorInput
-              type="color"
-              id="collectionColor"
-              name="collectionColor"
-              defaultValue="#000000"
-              required
-            />
-          </CollectionColorWrapper>
-        </NewCollectionWrapper>
-      )}
-
-      <ButtonWrapper>
-        <RegularButton type="submit" variant="submit">
-          Submit
-        </RegularButton>
-        {actionMode === "edit" && (
-          <RegularButton
+    <>
+      <StyledForm onSubmit={handleSubmit} $isFormClosing={isFormClosing}>
+        <StyledFormNavigation>
+          <StyledFormButton
             type="button"
-            variant="confirm"
-            onClick={() => changeActionMode("default")}
+            $leftButton
+            $active={formMode === "manual"}
+            onClick={() => setFormMode("manual")}
           >
-            Cancel
-          </RegularButton>
+            Manual Entry
+          </StyledFormButton>
+          <StyledFormButton
+            type="button"
+            $rightButton
+            $active={formMode === "ai"}
+            onClick={() => setFormMode("ai")}
+          >
+            AI Generation
+          </StyledFormButton>
+        </StyledFormNavigation>
+
+        {formMode === "manual" && (
+          <FormManual
+            collections={collections}
+            headline={headline}
+            actionMode={actionMode}
+            changeActionMode={changeActionMode}
+            currentFlashcard={currentFlashcard}
+            isFormClosing={isFormClosing}
+            onSubmit={handleSubmit}
+            onCollectionChange={handleCollectionChange}
+            showNewCollectionFields={showNewCollectionFields}
+          />
         )}
-      </ButtonWrapper>
-    </StyledForm>
+
+        {formMode === "ai" && (
+          <FormAI
+            collections={collections}
+            changeActionMode={changeActionMode}
+            onCollectionChange={handleCollectionChange}
+            showNewCollectionFields={showNewCollectionFields}
+            changeShowInfoModal={changeShowInfoModal}
+          />
+        )}
+      </StyledForm>
+    </>
   );
 }
 
@@ -152,52 +154,30 @@ const StyledForm = styled.form`
   transform: translateX(-50%);
   position: fixed;
   top: 100px;
-  width: 21rem;
-  padding: 30px 10px 10px 10px;
+  width: 90vw;
+  max-width: 500px;
+  align-items: center;
   background-color: #fff;
   border-top: 0;
   border-radius: 0 0 10px 10px;
   box-shadow: 0px 0px 10px #000;
 `;
 
-const StyledFormHeadline = styled.h2`
-  font: var(--form-headline);
-  text-align: center;
-`;
-
-const StyledLabel = styled.label`
-  display: block;
-  padding: 10px 0 2px 0;
-  font: var(--form-label);
-`;
-
-const StyledSelect = styled.select`
-  display: block;
+const StyledFormNavigation = styled.nav`
   width: 100%;
-  font: var(--form-input);
-  height: 1.7rem;
-  border: 1px solid var(--primary-neutral);
-  border-radius: 2px;
-  &:focus {
-    outline: 1px solid var(--primary-neutral);
-  }
 `;
 
-const NewCollectionWrapper = styled.section`
-  display: flex;
-  width: 100%;
-  gap: 10px;
-`;
-
-const CollectionNameWrapper = styled.article`
-  flex-grow: 3;
-`;
-
-const CollectionColorWrapper = styled.article`
-  flex-grow: 1;
-`;
-
-const StyledColorInput = styled.input`
-  height: 1.5rem;
-  width: 100%;
+const StyledFormButton = styled.button`
+  width: 50%;
+  background-color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  border: none;
+  padding: 15px 0 15px 0;
+  box-shadow: ${({ $active, $rightButton, $leftButton }) =>
+    !$active && $rightButton
+      ? "inset 5px -5px 5px -5px #000;"
+      : !$active && $leftButton
+      ? "inset -5px -5px 5px -5px #000;"
+      : ""};
 `;

@@ -11,9 +11,15 @@ export default async function handler(request, response) {
       .json({ message: "Only POST requests are allowed" });
   }
 
-  const { inputText, numberOfFlashcards } = request.body;
+  const {
+    collectionId,
+    collectionName,
+    collectionColor,
+    textInput,
+    numberOfFlashcards,
+  } = request.body;
 
-  if (!inputText || !numberOfFlashcards) {
+  if (!textInput || !numberOfFlashcards) {
     return response
       .status(400)
       .json({ message: "Missing required parameters" });
@@ -22,9 +28,10 @@ export default async function handler(request, response) {
   try {
     const prompt = `
       Generate ${numberOfFlashcards} flashcards from the following text. 
+      Prioritize the information you include by importance. 
       Each flashcard should have a question and an answer. Here is the text:
 
-      "${inputText}"
+      "${textInput}"
 
       Format the response as a JSON array of objects, each object containing 
       a "question" and an "answer". Do not include any additional information.
@@ -39,7 +46,14 @@ export default async function handler(request, response) {
 
     const flashcards = JSON.parse(completion.choices[0].message.content.trim());
 
-    response.status(200).json(flashcards);
+    const flashcardsWithCollectionAndColor = flashcards.map((flashcard) => ({
+      ...flashcard,
+      collectionId,
+      collectionName,
+      collectionColor,
+    }));
+
+    response.status(200).json(flashcardsWithCollectionAndColor);
   } catch (error) {
     console.error("Error generating flashcards:", error);
     response

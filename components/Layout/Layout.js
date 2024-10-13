@@ -5,9 +5,11 @@ import Menu from "../Menu/Menu";
 import Plus from "@/public/icons/Plus.svg";
 import RoundButton from "../Buttons/RoundButton";
 import FormFlashcard from "@/components/FormFlashcard/FormFlashcard";
+import AiInfoModal from "../AiInfoModal/AiInfoModal";
 import { useState, useEffect, useCallback } from "react";
 
 export default function Layout({
+  getAiFlashcards,
   children,
   collections,
   actionMode,
@@ -21,9 +23,15 @@ export default function Layout({
 }) {
   const [isFormClosing, setIsFormClosing] = useState(false);
 
+  const [showInfoModal, setShowInfoModal] = useState(false);
+
   const cachedChangeActionMode = useCallback(changeActionMode, [
     changeActionMode,
   ]);
+
+  function changeShowInfoModal() {
+    setShowInfoModal(!showInfoModal);
+  }
 
   function handleToggleForm() {
     if (actionMode === "create") {
@@ -53,12 +61,17 @@ export default function Layout({
     <>
       <MainContainer>{children}</MainContainer>
 
+      {showInfoModal && (
+        <AiInfoModal changeShowInfoModal={changeShowInfoModal} />
+      )}
+
       {actionMode !== "default" && (
         <StyledOutsideClickArea onClick={handleToggleForm} />
       )}
 
       {actionMode === "create" && (
         <FormFlashcard
+          getAiFlashcards={getAiFlashcards}
           collections={collections}
           headline="Create new Flashcard"
           actionMode={actionMode}
@@ -67,11 +80,13 @@ export default function Layout({
           onSubmitFlashcard={handleCreateFlashcard}
           isFormClosing={isFormClosing}
           onAddCollection={handleAddCollection}
+          changeShowInfoModal={changeShowInfoModal}
         />
       )}
 
       {actionMode === "edit" && (
         <FormFlashcard
+          getAiFlashcards={getAiFlashcards}
           collections={collections}
           headline="Edit Flashcard"
           actionMode={actionMode}

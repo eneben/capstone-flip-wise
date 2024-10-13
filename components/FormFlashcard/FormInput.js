@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export default function FormInput({
   name,
-  maxlength,
+  maxLength,
   actionMode,
   currentFlashcard,
 }) {
@@ -10,7 +10,7 @@ export default function FormInput({
     <StyledInput
       id={name}
       name={name}
-      maxLength={maxlength}
+      maxLength={maxLength}
       type="text"
       required
       defaultValue={actionMode === "edit" ? currentFlashcard[name] : ""}

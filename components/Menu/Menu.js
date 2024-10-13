@@ -57,7 +57,6 @@ export default function Menu({
               collections={collections}
               hasSubmenu={false}
               page=""
-              submenuMode={submenuMode}
               changeSubmenuMode={changeSubmenuMode}
               onToggleMenu={handleToggleMenu}
               changeFlashcardSelection={changeFlashcardSelection}
@@ -69,7 +68,6 @@ export default function Menu({
               collections={collections}
               hasSubmenu={true}
               page="learning"
-              menuMode="learning"
               submenuMode={submenuMode}
               changeSubmenuMode={changeSubmenuMode}
               onToggleMenu={handleToggleMenu}
@@ -84,7 +82,6 @@ export default function Menu({
               collections={collections}
               hasSubmenu={true}
               page="training"
-              menuMode="training"
               submenuMode={submenuMode}
               changeSubmenuMode={changeSubmenuMode}
               onToggleMenu={handleToggleMenu}
@@ -99,7 +96,6 @@ export default function Menu({
               collections={collections}
               hasSubmenu={true}
               page="gaming"
-              menuMode="gaming"
               submenuMode={submenuMode}
               changeSubmenuMode={changeSubmenuMode}
               onToggleMenu={handleToggleMenu}
