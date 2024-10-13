@@ -38,13 +38,17 @@ export default async function handler(request, response) {
     `;
 
     const completion = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
+      model: "gpt-4o-mini",
       messages: [{ role: "user", content: prompt }],
-      max_tokens: 1000,
+      max_tokens: 16384,
       temperature: 0.2,
     });
 
-    const flashcards = JSON.parse(completion.choices[0].message.content.trim());
+    const content = completion.choices[0].message.content
+      .trim()
+      .replace(/^```json|```$/g, "");
+
+    const flashcards = JSON.parse(content);
 
     const flashcardsWithCollectionAndColor = flashcards.map((flashcard) => ({
       ...flashcard,

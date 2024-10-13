@@ -12,7 +12,7 @@ export default function FormAI({
   showNewCollectionFields,
   changeShowInfoModal,
 }) {
-  const maxTextInputLength = 20000;
+  const maxTextInputLength = 8000;
 
   const [remainingTextInputLength, setRemainingTextInputLength] =
     useState(maxTextInputLength);
@@ -55,9 +55,9 @@ export default function FormAI({
         </StyledCharacterCounter>
 
         <StyledLabel htmlFor="numberOfFlashcards">
-          Number of Flashcards (max. 100)
+          Number of Flashcards (max. 40)
         </StyledLabel>
-        <StyledInput type="number" name="numberOfFlashcards" max="100" />
+        <StyledInput type="number" name="numberOfFlashcards" max="40" />
 
         <StyledLabel htmlFor="collection">Collection</StyledLabel>
         <StyledSelect
