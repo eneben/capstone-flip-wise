@@ -202,7 +202,6 @@ export default function App({ Component, pageProps }) {
       });
       if (!response.ok) throw new Error("Failed to create flashcard");
       mutateFlashcards();
-      setActionMode("default");
       showToastMessage(
         "Flashcard created successfully!",
         "success",

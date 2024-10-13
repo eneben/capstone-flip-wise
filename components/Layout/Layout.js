@@ -79,6 +79,7 @@ export default function Layout({
           currentFlashcard={currentFlashcard}
           onSubmitFlashcard={handleCreateFlashcard}
           isFormClosing={isFormClosing}
+          startClosingForm={startClosingForm}
           onAddCollection={handleAddCollection}
           changeShowInfoModal={changeShowInfoModal}
         />
@@ -94,6 +95,7 @@ export default function Layout({
           currentFlashcard={currentFlashcard}
           onSubmitFlashcard={handleEditFlashcard}
           isFormClosing={isFormClosing}
+          startClosingForm={startClosingForm}
           onAddCollection={handleAddCollection}
         />
       )}

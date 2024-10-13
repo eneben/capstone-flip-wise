@@ -11,6 +11,7 @@ export default function FormFlashcard({
   currentFlashcard,
   onSubmitFlashcard,
   isFormClosing,
+  startClosingForm,
   onAddCollection,
   getAiFlashcards,
   changeShowInfoModal,
@@ -55,7 +56,6 @@ export default function FormFlashcard({
       onSubmitFlashcard(newFlashcard);
       setShowNewCollectionFields(false);
       event.target.reset();
-      changeActionMode("default");
     }
     // Hier endet der Code für das FormManual
 
@@ -76,9 +76,9 @@ export default function FormFlashcard({
         textInput,
         numberOfFlashcards
       );
-      changeActionMode("default");
     }
     // Hier endet der Code für das FormAI
+    startClosingForm();
   }
 
   return (
