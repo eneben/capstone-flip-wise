@@ -5,6 +5,7 @@ export default function GamingPage({
   getCorrectFlashcardsFromCollection,
   getIncorrectFlashcardsFromCollection,
   flashcardSelection,
+  changeActionMode,
   changeFlashcardSelection,
   handleDeleteCollection,
   getAllFlashcardsFromCollection,

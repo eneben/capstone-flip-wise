@@ -5,6 +5,7 @@ export default function LearningPage({
   getCorrectFlashcardsFromCollection,
   getIncorrectFlashcardsFromCollection,
   flashcardSelection,
+  changeActionMode,
   changeFlashcardSelection,
   handleDeleteCollection,
   getAllFlashcardsFromCollection,
@@ -12,8 +13,6 @@ export default function LearningPage({
   handleEditCollection,
   currentCollection,
 }) {
-  console.log("current Collection", currentCollection);
-
   return (
     <>
       <CollectionList

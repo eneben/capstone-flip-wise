@@ -5,6 +5,7 @@ export default function TrainingPage({
   getCorrectFlashcardsFromCollection,
   getIncorrectFlashcardsFromCollection,
   flashcardSelection,
+  changeActionMode,
   changeFlashcardSelection,
   handleDeleteCollection,
   getAllFlashcardsFromCollection,
