@@ -2,6 +2,7 @@ import styled from "styled-components";
 import RegularButton from "../Buttons/RegularButton";
 import ButtonWrapper from "../Buttons/ButtonWrapper";
 import FormInput from "../FormFlashcard/FormInput";
+import Edit from "@/public/icons/Edit.svg";
 
 export default function FormManual({
   collections,
@@ -71,6 +72,15 @@ export default function FormManual({
             </CollectionColorWrapper>
           </NewCollectionWrapper>
         )}
+        <StyledImageInputWrapper>
+          <StyledImageInput>
+            <IconTextWrapper>
+              <Edit />
+              Upload Image
+            </IconTextWrapper>
+          </StyledImageInput>
+          <HiddenImageInput />
+        </StyledImageInputWrapper>
       </StyledFormWrapper>
 
       <ButtonWrapper>
@@ -136,4 +146,38 @@ const CollectionColorWrapper = styled.article`
 const StyledColorInput = styled.input`
   height: 1.5rem;
   width: 100%;
+`;
+
+const StyledImageInputWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  position: relative;
+  justify-content: center;
+  padding-top: 20px;
+`;
+
+const HiddenImageInput = styled.input.attrs({
+  type: "file",
+})`
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+`;
+
+const StyledImageInput = styled.label`
+  display: inline-block;
+  padding: 8px 14px;
+  background-color: var(--secondary-grey);
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: center;
+`;
+
+const IconTextWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
 `;
