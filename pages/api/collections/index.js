@@ -29,15 +29,15 @@ export default async function handler(request, response) {
 
   if (request.method === "POST") {
     try {
-      if (session) {
-        const newCollection = request.body;
-        const createdCollection = await Collection.create(newCollection);
-        response.status(201).json(createdCollection);
-        return;
-      } else {
+      if (!session) {
         response.status(401).json({ status: "Not authorized" });
         return;
       }
+
+      const newCollection = request.body;
+      const createdCollection = await Collection.create(newCollection);
+      response.status(201).json(createdCollection);
+      return;
     } catch (error) {
       return response
         .status(400)

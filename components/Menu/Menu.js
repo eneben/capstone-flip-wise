@@ -134,16 +134,13 @@ export default function Menu({
               disabled={!session}
             />
 
-            <StyledMenuLogin
-              onClick={() => {
-                changeSubmenuMode("default");
-                changeFlashcardSelection("all");
-                handleToggleMenu();
-              }}
-            >
+            <StyledMenuLogin>
               <Login
                 position="menu"
                 changeShowLogOutDialog={changeShowLogOutDialog}
+                changeSubmenuMode={changeSubmenuMode}
+                changeFlashcardSelection={changeFlashcardSelection}
+                handleToggleMenu={handleToggleMenu}
               />
             </StyledMenuLogin>
           </StyledNavigationList>

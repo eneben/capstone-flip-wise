@@ -41,18 +41,19 @@ export default async function handler(request, response) {
 
   if (request.method === "PATCH") {
     try {
-      if (session) {
-        const updatedFlashcard = request.body;
-        if (!updatedFlashcard) {
-          response.status(404).json({ status: "Not Found" });
-          return;
-        }
-        await Flashcard.findByIdAndUpdate(id, updatedFlashcard);
-        response.status(200).json({ message: "Flashcard updated." });
-      } else {
+      if (!session) {
         response.status(401).json({ status: "Not authorized" });
         return;
       }
+
+      const updatedFlashcard = request.body;
+      if (!updatedFlashcard) {
+        response.status(404).json({ status: "Not Found" });
+        return;
+      }
+
+      await Flashcard.findByIdAndUpdate(id, updatedFlashcard);
+      response.status(200).json({ message: "Flashcard updated." });
     } catch (error) {
       response
         .status(400)
@@ -63,14 +64,14 @@ export default async function handler(request, response) {
 
   if (request.method === "DELETE") {
     try {
-      if (session) {
-        await Flashcard.findByIdAndDelete(id);
-        response.status(200).json({ message: "Flashcard deleted." });
-        return;
-      } else {
+      if (!session) {
         response.status(401).json({ status: "Not authorized" });
         return;
       }
+
+      await Flashcard.findByIdAndDelete(id);
+      response.status(200).json({ message: "Flashcard deleted." });
+      return;
     } catch (error) {
       response
         .status(400)

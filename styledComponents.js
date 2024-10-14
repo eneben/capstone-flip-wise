@@ -1,17 +1,4 @@
-import styled, { css } from "styled-components";
-
-export const StyledSignedOutContainer = styled.div`
-  opacity: 0.4;
-  pointer-events: none;
-
-  ${({ $isFlexProp }) =>
-    $isFlexProp &&
-    css`
-      display: flex;
-      flex-direction: column;
-      gap: 30px;
-    `}
-`;
+import styled from "styled-components";
 
 export const StyledMessage = styled.p`
   text-align: center;

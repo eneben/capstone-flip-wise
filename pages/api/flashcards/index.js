@@ -33,15 +33,15 @@ export default async function handler(request, response) {
 
   if (request.method === "POST") {
     try {
-      if (session) {
-        const newFlashcard = request.body;
-        await Flashcard.create(newFlashcard);
-        response.status(201).json({ status: "Flashcard created" });
-        return;
-      } else {
+      if (!session) {
         response.status(401).json({ status: "Not authorized" });
         return;
       }
+
+      const newFlashcard = request.body;
+      await Flashcard.create(newFlashcard);
+      response.status(201).json({ status: "Flashcard created" });
+      return;
     } catch (error) {
       return response
         .status(400)

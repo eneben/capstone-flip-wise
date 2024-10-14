@@ -1,16 +1,13 @@
 import styled from "styled-components";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { StyledSignedOutContainer } from "@/styledComponents";
 
 export default function HomePage() {
   const { data: session } = useSession();
 
   function SignedOutContainer({ isSignedOut, children }) {
     return isSignedOut ? (
-      <StyledSignedOutContainer $isFlexProp={true}>
-        {children}
-      </StyledSignedOutContainer>
+      <StyledSignedOutContainer>{children}</StyledSignedOutContainer>
     ) : (
       <>{children}</>
     );
@@ -49,6 +46,14 @@ export default function HomePage() {
     </HomeWrapper>
   );
 }
+
+const StyledSignedOutContainer = styled.div`
+  opacity: 0.4;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+`;
 
 const HomeWrapper = styled.div`
   padding: 50px 40px;

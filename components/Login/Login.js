@@ -3,7 +3,13 @@ import LoginIcon from "@/public/icons/LoginIcon.svg";
 import LogoutIcon from "@/public/icons/LogoutIcon.svg";
 import styled from "styled-components";
 
-export default function Login({ position, changeShowLogOutDialog }) {
+export default function Login({
+  position,
+  changeShowLogOutDialog,
+  changeSubmenuMode,
+  changeFlashcardSelection,
+  handleToggleMenu,
+}) {
   const { data: session } = useSession();
 
   if (session) {
@@ -11,7 +17,14 @@ export default function Login({ position, changeShowLogOutDialog }) {
       <>
         <StyledButton
           $position={position}
-          onClick={() => changeShowLogOutDialog(true)}
+          onClick={() => {
+            changeShowLogOutDialog(true);
+            if (position === "menu") {
+              changeSubmenuMode("default");
+              changeFlashcardSelection("all");
+              handleToggleMenu();
+            }
+          }}
         >
           <StyledWrapper>
             <StyledLogoutIcon $position={position} />
@@ -24,7 +37,17 @@ export default function Login({ position, changeShowLogOutDialog }) {
 
   return (
     <>
-      <StyledButton $position={position} onClick={() => signIn()}>
+      <StyledButton
+        $position={position}
+        onClick={() => {
+          signIn();
+          if (position === "menu") {
+            changeSubmenuMode("default");
+            changeFlashcardSelection("all");
+            handleToggleMenu();
+          }
+        }}
+      >
         <StyledWrapper>
           <StyledLoginIcon $position={position} />
           {position === "menu" && <p>Login</p>}

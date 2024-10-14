@@ -51,13 +51,11 @@ export default function MenuItem({
     <>
       <StyledNavigationListItem>
         <StyledNavigationLink
-          disabled={disabled}
-          href={disabled ? "#" : `/${page}`}
+          $disabled={disabled}
+          href={`/${page}`}
           onClick={() => {
-            if (!disabled) {
-              changeFlashcardSelection("all");
-              onToggleMenu();
-            }
+            changeFlashcardSelection("all");
+            onToggleMenu();
           }}
         >
           {content}
@@ -66,12 +64,8 @@ export default function MenuItem({
         {hasSubmenu && (
           <StyledSubMenuArrow
             $isRotate={submenuMode === menuItemName}
-            onClick={() => {
-              if (!disabled) {
-                toggleSubmenuMode();
-              }
-            }}
-            disabled={disabled}
+            onClick={() => toggleSubmenuMode()}
+            $disabled={disabled}
           />
         )}
       </StyledNavigationListItem>
@@ -152,8 +146,9 @@ const StyledSubNavigationListItem = styled.li`
 
 const StyledNavigationLink = styled(Link)`
   text-decoration: none;
-  color: ${({ disabled }) => (disabled ? "#838383" : "#fff")};
-  cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
+  color: ${({ $disabled }) => ($disabled ? "#838383" : "#fff")};
+  cursor: ${({ $disabled }) => ($disabled ? "not-allowed" : "pointer")};
+  pointer-events: ${({ $disabled }) => ($disabled ? "none" : "auto")};
 `;
 
 const StyledSubNavigationLink = styled(Link)`
@@ -162,7 +157,9 @@ const StyledSubNavigationLink = styled(Link)`
 `;
 
 const StyledSubMenuArrow = styled(SubMenuArrow)`
-  rotate: ${(props) => (props.$isRotate ? "1.5turn" : "0")};
+  rotate: ${({ $isRotate }) => ($isRotate ? "1.5turn" : "0")};
   transition: 0.3s ease-out;
-  color: ${({ disabled }) => (disabled ? "#838383" : "#fff")};
+  color: ${({ $disabled }) => ($disabled ? "#838383" : "#fff")};
+  cursor: ${({ $disabled }) => ($disabled ? "not-allowed" : "pointer")};
+  pointer-events: ${({ $disabled }) => ($disabled ? "none" : "auto")};
 `;
