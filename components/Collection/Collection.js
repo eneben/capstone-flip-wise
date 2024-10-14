@@ -77,6 +77,8 @@ export default function Collection({
               onClick={setEditCollection}
               type="button"
               variant="edit"
+              disabled={!session}
+              grayout={!session}
             >
               <Edit />
             </RoundButton>

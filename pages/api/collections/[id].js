@@ -61,19 +61,24 @@ export default async function handler(request, response) {
 
   if (request.method === "PATCH") {
     try {
-      const updatedCollection = await Collection.findByIdAndUpdate(
-        id,
-        request.body,
-        {
-          new: true,
+      if (session) {
+        const updatedCollection = await Collection.findByIdAndUpdate(
+          id,
+          request.body,
+          {
+            new: true,
+          }
+        );
+
+        if (!updatedCollection) {
+          return response.status(404).json({ error: "Collection not found" });
         }
-      );
 
-      if (!updatedCollection) {
-        return response.status(404).json({ error: "Collection not found" });
+        response.status(200).json(updatedCollection);
+      } else {
+        response.status(401).json({ status: "Not authorized" });
+        return;
       }
-
-      response.status(200).json(updatedCollection);
     } catch (error) {
       return response
         .status(400)
