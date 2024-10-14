@@ -108,19 +108,18 @@ export default function FormFlashcard({
             collections={collections}
             headline={headline}
             actionMode={actionMode}
-            changeActionMode={changeActionMode}
             currentFlashcard={currentFlashcard}
             isFormClosing={isFormClosing}
             onSubmit={handleSubmit}
             onCollectionChange={handleCollectionChange}
             showNewCollectionFields={showNewCollectionFields}
+            startClosingForm={startClosingForm}
           />
         )}
 
         {formMode === "ai" && (
           <FormAI
             collections={collections}
-            changeActionMode={changeActionMode}
             onCollectionChange={handleCollectionChange}
             showNewCollectionFields={showNewCollectionFields}
             changeShowInfoModal={changeShowInfoModal}

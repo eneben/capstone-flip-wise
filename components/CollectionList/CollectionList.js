@@ -9,8 +9,12 @@ export default function CollectionList({
   getIncorrectFlashcardsFromCollection,
   flashcardSelection,
   changeFlashcardSelection,
+  changeActionMode,
   handleDeleteCollection,
   getAllFlashcardsFromCollection,
+  changeCurrentCollection,
+  handleEditCollection,
+  currentCollection,
 }) {
   const capitalizedModeSelection =
     modeSelection.charAt(0).toUpperCase() + modeSelection.slice(1);
@@ -39,6 +43,10 @@ export default function CollectionList({
                 handleDeleteCollection={handleDeleteCollection}
                 getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
                 modeSelection={modeSelection}
+                changeActionMode={changeActionMode}
+                changeCurrentCollection={changeCurrentCollection}
+                handleEditCollection={handleEditCollection}
+                currentCollection={currentCollection}
               />
             );
           })}

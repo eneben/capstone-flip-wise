@@ -83,7 +83,7 @@ export default function FormAI({
               <StyledLabel htmlFor="collectionName">
                 Collection Name
               </StyledLabel>
-              <FormInput name="collectionName" maxlength="23" />
+              <FormInput name="collectionName" maxLength="23" />
             </CollectionNameWrapper>
             <CollectionColorWrapper>
               <StyledLabel htmlFor="collectionColor">Color</StyledLabel>

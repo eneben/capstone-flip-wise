@@ -7,10 +7,10 @@ export default function FormManual({
   collections,
   headline,
   actionMode,
-  changeActionMode,
   currentFlashcard,
   onCollectionChange,
   showNewCollectionFields,
+  startClosingForm,
 }) {
   return (
     <>
@@ -57,7 +57,7 @@ export default function FormManual({
               <StyledLabel htmlFor="collectionName">
                 Collection Name
               </StyledLabel>
-              <FormInput name="collectionName" maxlength="23" />
+              <FormInput name="collectionName" maxLength="23" />
             </CollectionNameWrapper>
             <CollectionColorWrapper>
               <StyledLabel htmlFor="collectionColor">Color</StyledLabel>
@@ -81,7 +81,7 @@ export default function FormManual({
           <RegularButton
             type="button"
             variant="confirm"
-            onClick={() => changeActionMode("default")}
+            onClick={() => startClosingForm()}
           >
             Cancel
           </RegularButton>

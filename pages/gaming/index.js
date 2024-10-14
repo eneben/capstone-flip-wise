@@ -8,6 +8,9 @@ export default function GamingPage({
   changeFlashcardSelection,
   handleDeleteCollection,
   getAllFlashcardsFromCollection,
+  changeCurrentCollection,
+  handleEditCollection,
+  currentCollection,
 }) {
   return (
     <>
@@ -22,6 +25,10 @@ export default function GamingPage({
         changeFlashcardSelection={changeFlashcardSelection}
         handleDeleteCollection={handleDeleteCollection}
         getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
+        changeActionMode={changeActionMode}
+        changeCurrentCollection={changeCurrentCollection}
+        handleEditCollection={handleEditCollection}
+        currentCollection={currentCollection}
       />
     </>
   );
