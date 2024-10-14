@@ -15,6 +15,7 @@ export default function FormFlashcard({
   onAddCollection,
   getAiFlashcards,
   changeShowInfoModal,
+  uploadImage,
 }) {
   const [showNewCollectionFields, setShowNewCollectionFields] = useState(false);
   const [formMode, setFormMode] = useState("ai");
@@ -47,9 +48,10 @@ export default function FormFlashcard({
           question,
           answer,
           level: 1,
+          imageUrl: formData.imageUrl,
         };
       } else {
-        newFlashcard = { ...formData, level: 1 };
+        newFlashcard = { ...formData, level: 1, imageUrl: formData.imageUrl };
       }
 
       onSubmitFlashcard(newFlashcard);
@@ -110,6 +112,7 @@ export default function FormFlashcard({
             onCollectionChange={handleCollectionChange}
             showNewCollectionFields={showNewCollectionFields}
             startClosingForm={startClosingForm}
+            uploadImage={uploadImage}
           />
         )}
 

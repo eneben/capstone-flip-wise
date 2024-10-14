@@ -12,6 +12,7 @@ export default function FormManual({
   onCollectionChange,
   showNewCollectionFields,
   startClosingForm,
+  uploadImage,
 }) {
   return (
     <>
@@ -79,7 +80,11 @@ export default function FormManual({
               Upload Image
             </IconTextWrapper>
           </StyledImageInput>
-          <HiddenImageInput />
+          <HiddenImageInput
+            name="image"
+            type="file"
+            onChange={(event) => uploadImage(event.target.files[0])}
+          />
         </StyledImageInputWrapper>
       </StyledFormWrapper>
 

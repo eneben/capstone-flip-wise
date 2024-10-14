@@ -62,27 +62,32 @@ export default function App({ Component, pageProps }) {
 
   const [temporaryFlashcards, setTemporaryFlashcards] = useState([]);
 
-  // async function uploadImage() {
-  //   try {
-  //     const response = await fetch("/api/upload", {
-  //       method: "POST",
-  //       body: formData,
-  //     });
+  async function uploadImage(file) {
+    try {
+      const formData = new FormData();
+      formData.append("image", file);
 
-  //     const { url, width, height } = await response.json();
-  //     if (!response.ok) throw new Error("Failed to upload image");
-  //     mutateFlashcards();
-  //     showToastMessage(
-  //       "Flashcard created successfully!",
-  //       "success",
-  //       MarkAsCorrect
-  //     );
-  //   } catch (error) {
-  //     console.error("An error occurred: ", error);
-  //     showToastMessage("Error", "error", MarkAsIncorrect);
-  //   }
-  //   }
-  // }
+      const response = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const { url, width, height } = await response.json();
+      if (!response.ok) throw new Error("Failed to upload image");
+
+      mutateFlashcards();
+      showToastMessage(
+        "Flashcard created successfully!",
+        "success",
+        MarkAsCorrect
+      );
+
+      return url;
+    } catch (error) {
+      console.error("An error occurred: ", error);
+      showToastMessage("Error", "error", MarkAsIncorrect);
+    }
+  }
 
   async function getAiFlashcards(
     collectionId,
@@ -473,6 +478,7 @@ export default function App({ Component, pageProps }) {
         handleAddCollection={handleAddCollection}
         handleEditCollection={handleEditCollection}
         getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
+        uploadImage={uploadImage}
       >
         <GlobalStyle />
         <Component

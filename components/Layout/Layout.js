@@ -23,6 +23,7 @@ export default function Layout({
   changeFlashcardSelection,
   handleAddCollection,
   getAllFlashcardsFromCollection,
+  uploadImage,
 }) {
   const [isFormClosing, setIsFormClosing] = useState(false);
 
@@ -85,6 +86,7 @@ export default function Layout({
           startClosingForm={startClosingForm}
           onAddCollection={handleAddCollection}
           changeShowInfoModal={changeShowInfoModal}
+          uploadImage={uploadImage}
         />
       )}
 
