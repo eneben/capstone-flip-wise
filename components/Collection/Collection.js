@@ -2,6 +2,7 @@ import styled from "styled-components";
 import CorrectCounter from "../CorrectCounter/CorrectCounter";
 import Link from "next/link";
 import RoundButton from "../Buttons/RoundButton";
+import Edit from "@/public/icons/Edit.svg";
 import Delete from "@/public/icons/Delete.svg";
 import DeleteConfirmationDialog from "../DeleteConfirmationDialog/DeleteConfirmationDialog";
 import LevelBar from "../LevelBar/LevelBar";
@@ -14,8 +15,10 @@ export default function Collection({
   getAllFlashcardsFromCollection,
   flashcardSelection,
   changeFlashcardSelection,
+  changeActionMode,
   handleDeleteCollection,
   modeSelection,
+  changeCurrentCollection,
 }) {
   const [isDelete, setIsDelete] = useState(false);
 
@@ -25,6 +28,13 @@ export default function Collection({
     event.preventDefault();
     event.stopPropagation();
     setIsDelete(!isDelete);
+  }
+
+  function setEditCollection(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    changeActionMode("editCollection");
+    changeCurrentCollection(collection);
   }
 
   const allFlashcardsFromCollection = getAllFlashcardsFromCollection(id);
@@ -59,6 +69,15 @@ export default function Collection({
 
       {!isDelete && (
         <CollectionBox $color={color} href={`/${modeSelection}/${id}`}>
+          <StyledEditButtonContainer>
+            <RoundButton
+              onClick={setEditCollection}
+              type="button"
+              variant="edit"
+            >
+              <Edit />
+            </RoundButton>
+          </StyledEditButtonContainer>
           <StyledDeleteButtonContainer>
             <RoundButton
               onClick={toggleDeleteConfirmation}
@@ -211,6 +230,11 @@ const RoundButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const StyledEditButtonContainer = styled(RoundButtonContainer)`
+  grid-column: 6 / 7;
+  grid-row: 1 / 2;
 `;
 
 const StyledDeleteButtonContainer = styled(RoundButtonContainer)`

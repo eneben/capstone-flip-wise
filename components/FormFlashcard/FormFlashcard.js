@@ -3,7 +3,6 @@ import RegularButton from "../Buttons/RegularButton";
 import ButtonWrapper from "../Buttons/ButtonWrapper";
 import FormInput from "./FormInput";
 import { useState } from "react";
-import { uid } from "uid";
 
 export default function FormFlashcard({
   collections,
@@ -63,14 +62,14 @@ export default function FormFlashcard({
         name="question"
         actionMode={actionMode}
         currentFlashcard={currentFlashcard}
-        maxlength="100"
+        maxLength="100"
       />
       <StyledLabel htmlFor="answer">Answer</StyledLabel>
       <FormInput
         name="answer"
         actionMode={actionMode}
         currentFlashcard={currentFlashcard}
-        maxlength="70"
+        maxLength="70"
       />
       <StyledLabel htmlFor="collection">Collection</StyledLabel>
       <StyledSelect
@@ -97,7 +96,7 @@ export default function FormFlashcard({
         <NewCollectionWrapper>
           <CollectionNameWrapper>
             <StyledLabel htmlFor="collectionName">Collection Name</StyledLabel>
-            <FormInput name="collectionName" maxlength="23" />
+            <FormInput name="collectionName" maxLength="23" />
           </CollectionNameWrapper>
           <CollectionColorWrapper>
             <StyledLabel htmlFor="collectionColor">Color</StyledLabel>
