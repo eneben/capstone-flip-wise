@@ -44,9 +44,9 @@ export default function Layout({
   useEffect(() => {
     if (isFormClosing) {
       const formTimeoutId = setTimeout(() => {
-        setIsFormClosing(false);
         cachedChangeActionMode("default");
-      }, 510);
+        setIsFormClosing(false);
+      }, 400);
       return () => clearTimeout(formTimeoutId);
     }
   }, [isFormClosing, cachedChangeActionMode]);
