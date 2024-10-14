@@ -89,7 +89,6 @@ export default function App({ Component, pageProps }) {
         throw new Error(data.message || "Something went wrong");
       }
       setTemporaryFlashcards(data);
-      console.log(data);
     } catch (error) {
       console.error("Error:", error);
     }

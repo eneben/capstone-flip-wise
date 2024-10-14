@@ -30,7 +30,6 @@ export default function FormFlashcard({
   async function handleSubmit(event) {
     event.preventDefault();
 
-    // Hier beginnt der Code für das FormManual
     if (formMode === "manual") {
       const formData = Object.fromEntries(new FormData(event.target));
       const { collectionName, collectionColor, question, answer } = formData;
@@ -57,9 +56,7 @@ export default function FormFlashcard({
       setShowNewCollectionFields(false);
       event.target.reset();
     }
-    // Hier endet der Code für das FormManual
 
-    // Hier beginnt der Code für das FormAI
     if (formMode === "ai") {
       const formData = Object.fromEntries(new FormData(event.target));
       const {
@@ -77,7 +74,6 @@ export default function FormFlashcard({
         numberOfFlashcards
       );
     }
-    // Hier endet der Code für das FormAI
     startClosingForm();
   }
 
