@@ -1,9 +1,11 @@
+import { useSession, signOut } from "next-auth/react";
 import { useEffect, useState } from "react";
 import MenuIcon from "@/public/icons/Menu.svg";
 import MenuItem from "../MenuItem/MenuItem";
 import styled, { keyframes, css } from "styled-components";
 import Login from "../Login/Login";
-import { useSession } from "next-auth/react";
+import RegularButton from "../Buttons/RegularButton";
+import ButtonWrapper from "../Buttons/ButtonWrapper";
 
 export default function Menu({
   collections,
@@ -50,13 +52,17 @@ export default function Menu({
     }
   }, [isMenuClosing]);
 
+  function handleLogout() {
+    signOut();
+    changeShowLogOutDialog(false);
+  }
+
   return (
     <StyledMenuContainer>
       <StyledButtonSection>
         <Login
           position="header"
           changeShowLogOutDialog={changeShowLogOutDialog}
-          showLogOutDialog={showLogOutDialog}
         />
 
         <StyledButton
@@ -138,13 +144,36 @@ export default function Menu({
               <Login
                 position="menu"
                 changeShowLogOutDialog={changeShowLogOutDialog}
-                showLogOutDialog={showLogOutDialog}
               />
             </StyledMenuLogin>
           </StyledNavigationList>
         </StyledNavigation>
       )}
       {isMenu && <StyledCover />}
+
+      {showLogOutDialog && (
+        <StyledOutgreyContainer>
+          <ModalContainer>
+            <ModalQuestion>Do you really want to log out?</ModalQuestion>
+            <ButtonWrapper>
+              <RegularButton
+                onClick={() => handleLogout()}
+                type="button"
+                variant="warning"
+              >
+                Yes
+              </RegularButton>
+              <RegularButton
+                onClick={() => changeShowLogOutDialog(false)}
+                type="button"
+                variant="confirm"
+              >
+                Cancel
+              </RegularButton>
+            </ButtonWrapper>
+          </ModalContainer>
+        </StyledOutgreyContainer>
+      )}
     </StyledMenuContainer>
   );
 }
@@ -243,4 +272,36 @@ const StyledMenuLogin = styled.li`
   color: #fff;
   background-color: #000;
   height: 44px;
+`;
+
+const StyledOutgreyContainer = styled.div`
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  background-color: #00000088;
+`;
+
+const ModalContainer = styled.section`
+  background-color: #fff;
+  border: 2px solid #000;
+  border-radius: 10px;
+  position: fixed;
+  top: 190px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: 90vw;
+  height: 218px;
+  max-width: 500px;
+  z-index: 3;
+`;
+
+const ModalQuestion = styled.h3`
+  font-size: 1.2rem;
+  font-weight: 500;
+  text-align: center;
+  padding: 50px 0 20px 0;
 `;
