@@ -51,7 +51,7 @@ export default function Layout({
       const formTimeoutId = setTimeout(() => {
         setIsFormClosing(false);
         cachedChangeActionMode("default");
-      }, 490);
+      }, 400);
       return () => clearTimeout(formTimeoutId);
     }
   }, [isFormClosing, cachedChangeActionMode]);
