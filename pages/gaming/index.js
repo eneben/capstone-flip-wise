@@ -4,7 +4,6 @@ import { StyledAccessDeniedMessage } from "@/styledComponents";
 
 export default function GamingPage({
   collections,
-  actionMode,
   getCorrectFlashcardsFromCollection,
   getIncorrectFlashcardsFromCollection,
   flashcardSelection,

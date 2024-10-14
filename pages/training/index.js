@@ -4,7 +4,6 @@ import { StyledAccessDeniedMessage } from "@/styledComponents";
 
 export default function TrainingPage({
   collections,
-  actionMode,
   getCorrectFlashcardsFromCollection,
   getIncorrectFlashcardsFromCollection,
   flashcardSelection,
