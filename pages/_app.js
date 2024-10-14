@@ -183,7 +183,6 @@ export default function App({ Component, pageProps }) {
     });
 
     mutateFlashcards();
-    changeActionMode("default");
     showToastMessage(
       "Flashcard updated successfully!",
       "success",
