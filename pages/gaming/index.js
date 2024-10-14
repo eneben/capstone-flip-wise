@@ -4,12 +4,16 @@ import { StyledAccessDeniedMessage } from "@/styledComponents";
 
 export default function GamingPage({
   collections,
+  changeActionMode,
   getCorrectFlashcardsFromCollection,
   getIncorrectFlashcardsFromCollection,
   flashcardSelection,
   changeFlashcardSelection,
   handleDeleteCollection,
   getAllFlashcardsFromCollection,
+  changeCurrentCollection,
+  handleEditCollection,
+  currentCollection,
 }) {
   const { status } = useSession();
 
@@ -34,6 +38,10 @@ export default function GamingPage({
         changeFlashcardSelection={changeFlashcardSelection}
         handleDeleteCollection={handleDeleteCollection}
         getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
+        changeActionMode={changeActionMode}
+        changeCurrentCollection={changeCurrentCollection}
+        handleEditCollection={handleEditCollection}
+        currentCollection={currentCollection}
       />
     </>
   );

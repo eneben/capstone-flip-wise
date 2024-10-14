@@ -5,6 +5,7 @@ import Menu from "../Menu/Menu";
 import Plus from "@/public/icons/Plus.svg";
 import RoundButton from "../Buttons/RoundButton";
 import FormFlashcard from "@/components/FormFlashcard/FormFlashcard";
+import FormCollection from "@/components/FormCollection/FormCollection";
 import { useState, useEffect, useCallback } from "react";
 import { useSession } from "next-auth/react";
 
@@ -14,8 +15,10 @@ export default function Layout({
   actionMode,
   changeActionMode,
   currentFlashcard,
+  currentCollection,
   handleCreateFlashcard,
   handleEditFlashcard,
+  handleEditCollection,
   changeFlashcardSelection,
   handleAddCollection,
   getAllFlashcardsFromCollection,
@@ -31,7 +34,7 @@ export default function Layout({
   function handleToggleForm() {
     if (actionMode === "create") {
       setIsFormClosing(true);
-    } else if (actionMode === "edit") {
+    } else if (actionMode === "edit" || actionMode === "editCollection") {
       setIsFormClosing(true);
     } else {
       changeActionMode("create");
@@ -65,7 +68,6 @@ export default function Layout({
           collections={collections}
           headline="Create new Flashcard"
           actionMode={actionMode}
-          changeActionMode={changeActionMode}
           currentFlashcard={currentFlashcard}
           onSubmitFlashcard={handleCreateFlashcard}
           isFormClosing={isFormClosing}
@@ -79,11 +81,21 @@ export default function Layout({
           collections={collections}
           headline="Edit Flashcard"
           actionMode={actionMode}
-          changeActionMode={changeActionMode}
           currentFlashcard={currentFlashcard}
           onSubmitFlashcard={handleEditFlashcard}
           isFormClosing={isFormClosing}
           onAddCollection={handleAddCollection}
+          startClosingForm={startClosingForm}
+        />
+      )}
+
+      {actionMode === "editCollection" && (
+        <FormCollection
+          headline="Edit Collection"
+          actionMode={actionMode}
+          currentCollection={currentCollection}
+          onEditCollection={handleEditCollection}
+          isFormClosing={isFormClosing}
           startClosingForm={startClosingForm}
         />
       )}
@@ -113,8 +125,12 @@ export default function Layout({
               variant="formToggle"
               name="menu"
               onClick={handleToggleForm}
-              isRotate={actionMode === "create" || actionMode === "edit"}
               disabled={!session}
+              isRotate={
+                actionMode === "create" ||
+                actionMode === "edit" ||
+                actionMode === "editCollection"
+              }
             >
               <Plus />
             </RoundButton>

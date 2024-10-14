@@ -58,4 +58,28 @@ export default async function handler(request, response) {
       return;
     }
   }
+
+  if (request.method === "PATCH") {
+    try {
+      const updatedCollection = await Collection.findByIdAndUpdate(
+        id,
+        request.body,
+        {
+          new: true,
+        }
+      );
+
+      if (!updatedCollection) {
+        return response.status(404).json({ error: "Collection not found" });
+      }
+
+      response.status(200).json(updatedCollection);
+    } catch (error) {
+      return response
+        .status(400)
+        .json({ error: "Error updating collection: " + error.message });
+    }
+  } else {
+    response.status(405).json({ error: "Method not allowed" });
+  }
 }

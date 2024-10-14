@@ -56,6 +56,8 @@ export default function App({
 
   const [currentFlashcard, setCurrentFlashcard] = useState(null);
 
+  const [currentCollection, setCurrentCollection] = useState(null);
+
   const [actionMode, setActionMode] = useState("default");
 
   const [flashcardSelection, setFlashcardSelection] = useState("all");
@@ -125,6 +127,10 @@ export default function App({
     setCurrentFlashcard(flashcard);
   }
 
+  function changeCurrentCollection(collection) {
+    setCurrentCollection(collection);
+  }
+
   function changeActionMode(mode) {
     setActionMode(mode);
   }
@@ -161,6 +167,51 @@ export default function App({
       "success",
       MarkAsCorrect
     );
+  }
+
+  async function handleEditCollection(newCollection) {
+    if (!currentCollection) {
+      console.error("No collection selected for editing.");
+      showToastMessage(
+        "No collection selected for editing.",
+        "error",
+        MarkAsIncorrect
+      );
+
+      return;
+    }
+    const updatedCollection = {
+      ...currentCollection,
+      title: newCollection.title,
+      color: newCollection.color,
+    };
+
+    try {
+      const response = await fetch(
+        `/api/collections/${currentCollection._id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedCollection),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to update collection");
+      }
+
+      mutateCollections();
+      showToastMessage(
+        "Collection updated successfully!",
+        "success",
+        MarkAsCorrect
+      );
+    } catch (error) {
+      console.error("Error updating collection:", error);
+      showToastMessage("Error updating collection.", "error", MarkAsIncorrect);
+    }
   }
 
   async function handleCreateFlashcard(newFlashcard) {
@@ -367,10 +418,12 @@ export default function App({
           actionMode={actionMode}
           changeActionMode={changeActionMode}
           currentFlashcard={currentFlashcard}
+          currentCollection={currentCollection}
           handleEditFlashcard={handleEditFlashcard}
           handleCreateFlashcard={handleCreateFlashcard}
           changeFlashcardSelection={changeFlashcardSelection}
           handleAddCollection={handleAddCollection}
+          handleEditCollection={handleEditCollection}
           getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
         >
           <GlobalStyle />
@@ -381,12 +434,17 @@ export default function App({
             collections={collections}
             handleDeleteFlashcard={handleDeleteFlashcard}
             handleDeleteCollection={handleDeleteCollection}
+            handleEditCollection={handleEditCollection}
             currentFlashcard={currentFlashcard}
+            currentCollection={currentCollection}
+            changeCurrentCollection={changeCurrentCollection}
             changeCurrentFlashcard={changeCurrentFlashcard}
             actionMode={actionMode}
             changeActionMode={changeActionMode}
             handleEditFlashcard={handleEditFlashcard}
             handleCreateFlashcard={handleCreateFlashcard}
+            changeFlashcardSelection={changeFlashcardSelection}
+            handleAddCollection={handleAddCollection}
             getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
             getCorrectFlashcardsFromCollection={
               getCorrectFlashcardsFromCollection
@@ -395,7 +453,6 @@ export default function App({
               getIncorrectFlashcardsFromCollection
             }
             flashcardSelection={flashcardSelection}
-            changeFlashcardSelection={changeFlashcardSelection}
             handleIncreaseFlashcardLevel={handleIncreaseFlashcardLevel}
             handleDecreaseFlashcardLevel={handleDecreaseFlashcardLevel}
             handleFirstClick={handleFirstClick}

@@ -2,13 +2,19 @@ import CollectionList from "@/components/CollectionList/CollectionList";
 
 export default function LearningPage({
   collections,
+  changeActionMode,
   getCorrectFlashcardsFromCollection,
   getIncorrectFlashcardsFromCollection,
   flashcardSelection,
   changeFlashcardSelection,
   handleDeleteCollection,
   getAllFlashcardsFromCollection,
+  changeCurrentCollection,
+  handleEditCollection,
+  currentCollection,
 }) {
+  console.log("current Collection", currentCollection);
+
   return (
     <>
       <CollectionList
@@ -22,6 +28,10 @@ export default function LearningPage({
         changeFlashcardSelection={changeFlashcardSelection}
         handleDeleteCollection={handleDeleteCollection}
         getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
+        changeActionMode={changeActionMode}
+        changeCurrentCollection={changeCurrentCollection}
+        handleEditCollection={handleEditCollection}
+        currentCollection={currentCollection}
       />
     </>
   );
