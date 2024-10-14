@@ -13,8 +13,6 @@ export default function LearningPage({
   handleEditCollection,
   currentCollection,
 }) {
-  console.log("current Collection", currentCollection);
-
   return (
     <>
       <CollectionList
