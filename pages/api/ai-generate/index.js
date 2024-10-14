@@ -27,7 +27,7 @@ export default async function handler(request, response) {
 
   try {
     const prompt = `
-      Generate ${numberOfFlashcards} flashcards from the following text. 
+      Generate exactly ${numberOfFlashcards} flashcards from the following text. 
       Prioritize the information you include by importance. 
       Each flashcard should have a question and an answer. Here is the text:
 

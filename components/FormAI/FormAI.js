@@ -97,6 +97,11 @@ export default function FormAI({
             </CollectionColorWrapper>
           </NewCollectionWrapper>
         )}
+        {remainingTextInputLength < 0 && (
+          <StyledTextWarning>
+            Please shorten the text before submitting.
+          </StyledTextWarning>
+        )}
         <ButtonWrapper>
           <RegularButton
             type="submit"
@@ -123,6 +128,13 @@ const StyledFormHeadline = styled.h2`
 
 const StyledLabel = styled.label`
   display: block;
+  padding: 10px 0 2px 0;
+  font: var(--form-label);
+`;
+
+const StyledTextWarning = styled.p`
+  color: var(--primary-red);
+  text-align: center;
   padding: 10px 0 2px 0;
   font: var(--form-label);
 `;
