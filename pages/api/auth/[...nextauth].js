@@ -7,7 +7,6 @@ console.log("Vercel Environment:", process.env.VERCEL_ENV);
 
 export const authOptions = {
   providers: [
-    // process.env.VERCEL_ENV === "preview"
     CredentialsProvider({
       name: "credentials",
       credentials: {
@@ -33,18 +32,19 @@ export const authOptions = {
         }
       },
     }),
-    process.env.VERCEL_ENV !== "preview" &&
-      GoogleProvider({
-        clientId: process.env.GOOGLE_CLIENT_ID,
-        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        authorization: { params: { scope: "openid" } },
-      }),
 
     process.env.VERCEL_ENV !== "preview" &&
       GithubProvider({
         clientId: process.env.GITHUB_ID,
         clientSecret: process.env.GITHUB_SECRET,
         authorization: { params: { scope: "read:user" } },
+      }),
+
+    process.env.VERCEL_ENV !== "preview" &&
+      GoogleProvider({
+        clientId: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        authorization: { params: { scope: "openid" } },
       }),
   ],
   callbacks: {
