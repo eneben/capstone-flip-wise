@@ -156,7 +156,6 @@ export default function App({
     });
 
     mutateFlashcards();
-    changeActionMode("default");
     showToastMessage(
       "Flashcard updated successfully!",
       "success",
@@ -175,7 +174,6 @@ export default function App({
       });
       if (!response.ok) throw new Error("Failed to create flashcard");
       mutateFlashcards();
-      setActionMode("default");
       showToastMessage(
         "Flashcard created successfully!",
         "success",

@@ -43,7 +43,7 @@ export default function Layout({
       const formTimeoutId = setTimeout(() => {
         setIsFormClosing(false);
         cachedChangeActionMode("default");
-      }, 490);
+      }, 510);
       return () => clearTimeout(formTimeoutId);
     }
   }, [isFormClosing, cachedChangeActionMode]);
@@ -70,6 +70,7 @@ export default function Layout({
           onSubmitFlashcard={handleCreateFlashcard}
           isFormClosing={isFormClosing}
           onAddCollection={handleAddCollection}
+          startClosingForm={startClosingForm}
         />
       )}
 
@@ -83,6 +84,7 @@ export default function Layout({
           onSubmitFlashcard={handleEditFlashcard}
           isFormClosing={isFormClosing}
           onAddCollection={handleAddCollection}
+          startClosingForm={startClosingForm}
         />
       )}
 

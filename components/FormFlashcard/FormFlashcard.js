@@ -13,6 +13,7 @@ export default function FormFlashcard({
   onSubmitFlashcard,
   isFormClosing,
   onAddCollection,
+  startClosingForm,
 }) {
   const [showNewCollectionFields, setShowNewCollectionFields] = useState(false);
 
@@ -51,7 +52,7 @@ export default function FormFlashcard({
     onSubmitFlashcard(newFlashcard);
     setShowNewCollectionFields(false);
     event.target.reset();
-    changeActionMode("default");
+    startClosingForm();
   }
 
   return (
@@ -119,7 +120,7 @@ export default function FormFlashcard({
           <RegularButton
             type="button"
             variant="confirm"
-            onClick={() => changeActionMode("default")}
+            onClick={() => startClosingForm()}
           >
             Cancel
           </RegularButton>
