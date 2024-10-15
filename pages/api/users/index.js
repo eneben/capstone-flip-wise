@@ -7,17 +7,17 @@ import Flashcard from "@/db/models/Flashcard";
 export default async function handler(request, response) {
   const session = await getServerSession(request, response, authOptions);
 
+  if (!session) {
+    response.status(401).json({ status: "Not authorized" });
+    return;
+  }
+
   try {
     await dbConnect();
   } catch (error) {
     return response
       .status(500)
       .json({ error: "Database connection error: " + error.message });
-  }
-
-  if (!session) {
-    response.status(401).json({ status: "Not authorized" });
-    return;
   }
 
   if (request.method === "POST") {

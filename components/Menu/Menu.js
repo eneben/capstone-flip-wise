@@ -135,7 +135,7 @@ export default function Menu({
               <Login
                 variant="expanded"
                 changeShowLogOutDialog={changeShowLogOutDialog}
-                onClick={() => {
+                additionalClick={() => {
                   changeSubmenuMode("default");
                   changeFlashcardSelection("all");
                   handleToggleMenu();

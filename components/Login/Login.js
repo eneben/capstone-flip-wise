@@ -2,29 +2,38 @@ import { useSession, signIn } from "next-auth/react";
 import LoginIcon from "@/public/icons/LoginIcon.svg";
 import LogoutIcon from "@/public/icons/LogoutIcon.svg";
 import styled from "styled-components";
+import { useEffect } from "react";
 
 export default function Login({
   variant,
   changeShowLogOutDialog,
-  onClick = () => {},
+  additionalClick = () => {},
 }) {
   const { data: session } = useSession();
 
-  async function handleLogin() {
-    try {
-      await signIn();
+  useEffect(() => {
+    async function fetchUser() {
+      const user = await fetch(`/api/users/${session.user.id}`);
+
+      // hier weiter GET request schreiben
+      // wenn !response.ok, dann post request und neuen user erstellen
+
       const response = await fetch("/api/users", {
         method: "POST",
       });
+      console.log("response: ", response);
+
       if (!response.ok) throw new Error("Failed to fetch user");
       const responseData = await response.json();
       console.log("responseData.user: ", responseData?.user);
       console.log("responseData._id: ", responseData?._id);
-      const user = responseData._id;
-    } catch (error) {
-      console.error("Login failed: ", error);
+      const newUser = responseData._id;
     }
-  }
+    if (session) {
+      console.log("logged in! session: ", session);
+      fetchUser();
+    }
+  }, [session]);
 
   if (session) {
     return (
@@ -33,7 +42,7 @@ export default function Login({
           $variant={variant}
           onClick={() => {
             changeShowLogOutDialog(true);
-            onClick();
+            additionalClick();
           }}
         >
           <StyledWrapper>
@@ -50,8 +59,8 @@ export default function Login({
       <StyledButton
         $variant={variant}
         onClick={() => {
-          handleLogin();
-          onClick();
+          signIn();
+          additionalClick();
         }}
       >
         <StyledWrapper>
