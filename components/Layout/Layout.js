@@ -26,6 +26,7 @@ export default function Layout({
   getAllFlashcardsFromCollection,
   temporaryFlashcards,
   showTemporaryFlashcardsModal,
+  toggleTemporaryFlashcardIncluded,
 }) {
   const [isFormClosing, setIsFormClosing] = useState(false);
 
@@ -72,7 +73,10 @@ export default function Layout({
       )}
 
       {showTemporaryFlashcardsModal && (
-        <TemporaryFlashcardsModal temporaryFlashcards={temporaryFlashcards} />
+        <TemporaryFlashcardsModal
+          temporaryFlashcards={temporaryFlashcards}
+          toggleTemporaryFlashcardIncluded={toggleTemporaryFlashcardIncluded}
+        />
       )}
 
       {actionMode !== "default" && (

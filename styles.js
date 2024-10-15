@@ -43,8 +43,9 @@ export default createGlobalStyle`
     --form-headline: 700 1.5rem ${barlow.style.fontFamily}, system-ui;
     --form-label: 500 0.9rem ${barlow.style.fontFamily}, system-ui;
     --form-input: 400 0.9rem ${barlowSemi.style.fontFamily}, system-ui;
-    --temporary-flashcard-preview-small-headline: 400 0.8rem ${barlowSemi.style.fontFamily}, system-ui;
-    --temporary-flashcard-preview-q-and-a: 500 1rem ${barlowSemi.style.fontFamily}, system-ui;
+    --temporary-flashcard-preview-small-headline: 400 0.9rem ${barlowSemi.style.fontFamily}, system-ui;
+    --temporary-flashcard-preview-q-and-a: 500 1.1rem ${barlowSemi.style.fontFamily}, system-ui;
+    --temporary-flashcard-checkbox-label: 500 1.1rem ${barlowSemi.style.fontFamily}, system-ui;
 
 
     --grid-columns-card-and-title: 54px 54px 24px 1fr 24px 54px 54px; 

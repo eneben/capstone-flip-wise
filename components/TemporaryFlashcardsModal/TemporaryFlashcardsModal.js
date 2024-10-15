@@ -1,9 +1,16 @@
 import styled from "styled-components";
 import { StyledFormHeadline, StyledSubheading } from "@/styledComponents";
 import LoadingSpinner from "@/components/LoadingSpinner/LoadingSpinner";
+import Switch from "react-switch";
 
-export default function TemporaryFlashcardsModal({ temporaryFlashcards }) {
+export default function TemporaryFlashcardsModal({
+  temporaryFlashcards,
+  toggleTemporaryFlashcardIncluded,
+}) {
   console.log(temporaryFlashcards);
+
+  const collectionName = temporaryFlashcards[0].collectionName;
+
   return (
     <StyledOutgreyContainer>
       <StyledModal>
@@ -19,7 +26,17 @@ export default function TemporaryFlashcardsModal({ temporaryFlashcards }) {
 
         {temporaryFlashcards.length > 0 && (
           <>
-            <StyledFormHeadline>Uncheck unwanted flashcards</StyledFormHeadline>
+            <StyledFormHeadline>Preview</StyledFormHeadline>
+            <StyledSubheading>
+              Uncheck Ai generated flashcards you don't want to include in the{" "}
+              <StyledCollectionName
+                $collectionColor={temporaryFlashcards[0].collectionColor}
+              >
+                {collectionName}
+              </StyledCollectionName>{" "}
+              collection
+            </StyledSubheading>
+
             <StyledTemporaryFlashcardsList>
               {temporaryFlashcards.map((temporaryFlashcard) => {
                 return (
@@ -27,6 +44,38 @@ export default function TemporaryFlashcardsModal({ temporaryFlashcards }) {
                     $borderColor={temporaryFlashcard.collectionColor}
                     key={temporaryFlashcard.temporaryFlashcardId}
                   >
+                    <StyledCheckboxWrapper>
+                      <StyledCheckboxLabel htmlFor="flashcard-checkbox">
+                        {temporaryFlashcard.isIncluded
+                          ? "Included"
+                          : "Not included"}
+                      </StyledCheckboxLabel>
+                      {/* <StyledCheckbox
+                        id="flashcard-checkbox"
+                        name="isIncluded"
+                        type="checkbox"
+                        value={temporaryFlashcard.temporaryFlashcardId}
+                        onChange={() =>
+                          onToggleIsIncludedInTemporaryFlashcard(
+                            flashcard.temporaryFlashcardId
+                          )
+                        }
+                        defaultChecked
+                      /> */}
+
+                      <Switch
+                        id="flashcard-checkbox"
+                        height={21}
+                        width={42}
+                        checked={temporaryFlashcard.isIncluded}
+                        onChange={() =>
+                          toggleTemporaryFlashcardIncluded(
+                            temporaryFlashcard.temporaryFlashcardId
+                          )
+                        }
+                      />
+                    </StyledCheckboxWrapper>
+
                     <StyledQuestionHeadline>Question:</StyledQuestionHeadline>
                     <StyledQuestionAnswer>
                       {" "}
@@ -65,7 +114,7 @@ const StyledModal = styled.article`
   width: 90vw;
   max-width: 500px;
   max-height: 90vh;
-  padding: 15px;
+  padding: 15px 20px 15px 20px;
   border-radius: 10px;
   background-color: #fff;
   opacity: 1;
@@ -80,8 +129,8 @@ const StyledTemporaryFlashcardsList = styled.ul`
 `;
 
 const StyledTemporaryFlashcardItem = styled.li`
-  margin-top: 10px;
-  padding: 10px;
+  margin-top: 15px;
+  padding: 15px;
   border: var(--border-thickness) solid ${({ $borderColor }) => $borderColor};
   border-radius: 10px;
 `;
@@ -97,4 +146,26 @@ const StyledAnswerHeadline = styled.p`
 
 const StyledQuestionAnswer = styled.p`
   font: var(--temporary-flashcard-preview-q-and-a);
+`;
+
+const StyledCheckboxLabel = styled.label`
+  font: var(--temporary-flashcard-preview-small-headline);
+`;
+
+const StyledCheckbox = styled.input`
+  background-color: var(--primary-neutral);
+  color: var(--primary-neutral);
+`;
+
+const StyledCheckboxWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  gap: 8px;
+`;
+
+const StyledCollectionName = styled.span`
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: ${({ $collectionColor }) => $collectionColor};
 `;

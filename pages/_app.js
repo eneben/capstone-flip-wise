@@ -70,6 +70,19 @@ export default function App({ Component, pageProps }) {
   const [showTemporaryFlashcardsModal, setShowTemporaryFlashcardsModal] =
     useState(true);
 
+  function toggleTemporaryFlashcardIncluded(id) {
+    setTemporaryFlashcards(
+      temporaryFlashcards.map((temporaryFlashcard) => {
+        return temporaryFlashcard.temporaryFlashcardId === id
+          ? {
+              ...temporaryFlashcard,
+              isIncluded: !temporaryFlashcard.isIncluded,
+            }
+          : temporaryFlashcard;
+      })
+    );
+  }
+
   async function getAiFlashcards(
     collectionId,
     collectionName,
@@ -103,6 +116,7 @@ export default function App({ Component, pageProps }) {
           return {
             ...temporaryFlashcard,
             temporaryFlashcardId: uid(),
+            isIncluded: true,
           };
         })
       );
@@ -470,6 +484,7 @@ export default function App({ Component, pageProps }) {
         getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
         showTemporaryFlashcardsModal={showTemporaryFlashcardsModal}
         temporaryFlashcards={temporaryFlashcards}
+        toggleTemporaryFlashcardIncluded={toggleTemporaryFlashcardIncluded}
       >
         <GlobalStyle />
         <Component
