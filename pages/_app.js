@@ -65,23 +65,19 @@ export default function App({ Component, pageProps }) {
   async function uploadImage(imageFile) {
     const formData = new FormData();
     formData.append("file", imageFile);
-    formData.append("upload_preset", "your_upload_preset"); // Cloudinary-specific config
 
     try {
-      const response = await fetch(
-        "https://api.cloudinary.com/v1_1/your_cloud_name/image/upload",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
+      const response = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
 
-      const data = await response.json();
-      if (response.ok) {
-        return data.secure_url; // Return the uploaded image URL
-      } else {
+      if (!response.ok) {
         throw new Error("Image upload failed");
       }
+
+      const data = await response.json();
+      return data.url; // URL des hochgeladenen Bildes zurückgeben
     } catch (error) {
       console.error("An error occurred during upload:", error);
       throw error;

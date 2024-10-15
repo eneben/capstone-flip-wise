@@ -19,6 +19,19 @@ export default function FormFlashcard({
 }) {
   const [showNewCollectionFields, setShowNewCollectionFields] = useState(false);
   const [formMode, setFormMode] = useState("ai");
+  const [image, setImage] = useState(null);
+  const [imageUploaded, setImageUploaded] = useState(false);
+
+  function handleImageUpload(file) {
+    setImage(file);
+    setImageUploaded(true);
+  }
+
+  function handleCloseImagePreview() {
+    console.log("Close image preview clicked");
+    setImageUploaded(false);
+    setImage(null);
+  }
 
   function handleCollectionChange(event) {
     if (event.target.value === "newCollection") {
@@ -36,16 +49,15 @@ export default function FormFlashcard({
       const { collectionName, collectionColor, question, answer } = formData;
       let newFlashcard;
 
-      const imageFile = formData.get("image"); // Hole die ausgewählte Bild-Datei
-      let imageUrl = ""; // Standardleerer Wert für die Bild-URL
+      const imageFile = formData.get("image");
+      let imageUrl = "";
 
       if (imageFile) {
-        // Falls ein Bild existiert
         try {
-          imageUrl = await uploadImage(imageFile); // Lade das Bild hoch und speichere die URL
+          imageUrl = await uploadImage(imageFile);
         } catch (error) {
           console.error("Image upload failed:", error);
-          return; // Stoppe den Prozess, wenn der Bild-Upload fehlschlägt
+          return;
         }
       }
 
@@ -125,7 +137,10 @@ export default function FormFlashcard({
             onCollectionChange={handleCollectionChange}
             showNewCollectionFields={showNewCollectionFields}
             startClosingForm={startClosingForm}
-            uploadImage={uploadImage}
+            uploadImage={handleImageUpload}
+            image={image}
+            imageUploaded={imageUploaded}
+            handleCloseImagePreview={handleCloseImagePreview}
           />
         )}
 

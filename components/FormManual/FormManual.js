@@ -3,6 +3,8 @@ import RegularButton from "../Buttons/RegularButton";
 import ButtonWrapper from "../Buttons/ButtonWrapper";
 import FormInput from "../FormFlashcard/FormInput";
 import Upload from "@/public/icons/Upload.svg";
+import Image from "next/image";
+import MarkAsIncorrect from "@/public/icons/MarkAsIncorrect.svg";
 
 export default function FormManual({
   collections,
@@ -13,6 +15,9 @@ export default function FormManual({
   showNewCollectionFields,
   startClosingForm,
   uploadImage,
+  image,
+  imageUploaded,
+  handleCloseImagePreview,
 }) {
   return (
     <>
@@ -74,19 +79,35 @@ export default function FormManual({
           </NewCollectionWrapper>
         )}
         <StyledImageInputWrapper>
-          <StyledImageInput>
-            <IconTextWrapper>
-              <Upload />
-              Upload Image
-            </IconTextWrapper>
-          </StyledImageInput>
-          <HiddenImageInput
-            name="image"
-            type="file"
-            accept="image/*"
-            id="image"
-            onChange={(event) => uploadImage(event.target.files[0])}
-          />
+          {imageUploaded ? (
+            <StyledImageWrapper onClick={handleCloseImagePreview}>
+              <StyledIconWrapper>
+                <MarkAsIncorrect />
+              </StyledIconWrapper>
+              <StyledImagePreview
+                src={URL.createObjectURL(image)}
+                alt="Preview of the image to upload"
+                sizes="300px"
+                fill
+              />
+            </StyledImageWrapper>
+          ) : (
+            <>
+              <StyledImageInput>
+                <IconTextWrapper>
+                  <Upload />
+                  Upload Image
+                </IconTextWrapper>
+              </StyledImageInput>
+              <HiddenImageInput
+                name="image"
+                type="file"
+                accept="image/*"
+                id="image"
+                onChange={(event) => uploadImage(event.target.files[0])}
+              />
+            </>
+          )}
         </StyledImageInputWrapper>
       </StyledFormWrapper>
 
@@ -187,4 +208,35 @@ const IconTextWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
+`;
+
+const StyledImageWrapper = styled.div`
+  width: 100%;
+  height: 100px;
+  display: flex;
+  position: relative;
+  flex-direction: row-reverse;
+  padding: 5px;
+  overflow: auto;
+  margin-top: 20px;
+  border: 1px solid var(--primary-neutral);
+  border-radius: 2px;
+`;
+
+const StyledImagePreview = styled(Image)`
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+`;
+
+const StyledIconWrapper = styled.div`
+  color: #fff;
+  background-color: var(--primary-neutral);
+  width: 20px;
+  height: 20px;
+  padding: 2px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
