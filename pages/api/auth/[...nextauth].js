@@ -3,8 +3,6 @@ import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-console.log("Vercel Environment:", process.env.VERCEL_ENV);
-
 export const authOptions = {
   providers: [
     CredentialsProvider({
