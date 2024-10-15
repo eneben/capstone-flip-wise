@@ -146,9 +146,16 @@ const StyledSubNavigationListItem = styled.li`
 
 const StyledNavigationLink = styled(Link)`
   text-decoration: none;
-  color: ${({ $disabled }) => ($disabled ? "#838383" : "#fff")};
-  cursor: ${({ $disabled }) => ($disabled ? "not-allowed" : "pointer")};
-  pointer-events: ${({ $disabled }) => ($disabled ? "none" : "auto")};
+  color: #fff;
+  cursor: pointer;
+
+  ${({ $disabled }) =>
+    $disabled &&
+    css`
+      color: #838383;
+      cursor: not-allowed;
+      pointer-events: none;
+    `}
 `;
 
 const StyledSubNavigationLink = styled(Link)`
@@ -159,7 +166,14 @@ const StyledSubNavigationLink = styled(Link)`
 const StyledSubMenuArrow = styled(SubMenuArrow)`
   rotate: ${({ $isRotate }) => ($isRotate ? "1.5turn" : "0")};
   transition: 0.3s ease-out;
-  color: ${({ $disabled }) => ($disabled ? "#838383" : "#fff")};
-  cursor: ${({ $disabled }) => ($disabled ? "not-allowed" : "pointer")};
-  pointer-events: ${({ $disabled }) => ($disabled ? "none" : "auto")};
+  color: #fff;
+  cursor: pointer;
+
+  ${({ $disabled }) =>
+    $disabled &&
+    css`
+      color: #838383;
+      cursor: not-allowed;
+      pointer-events: none;
+    `}
 `;

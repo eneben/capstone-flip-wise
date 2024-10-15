@@ -60,10 +60,7 @@ export default function Menu({
   return (
     <StyledMenuContainer>
       <StyledButtonSection>
-        <Login
-          position="header"
-          changeShowLogOutDialog={changeShowLogOutDialog}
-        />
+        <Login variant="icon" changeShowLogOutDialog={changeShowLogOutDialog} />
 
         <StyledButton
           type="button"
@@ -136,11 +133,13 @@ export default function Menu({
 
             <StyledMenuLogin>
               <Login
-                position="menu"
+                variant="expanded"
                 changeShowLogOutDialog={changeShowLogOutDialog}
-                changeSubmenuMode={changeSubmenuMode}
-                changeFlashcardSelection={changeFlashcardSelection}
-                handleToggleMenu={handleToggleMenu}
+                onClick={() => {
+                  changeSubmenuMode("default");
+                  changeFlashcardSelection("all");
+                  handleToggleMenu();
+                }}
               />
             </StyledMenuLogin>
           </StyledNavigationList>

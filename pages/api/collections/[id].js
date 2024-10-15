@@ -40,13 +40,13 @@ export default async function handler(request, response) {
     }
   }
 
+  if (!session) {
+    response.status(401).json({ status: "Not authorized" });
+    return;
+  }
+
   if (request.method === "DELETE") {
     try {
-      if (!session) {
-        response.status(401).json({ status: "Not authorized" });
-        return;
-      }
-
       await Flashcard.deleteMany({ collectionId: id });
       await Collection.findByIdAndDelete(id);
       response.status(200).json({ message: "Collection deleted." });
@@ -61,11 +61,6 @@ export default async function handler(request, response) {
 
   if (request.method === "PATCH") {
     try {
-      if (!session) {
-        response.status(401).json({ status: "Not authorized" });
-        return;
-      }
-
       const updatedCollection = await Collection.findByIdAndUpdate(
         id,
         request.body,

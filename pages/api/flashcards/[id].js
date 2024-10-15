@@ -39,13 +39,13 @@ export default async function handler(request, response) {
     }
   }
 
+  if (!session) {
+    response.status(401).json({ status: "Not authorized" });
+    return;
+  }
+
   if (request.method === "PATCH") {
     try {
-      if (!session) {
-        response.status(401).json({ status: "Not authorized" });
-        return;
-      }
-
       const updatedFlashcard = request.body;
       if (!updatedFlashcard) {
         response.status(404).json({ status: "Not Found" });
@@ -64,11 +64,6 @@ export default async function handler(request, response) {
 
   if (request.method === "DELETE") {
     try {
-      if (!session) {
-        response.status(401).json({ status: "Not authorized" });
-        return;
-      }
-
       await Flashcard.findByIdAndDelete(id);
       response.status(200).json({ message: "Flashcard deleted." });
       return;

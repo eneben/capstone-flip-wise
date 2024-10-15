@@ -4,11 +4,9 @@ import LogoutIcon from "@/public/icons/LogoutIcon.svg";
 import styled from "styled-components";
 
 export default function Login({
-  position,
+  variant,
   changeShowLogOutDialog,
-  changeSubmenuMode,
-  changeFlashcardSelection,
-  handleToggleMenu,
+  onClick = () => {},
 }) {
   const { data: session } = useSession();
 
@@ -16,19 +14,15 @@ export default function Login({
     return (
       <>
         <StyledButton
-          $position={position}
+          $variant={variant}
           onClick={() => {
             changeShowLogOutDialog(true);
-            if (position === "menu") {
-              changeSubmenuMode("default");
-              changeFlashcardSelection("all");
-              handleToggleMenu();
-            }
+            onClick();
           }}
         >
           <StyledWrapper>
-            <StyledLogoutIcon $position={position} />
-            {position === "menu" && <p>Logout</p>}
+            <StyledLogoutIcon $variant={variant} />
+            {variant === "expanded" && <p>Logout</p>}
           </StyledWrapper>
         </StyledButton>
       </>
@@ -38,19 +32,15 @@ export default function Login({
   return (
     <>
       <StyledButton
-        $position={position}
+        $variant={variant}
         onClick={() => {
           signIn();
-          if (position === "menu") {
-            changeSubmenuMode("default");
-            changeFlashcardSelection("all");
-            handleToggleMenu();
-          }
+          onClick();
         }}
       >
         <StyledWrapper>
-          <StyledLoginIcon $position={position} />
-          {position === "menu" && <p>Login</p>}
+          <StyledLoginIcon $variant={variant} />
+          {variant === "expanded" && <p>Login</p>}
         </StyledWrapper>
       </StyledButton>
     </>
@@ -62,7 +52,7 @@ const StyledButton = styled.button`
   z-index: 1;
   background-color: transparent;
   border: none;
-  color: ${({ $position }) => ($position === "header" ? "#000" : "#fff")};
+  color: ${({ $variant }) => ($variant === "icon" ? "#000" : "#fff")};
 `;
 
 const StyledWrapper = styled.div`
@@ -75,11 +65,11 @@ const StyledWrapper = styled.div`
 `;
 
 const StyledLogoutIcon = styled(LogoutIcon)`
-  width: ${({ $position }) => ($position === "header" ? "35px" : "30px")};
-  height: ${({ $position }) => ($position === "header" ? "35px" : "30px")};
+  width: ${({ $variant }) => ($variant === "icon" ? "35px" : "30px")};
+  height: ${({ $variant }) => ($variant === "icon" ? "35px" : "30px")};
 `;
 
 const StyledLoginIcon = styled(LoginIcon)`
-  width: ${({ $position }) => ($position === "header" ? "35px" : "30px")};
-  height: ${({ $position }) => ($position === "header" ? "35px" : "30px")};
+  width: ${({ $variant }) => ($variant === "icon" ? "35px" : "30px")};
+  height: ${({ $variant }) => ($variant === "icon" ? "35px" : "30px")};
 `;
