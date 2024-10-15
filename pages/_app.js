@@ -62,6 +62,9 @@ export default function App({ Component, pageProps }) {
 
   const [temporaryFlashcards, setTemporaryFlashcards] = useState([]);
 
+  const [showTemporaryFlashcardsModal, setShowTemporaryFlashcardsModal] =
+    useState(false);
+
   async function getAiFlashcards(
     collectionId,
     collectionName,
@@ -69,6 +72,7 @@ export default function App({ Component, pageProps }) {
     textInput,
     numberOfFlashcards
   ) {
+    setShowTemporaryFlashcardsModal(true);
     try {
       const response = await fetch("/api/ai-generate", {
         method: "POST",
@@ -88,7 +92,15 @@ export default function App({ Component, pageProps }) {
       if (!response.ok) {
         throw new Error(data.message || "Something went wrong");
       }
-      setTemporaryFlashcards(data);
+
+      setTemporaryFlashcards(
+        data.map((temporaryFlashcard) => {
+          return {
+            ...temporaryFlashcard,
+            temporaryFlashcardId: uid(),
+          };
+        })
+      );
     } catch (error) {
       console.error("Error:", error);
     }
@@ -451,6 +463,8 @@ export default function App({ Component, pageProps }) {
         handleAddCollection={handleAddCollection}
         handleEditCollection={handleEditCollection}
         getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
+        showTemporaryFlashcardsModal={showTemporaryFlashcardsModal}
+        temporaryFlashcards={temporaryFlashcards}
       >
         <GlobalStyle />
         <Component

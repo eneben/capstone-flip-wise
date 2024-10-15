@@ -2,6 +2,7 @@ import styled from "styled-components";
 import RegularButton from "../Buttons/RegularButton";
 import ButtonWrapper from "../Buttons/ButtonWrapper";
 import FormInput from "../FormFlashcard/FormInput";
+import { StyledFormHeadline } from "@/styledComponents";
 
 export default function FormManual({
   collections,
@@ -93,12 +94,6 @@ export default function FormManual({
 
 const StyledFormWrapper = styled.div`
   padding: 0 10px 0 10px;
-`;
-
-const StyledFormHeadline = styled.h2`
-  font: var(--form-headline);
-  text-align: center;
-  padding-top: 20px;
 `;
 
 const StyledLabel = styled.label`

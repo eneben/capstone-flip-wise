@@ -7,6 +7,7 @@ import RoundButton from "../Buttons/RoundButton";
 import FormFlashcard from "@/components/FormFlashcard/FormFlashcard";
 import AiInfoModal from "../AiInfoModal/AiInfoModal";
 import FormCollection from "@/components/FormCollection/FormCollection";
+import TemporaryFlashcardsModal from "../TemporaryFlashcardsModal/TemporaryFlashcardsModal";
 import { useState, useEffect, useCallback } from "react";
 
 export default function Layout({
@@ -23,6 +24,8 @@ export default function Layout({
   changeFlashcardSelection,
   handleAddCollection,
   getAllFlashcardsFromCollection,
+  temporaryFlashcards,
+  showTemporaryFlashcardsModal,
 }) {
   const [isFormClosing, setIsFormClosing] = useState(false);
 
@@ -66,6 +69,10 @@ export default function Layout({
 
       {showInfoModal && (
         <AiInfoModal changeShowInfoModal={changeShowInfoModal} />
+      )}
+
+      {showTemporaryFlashcardsModal && (
+        <TemporaryFlashcardsModal temporaryFlashcards={temporaryFlashcards} />
       )}
 
       {actionMode !== "default" && (

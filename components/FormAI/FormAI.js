@@ -5,6 +5,7 @@ import RoundButton from "../Buttons/RoundButton";
 import InfoSmall from "@/public/icons/InfoSmall.svg";
 import ButtonWrapper from "../Buttons/ButtonWrapper";
 import RegularButton from "../Buttons/RegularButton";
+import { StyledFormHeadline } from "@/styledComponents";
 
 export default function FormAI({
   collections,
@@ -118,12 +119,6 @@ export default function FormAI({
 
 const StyledFormWrapper = styled.div`
   padding: 0 10px 0 10px;
-`;
-
-const StyledFormHeadline = styled.h2`
-  font: var(--form-headline);
-  text-align: center;
-  padding-top: 20px;
 `;
 
 const StyledLabel = styled.label`

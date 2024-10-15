@@ -31,3 +31,9 @@ export const StyledSuccessMessage = styled.p`
   color: var(--primary-green);
   padding: 0 30px 50px 30px;
 `;
+
+export const StyledFormHeadline = styled.h2`
+  font: var(--form-headline);
+  text-align: center;
+  padding-top: 20px;
+`;
