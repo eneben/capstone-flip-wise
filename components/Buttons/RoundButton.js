@@ -6,6 +6,8 @@ export default function RoundButton({
   variant,
   isRotate,
   children,
+  disabled,
+  grayout,
 }) {
   return (
     <StyledRoundButton
@@ -13,6 +15,8 @@ export default function RoundButton({
       onClick={onClick}
       $variant={variant}
       $isRotate={isRotate}
+      disabled={disabled}
+      $grayout={grayout}
     >
       {children}
     </StyledRoundButton>
@@ -30,6 +34,12 @@ const StyledRoundButton = styled.button`
   align-items: center;
   justify-content: center;
   ${(props) => variantRoundButtonStyles[props.$variant]}
+  opacity: ${({ $grayout }) => ($grayout ? "0.5" : "1")};
+
+  &:disabled {
+    cursor: not-allowed;
+    color: var(--secondary-mid-grey);
+  }
 `;
 
 const variantRoundButtonStyles = {

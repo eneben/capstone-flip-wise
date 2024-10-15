@@ -7,6 +7,7 @@ import RoundButton from "../Buttons/RoundButton";
 import FormFlashcard from "@/components/FormFlashcard/FormFlashcard";
 import FormCollection from "@/components/FormCollection/FormCollection";
 import { useState, useEffect, useCallback } from "react";
+import { useSession } from "next-auth/react";
 
 export default function Layout({
   children,
@@ -22,6 +23,8 @@ export default function Layout({
   handleAddCollection,
   getAllFlashcardsFromCollection,
 }) {
+  const { data: session } = useSession();
+
   const [isFormClosing, setIsFormClosing] = useState(false);
 
   const cachedChangeActionMode = useCallback(changeActionMode, [
@@ -41,9 +44,9 @@ export default function Layout({
   useEffect(() => {
     if (isFormClosing) {
       const formTimeoutId = setTimeout(() => {
-        setIsFormClosing(false);
         cachedChangeActionMode("default");
-      }, 490);
+        setIsFormClosing(false);
+      }, 400);
       return () => clearTimeout(formTimeoutId);
     }
   }, [isFormClosing, cachedChangeActionMode]);
@@ -65,11 +68,11 @@ export default function Layout({
           collections={collections}
           headline="Create new Flashcard"
           actionMode={actionMode}
-          changeActionMode={changeActionMode}
           currentFlashcard={currentFlashcard}
           onSubmitFlashcard={handleCreateFlashcard}
           isFormClosing={isFormClosing}
           onAddCollection={handleAddCollection}
+          startClosingForm={startClosingForm}
         />
       )}
 
@@ -78,11 +81,11 @@ export default function Layout({
           collections={collections}
           headline="Edit Flashcard"
           actionMode={actionMode}
-          changeActionMode={changeActionMode}
           currentFlashcard={currentFlashcard}
           onSubmitFlashcard={handleEditFlashcard}
           isFormClosing={isFormClosing}
           onAddCollection={handleAddCollection}
+          startClosingForm={startClosingForm}
         />
       )}
 
@@ -90,10 +93,10 @@ export default function Layout({
         <FormCollection
           headline="Edit Collection"
           actionMode={actionMode}
-          changeActionMode={changeActionMode}
           currentCollection={currentCollection}
           onEditCollection={handleEditCollection}
           isFormClosing={isFormClosing}
+          startClosingForm={startClosingForm}
         />
       )}
 
@@ -122,6 +125,7 @@ export default function Layout({
               variant="formToggle"
               name="menu"
               onClick={handleToggleForm}
+              disabled={!session}
               isRotate={
                 actionMode === "create" ||
                 actionMode === "edit" ||
@@ -131,6 +135,7 @@ export default function Layout({
               <Plus />
             </RoundButton>
           </FormToggleContainer>
+
           <Menu
             collections={collections}
             startClosingForm={startClosingForm}

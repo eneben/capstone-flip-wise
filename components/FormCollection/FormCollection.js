@@ -6,10 +6,10 @@ import FormInput from "../FormFlashcard/FormInput";
 export default function FormCollection({
   headline,
   actionMode,
-  changeActionMode,
   currentCollection,
   isFormClosing,
   onEditCollection,
+  startClosingForm,
 }) {
   async function handleSubmit(event) {
     event.preventDefault();
@@ -25,7 +25,7 @@ export default function FormCollection({
 
     await onEditCollection(updatedCollection);
     event.target.reset();
-    changeActionMode("default");
+    startClosingForm();
   }
 
   return (
@@ -62,7 +62,7 @@ export default function FormCollection({
           <RegularButton
             type="button"
             variant="confirm"
-            onClick={() => changeActionMode("default")}
+            onClick={() => startClosingForm()}
           >
             Cancel
           </RegularButton>

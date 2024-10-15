@@ -1,13 +1,34 @@
 import styled from "styled-components";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 export default function HomePage() {
+  const { data: session } = useSession();
+
+  function SignedOutContainer({ isSignedOut, children }) {
+    return isSignedOut ? (
+      <StyledSignedOutContainer>{children}</StyledSignedOutContainer>
+    ) : (
+      <>{children}</>
+    );
+  }
+
   return (
     <HomeWrapper>
-      <StyledIntroduction>
-        Welcome to BrainStack, your companion for mastering new skills and
-        studying. Start stacking with knowledge today!
-      </StyledIntroduction>
+      {!session && (
+        <StyledIntroduction>
+          Welcome to BrainStack, your companion for mastering new skills and
+          studying. To access training mode, gaming mode, and full flashcard
+          management, please log in and start stacking with knowledge today!
+        </StyledIntroduction>
+      )}
+      {session && (
+        <StyledIntroduction>
+          Welcome to BrainStack, your companion for mastering new skills and
+          studying. Start stacking with knowledge today!
+        </StyledIntroduction>
+      )}
+
       <StyledModeSelection href="/learning" $color="green">
         <StyledModeName $color="green">Learning Mode</StyledModeName>
         <StyledDescription>
@@ -15,23 +36,34 @@ export default function HomePage() {
           filtering unlearned, learned, or all cards.
         </StyledDescription>
       </StyledModeSelection>
-      <StyledModeSelection href="/training" $color="blue">
-        <StyledModeName $color="blue">Training Mode</StyledModeName>
-        <StyledDescription>
-          Cards move up or down five levels based on your answers. Focus more on
-          what you don&apos;t know and reinforce knowledge efficiently.
-        </StyledDescription>
-      </StyledModeSelection>
-      <StyledModeSelection href="/gaming" $color="red">
-        <StyledModeName $color="red">Gaming Mode</StyledModeName>
-        <StyledDescription>
-          Learn in a playful way by sorting the front and back of the flashcard
-          in a memory game. We think learning should be fun.
-        </StyledDescription>
-      </StyledModeSelection>
+
+      <SignedOutContainer isSignedOut={!session}>
+        <StyledModeSelection href="/training" $color="blue">
+          <StyledModeName $color="blue">Training Mode</StyledModeName>
+          <StyledDescription>
+            Cards move up or down five levels based on your answers. Focus more
+            on what you don&apos;t know and reinforce knowledge efficiently.
+          </StyledDescription>
+        </StyledModeSelection>
+        <StyledModeSelection href="/gaming" $color="red">
+          <StyledModeName $color="red">Gaming Mode</StyledModeName>
+          <StyledDescription>
+            Learn in a playful way by sorting the front and back of the
+            flashcard in a memory game. We think learning should be fun.
+          </StyledDescription>
+        </StyledModeSelection>
+      </SignedOutContainer>
     </HomeWrapper>
   );
 }
+
+const StyledSignedOutContainer = styled.div`
+  opacity: 0.4;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+`;
 
 const HomeWrapper = styled.div`
   padding: 50px 40px;

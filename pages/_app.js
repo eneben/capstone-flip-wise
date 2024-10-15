@@ -4,12 +4,12 @@ import useSWR from "swr";
 import Layout from "@/components/Layout/Layout";
 import { uid } from "uid";
 import { useEffect, useState } from "react";
+import { SessionProvider } from "next-auth/react";
 import MarkAsCorrect from "@/public/icons/MarkAsCorrect.svg";
 import MarkAsIncorrect from "@/public/icons/MarkAsIncorrect.svg";
 import Info from "@/public/icons/Info.svg";
 import ToastMessageContainer from "@/components/ToastMessage/ToastMessageContainer";
 import LoadingSpinner from "@/components/LoadingSpinner/LoadingSpinner";
-import { color } from "framer-motion";
 
 async function fetcher(url, retries = 3) {
   for (let i = 0; i < retries; i++) {
@@ -26,7 +26,10 @@ async function fetcher(url, retries = 3) {
   }
 }
 
-export default function App({ Component, pageProps }) {
+export default function App({
+  Component,
+  pageProps: { session, ...pageProps },
+}) {
   const {
     data: flashcards,
     isLoading: flashcardIsLoading,
@@ -109,10 +112,14 @@ export default function App({ Component, pageProps }) {
     collectionIsLoading
   ) {
     return (
-      <Layout>
-        <GlobalStyle />
-        <LoadingSpinner />
-      </Layout>
+      <SessionProvider session={session}>
+        <SWRConfig value={{ fetcher }}>
+          <Layout>
+            <GlobalStyle />
+            <LoadingSpinner />
+          </Layout>
+        </SWRConfig>
+      </SessionProvider>
     );
   }
 
@@ -155,7 +162,6 @@ export default function App({ Component, pageProps }) {
     });
 
     mutateFlashcards();
-    changeActionMode("default");
     showToastMessage(
       "Flashcard updated successfully!",
       "success",
@@ -197,7 +203,6 @@ export default function App({ Component, pageProps }) {
       }
 
       mutateCollections();
-      changeActionMode("default");
       showToastMessage(
         "Collection updated successfully!",
         "success",
@@ -220,7 +225,6 @@ export default function App({ Component, pageProps }) {
       });
       if (!response.ok) throw new Error("Failed to create flashcard");
       mutateFlashcards();
-      setActionMode("default");
       showToastMessage(
         "Flashcard created successfully!",
         "success",
@@ -407,55 +411,58 @@ export default function App({ Component, pageProps }) {
   }
 
   return (
-    <SWRConfig value={{ fetcher }}>
-      <Layout
-        collections={collections}
-        actionMode={actionMode}
-        changeActionMode={changeActionMode}
-        currentFlashcard={currentFlashcard}
-        currentCollection={currentCollection}
-        handleEditFlashcard={handleEditFlashcard}
-        handleCreateFlashcard={handleCreateFlashcard}
-        changeFlashcardSelection={changeFlashcardSelection}
-        handleAddCollection={handleAddCollection}
-        handleEditCollection={handleEditCollection}
-        getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
-      >
-        <GlobalStyle />
-        <Component
-          {...pageProps}
-          flashcardsWithCollection={flashcardsWithCollection}
-          handleToggleCorrect={handleToggleCorrect}
+    <SessionProvider session={session}>
+      <SWRConfig value={{ fetcher }}>
+        <Layout
           collections={collections}
-          handleDeleteFlashcard={handleDeleteFlashcard}
-          handleDeleteCollection={handleDeleteCollection}
-          handleEditCollection={handleEditCollection}
-          currentFlashcard={currentFlashcard}
-          currentCollection={currentCollection}
-          changeCurrentCollection={changeCurrentCollection}
-          changeCurrentFlashcard={changeCurrentFlashcard}
           actionMode={actionMode}
           changeActionMode={changeActionMode}
+          currentFlashcard={currentFlashcard}
+          currentCollection={currentCollection}
           handleEditFlashcard={handleEditFlashcard}
           handleCreateFlashcard={handleCreateFlashcard}
-          getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
-          getCorrectFlashcardsFromCollection={
-            getCorrectFlashcardsFromCollection
-          }
-          getIncorrectFlashcardsFromCollection={
-            getIncorrectFlashcardsFromCollection
-          }
-          flashcardSelection={flashcardSelection}
           changeFlashcardSelection={changeFlashcardSelection}
-          handleIncreaseFlashcardLevel={handleIncreaseFlashcardLevel}
-          handleDecreaseFlashcardLevel={handleDecreaseFlashcardLevel}
-          handleFirstClick={handleFirstClick}
-        />
-        <ToastMessageContainer
-          toastMessages={toastMessages}
-          hideToastMessage={hideToastMessage}
-        />
-      </Layout>
-    </SWRConfig>
+          handleAddCollection={handleAddCollection}
+          handleEditCollection={handleEditCollection}
+          getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
+        >
+          <GlobalStyle />
+          <Component
+            {...pageProps}
+            flashcardsWithCollection={flashcardsWithCollection}
+            handleToggleCorrect={handleToggleCorrect}
+            collections={collections}
+            handleDeleteFlashcard={handleDeleteFlashcard}
+            handleDeleteCollection={handleDeleteCollection}
+            handleEditCollection={handleEditCollection}
+            currentFlashcard={currentFlashcard}
+            currentCollection={currentCollection}
+            changeCurrentCollection={changeCurrentCollection}
+            changeCurrentFlashcard={changeCurrentFlashcard}
+            actionMode={actionMode}
+            changeActionMode={changeActionMode}
+            handleEditFlashcard={handleEditFlashcard}
+            handleCreateFlashcard={handleCreateFlashcard}
+            changeFlashcardSelection={changeFlashcardSelection}
+            handleAddCollection={handleAddCollection}
+            getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
+            getCorrectFlashcardsFromCollection={
+              getCorrectFlashcardsFromCollection
+            }
+            getIncorrectFlashcardsFromCollection={
+              getIncorrectFlashcardsFromCollection
+            }
+            flashcardSelection={flashcardSelection}
+            handleIncreaseFlashcardLevel={handleIncreaseFlashcardLevel}
+            handleDecreaseFlashcardLevel={handleDecreaseFlashcardLevel}
+            handleFirstClick={handleFirstClick}
+          />
+          <ToastMessageContainer
+            toastMessages={toastMessages}
+            hideToastMessage={hideToastMessage}
+          />
+        </Layout>
+      </SWRConfig>
+    </SessionProvider>
   );
 }

@@ -15,6 +15,7 @@ export default function MenuItem({
   changeFlashcardSelection,
   getAllFlashcardsFromCollection,
   closingTrigger,
+  disabled,
 }) {
   const [isCollectionsClosing, setIsCollectionsClosing] = useState(false);
 
@@ -50,6 +51,7 @@ export default function MenuItem({
     <>
       <StyledNavigationListItem>
         <StyledNavigationLink
+          $disabled={disabled}
           href={`/${page}`}
           onClick={() => {
             changeFlashcardSelection("all");
@@ -62,7 +64,8 @@ export default function MenuItem({
         {hasSubmenu && (
           <StyledSubMenuArrow
             $isRotate={submenuMode === menuItemName}
-            onClick={toggleSubmenuMode}
+            onClick={() => toggleSubmenuMode()}
+            $disabled={disabled}
           />
         )}
       </StyledNavigationListItem>
@@ -77,6 +80,7 @@ export default function MenuItem({
                 $collectionsLength={collectionsLength}
               >
                 <StyledSubNavigationLink
+                  disabled={disabled}
                   href={`/${page}/${collection._id}`}
                   onClick={() => {
                     changeFlashcardSelection("all");
@@ -143,6 +147,15 @@ const StyledSubNavigationListItem = styled.li`
 const StyledNavigationLink = styled(Link)`
   text-decoration: none;
   color: #fff;
+  cursor: pointer;
+
+  ${({ $disabled }) =>
+    $disabled &&
+    css`
+      color: #838383;
+      cursor: not-allowed;
+      pointer-events: none;
+    `}
 `;
 
 const StyledSubNavigationLink = styled(Link)`
@@ -151,6 +164,16 @@ const StyledSubNavigationLink = styled(Link)`
 `;
 
 const StyledSubMenuArrow = styled(SubMenuArrow)`
-  rotate: ${(props) => (props.$isRotate ? "1.5turn" : "0")};
+  rotate: ${({ $isRotate }) => ($isRotate ? "1.5turn" : "0")};
   transition: 0.3s ease-out;
+  color: #fff;
+  cursor: pointer;
+
+  ${({ $disabled }) =>
+    $disabled &&
+    css`
+      color: #838383;
+      cursor: not-allowed;
+      pointer-events: none;
+    `}
 `;

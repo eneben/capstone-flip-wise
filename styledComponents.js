@@ -31,3 +31,9 @@ export const StyledSuccessMessage = styled.p`
   color: var(--primary-green);
   padding: 0 30px 50px 30px;
 `;
+
+export const StyledAccessDeniedMessage = styled.h2`
+  font: var(--sub-headline);
+  text-align: center;
+  padding: 100px 30px;
+`;

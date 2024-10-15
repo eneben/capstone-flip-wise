@@ -1,4 +1,6 @@
 import CollectionList from "@/components/CollectionList/CollectionList";
+import { useSession } from "next-auth/react";
+import { StyledAccessDeniedMessage } from "@/styledComponents";
 
 export default function TrainingPage({
   collections,
@@ -13,6 +15,16 @@ export default function TrainingPage({
   handleEditCollection,
   currentCollection,
 }) {
+  const { status } = useSession();
+
+  if (status !== "authenticated") {
+    return (
+      <StyledAccessDeniedMessage>
+        Please log in to access this page.
+      </StyledAccessDeniedMessage>
+    );
+  }
+
   return (
     <>
       <CollectionList

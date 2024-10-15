@@ -1,8 +1,12 @@
 import dbConnect from "@/db/connect.js";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/pages/api/auth/[...nextauth].js";
 import Collection from "@/db/models/Collection.js";
 import Flashcard from "@/db/models/Flashcard";
 
 export default async function handler(request, response) {
+  const session = await getServerSession(request, response, authOptions);
+
   try {
     await dbConnect();
   } catch (error) {
@@ -26,7 +30,6 @@ export default async function handler(request, response) {
         response.status(404).json({ status: "Not Found" });
         return;
       }
-
       response.status(200).json(collection);
       return;
     } catch (error) {
@@ -35,6 +38,11 @@ export default async function handler(request, response) {
         .json({ error: "Error retrieving collection: " + error.message });
       return;
     }
+  }
+
+  if (!session) {
+    response.status(401).json({ status: "Not authorized" });
+    return;
   }
 
   if (request.method === "DELETE") {
