@@ -15,10 +15,20 @@ export default function HomePage() {
 
   return (
     <HomeWrapper>
-      <StyledIntroduction>
-        Welcome to BrainStack, your companion for mastering new skills and
-        studying. Start stacking with knowledge today!
-      </StyledIntroduction>
+      {!session && (
+        <StyledIntroduction>
+          Welcome to BrainStack, your companion for mastering new skills and
+          studying. To access training mode, gaming mode, and full flashcard
+          management, please log in and start stacking with knowledge today!
+        </StyledIntroduction>
+      )}
+      {session && (
+        <StyledIntroduction>
+          Welcome to BrainStack, your companion for mastering new skills and
+          studying. Start stacking with knowledge today!
+        </StyledIntroduction>
+      )}
+
       <StyledModeSelection href="/learning" $color="green">
         <StyledModeName $color="green">Learning Mode</StyledModeName>
         <StyledDescription>
