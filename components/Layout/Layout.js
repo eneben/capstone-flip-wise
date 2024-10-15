@@ -102,6 +102,7 @@ export default function Layout({
           isFormClosing={isFormClosing}
           startClosingForm={startClosingForm}
           onAddCollection={handleAddCollection}
+          uploadImage={uploadImage}
         />
       )}
 

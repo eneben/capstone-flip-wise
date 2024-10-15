@@ -21,16 +21,23 @@ export default async function handler(request, response) {
 
   const form = formidable({});
 
-  const [fields, files] = await form.parse(request);
+  form.parse(request, async (error, fields, files) => {
+    if (error) {
+      response.status(500).json({ message: "File parsing failed" });
+      return;
+    }
 
-  // we need to access files.cover here since it is the name of our file input. Replace this with the name of your input.
-  const file = files.image[0];
-  const { newFilename, filepath } = file;
+    const file = files.image[0];
+    const { newFilename, filepath } = file;
 
-  const result = await cloudinary.v2.uploader.upload(filepath, {
-    public_id: newFilename,
-    folder: "nf",
+    try {
+      const result = await cloudinary.v2.uploader.upload(filepath, {
+        public_id: newFilename,
+        folder: "nf",
+      });
+      response.status(200).json(result);
+    } catch (uploadError) {
+      response.status(500).json({ message: "Cloudinary upload failed" });
+    }
   });
-
-  response.status(200).json(result);
 }

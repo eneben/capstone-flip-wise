@@ -62,30 +62,29 @@ export default function App({ Component, pageProps }) {
 
   const [temporaryFlashcards, setTemporaryFlashcards] = useState([]);
 
-  async function uploadImage(file) {
+  async function uploadImage(imageFile) {
+    const formData = new FormData();
+    formData.append("file", imageFile);
+    formData.append("upload_preset", "your_upload_preset"); // Cloudinary-specific config
+
     try {
-      const formData = new FormData();
-      formData.append("image", file);
-
-      const response = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
-
-      const { url, width, height } = await response.json();
-      if (!response.ok) throw new Error("Failed to upload image");
-
-      mutateFlashcards();
-      showToastMessage(
-        "Flashcard created successfully!",
-        "success",
-        MarkAsCorrect
+      const response = await fetch(
+        "https://api.cloudinary.com/v1_1/your_cloud_name/image/upload",
+        {
+          method: "POST",
+          body: formData,
+        }
       );
 
-      return url;
+      const data = await response.json();
+      if (response.ok) {
+        return data.secure_url; // Return the uploaded image URL
+      } else {
+        throw new Error("Image upload failed");
+      }
     } catch (error) {
-      console.error("An error occurred: ", error);
-      showToastMessage("Error", "error", MarkAsIncorrect);
+      console.error("An error occurred during upload:", error);
+      throw error;
     }
   }
 
@@ -509,6 +508,7 @@ export default function App({ Component, pageProps }) {
           handleIncreaseFlashcardLevel={handleIncreaseFlashcardLevel}
           handleDecreaseFlashcardLevel={handleDecreaseFlashcardLevel}
           handleFirstClick={handleFirstClick}
+          uploadImage={uploadImage}
         />
         <ToastMessageContainer
           toastMessages={toastMessages}

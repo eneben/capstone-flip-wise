@@ -2,7 +2,7 @@ import styled from "styled-components";
 import RegularButton from "../Buttons/RegularButton";
 import ButtonWrapper from "../Buttons/ButtonWrapper";
 import FormInput from "../FormFlashcard/FormInput";
-import Edit from "@/public/icons/Edit.svg";
+import Upload from "@/public/icons/Upload.svg";
 
 export default function FormManual({
   collections,
@@ -76,7 +76,7 @@ export default function FormManual({
         <StyledImageInputWrapper>
           <StyledImageInput>
             <IconTextWrapper>
-              <Edit />
+              <Upload />
               Upload Image
             </IconTextWrapper>
           </StyledImageInput>

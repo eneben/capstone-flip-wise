@@ -36,6 +36,19 @@ export default function FormFlashcard({
       const { collectionName, collectionColor, question, answer } = formData;
       let newFlashcard;
 
+      const imageFile = formData.get("image"); // Hole die ausgewählte Bild-Datei
+      let imageUrl = ""; // Standardleerer Wert für die Bild-URL
+
+      if (imageFile) {
+        // Falls ein Bild existiert
+        try {
+          imageUrl = await uploadImage(imageFile); // Lade das Bild hoch und speichere die URL
+        } catch (error) {
+          console.error("Image upload failed:", error);
+          return; // Stoppe den Prozess, wenn der Bild-Upload fehlschlägt
+        }
+      }
+
       if (showNewCollectionFields) {
         const newCollection = {
           title: collectionName,
@@ -48,10 +61,10 @@ export default function FormFlashcard({
           question,
           answer,
           level: 1,
-          imageUrl: formData.imageUrl,
+          imageUrl,
         };
       } else {
-        newFlashcard = { ...formData, level: 1, imageUrl: formData.imageUrl };
+        newFlashcard = { ...formData, level: 1, imageUrl };
       }
 
       onSubmitFlashcard(newFlashcard);
