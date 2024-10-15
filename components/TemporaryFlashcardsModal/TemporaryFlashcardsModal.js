@@ -1,19 +1,47 @@
 import styled from "styled-components";
-import { StyledFormHeadline } from "@/styledComponents";
+import { StyledFormHeadline, StyledSubheading } from "@/styledComponents";
+import LoadingSpinner from "@/components/LoadingSpinner/LoadingSpinner";
 
 export default function TemporaryFlashcardsModal({ temporaryFlashcards }) {
   console.log(temporaryFlashcards);
   return (
     <StyledOutgreyContainer>
       <StyledModal>
-        <StyledFormHeadline>Generating Flashcards</StyledFormHeadline>
-        {temporaryFlashcards.map((temporaryFlashcard) => {
-          return (
-            <div key={temporaryFlashcard.temporaryFlashcardId}>
-              <p>{temporaryFlashcard.question}</p>
-            </div>
-          );
-        })}
+        {temporaryFlashcards.length === 0 && (
+          <>
+            <StyledFormHeadline>Please wait!</StyledFormHeadline>
+            <StyledSubheading>
+              Generating flashcards can take up to several minutes.
+            </StyledSubheading>
+            <LoadingSpinner />
+          </>
+        )}
+
+        {temporaryFlashcards.length > 0 && (
+          <>
+            <StyledFormHeadline>Uncheck unwanted flashcards</StyledFormHeadline>
+            <StyledTemporaryFlashcardsList>
+              {temporaryFlashcards.map((temporaryFlashcard) => {
+                return (
+                  <StyledTemporaryFlashcardItem
+                    $borderColor={temporaryFlashcard.collectionColor}
+                    key={temporaryFlashcard.temporaryFlashcardId}
+                  >
+                    <StyledQuestionHeadline>Question:</StyledQuestionHeadline>
+                    <StyledQuestionAnswer>
+                      {" "}
+                      {temporaryFlashcard.question}
+                    </StyledQuestionAnswer>
+                    <StyledAnswerHeadline>Answer:</StyledAnswerHeadline>
+                    <StyledQuestionAnswer>
+                      {temporaryFlashcard.answer}
+                    </StyledQuestionAnswer>
+                  </StyledTemporaryFlashcardItem>
+                );
+              })}
+            </StyledTemporaryFlashcardsList>
+          </>
+        )}
       </StyledModal>
     </StyledOutgreyContainer>
   );
@@ -38,11 +66,35 @@ const StyledModal = styled.article`
   max-width: 500px;
   max-height: 90vh;
   padding: 15px;
-  left: 50%;
-  transform: translateX(-50%);
-  margin-top: 10px;
   border-radius: 10px;
   background-color: #fff;
   opacity: 1;
   z-index: 2;
+  overflow-y: scroll;
+  scrollbar-width: 8px;
+  scrollbar-color: var(--primary-neutral) #fff;
+`;
+
+const StyledTemporaryFlashcardsList = styled.ul`
+  list-style: none;
+`;
+
+const StyledTemporaryFlashcardItem = styled.li`
+  margin-top: 10px;
+  padding: 10px;
+  border: var(--border-thickness) solid ${({ $borderColor }) => $borderColor};
+  border-radius: 10px;
+`;
+
+const StyledQuestionHeadline = styled.p`
+  font: var(--temporary-flashcard-preview-small-headline);
+`;
+
+const StyledAnswerHeadline = styled.p`
+  font: var(--temporary-flashcard-preview-small-headline);
+  padding-top: 8px;
+`;
+
+const StyledQuestionAnswer = styled.p`
+  font: var(--temporary-flashcard-preview-q-and-a);
 `;

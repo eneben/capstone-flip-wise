@@ -9,6 +9,7 @@ import MarkAsIncorrect from "@/public/icons/MarkAsIncorrect.svg";
 import Info from "@/public/icons/Info.svg";
 import ToastMessageContainer from "@/components/ToastMessage/ToastMessageContainer";
 import LoadingSpinner from "@/components/LoadingSpinner/LoadingSpinner";
+import testTemporaryFlashcards from "@/assets/testTemporaryFlashcards.json";
 
 async function fetcher(url, retries = 3) {
   for (let i = 0; i < retries; i++) {
@@ -60,10 +61,14 @@ export default function App({ Component, pageProps }) {
 
   const [isClickedFirstTime, setIsClickedFirstTime] = useState(false);
 
-  const [temporaryFlashcards, setTemporaryFlashcards] = useState([]);
+  const [temporaryFlashcards, setTemporaryFlashcards] = useState(
+    testTemporaryFlashcards
+  );
+
+  console.log(temporaryFlashcards);
 
   const [showTemporaryFlashcardsModal, setShowTemporaryFlashcardsModal] =
-    useState(false);
+    useState(true);
 
   async function getAiFlashcards(
     collectionId,
