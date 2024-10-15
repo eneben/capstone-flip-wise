@@ -83,6 +83,8 @@ export default function FormManual({
           <HiddenImageInput
             name="image"
             type="file"
+            accept="image/*"
+            id="image"
             onChange={(event) => uploadImage(event.target.files[0])}
           />
         </StyledImageInputWrapper>
