@@ -211,7 +211,7 @@ const IconTextWrapper = styled.div`
 `;
 
 const StyledImageWrapper = styled.div`
-  width: 100%;
+  width: 50%;
   height: 100px;
   display: flex;
   position: relative;
