@@ -65,10 +65,13 @@ export default function App({ Component, pageProps }) {
     testTemporaryFlashcards
   );
 
-  console.log(temporaryFlashcards);
-
   const [showTemporaryFlashcardsModal, setShowTemporaryFlashcardsModal] =
     useState(true);
+
+  const [abortController, setAbortController] = useState(null);
+
+  console.log("Abort Controller: ", abortController);
+  console.log("TemporaryFlashcards: ", temporaryFlashcards);
 
   function toggleTemporaryFlashcardIncluded(id) {
     setTemporaryFlashcards(
@@ -83,6 +86,11 @@ export default function App({ Component, pageProps }) {
     );
   }
 
+  function handleDeleteTemporaryFlashcards() {
+    setTemporaryFlashcards([]);
+    setShowTemporaryFlashcardsModal(false);
+  }
+
   async function getAiFlashcards(
     collectionId,
     collectionName,
@@ -90,6 +98,9 @@ export default function App({ Component, pageProps }) {
     textInput,
     numberOfFlashcards
   ) {
+    const controller = new AbortController();
+    setAbortController(controller);
+
     setShowTemporaryFlashcardsModal(true);
     try {
       const response = await fetch("/api/ai-generate", {
@@ -104,6 +115,7 @@ export default function App({ Component, pageProps }) {
           textInput,
           numberOfFlashcards,
         }),
+        signal: controller.signal,
       });
 
       const data = await response.json();
@@ -121,8 +133,21 @@ export default function App({ Component, pageProps }) {
         })
       );
     } catch (error) {
-      console.error("Error:", error);
+      if (error.name === "AbortError") {
+        console.log("Flashcard generation was cancelled.");
+      } else {
+        console.error("Error:", error);
+      }
+    } finally {
+      setAbortController(null);
     }
+  }
+
+  function cancelFlashcardGeneration() {
+    if (abortController) {
+      abortController.abort();
+    }
+    setShowTemporaryFlashcardsModal(false);
   }
 
   function handleFirstClick() {
@@ -485,6 +510,8 @@ export default function App({ Component, pageProps }) {
         showTemporaryFlashcardsModal={showTemporaryFlashcardsModal}
         temporaryFlashcards={temporaryFlashcards}
         toggleTemporaryFlashcardIncluded={toggleTemporaryFlashcardIncluded}
+        handleDeleteTemporaryFlashcards={handleDeleteTemporaryFlashcards}
+        cancelFlashcardGeneration={cancelFlashcardGeneration}
       >
         <GlobalStyle />
         <Component
