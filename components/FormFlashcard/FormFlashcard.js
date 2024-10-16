@@ -45,13 +45,12 @@ export default function FormFlashcard({
 
     if (formMode === "manual") {
       const formData = Object.fromEntries(new FormData(event.target));
-      const { collectionName, collectionColor, question, answer, image } =
-        formData;
+      const { collectionName, collectionColor, question, answer } = formData;
       let newFlashcard;
 
       let imageUrl = "";
 
-      if (image) {
+      if (imageUploaded && image) {
         try {
           imageUrl = await uploadImage(image);
         } catch (error) {
