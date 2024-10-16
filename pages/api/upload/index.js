@@ -23,37 +23,54 @@ export default async function handler(request, response) {
 
   console.log("Request received:", request);
 
-  form.parse(request, async (error, files) => {
-    if (error) {
-      response.status(500).json({ message: "File parsing failed" });
-      return;
-    }
+  //   form.parse(request, async (error, files) => {
+  //     if (error) {
+  //       response.status(500).json({ message: "File parsing failed" });
+  //       return;
+  //     }
 
-    console.log("Parsed files:", files);
+  //     console.log("Parsed files:", files);
 
-    if (!files.file || files.file.length === 0) {
-      response.status(400).json({ message: "No image file uploaded" });
-      return;
-    }
+  //     if (!files.file || files.file.length === 0) {
+  //       response.status(400).json({ message: "No image file uploaded" });
+  //       return;
+  //     }
 
-    const file = files.file[0];
-    console.log("File detail:", file);
+  //     const file = files.file[0];
+  //     console.log("File detail:", file);
 
-    const { filepath, originalFilename } = file;
-    try {
-      console.log("Filepath for upload:", filepath);
+  //     const { filepath, originalFilename } = file;
+  //     try {
+  //       const result = await cloudinary.uploader.upload(filepath, {
+  //         public_id: originalFilename,
+  //         folder: "nf",
+  //       });
 
-      const result = await cloudinary.uploader.upload(filepath, {
-        public_id: originalFilename,
-        folder: "nf",
-      });
+  //       response.status(200).json(result);
+  //     } catch (uploadError) {
+  //       console.error("Cloudinary upload failed", uploadError);
+  //       response.status(500).json({ message: "Cloudinary upload failed" });
+  //     }
+  //   });
+  // }
 
-      console.log("Cloudinary upload result:", result);
+  const [fields, files] = await form.parse(request);
 
-      response.status(200).json(result);
-    } catch (uploadError) {
-      console.error("Cloudinary upload failed", uploadError);
-      response.status(500).json({ message: "Cloudinary upload failed" });
-    }
+  const file = files.image[0];
+  const { originalFilename, filepath } = file;
+
+  const {
+    height,
+    width,
+    secure_url: url,
+  } = await cloudinary.v2.uploader.upload(filepath, {
+    public_id: originalFilename,
+    folder: "nf",
+  });
+
+  response.status(201).json({
+    height,
+    width,
+    url,
   });
 }

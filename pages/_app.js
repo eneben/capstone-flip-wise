@@ -63,9 +63,10 @@ export default function App({ Component, pageProps }) {
   const [temporaryFlashcards, setTemporaryFlashcards] = useState([]);
 
   async function uploadImage(imageFile) {
+    console.log("Selected image file:", imageFile);
+
     const formData = new FormData();
     formData.append("file", imageFile);
-    console.log("form data in upload image", formData);
 
     try {
       const response = await fetch("/api/upload", {
