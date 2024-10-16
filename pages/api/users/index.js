@@ -24,27 +24,22 @@ export default async function handler(request, response) {
     const providerId = session.user.id;
 
     try {
-      const user = await User.findOne({ providerId });
+      const createdUser = await User.create({ providerId });
 
-      if (!user) {
-        const createdUser = await User.create({ providerId });
+      const defaultFlashcards = await Flashcard.find({ userId: null });
+      const userFlashcards = defaultFlashcards.map((flashcard) => {
+        return {
+          userId: createdUser._id,
+          collectionId: flashcard.collectionId,
+          question: flashcard.question,
+          answer: flashcard.answer,
+          level: 1,
+          isCorrect: false,
+        };
+      });
 
-        const defaultFlashcards = await Flashcard.find({ userId: null });
-        const userFlashcards = defaultFlashcards.map((flashcard) => {
-          return {
-            userId: user._id,
-            collectionId: flashcard.collectionId,
-            question: flashcard.question,
-            answer: flashcard.answer,
-            level: 1,
-            isCorrect: false,
-          };
-        });
-
-        await Flashcard.insertMany(userFlashcards);
-      }
-      response.status(200).json({ user });
-      return;
+      await Flashcard.insertMany(userFlashcards);
+      return response.status(201).json({ user: createdUser });
     } catch (error) {
       response
         .status(400)

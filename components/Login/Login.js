@@ -7,28 +7,66 @@ import { useEffect } from "react";
 export default function Login({
   variant,
   changeShowLogOutDialog,
-  additionalClick = () => {},
+  additionalFunctions = () => {},
 }) {
   const { data: session } = useSession();
 
   useEffect(() => {
     async function fetchUser() {
-      const user = await fetch(`/api/users/${session.user.id}`);
+      try {
+        const response = await fetch(`/api/users/${session.user.id}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
 
-      // hier weiter GET request schreiben
-      // wenn !response.ok, dann post request und neuen user erstellen
+        if (response.ok) {
+          const user = await response.json();
+          console.log("found user: ", user);
+          console.log("return user._id: ", user._id);
+          return user._id;
+        }
 
-      const response = await fetch("/api/users", {
-        method: "POST",
-      });
-      console.log("response: ", response);
+        if (response.status === 404) {
+          console.log("no user");
+          const createUserResponse = await fetch("/api/users", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              providerId: session.user.id,
+            }),
+          });
+          console.log("createUserResponse: ", createUserResponse);
 
-      if (!response.ok) throw new Error("Failed to fetch user");
-      const responseData = await response.json();
-      console.log("responseData.user: ", responseData?.user);
-      console.log("responseData._id: ", responseData?._id);
-      const newUser = responseData._id;
+          if (!createUserResponse.ok) {
+            throw new Error("Failed to create new user");
+          }
+
+          if (createUserResponse.ok) {
+            const response = await fetch(`/api/users/${session.user.id}`, {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            });
+
+            if (response.ok) {
+              const user = await response.json();
+              console.log("found user: ", user);
+              console.log("return user._id: ", user._id);
+              return user._id;
+            }
+          }
+        }
+      } catch (error) {
+        console.error("error during fetch user function: ", error);
+        return;
+      }
     }
+
     if (session) {
       console.log("logged in! session: ", session);
       fetchUser();
@@ -42,7 +80,7 @@ export default function Login({
           $variant={variant}
           onClick={() => {
             changeShowLogOutDialog(true);
-            additionalClick();
+            additionalFunctions();
           }}
         >
           <StyledWrapper>
@@ -60,7 +98,7 @@ export default function Login({
         $variant={variant}
         onClick={() => {
           signIn();
-          additionalClick();
+          additionalFunctions();
         }}
       >
         <StyledWrapper>

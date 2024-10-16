@@ -1,8 +1,6 @@
 import dbConnect from "@/db/connect.js";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/pages/api/auth/[...nextauth].js";
-import Collection from "@/db/models/Collection.js";
-import Flashcard from "@/db/models/Flashcard";
 import User from "@/db/models/User";
 
 export default async function handler(request, response) {
