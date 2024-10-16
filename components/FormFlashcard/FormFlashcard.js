@@ -18,7 +18,7 @@ export default function FormFlashcard({
   uploadImage,
 }) {
   const [showNewCollectionFields, setShowNewCollectionFields] = useState(false);
-  const [formMode, setFormMode] = useState("ai");
+  const [formMode, setFormMode] = useState("manual");
   const [image, setImage] = useState(null);
   const [imageUploaded, setImageUploaded] = useState(false);
 
@@ -28,7 +28,6 @@ export default function FormFlashcard({
   }
 
   function handleCloseImagePreview() {
-    console.log("Close image preview clicked");
     setImageUploaded(false);
     setImage(null);
   }
@@ -50,7 +49,6 @@ export default function FormFlashcard({
         formData;
       let newFlashcard;
 
-      // const imageFile = formData.get("image");
       let imageUrl = "";
 
       if (image) {

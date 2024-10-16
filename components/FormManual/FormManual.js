@@ -79,7 +79,7 @@ export default function FormManual({
           </NewCollectionWrapper>
         )}
         <StyledImageInputWrapper>
-          {imageUploaded ? (
+          {imageUploaded && (
             <StyledImageWrapper onClick={handleCloseImagePreview}>
               <StyledIconWrapper>
                 <MarkAsIncorrect />
@@ -91,23 +91,22 @@ export default function FormManual({
                 fill
               />
             </StyledImageWrapper>
-          ) : (
-            <>
-              <StyledImageInput>
-                <IconTextWrapper>
-                  <Upload />
-                  Upload Image
-                </IconTextWrapper>
-              </StyledImageInput>
-              <HiddenImageInput
-                name="image"
-                type="file"
-                accept="image/*"
-                id="image"
-                onChange={(event) => uploadImage(event.target.files[0])}
-              />
-            </>
           )}
+          <>
+            <StyledImageInput $hidden={imageUploaded}>
+              <IconTextWrapper>
+                <Upload />
+                Upload Image
+              </IconTextWrapper>
+            </StyledImageInput>
+            <HiddenImageInput
+              name="image"
+              type="file"
+              accept="image/*"
+              id="image"
+              onChange={(event) => uploadImage(event.target.files[0])}
+            />
+          </>
         </StyledImageInputWrapper>
       </StyledFormWrapper>
 
@@ -195,13 +194,13 @@ const HiddenImageInput = styled.input.attrs({
 `;
 
 const StyledImageInput = styled.label`
-  display: inline-block;
   padding: 8px 14px;
   background-color: var(--secondary-grey);
   border-radius: 4px;
   font-weight: 500;
   cursor: pointer;
   text-align: center;
+  display: ${({ $hidden }) => ($hidden ? "none" : "inline-block")};
 `;
 
 const IconTextWrapper = styled.div`
@@ -211,8 +210,8 @@ const IconTextWrapper = styled.div`
 `;
 
 const StyledImageWrapper = styled.div`
-  width: 50%;
-  height: 100px;
+  width: 150px;
+  height: 150px;
   display: flex;
   position: relative;
   flex-direction: row-reverse;

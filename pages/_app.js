@@ -65,6 +65,7 @@ export default function App({ Component, pageProps }) {
   async function uploadImage(imageFile) {
     const formData = new FormData();
     formData.append("file", imageFile);
+    console.log("form data in upload image", formData);
 
     try {
       const response = await fetch("/api/upload", {

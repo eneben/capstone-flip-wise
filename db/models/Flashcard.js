@@ -9,11 +9,10 @@ const flashcardSchema = new Schema({
   answer: { type: String, required: true },
   level: { type: Number, required: true },
   isCorrect: { type: Boolean },
-  image: {
-    width: { type: String },
-    height: { type: String },
-    url: { type: String },
-  },
+  imageUrl: { type: String },
+  // image: {
+  //   url: { type: String },
+  // },
 });
 
 const Flashcard =

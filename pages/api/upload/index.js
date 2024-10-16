@@ -21,14 +21,15 @@ export default async function handler(request, response) {
 
   const form = formidable({});
 
-  form.parse(request, async (error, fields, files) => {
+  console.log("Request received:", request);
+
+  form.parse(request, async (error, files) => {
     if (error) {
       response.status(500).json({ message: "File parsing failed" });
       return;
     }
 
-    // Logge files, um die Struktur zu überprüfen
-    console.log(files);
+    console.log("Parsed files:", files);
 
     if (!files.file || files.file.length === 0) {
       response.status(400).json({ message: "No image file uploaded" });
@@ -36,12 +37,18 @@ export default async function handler(request, response) {
     }
 
     const file = files.file[0];
+    console.log("File detail:", file);
+
     const { filepath, originalFilename } = file;
     try {
+      console.log("Filepath for upload:", filepath);
+
       const result = await cloudinary.uploader.upload(filepath, {
         public_id: originalFilename,
         folder: "nf",
       });
+
+      console.log("Cloudinary upload result:", result);
 
       response.status(200).json(result);
     } catch (uploadError) {
