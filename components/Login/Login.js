@@ -45,21 +45,29 @@ export default function Login({
             throw new Error("Failed to create new user");
           }
 
-          if (createUserResponse.ok) {
-            const response = await fetch(`/api/users/${session.user.id}`, {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-              },
-            });
+          const createdUserData = await createUserResponse.json();
+          console.log("createdUserData: ", createdUserData);
+          console.log(
+            "return createdUserData.user._id: ",
+            createdUserData.user._id
+          );
+          return createdUserData.user._id;
 
-            if (response.ok) {
-              const user = await response.json();
-              console.log("found user: ", user);
-              console.log("return user._id: ", user._id);
-              return user._id;
-            }
-          }
+          // if (createUserResponse.ok) {
+          //   const response = await fetch(`/api/users/${session.user.id}`, {
+          //     method: "GET",
+          //     headers: {
+          //       "Content-Type": "application/json",
+          //     },
+          //   });
+
+          //   if (response.ok) {
+          //     const user = await response.json();
+          //     console.log("found user: ", user);
+          //     console.log("return user._id: ", user._id);
+          //     return user._id;
+          //   }
+          // }
         }
       } catch (error) {
         console.error("error during fetch user function: ", error);
