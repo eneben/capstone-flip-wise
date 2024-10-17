@@ -4,6 +4,7 @@ import "./Collection";
 const { Schema } = mongoose;
 
 const flashcardSchema = new Schema({
+  userId: { type: Schema.Types.ObjectId, ref: "User" },
   collectionId: { type: Schema.Types.ObjectId, ref: "Collection" },
   question: { type: String, required: true },
   answer: { type: String, required: true },
