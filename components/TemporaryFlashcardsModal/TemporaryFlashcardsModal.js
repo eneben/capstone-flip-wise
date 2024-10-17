@@ -14,6 +14,7 @@ export default function TemporaryFlashcardsModal({
   cancelFlashcardGeneration,
   onSubmitFlashcard,
   onAddCollection,
+  onDeleteTemporaryFlashcards,
 }) {
   const [isDelete, setIsDelete] = useState(false);
 
@@ -57,7 +58,8 @@ export default function TemporaryFlashcardsModal({
         };
       });
     }
-    // onSubmitFlashcard(newAiFlashcards);
+    onSubmitFlashcard(newAiFlashcards);
+    onDeleteTemporaryFlashcards();
   }
 
   return (

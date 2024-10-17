@@ -11,8 +11,6 @@ import TemporaryFlashcardsModal from "../TemporaryFlashcardsModal/TemporaryFlash
 import { useState, useEffect, useCallback } from "react";
 import { uid } from "uid";
 
-import testTemporaryFlashcards from "@/assets/testTemporaryFlashcards.json";
-
 export default function Layout({
   children,
   collections,
@@ -91,8 +89,7 @@ export default function Layout({
       if (!response.ok) {
         throw new Error(data.message || "Something went wrong");
       }
-
-      if (data.collectionId === "newCollection") {
+      if (data[0].collectionId === "newCollection") {
         setTemporaryFlashcards(
           data.map((temporaryFlashcard) => {
             return {
@@ -106,7 +103,6 @@ export default function Layout({
         const currentCollection = collections.find(
           (collection) => collection._id === data[0].collectionId
         );
-
         setTemporaryFlashcards(
           data.map((temporaryFlashcard) => {
             return {
@@ -177,7 +173,7 @@ export default function Layout({
         <TemporaryFlashcardsModal
           temporaryFlashcards={temporaryFlashcards}
           toggleTemporaryFlashcardIncluded={toggleTemporaryFlashcardIncluded}
-          handleDeleteTemporaryFlashcards={handleDeleteTemporaryFlashcards}
+          onDeleteTemporaryFlashcards={handleDeleteTemporaryFlashcards}
           cancelFlashcardGeneration={cancelFlashcardGeneration}
           onSubmitFlashcard={handleCreateFlashcard}
           onAddCollection={handleAddCollection}

@@ -207,7 +207,6 @@ export default function App({ Component, pageProps }) {
   }
 
   async function handleCreateFlashcard(newFlashcard) {
-    console.log("New Flashcard: ", newFlashcard);
     try {
       const response = await fetch("/api/flashcards", {
         method: "POST",
@@ -219,7 +218,7 @@ export default function App({ Component, pageProps }) {
       if (!response.ok) throw new Error("Failed to create flashcard");
       mutateFlashcards();
       showToastMessage(
-        "Flashcard created successfully!",
+        "Flashcard(s) created successfully!",
         "success",
         MarkAsCorrect
       );
