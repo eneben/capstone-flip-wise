@@ -10,6 +10,7 @@ export default function Login({
 }) {
   const { data: session } = useSession();
 
+  console.log(session);
   if (session) {
     return (
       <>
