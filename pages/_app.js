@@ -475,7 +475,7 @@ export default function App({ Component, pageProps }) {
         handleAddCollection={handleAddCollection}
         handleEditCollection={handleEditCollection}
         getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
-        uploadImage={uploadImage}
+        // uploadImage={uploadImage}
       >
         <GlobalStyle />
         <Component
@@ -506,7 +506,7 @@ export default function App({ Component, pageProps }) {
           handleIncreaseFlashcardLevel={handleIncreaseFlashcardLevel}
           handleDecreaseFlashcardLevel={handleDecreaseFlashcardLevel}
           handleFirstClick={handleFirstClick}
-          uploadImage={uploadImage}
+          // uploadImage={uploadImage}
         />
         <ToastMessageContainer
           toastMessages={toastMessages}

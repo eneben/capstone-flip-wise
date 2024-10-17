@@ -52,18 +52,21 @@ export default function FormFlashcard({
         collectionId,
       } = data;
 
-      const response = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
+      let url = "";
 
-      const { url } = await response.json();
+      if (imageUploaded && image) {
+        const response = await fetch("/api/upload", {
+          method: "POST",
+          body: formData,
+        });
 
-      if (!response.ok) {
-        console.error("An error occurred during upload:", error);
-        return;
+        if (!response.ok) {
+          console.error("An error occurred during upload:", error);
+          return;
+        }
+        const responseData = await response.json();
+        url = responseData.url;
       }
-
       let newFlashcard;
 
       if (showNewCollectionFields) {
@@ -78,7 +81,7 @@ export default function FormFlashcard({
           question,
           answer,
           level: 1,
-          imageUrl: url,
+          imageUrl: url || null,
         };
       } else {
         newFlashcard = {
@@ -86,7 +89,7 @@ export default function FormFlashcard({
           question,
           answer,
           level: 1,
-          imageUrl: url,
+          imageUrl: url || null,
         };
       }
 
