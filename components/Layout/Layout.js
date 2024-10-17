@@ -9,9 +9,11 @@ import AiInfoModal from "../AiInfoModal/AiInfoModal";
 import FormCollection from "@/components/FormCollection/FormCollection";
 import TemporaryFlashcardsModal from "../TemporaryFlashcardsModal/TemporaryFlashcardsModal";
 import { useState, useEffect, useCallback } from "react";
+import { uid } from "uid";
+
+import testTemporaryFlashcards from "@/assets/testTemporaryFlashcards.json";
 
 export default function Layout({
-  getAiFlashcards,
   children,
   collections,
   actionMode,
@@ -24,11 +26,6 @@ export default function Layout({
   changeFlashcardSelection,
   handleAddCollection,
   getAllFlashcardsFromCollection,
-  temporaryFlashcards,
-  showTemporaryFlashcardsModal,
-  toggleTemporaryFlashcardIncluded,
-  handleDeleteTemporaryFlashcards,
-  cancelFlashcardGeneration,
 }) {
   const [isFormClosing, setIsFormClosing] = useState(false);
 
@@ -37,6 +34,108 @@ export default function Layout({
   const cachedChangeActionMode = useCallback(changeActionMode, [
     changeActionMode,
   ]);
+
+  const [temporaryFlashcards, setTemporaryFlashcards] = useState([]);
+
+  const [showTemporaryFlashcardsModal, setShowTemporaryFlashcardsModal] =
+    useState(false);
+
+  const [abortController, setAbortController] = useState(null);
+
+  function toggleTemporaryFlashcardIncluded(id) {
+    setTemporaryFlashcards(
+      temporaryFlashcards.map((temporaryFlashcard) => {
+        return temporaryFlashcard.temporaryFlashcardId === id
+          ? {
+              ...temporaryFlashcard,
+              isIncluded: !temporaryFlashcard.isIncluded,
+            }
+          : temporaryFlashcard;
+      })
+    );
+  }
+
+  function handleDeleteTemporaryFlashcards() {
+    setTemporaryFlashcards([]);
+    setShowTemporaryFlashcardsModal(false);
+  }
+
+  async function getAiFlashcards(
+    collectionId,
+    collectionName,
+    collectionColor,
+    textInput,
+    numberOfFlashcards
+  ) {
+    const controller = new AbortController();
+    setAbortController(controller);
+
+    setShowTemporaryFlashcardsModal(true);
+    try {
+      const response = await fetch("/api/ai-generate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          collectionId,
+          collectionName,
+          collectionColor,
+          textInput,
+          numberOfFlashcards,
+        }),
+        signal: controller.signal,
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || "Something went wrong");
+      }
+
+      if (data.collectionId === "newCollection") {
+        setTemporaryFlashcards(
+          data.map((temporaryFlashcard) => {
+            return {
+              ...temporaryFlashcard,
+              temporaryFlashcardId: uid(),
+              isIncluded: true,
+            };
+          })
+        );
+      } else {
+        const currentCollection = collections.find(
+          (collection) => collection._id === data[0].collectionId
+        );
+
+        setTemporaryFlashcards(
+          data.map((temporaryFlashcard) => {
+            return {
+              ...temporaryFlashcard,
+              temporaryFlashcardId: uid(),
+              collectionName: currentCollection.title,
+              collectionColor: currentCollection.color,
+              isIncluded: true,
+            };
+          })
+        );
+      }
+    } catch (error) {
+      if (error.name === "AbortError") {
+        console.log("Flashcard generation was cancelled.");
+      } else {
+        console.error("Error:", error);
+      }
+    } finally {
+      setAbortController(null);
+    }
+  }
+
+  function cancelFlashcardGeneration() {
+    if (abortController) {
+      abortController.abort();
+    }
+    setShowTemporaryFlashcardsModal(false);
+  }
 
   function changeShowInfoModal() {
     setShowInfoModal(!showInfoModal);
@@ -80,6 +179,8 @@ export default function Layout({
           toggleTemporaryFlashcardIncluded={toggleTemporaryFlashcardIncluded}
           handleDeleteTemporaryFlashcards={handleDeleteTemporaryFlashcards}
           cancelFlashcardGeneration={cancelFlashcardGeneration}
+          onSubmitFlashcard={handleCreateFlashcard}
+          onAddCollection={handleAddCollection}
         />
       )}
 

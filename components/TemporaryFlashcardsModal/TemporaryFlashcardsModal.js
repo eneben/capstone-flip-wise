@@ -12,6 +12,8 @@ export default function TemporaryFlashcardsModal({
   toggleTemporaryFlashcardIncluded,
   handleDeleteTemporaryFlashcards,
   cancelFlashcardGeneration,
+  onSubmitFlashcard,
+  onAddCollection,
 }) {
   const [isDelete, setIsDelete] = useState(false);
 
@@ -20,10 +22,48 @@ export default function TemporaryFlashcardsModal({
     setIsDelete((prevIsDelete) => !prevIsDelete);
   }
 
+  async function handleSubmitAiFlashcards(temporaryFlashcards) {
+    const { collectionColor, collectionId, collectionName } =
+      temporaryFlashcards[0];
+
+    const includedFlashcards = temporaryFlashcards.filter(
+      (temporaryFlashcard) => temporaryFlashcard.isIncluded
+    );
+
+    let newAiFlashcards;
+
+    if (collectionId === "newCollection") {
+      const newCollection = {
+        title: collectionName,
+        color: collectionColor,
+      };
+      const newCollectionId = await onAddCollection(newCollection);
+
+      newAiFlashcards = includedFlashcards.map((includedFlashcard) => {
+        return {
+          collectionId: newCollectionId,
+          question: includedFlashcard.question,
+          answer: includedFlashcard.answer,
+          level: 1,
+        };
+      });
+    } else {
+      newAiFlashcards = includedFlashcards.map((includedFlashcard) => {
+        return {
+          collectionId: includedFlashcard.collectionId,
+          question: includedFlashcard.question,
+          answer: includedFlashcard.answer,
+          level: 1,
+        };
+      });
+    }
+    // onSubmitFlashcard(newAiFlashcards);
+  }
+
   return (
     <StyledOutgreyContainer>
       <StyledModal>
-        <StyledModalContentContainer>
+        <StyledModalContentContainer $isTransparent={isDelete}>
           {temporaryFlashcards.length === 0 && (
             <>
               <StyledFormHeadline>Please wait!</StyledFormHeadline>
@@ -70,6 +110,7 @@ export default function TemporaryFlashcardsModal({
                           uncheckedIcon={false}
                           checkedIcon={false}
                           checked={temporaryFlashcard.isIncluded}
+                          disabled={isDelete}
                           onChange={() =>
                             toggleTemporaryFlashcardIncluded(
                               temporaryFlashcard.temporaryFlashcardId
@@ -79,7 +120,7 @@ export default function TemporaryFlashcardsModal({
                       </StyledCheckboxWrapper>
 
                       <StyledContentContainer
-                        $transparent={temporaryFlashcard.isIncluded}
+                        $isTransparent={!temporaryFlashcard.isIncluded}
                       >
                         <StyledQuestionHeadline>
                           Question:
@@ -101,10 +142,14 @@ export default function TemporaryFlashcardsModal({
           )}
         </StyledModalContentContainer>
 
-        <StyledConfirmationContainer $isFullHeight={isDelete}>
+        <StyledConfirmationContainer $morePaddingTop={isDelete}>
           {!isDelete && temporaryFlashcards.length > 0 && (
             <ButtonWrapper>
-              <RegularButton type="button" variant="submit">
+              <RegularButton
+                type="button"
+                variant="submit"
+                onClick={() => handleSubmitAiFlashcards(temporaryFlashcards)}
+              >
                 Save
               </RegularButton>
               <RegularButton
@@ -175,6 +220,7 @@ const StyledModal = styled.article`
 
 const StyledModalContentContainer = styled.div`
   padding: 15px 20px 15px 20px;
+  opacity: ${({ $isTransparent }) => ($isTransparent ? "0.5" : "1")};
 `;
 
 const DeleteConfirmationDialogContainer = styled.div`
@@ -199,7 +245,7 @@ const StyledTemporaryFlashcardItem = styled.li`
 `;
 
 const StyledContentContainer = styled.div`
-  opacity: ${({ $transparent }) => ($transparent ? "1" : 0.5)};
+  opacity: ${({ $isTransparent }) => ($isTransparent ? 0.5 : 1)};
 `;
 
 const StyledQuestionHeadline = styled.p`
@@ -234,7 +280,8 @@ const StyledCollectionName = styled.span`
 `;
 
 const StyledConfirmationContainer = styled.div`
-  padding: 10px 20px 20px 20px;
+  padding: ${({ $morePaddingTop }) => ($morePaddingTop ? "20px" : "10px")} 20px
+    20px 20px;
   position: sticky;
   bottom: 0;
   left: 0;

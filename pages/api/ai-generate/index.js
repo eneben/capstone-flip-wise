@@ -34,7 +34,8 @@ export default async function handler(request, response) {
       "${textInput}"
 
       Format the response as a JSON array of objects, each object containing 
-      a "question" and an "answer". Do not include any additional information.
+      a "question" and an "answer". Do not include any additional information. 
+      "Question" should not exceed a length of 100 characters (including spaces) and "answer" should not exceed a length of 50 characters (including spaces).
     `;
 
     const completion = await openai.chat.completions.create({

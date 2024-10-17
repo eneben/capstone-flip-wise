@@ -9,7 +9,6 @@ import MarkAsIncorrect from "@/public/icons/MarkAsIncorrect.svg";
 import Info from "@/public/icons/Info.svg";
 import ToastMessageContainer from "@/components/ToastMessage/ToastMessageContainer";
 import LoadingSpinner from "@/components/LoadingSpinner/LoadingSpinner";
-import testTemporaryFlashcards from "@/assets/testTemporaryFlashcards.json";
 
 async function fetcher(url, retries = 3) {
   for (let i = 0; i < retries; i++) {
@@ -60,95 +59,6 @@ export default function App({ Component, pageProps }) {
   const [flashcardSelection, setFlashcardSelection] = useState("all");
 
   const [isClickedFirstTime, setIsClickedFirstTime] = useState(false);
-
-  const [temporaryFlashcards, setTemporaryFlashcards] = useState(
-    testTemporaryFlashcards
-  );
-
-  const [showTemporaryFlashcardsModal, setShowTemporaryFlashcardsModal] =
-    useState(true);
-
-  const [abortController, setAbortController] = useState(null);
-
-  console.log("Abort Controller: ", abortController);
-  console.log("TemporaryFlashcards: ", temporaryFlashcards);
-
-  function toggleTemporaryFlashcardIncluded(id) {
-    setTemporaryFlashcards(
-      temporaryFlashcards.map((temporaryFlashcard) => {
-        return temporaryFlashcard.temporaryFlashcardId === id
-          ? {
-              ...temporaryFlashcard,
-              isIncluded: !temporaryFlashcard.isIncluded,
-            }
-          : temporaryFlashcard;
-      })
-    );
-  }
-
-  function handleDeleteTemporaryFlashcards() {
-    setTemporaryFlashcards([]);
-    setShowTemporaryFlashcardsModal(false);
-  }
-
-  async function getAiFlashcards(
-    collectionId,
-    collectionName,
-    collectionColor,
-    textInput,
-    numberOfFlashcards
-  ) {
-    const controller = new AbortController();
-    setAbortController(controller);
-
-    setShowTemporaryFlashcardsModal(true);
-    try {
-      const response = await fetch("/api/ai-generate", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          collectionId,
-          collectionName,
-          collectionColor,
-          textInput,
-          numberOfFlashcards,
-        }),
-        signal: controller.signal,
-      });
-
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.message || "Something went wrong");
-      }
-
-      setTemporaryFlashcards(
-        data.map((temporaryFlashcard) => {
-          return {
-            ...temporaryFlashcard,
-            temporaryFlashcardId: uid(),
-            isIncluded: true,
-          };
-        })
-      );
-    } catch (error) {
-      if (error.name === "AbortError") {
-        console.log("Flashcard generation was cancelled.");
-      } else {
-        console.error("Error:", error);
-      }
-    } finally {
-      setAbortController(null);
-    }
-  }
-
-  function cancelFlashcardGeneration() {
-    if (abortController) {
-      abortController.abort();
-    }
-    setShowTemporaryFlashcardsModal(false);
-  }
 
   function handleFirstClick() {
     if (!isClickedFirstTime) {
@@ -297,6 +207,7 @@ export default function App({ Component, pageProps }) {
   }
 
   async function handleCreateFlashcard(newFlashcard) {
+    console.log("New Flashcard: ", newFlashcard);
     try {
       const response = await fetch("/api/flashcards", {
         method: "POST",
@@ -495,7 +406,6 @@ export default function App({ Component, pageProps }) {
   return (
     <SWRConfig value={{ fetcher }}>
       <Layout
-        getAiFlashcards={getAiFlashcards}
         collections={collections}
         actionMode={actionMode}
         changeActionMode={changeActionMode}
@@ -507,11 +417,6 @@ export default function App({ Component, pageProps }) {
         handleAddCollection={handleAddCollection}
         handleEditCollection={handleEditCollection}
         getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
-        showTemporaryFlashcardsModal={showTemporaryFlashcardsModal}
-        temporaryFlashcards={temporaryFlashcards}
-        toggleTemporaryFlashcardIncluded={toggleTemporaryFlashcardIncluded}
-        handleDeleteTemporaryFlashcards={handleDeleteTemporaryFlashcards}
-        cancelFlashcardGeneration={cancelFlashcardGeneration}
       >
         <GlobalStyle />
         <Component

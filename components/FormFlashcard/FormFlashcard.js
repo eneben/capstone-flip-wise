@@ -7,7 +7,6 @@ export default function FormFlashcard({
   collections,
   headline,
   actionMode,
-  changeActionMode,
   currentFlashcard,
   onSubmitFlashcard,
   isFormClosing,
@@ -31,8 +30,8 @@ export default function FormFlashcard({
     event.preventDefault();
 
     if (formMode === "manual") {
-      const formData = Object.fromEntries(new FormData(event.target));
-      const { collectionName, collectionColor, question, answer } = formData;
+      const data = Object.fromEntries(new FormData(event.target));
+      const { collectionName, collectionColor, question, answer } = data;
       let newFlashcard;
 
       if (showNewCollectionFields) {
@@ -49,7 +48,7 @@ export default function FormFlashcard({
           level: 1,
         };
       } else {
-        newFlashcard = { ...formData, level: 1 };
+        newFlashcard = { ...data, level: 1 };
       }
 
       onSubmitFlashcard(newFlashcard);
@@ -58,14 +57,15 @@ export default function FormFlashcard({
     }
 
     if (formMode === "ai") {
-      const formData = Object.fromEntries(new FormData(event.target));
+      const data = Object.fromEntries(new FormData(event.target));
       const {
         collectionId,
         collectionName,
         collectionColor,
         textInput,
         numberOfFlashcards,
-      } = formData;
+      } = data;
+
       getAiFlashcards(
         collectionId,
         collectionName,
@@ -73,6 +73,8 @@ export default function FormFlashcard({
         textInput,
         numberOfFlashcards
       );
+      setShowNewCollectionFields(false);
+      event.target.reset();
     }
     startClosingForm();
   }
