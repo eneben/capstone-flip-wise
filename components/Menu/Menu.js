@@ -64,13 +64,10 @@ export default function Menu({
 
         if (response.ok) {
           const user = await response.json();
-          console.log("found user: ", user);
-          console.log("return user._id: ", user._id);
           return user._id;
         }
 
         if (response.status === 404) {
-          console.log("no user");
           const createUserResponse = await fetch("/api/users", {
             method: "POST",
             headers: {
@@ -80,18 +77,12 @@ export default function Menu({
               providerId: session.user.id,
             }),
           });
-          console.log("createUserResponse: ", createUserResponse);
 
           if (!createUserResponse.ok) {
             throw new Error("Failed to create new user");
           }
 
           const createdUserData = await createUserResponse.json();
-          console.log("createdUserData: ", createdUserData);
-          console.log(
-            "return createdUserData.user._id: ",
-            createdUserData.user._id
-          );
           return createdUserData.user._id;
         }
       } catch (error) {
@@ -101,7 +92,6 @@ export default function Menu({
     }
 
     if (session) {
-      console.log("logged in! session: ", session);
       fetchUser();
     }
   }, [session]);
