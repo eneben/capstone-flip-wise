@@ -131,7 +131,7 @@ export default function Menu({
               disabled={!session}
             />
 
-            <StyledMenuLogin>
+            {/* <StyledMenuLogin>
               <Login
                 variant="expanded"
                 changeShowLogOutDialog={changeShowLogOutDialog}
@@ -141,7 +141,7 @@ export default function Menu({
                   handleToggleMenu();
                 }}
               />
-            </StyledMenuLogin>
+            </StyledMenuLogin> */}
           </StyledNavigationList>
         </StyledNavigation>
       )}

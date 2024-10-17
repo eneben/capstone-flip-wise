@@ -24,22 +24,34 @@ export default async function handler(request, response) {
     const providerId = session.user.id;
 
     try {
-      const createdUser = await User.create({ providerId });
+      const user = await User.findOneAndUpdate(
+        { providerId },
+        { $setOnInsert: { providerId } },
+        { new: true, upsert: true }
+      );
 
-      const defaultFlashcards = await Flashcard.find({ userId: null });
-      const userFlashcards = defaultFlashcards.map((flashcard) => {
-        return {
-          userId: createdUser._id,
-          collectionId: flashcard.collectionId,
-          question: flashcard.question,
-          answer: flashcard.answer,
-          level: 1,
-          isCorrect: false,
-        };
-      });
+      const isNewUser =
+        (await Flashcard.countDocuments({ userId: user._id })) === 0;
 
-      await Flashcard.insertMany(userFlashcards);
-      return response.status(201).json({ user: createdUser });
+      console.log("isNewUser: ", isNewUser);
+
+      if (isNewUser) {
+        const defaultFlashcards = await Flashcard.find({ userId: null });
+        const userFlashcards = defaultFlashcards.map((flashcard) => {
+          return {
+            userId: user._id,
+            collectionId: flashcard.collectionId,
+            question: flashcard.question,
+            answer: flashcard.answer,
+            level: 1,
+            isCorrect: false,
+          };
+        });
+
+        await Flashcard.insertMany(userFlashcards);
+      }
+
+      return response.status(200).json({ user });
     } catch (error) {
       response
         .status(400)

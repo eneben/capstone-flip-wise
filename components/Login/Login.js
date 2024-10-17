@@ -2,7 +2,7 @@ import { useSession, signIn } from "next-auth/react";
 import LoginIcon from "@/public/icons/LoginIcon.svg";
 import LogoutIcon from "@/public/icons/LogoutIcon.svg";
 import styled from "styled-components";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 export default function Login({
   variant,
@@ -11,8 +11,12 @@ export default function Login({
 }) {
   const { data: session } = useSession();
 
+  // const executedRef = useRef(false);
+
   useEffect(() => {
     async function fetchUser() {
+      // if (executedRef.current) return;
+
       try {
         const response = await fetch(`/api/users/${session.user.id}`, {
           method: "GET",
@@ -25,6 +29,7 @@ export default function Login({
           const user = await response.json();
           console.log("found user: ", user);
           console.log("return user._id: ", user._id);
+          // executedRef.current = true;
           return user._id;
         }
 
@@ -51,23 +56,8 @@ export default function Login({
             "return createdUserData.user._id: ",
             createdUserData.user._id
           );
+          // executedRef.current = true;
           return createdUserData.user._id;
-
-          // if (createUserResponse.ok) {
-          //   const response = await fetch(`/api/users/${session.user.id}`, {
-          //     method: "GET",
-          //     headers: {
-          //       "Content-Type": "application/json",
-          //     },
-          //   });
-
-          //   if (response.ok) {
-          //     const user = await response.json();
-          //     console.log("found user: ", user);
-          //     console.log("return user._id: ", user._id);
-          //     return user._id;
-          //   }
-          // }
         }
       } catch (error) {
         console.error("error during fetch user function: ", error);
@@ -75,7 +65,10 @@ export default function Login({
       }
     }
 
-    if (session) {
+    if (
+      session
+      // && !executedRef.current
+    ) {
       console.log("logged in! session: ", session);
       fetchUser();
     }
