@@ -55,36 +55,23 @@ export default function Menu({
   useEffect(() => {
     async function fetchUser() {
       try {
-        const response = await fetch(`/api/users/${session.user.id}`, {
-          method: "GET",
+        const response = await fetch("/api/users", {
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
+          body: JSON.stringify({
+            providerId: session.user.id,
+          }),
         });
 
-        if (response.ok) {
-          const user = await response.json();
-          return user._id;
+        if (!response.ok) {
+          throw new Error("Failed to create new user");
         }
 
-        if (response.status === 404) {
-          const createUserResponse = await fetch("/api/users", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              providerId: session.user.id,
-            }),
-          });
-
-          if (!createUserResponse.ok) {
-            throw new Error("Failed to create new user");
-          }
-
-          const createdUserData = await createUserResponse.json();
-          return createdUserData.user._id;
-        }
+        const userData = await response.json();
+        console.log("userData.user._id: ", userData.user._id);
+        return userData.user._id;
       } catch (error) {
         console.error("error during fetch user function: ", error);
         return;
