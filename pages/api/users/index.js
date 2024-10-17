@@ -30,25 +30,29 @@ export default async function handler(request, response) {
         { new: true, upsert: true }
       );
 
-      const isNewUser =
-        (await Flashcard.countDocuments({ userId: user._id })) === 0;
+      const flashcardsExist = await Flashcard.exists({ userId: user._id });
 
-      console.log("isNewUser: ", isNewUser);
-
-      if (isNewUser) {
+      if (!flashcardsExist) {
         const defaultFlashcards = await Flashcard.find({ userId: null });
-        const userFlashcards = defaultFlashcards.map((flashcard) => {
-          return {
-            userId: user._id,
-            collectionId: flashcard.collectionId,
-            question: flashcard.question,
-            answer: flashcard.answer,
-            level: 1,
-            isCorrect: false,
-          };
-        });
 
-        await Flashcard.insertMany(userFlashcards);
+        const userFlashcards = defaultFlashcards.map((flashcard) => ({
+          userId: user._id,
+          collectionId: flashcard.collectionId,
+          question: flashcard.question,
+          answer: flashcard.answer,
+          level: 1,
+          isCorrect: false,
+        }));
+
+        const checkAndCreateFlashcards = userFlashcards.map((flashcard) => ({
+          updateOne: {
+            filter: { userId: flashcard.userId, question: flashcard.question },
+            update: { $setOnInsert: flashcard },
+            upsert: true,
+          },
+        }));
+
+        await Flashcard.bulkWrite(checkAndCreateFlashcards);
       }
 
       return response.status(200).json({ user });

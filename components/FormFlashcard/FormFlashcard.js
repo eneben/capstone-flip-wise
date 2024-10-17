@@ -43,10 +43,9 @@ export default function FormFlashcard({
         question,
         answer,
         level: 1,
-        userId: null,
       };
     } else {
-      newFlashcard = { ...formData, level: 1, userId: null };
+      newFlashcard = { ...formData, level: 1 };
     }
 
     onSubmitFlashcard(newFlashcard);

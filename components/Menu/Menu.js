@@ -52,6 +52,60 @@ export default function Menu({
     }
   }, [isMenuClosing]);
 
+  useEffect(() => {
+    async function fetchUser() {
+      try {
+        const response = await fetch(`/api/users/${session.user.id}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (response.ok) {
+          const user = await response.json();
+          console.log("found user: ", user);
+          console.log("return user._id: ", user._id);
+          return user._id;
+        }
+
+        if (response.status === 404) {
+          console.log("no user");
+          const createUserResponse = await fetch("/api/users", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              providerId: session.user.id,
+            }),
+          });
+          console.log("createUserResponse: ", createUserResponse);
+
+          if (!createUserResponse.ok) {
+            throw new Error("Failed to create new user");
+          }
+
+          const createdUserData = await createUserResponse.json();
+          console.log("createdUserData: ", createdUserData);
+          console.log(
+            "return createdUserData.user._id: ",
+            createdUserData.user._id
+          );
+          return createdUserData.user._id;
+        }
+      } catch (error) {
+        console.error("error during fetch user function: ", error);
+        return;
+      }
+    }
+
+    if (session) {
+      console.log("logged in! session: ", session);
+      fetchUser();
+    }
+  }, [session]);
+
   function handleLogout() {
     signOut();
     changeShowLogOutDialog(false);
@@ -131,7 +185,7 @@ export default function Menu({
               disabled={!session}
             />
 
-            {/* <StyledMenuLogin>
+            <StyledMenuLogin>
               <Login
                 variant="expanded"
                 changeShowLogOutDialog={changeShowLogOutDialog}
@@ -141,7 +195,7 @@ export default function Menu({
                   handleToggleMenu();
                 }}
               />
-            </StyledMenuLogin> */}
+            </StyledMenuLogin>
           </StyledNavigationList>
         </StyledNavigation>
       )}
