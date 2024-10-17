@@ -62,29 +62,29 @@ export default function App({ Component, pageProps }) {
 
   const [temporaryFlashcards, setTemporaryFlashcards] = useState([]);
 
-  async function uploadImage(imageFile) {
-    console.log("Selected image file:", imageFile);
+  // async function uploadImage(imageFile) {
+  //   console.log("Selected image file:", imageFile);
 
-    const formData = new FormData();
-    formData.append("file", imageFile);
+  //   const formData = new FormData();
+  //   formData.append("file", imageFile);
 
-    try {
-      const response = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
+  //   try {
+  //     const response = await fetch("/api/upload", {
+  //       method: "POST",
+  //       body: formData,
+  //     });
 
-      if (!response.ok) {
-        throw new Error("Image upload failed");
-      }
+  //     if (!response.ok) {
+  //       throw new Error("Image upload failed");
+  //     }
 
-      const data = await response.json();
-      return data.url; // URL des hochgeladenen Bildes zurückgeben
-    } catch (error) {
-      console.error("An error occurred during upload:", error);
-      throw error;
-    }
-  }
+  //     const data = await response.json();
+  //     return data.url; // URL des hochgeladenen Bildes zurückgeben
+  //   } catch (error) {
+  //     console.error("An error occurred during upload:", error);
+  //     throw error;
+  //   }
+  // }
 
   async function getAiFlashcards(
     collectionId,

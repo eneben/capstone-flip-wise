@@ -7,7 +7,6 @@ export default function FormFlashcard({
   collections,
   headline,
   actionMode,
-  changeActionMode,
   currentFlashcard,
   onSubmitFlashcard,
   isFormClosing,
@@ -15,7 +14,6 @@ export default function FormFlashcard({
   onAddCollection,
   getAiFlashcards,
   changeShowInfoModal,
-  uploadImage,
 }) {
   const [showNewCollectionFields, setShowNewCollectionFields] = useState(false);
   const [formMode, setFormMode] = useState("manual");
@@ -44,20 +42,29 @@ export default function FormFlashcard({
     event.preventDefault();
 
     if (formMode === "manual") {
-      const formData = Object.fromEntries(new FormData(event.target));
-      const { collectionName, collectionColor, question, answer } = formData;
-      let newFlashcard;
+      const formData = new FormData(event.target);
+      const data = Object.fromEntries(formData);
+      const {
+        collectionName,
+        collectionColor,
+        question,
+        answer,
+        collectionId,
+      } = data;
 
-      let imageUrl = "";
+      const response = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
 
-      if (imageUploaded && image) {
-        try {
-          imageUrl = await uploadImage(image);
-        } catch (error) {
-          console.error("Image upload failed:", error);
-          return;
-        }
+      const { url } = await response.json();
+
+      if (!response.ok) {
+        console.error("An error occurred during upload:", error);
+        return;
       }
+
+      let newFlashcard;
 
       if (showNewCollectionFields) {
         const newCollection = {
@@ -71,10 +78,16 @@ export default function FormFlashcard({
           question,
           answer,
           level: 1,
-          imageUrl,
+          imageUrl: url,
         };
       } else {
-        newFlashcard = { ...formData, level: 1, imageUrl };
+        newFlashcard = {
+          collectionId,
+          question,
+          answer,
+          level: 1,
+          imageUrl: url,
+        };
       }
 
       onSubmitFlashcard(newFlashcard);
