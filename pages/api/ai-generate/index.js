@@ -47,7 +47,6 @@ export default async function handler(request, response) {
       messages: [{ role: "user", content: prompt }],
       max_tokens: 16384,
       temperature: 0.2,
-      response_format: { type: "json_object" },
     });
 
     const content = completion.choices[0].message.content
