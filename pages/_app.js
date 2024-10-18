@@ -320,8 +320,8 @@ export default function App({
       );
       return newCollectionId;
     } catch (error) {
-      console.error("An error occurred: ", error);
-      showToastMessage("An error occured.", "error", MarkAsIncorrect);
+      console.error("Failed to add collection: ", error);
+      showToastMessage("Failed to add collection.", "error", MarkAsIncorrect);
     }
   }
 

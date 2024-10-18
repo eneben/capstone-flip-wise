@@ -52,6 +52,37 @@ export default function Menu({
     }
   }, [isMenuClosing]);
 
+  useEffect(() => {
+    async function fetchUser() {
+      try {
+        const response = await fetch("/api/users", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            providerId: session.user.id,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to create new user");
+        }
+
+        const userData = await response.json();
+        console.log("userData.user._id: ", userData.user._id);
+        return userData.user._id;
+      } catch (error) {
+        console.error("error during fetch user function: ", error);
+        return;
+      }
+    }
+
+    if (session) {
+      fetchUser();
+    }
+  }, [session]);
+
   function handleLogout() {
     signOut();
     changeShowLogOutDialog(false);
@@ -135,7 +166,7 @@ export default function Menu({
               <Login
                 variant="expanded"
                 changeShowLogOutDialog={changeShowLogOutDialog}
-                onClick={() => {
+                additionalFunctions={() => {
                   changeSubmenuMode("default");
                   changeFlashcardSelection("all");
                   handleToggleMenu();
