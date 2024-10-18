@@ -22,10 +22,10 @@ export default function FormManual({
 }) {
   const [showOriginalImage, setShowOriginalImage] = useState(true);
 
-  const handleImageClose = () => {
-    handleCloseImagePreview(); // Clear uploaded image state
-    setShowOriginalImage(false); // Hide the original image in edit mode
-  };
+  function handleImageClose() {
+    handleCloseImagePreview();
+    setShowOriginalImage(false);
+  }
 
   return (
     <>
