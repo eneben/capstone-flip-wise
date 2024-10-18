@@ -1,7 +1,1 @@
-{
-  "functions": {
-    "app/api/**/route.ts": {
-      "maxDuration": 60
-    }
-  }
-}
+{ "functions": { "pages/api/**/*": { "maxDuration": 60 } } }
