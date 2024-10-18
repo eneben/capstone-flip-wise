@@ -100,7 +100,7 @@ export default function Layout({
           })
         );
       } else {
-        const currentCollection = collections.find(
+        const existingCollection = collections.find(
           (collection) => collection._id === data[0].collectionId
         );
         setTemporaryFlashcards(
@@ -108,8 +108,8 @@ export default function Layout({
             return {
               ...temporaryFlashcard,
               temporaryFlashcardId: uid(),
-              collectionName: currentCollection.title,
-              collectionColor: currentCollection.color,
+              collectionName: existingCollection.title,
+              collectionColor: existingCollection.color,
               isIncluded: true,
             };
           })
