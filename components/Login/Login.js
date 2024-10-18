@@ -21,8 +21,8 @@ export default function Login({
           }}
         >
           <StyledWrapper>
-            <StyledLogoutIcon $variant={variant} />
             {variant === "expanded" && <p>Logout</p>}
+            <StyledLogoutIcon $variant={variant} />
           </StyledWrapper>
         </StyledButton>
       </>
@@ -39,8 +39,8 @@ export default function Login({
         }}
       >
         <StyledWrapper>
-          <StyledLoginIcon $variant={variant} />
           {variant === "expanded" && <p>Login</p>}
+          <StyledLoginIcon $variant={variant} />
         </StyledWrapper>
       </StyledButton>
     </>
