@@ -80,7 +80,8 @@ export default function TemporaryFlashcardsModal({
             <>
               <StyledFormHeadline>Preview</StyledFormHeadline>
               <StyledSubheading>
-                Uncheck AI-generated flashcards you don't want to include in the{" "}
+                Uncheck AI-generated flashcards you don&apos;t want to include
+                in the{" "}
                 <StyledCollectionName
                   $collectionColor={temporaryFlashcards[0].collectionColor}
                 >

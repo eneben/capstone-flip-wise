@@ -60,7 +60,7 @@ export default function AiInfoModal({ changeShowInfoModal }) {
             <StyledInfoListHighlight>
               Uncheck flashcards
             </StyledInfoListHighlight>{" "}
-            you don't want to include in your collection.
+            you don&apos;t want to include in your collection.
           </StyledListItem>
           <StyledListItem>
             <StyledInfoListHighlight>
