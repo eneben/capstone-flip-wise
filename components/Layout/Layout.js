@@ -173,7 +173,7 @@ export default function Layout({
         <TemporaryFlashcardsModal
           temporaryFlashcards={temporaryFlashcards}
           toggleTemporaryFlashcardIncluded={toggleTemporaryFlashcardIncluded}
-          onDeleteTemporaryFlashcards={handleDeleteTemporaryFlashcards}
+          handleDeleteTemporaryFlashcards={handleDeleteTemporaryFlashcards}
           cancelFlashcardGeneration={cancelFlashcardGeneration}
           onSubmitFlashcard={handleCreateFlashcard}
           onAddCollection={handleAddCollection}

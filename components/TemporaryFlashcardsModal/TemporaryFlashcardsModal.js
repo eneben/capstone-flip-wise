@@ -59,7 +59,7 @@ export default function TemporaryFlashcardsModal({
       });
     }
     onSubmitFlashcard(newAiFlashcards);
-    onDeleteTemporaryFlashcards();
+    handleDeleteTemporaryFlashcards();
   }
 
   return (
