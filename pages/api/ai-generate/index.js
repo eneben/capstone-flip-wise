@@ -29,14 +29,17 @@ export default async function handler(request, response) {
     const prompt = `
       Generate exactly ${numberOfFlashcards} flashcards from the following text. 
       Prioritize the information you include by importance. 
-      When the text is too short to generate ${numberOfFlashcards} different flashcards generate less but as much as possible.
+      When the text is too short to generate ${numberOfFlashcards} different 
+      flashcards generate less but as much as possible.
       Each flashcard should have a question and an answer. Here is the text:
 
       "${textInput}"
 
       Format the response as a JSON array of objects, each object containing 
-      a "question" and an "answer". Do not include any additional information. 
-      "Question" should not exceed a length of 100 characters (including spaces) and "answer" should not exceed a length of 50 characters (including spaces).
+      a "question" and an "answer". Format the response as valid JSON, with no 
+      additional information or formatting. 
+      "Question" should not exceed a length of 100 characters (including spaces) 
+      and "answer" should not exceed a length of 50 characters (including spaces).
     `;
 
     const completion = await openai.chat.completions.create({
