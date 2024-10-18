@@ -29,6 +29,7 @@ export default async function handler(request, response) {
     const prompt = `
       Generate exactly ${numberOfFlashcards} flashcards from the following text. 
       Prioritize the information you include by importance. 
+      When the text is too short to generate ${numberOfFlashcards} different flashcards generate less but as much as possible.
       Each flashcard should have a question and an answer. Here is the text:
 
       "${textInput}"
