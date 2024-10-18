@@ -5,6 +5,7 @@ import FormInput from "../FormFlashcard/FormInput";
 import Upload from "@/public/icons/Upload.svg";
 import Image from "next/image";
 import MarkAsIncorrect from "@/public/icons/MarkAsIncorrect.svg";
+import { useState } from "react";
 
 export default function FormManual({
   collections,
@@ -19,6 +20,13 @@ export default function FormManual({
   imageUploaded,
   handleCloseImagePreview,
 }) {
+  const [showOriginalImage, setShowOriginalImage] = useState(true);
+
+  const handleImageClose = () => {
+    handleCloseImagePreview(); // Clear uploaded image state
+    setShowOriginalImage(false); // Hide the original image in edit mode
+  };
+
   return (
     <>
       <StyledFormWrapper>
@@ -81,8 +89,10 @@ export default function FormManual({
 
         <StyledImageInputWrapper>
           {(imageUploaded ||
-            (actionMode === "edit" && currentFlashcard?.imageUrl)) && (
-            <StyledImageWrapper onClick={handleCloseImagePreview}>
+            (actionMode === "edit" &&
+              currentFlashcard?.imageUrl &&
+              showOriginalImage)) && (
+            <StyledImageWrapper onClick={handleImageClose}>
               <StyledIconWrapper>
                 <MarkAsIncorrect />
               </StyledIconWrapper>
@@ -102,7 +112,9 @@ export default function FormManual({
             <StyledImageInput
               $hidden={
                 imageUploaded ||
-                (actionMode === "edit" && currentFlashcard?.imageUrl)
+                (actionMode === "edit" &&
+                  currentFlashcard?.imageUrl &&
+                  showOriginalImage)
               }
             >
               <IconTextWrapper>
