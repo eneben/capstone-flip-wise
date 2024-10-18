@@ -22,6 +22,7 @@ export default function Layout({
   changeFlashcardSelection,
   handleAddCollection,
   getAllFlashcardsFromCollection,
+  changeUser,
 }) {
   const { data: session } = useSession();
 
@@ -141,6 +142,7 @@ export default function Layout({
             startClosingForm={startClosingForm}
             changeFlashcardSelection={changeFlashcardSelection}
             getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
+            changeUser={changeUser}
           />
         </StyledHeaderContentContainer>
       </StyledHeader>

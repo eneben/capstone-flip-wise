@@ -30,12 +30,17 @@ export default function App({
   Component,
   pageProps: { session, ...pageProps },
 }) {
+  const [user, setUser] = useState(null);
+  console.log("user: ", user);
+
   const {
     data: flashcards,
     isLoading: flashcardIsLoading,
     error: flashcardError,
     mutate: mutateFlashcards,
-  } = useSWR("/api/flashcards", fetcher, { fallbackData: [] });
+  } = useSWR(`/api/flashcards?userId=${user || ""}`, fetcher, {
+    fallbackData: [],
+  });
 
   const {
     data: collections,
@@ -63,6 +68,10 @@ export default function App({
   const [flashcardSelection, setFlashcardSelection] = useState("all");
 
   const [isClickedFirstTime, setIsClickedFirstTime] = useState(false);
+
+  function changeUser(userId) {
+    setUser(userId);
+  }
 
   function handleFirstClick() {
     if (!isClickedFirstTime) {
@@ -114,7 +123,7 @@ export default function App({
     return (
       <SessionProvider session={session}>
         <SWRConfig value={{ fetcher }}>
-          <Layout>
+          <Layout changeUser={changeUser}>
             <GlobalStyle />
             <LoadingSpinner />
           </Layout>
@@ -425,6 +434,7 @@ export default function App({
           handleAddCollection={handleAddCollection}
           handleEditCollection={handleEditCollection}
           getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
+          changeUser={changeUser}
         >
           <GlobalStyle />
           <Component

@@ -12,6 +12,7 @@ export default function Menu({
   startClosingForm,
   changeFlashcardSelection,
   getAllFlashcardsFromCollection,
+  changeUser,
 }) {
   const { data: session } = useSession();
 
@@ -70,8 +71,9 @@ export default function Menu({
         }
 
         const userData = await response.json();
-        console.log("userData.user._id: ", userData.user._id);
-        return userData.user._id;
+        const userId = userData.user._id;
+        changeUser(userId);
+        return userId;
       } catch (error) {
         console.error("error during fetch user function: ", error);
         return;
@@ -81,7 +83,7 @@ export default function Menu({
     if (session) {
       fetchUser();
     }
-  }, [session]);
+  }, [session, changeUser]);
 
   function handleLogout() {
     signOut();

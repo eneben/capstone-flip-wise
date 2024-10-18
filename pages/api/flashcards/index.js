@@ -16,14 +16,27 @@ export default async function handler(request, response) {
 
   if (request.method === "GET") {
     try {
-      const flashcards = await Flashcard.find();
+      const { userId } = request.query;
+      console.log("Received userId:", userId);
+
+      let query = {};
+
+      if (userId) {
+        query = { userId: userId };
+      } else {
+        query = { userId: null };
+      }
+
+      console.log("Query:", query);
+
+      const flashcards = await Flashcard.find(query);
       response.status(200).json(flashcards);
       return;
     } catch (error) {
-      response
+      console.error("Error retrieving flashcards:", error.message);
+      return response
         .status(500)
         .json({ error: "Error retrieving flashcards: " + error.message });
-      return;
     }
   }
 

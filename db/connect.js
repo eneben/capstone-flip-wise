@@ -45,7 +45,6 @@ const ensureIndexes = async () => {
   try {
     await Flashcard.ensureIndexes();
     await User.ensureIndexes();
-    console.log("Flashcard indexes have been created");
   } catch (error) {
     console.error("Error creating Flashcard indexes:", error);
   }
