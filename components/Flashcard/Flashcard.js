@@ -425,22 +425,6 @@ export default function Flashcard({
           </StyledFlashcard>
         </CardContainer>
       )}
-      {/* {isImageEnlarged && (
-        <StyledOutgreyContainer>
-          <StyledModal onClick={handleCloseEnlargedImage}>
-            <StyledEnlargedImage
-              src={imageUrl}
-              alt="Enlarged Flashcard Image"
-              width={500}
-              height={500}
-              priority={true}
-            />
-            <RoundButton type="button" variant="delete">
-              <MarkAsIncorrect />
-            </RoundButton>
-          </StyledModal>
-        </StyledOutgreyContainer>
-      )} */}
     </>
   );
 }
@@ -534,43 +518,6 @@ const StyledImageContainer = styled.div`
 const StyledImage = styled(Image)`
   object-fit: contain;
 `;
-
-// const StyledOutgreyContainer = styled.div`
-//   position: fixed;
-//   top: 0;
-//   bottom: 0;
-//   left: 0;
-//   right: 0;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   z-index: 5;
-//   background-color: #00000088;
-// `;
-
-// const StyledModal = styled.article`
-//   position: absolute;
-//   max-width: 90vw;
-//   max-height: 90vh;
-//   /* width: 90vw;
-//   max-width: 500px; */
-//   padding: 15px;
-//   left: 50%;
-//   transform: translateX(-50%);
-//   margin-top: 10px;
-//   border-radius: 10px;
-//   background-color: #fff;
-//   opacity: 1;
-//   z-index: 2;
-// `;
-
-// const StyledEnlargedImage = styled(Image)`
-//   object-fit: contain;
-//   max-width: 100%;
-//   max-height: calc(90vh - 40px);
-//   width: auto;
-//   height: auto;
-// `;
 
 const Question = styled.h3`
   font: var(--question-answer);
