@@ -78,36 +78,7 @@ export default function FormManual({
             </CollectionColorWrapper>
           </NewCollectionWrapper>
         )}
-        {/* <StyledImageInputWrapper>
-          {imageUploaded && (
-            <StyledImageWrapper onClick={handleCloseImagePreview}>
-              <StyledIconWrapper>
-                <MarkAsIncorrect />
-              </StyledIconWrapper>
-              <StyledImagePreview
-                src={URL.createObjectURL(image)}
-                alt="Preview of the image to upload"
-                sizes="300px"
-                fill
-              />
-            </StyledImageWrapper>
-          )}
-          <>
-            <StyledImageInput $hidden={imageUploaded}>
-              <IconTextWrapper>
-                <Upload />
-                Upload Image
-              </IconTextWrapper>
-            </StyledImageInput>
-            <HiddenImageInput
-              name="image"
-              type="file"
-              accept="image/*"
-              id="image"
-              onChange={(event) => uploadImage(event.target.files[0])}
-            />
-          </>
-        </StyledImageInputWrapper> */}
+
         <StyledImageInputWrapper>
           {(imageUploaded ||
             (actionMode === "edit" && currentFlashcard?.imageUrl)) && (

@@ -21,6 +21,7 @@ export default createGlobalStyle`
     margin: 0;
     padding: 0;
     overflow-wrap: break-word;
+    -webkit-tap-highlight-color: transparent;
   }
 
   :root {
