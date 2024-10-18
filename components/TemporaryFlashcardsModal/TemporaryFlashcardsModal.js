@@ -86,7 +86,7 @@ export default function TemporaryFlashcardsModal({
                 >
                   {temporaryFlashcards[0].collectionName}
                 </StyledCollectionName>{" "}
-                collection
+                collection.
               </StyledSubheading>
 
               <StyledTemporaryFlashcardsList>
