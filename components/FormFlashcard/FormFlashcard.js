@@ -16,7 +16,7 @@ export default function FormFlashcard({
   changeShowInfoModal,
 }) {
   const [showNewCollectionFields, setShowNewCollectionFields] = useState(false);
-  const [formMode, setFormMode] = useState("ai");
+  const [formMode, setFormMode] = useState("manual");
 
   function handleCollectionChange(event) {
     if (event.target.value === "newCollection") {

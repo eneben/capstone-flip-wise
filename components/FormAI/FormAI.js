@@ -142,6 +142,10 @@ const StyledTextArea = styled.textarea`
   padding: 8px;
   border-radius: 2px;
   font: var(--form-input);
+  overflow-y: scroll;
+  scrollbar-width: 8px;
+  scrollbar-color: var(--primary-neutral) #fff;
+
   &:focus {
     outline: 1px solid var(--primary-neutral);
   }
