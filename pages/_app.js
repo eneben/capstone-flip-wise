@@ -217,11 +217,28 @@ export default function App({ Component, pageProps }) {
       });
       if (!response.ok) throw new Error("Failed to create flashcard");
       mutateFlashcards();
-      showToastMessage(
-        "Flashcard(s) created successfully!",
-        "success",
-        MarkAsCorrect
-      );
+
+      if (Array.isArray(newFlashcard)) {
+        if (newFlashcard.length > 1) {
+          showToastMessage(
+            "Flashcards created successfully!",
+            "success",
+            MarkAsCorrect
+          );
+        } else if (newFlashcard.length === 1) {
+          showToastMessage(
+            "Flashcard created successfully!",
+            "success",
+            MarkAsCorrect
+          );
+        }
+      } else if (!Array.isArray(newFlashcard)) {
+        showToastMessage(
+          "Flashcard created successfully!",
+          "success",
+          MarkAsCorrect
+        );
+      }
     } catch (error) {
       console.error("An error occurred: ", error);
       showToastMessage("Error", "error", MarkAsIncorrect);

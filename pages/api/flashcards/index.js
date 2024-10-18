@@ -29,12 +29,11 @@ export default async function handler(request, response) {
         const newFlashcards = request.body;
         await Flashcard.insertMany(newFlashcards);
         response.status(201).json({ status: "Flashcards created" });
-        console.log("Array of flashcards created");
         return;
       } catch (error) {
         return response
           .status(400)
-          .json({ error: "Error creating flashcard: " + error.message });
+          .json({ error: "Error creating flashcards: " + error.message });
       }
     } else {
       try {
