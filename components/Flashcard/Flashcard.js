@@ -495,12 +495,11 @@ const StyledImageContainer = styled.div`
   justify-content: center;
   align-items: center;
   padding: 10px;
+  overflow: hidden;
 `;
 
 const StyledImage = styled(Image)`
-  width: 100%;
-  height: auto;
-  object-fit: cover;
+  object-fit: contain;
 `;
 
 const Question = styled.h3`
