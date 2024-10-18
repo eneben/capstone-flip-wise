@@ -81,7 +81,7 @@ export default function FormFlashcard({
           question,
           answer,
           level: 1,
-          imageUrl: url || null,
+          imageUrl: imageUploaded ? url : currentFlashcard?.imageUrl || null,
         };
       } else {
         newFlashcard = {
@@ -89,7 +89,7 @@ export default function FormFlashcard({
           question,
           answer,
           level: 1,
-          imageUrl: url || null,
+          imageUrl: imageUploaded ? url : currentFlashcard?.imageUrl || null,
         };
       }
 

@@ -10,9 +10,6 @@ const flashcardSchema = new Schema({
   level: { type: Number, required: true },
   isCorrect: { type: Boolean },
   imageUrl: { type: String },
-  // image: {
-  //   url: { type: String },
-  // },
 });
 
 const Flashcard =

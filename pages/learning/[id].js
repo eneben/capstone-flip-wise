@@ -72,6 +72,7 @@ export default function LearningCollectionPage({
                   changeCurrentFlashcard={changeCurrentFlashcard}
                   changeActionMode={changeActionMode}
                   modeSelection="learning"
+                  imageUrl={flashcard.imageUrl}
                 />
               );
             })}

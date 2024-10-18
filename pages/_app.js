@@ -62,30 +62,6 @@ export default function App({ Component, pageProps }) {
 
   const [temporaryFlashcards, setTemporaryFlashcards] = useState([]);
 
-  // async function uploadImage(imageFile) {
-  //   console.log("Selected image file:", imageFile);
-
-  //   const formData = new FormData();
-  //   formData.append("file", imageFile);
-
-  //   try {
-  //     const response = await fetch("/api/upload", {
-  //       method: "POST",
-  //       body: formData,
-  //     });
-
-  //     if (!response.ok) {
-  //       throw new Error("Image upload failed");
-  //     }
-
-  //     const data = await response.json();
-  //     return data.url; // URL des hochgeladenen Bildes zurückgeben
-  //   } catch (error) {
-  //     console.error("An error occurred during upload:", error);
-  //     throw error;
-  //   }
-  // }
-
   async function getAiFlashcards(
     collectionId,
     collectionName,
@@ -475,7 +451,6 @@ export default function App({ Component, pageProps }) {
         handleAddCollection={handleAddCollection}
         handleEditCollection={handleEditCollection}
         getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
-        // uploadImage={uploadImage}
       >
         <GlobalStyle />
         <Component
@@ -506,7 +481,6 @@ export default function App({ Component, pageProps }) {
           handleIncreaseFlashcardLevel={handleIncreaseFlashcardLevel}
           handleDecreaseFlashcardLevel={handleDecreaseFlashcardLevel}
           handleFirstClick={handleFirstClick}
-          // uploadImage={uploadImage}
         />
         <ToastMessageContainer
           toastMessages={toastMessages}

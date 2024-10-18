@@ -86,6 +86,7 @@ export default function TrainingCollectionPage({
                     onIncreaseFlashcardLevel={handleIncreaseFlashcardLevel}
                     onDecreaseFlashcardLevel={handleDecreaseFlashcardLevel}
                     onFirstClick={handleFirstClick}
+                    imageUrl={flashcard.imageUrl}
                   />
                 ))}
               </FlashcardListGridWrapper>

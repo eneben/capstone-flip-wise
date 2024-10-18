@@ -35,7 +35,7 @@ export default function FormManual({
           name="answer"
           actionMode={actionMode}
           currentFlashcard={currentFlashcard}
-          maxLength="70"
+          maxLength="50"
         />
         <StyledLabel htmlFor="collection">Collection</StyledLabel>
         <StyledSelect
@@ -78,7 +78,7 @@ export default function FormManual({
             </CollectionColorWrapper>
           </NewCollectionWrapper>
         )}
-        <StyledImageInputWrapper>
+        {/* <StyledImageInputWrapper>
           {imageUploaded && (
             <StyledImageWrapper onClick={handleCloseImagePreview}>
               <StyledIconWrapper>
@@ -94,6 +94,46 @@ export default function FormManual({
           )}
           <>
             <StyledImageInput $hidden={imageUploaded}>
+              <IconTextWrapper>
+                <Upload />
+                Upload Image
+              </IconTextWrapper>
+            </StyledImageInput>
+            <HiddenImageInput
+              name="image"
+              type="file"
+              accept="image/*"
+              id="image"
+              onChange={(event) => uploadImage(event.target.files[0])}
+            />
+          </>
+        </StyledImageInputWrapper> */}
+        <StyledImageInputWrapper>
+          {(imageUploaded ||
+            (actionMode === "edit" && currentFlashcard?.imageUrl)) && (
+            <StyledImageWrapper onClick={handleCloseImagePreview}>
+              <StyledIconWrapper>
+                <MarkAsIncorrect />
+              </StyledIconWrapper>
+              <StyledImagePreview
+                src={
+                  imageUploaded
+                    ? URL.createObjectURL(image)
+                    : currentFlashcard.imageUrl
+                }
+                alt="Preview of the image"
+                sizes="300px"
+                fill
+              />
+            </StyledImageWrapper>
+          )}
+          <>
+            <StyledImageInput
+              $hidden={
+                imageUploaded ||
+                (actionMode === "edit" && currentFlashcard?.imageUrl)
+              }
+            >
               <IconTextWrapper>
                 <Upload />
                 Upload Image
