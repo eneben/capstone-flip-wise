@@ -62,6 +62,10 @@ export default function App({ Component, pageProps }) {
 
   const [temporaryFlashcards, setTemporaryFlashcards] = useState([]);
 
+  const [isImageEnlarged, setIsImageEnlarged] = useState(false);
+
+  const [imageUrl, setImageUrl] = useState(null);
+
   async function getAiFlashcards(
     collectionId,
     collectionName,
@@ -92,6 +96,16 @@ export default function App({ Component, pageProps }) {
     } catch (error) {
       console.error("Error:", error);
     }
+  }
+
+  function handleOpenEnlargeImage(imageSrc) {
+    setImageUrl(imageSrc);
+    setIsImageEnlarged(true);
+  }
+
+  function handleCloseEnlargedImage() {
+    setIsImageEnlarged(false);
+    setImageUrl(null);
   }
 
   function handleFirstClick() {
@@ -451,6 +465,10 @@ export default function App({ Component, pageProps }) {
         handleAddCollection={handleAddCollection}
         handleEditCollection={handleEditCollection}
         getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
+        isImageEnlarged={isImageEnlarged}
+        handleCloseEnlargedImage={handleCloseEnlargedImage}
+        handleOpenEnlargeImage={handleOpenEnlargeImage}
+        imageUrl={imageUrl}
       >
         <GlobalStyle />
         <Component
@@ -481,6 +499,7 @@ export default function App({ Component, pageProps }) {
           handleIncreaseFlashcardLevel={handleIncreaseFlashcardLevel}
           handleDecreaseFlashcardLevel={handleDecreaseFlashcardLevel}
           handleFirstClick={handleFirstClick}
+          handleOpenEnlargeImage={handleOpenEnlargeImage}
         />
         <ToastMessageContainer
           toastMessages={toastMessages}

@@ -17,6 +17,7 @@ export default function TrainingCollectionPage({
   handleIncreaseFlashcardLevel,
   handleDecreaseFlashcardLevel,
   handleFirstClick,
+  handleOpenEnlargeImage,
 }) {
   const router = useRouter();
   const { id } = router.query;
@@ -87,6 +88,7 @@ export default function TrainingCollectionPage({
                     onDecreaseFlashcardLevel={handleDecreaseFlashcardLevel}
                     onFirstClick={handleFirstClick}
                     imageUrl={flashcard.imageUrl}
+                    handleOpenEnlargeImage={handleOpenEnlargeImage}
                   />
                 ))}
               </FlashcardListGridWrapper>

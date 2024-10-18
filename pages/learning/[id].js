@@ -18,6 +18,7 @@ export default function LearningCollectionPage({
   getCorrectFlashcardsFromCollection,
   flashcardSelection,
   changeFlashcardSelection,
+  handleOpenEnlargeImage,
 }) {
   const router = useRouter();
   const { id } = router.query;
@@ -73,6 +74,7 @@ export default function LearningCollectionPage({
                   changeActionMode={changeActionMode}
                   modeSelection="learning"
                   imageUrl={flashcard.imageUrl}
+                  handleOpenEnlargeImage={handleOpenEnlargeImage}
                 />
               );
             })}
