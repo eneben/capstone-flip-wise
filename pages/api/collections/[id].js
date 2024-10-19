@@ -27,7 +27,11 @@ export default async function handler(request, response) {
     try {
       const collection = await Collection.findById(id);
       if (!collection) {
-        response.status(404).json({ status: "Not Found" });
+        response.status(404).json({
+          status: "Not Found",
+          message:
+            "This collection was not found, perhaps it has been deleted. Create a new one!",
+        });
         return;
       }
       response.status(200).json(collection);
@@ -46,10 +50,24 @@ export default async function handler(request, response) {
   }
 
   if (request.method === "DELETE") {
+    const { userId } = request.body;
+
     try {
-      await Flashcard.deleteMany({ collectionId: id });
-      await Collection.findByIdAndDelete(id);
-      response.status(200).json({ message: "Collection deleted." });
+      await Flashcard.deleteMany({ collectionId: id, userId: userId });
+
+      const flashcardsUsingCollection = await Flashcard.findOne({
+        collectionId: id,
+      });
+      if (!flashcardsUsingCollection) {
+        await Collection.findByIdAndDelete(id);
+        response
+          .status(200)
+          .json({ message: "Collection and related flashcards deleted." });
+      } else {
+        response
+          .status(200)
+          .json({ message: "User's flashcards deleted. Collection retained." });
+      }
       return;
     } catch (error) {
       response

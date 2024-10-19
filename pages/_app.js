@@ -299,6 +299,10 @@ export default function App({
     try {
       const collectionsResponse = await fetch(`/api/collections/${id}`, {
         method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId: user }),
       });
 
       if (!collectionsResponse.ok) {
