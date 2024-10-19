@@ -124,7 +124,7 @@ export default function App({
     return (
       <SessionProvider session={session}>
         <SWRConfig value={{ fetcher }}>
-          <Layout changeUser={changeUser}>
+          <Layout changeUser={changeUser} user={user}>
             <GlobalStyle />
             <LoadingSpinner />
           </Layout>
@@ -318,25 +318,25 @@ export default function App({
     }
   }
 
-  async function handleAddCollection(newCollection) {
+  async function handleAddCollection(newCollection, newFlashcard) {
     try {
       const response = await fetch("/api/collections", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(newCollection),
+        body: JSON.stringify({ newCollection, newFlashcard, actionMode }),
       });
       if (!response.ok) throw new Error("Failed to add collection");
       const responseData = await response.json();
-      const newCollectionId = responseData._id;
-      mutateCollections();
       showToastMessage(
         "Collection created successfully!",
         "success",
         MarkAsCorrect
       );
-      return newCollectionId;
+      mutateFlashcards();
+      mutateCollections();
+      return responseData._id;
     } catch (error) {
       console.error("Failed to add collection: ", error);
       showToastMessage("Failed to add collection.", "error", MarkAsIncorrect);
@@ -444,6 +444,7 @@ export default function App({
           handleEditCollection={handleEditCollection}
           getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
           changeUser={changeUser}
+          user={user}
         >
           <GlobalStyle />
           <Component

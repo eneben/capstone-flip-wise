@@ -55,10 +55,26 @@ export default async function handler(request, response) {
         return;
       }
 
-      const newCollection = request.body;
+      const { newCollection, newFlashcard, actionMode } = request.body;
+
       const createdCollection = await Collection.create(newCollection);
-      response.status(201).json(createdCollection);
-      return;
+
+      if (actionMode === "create") {
+        newFlashcard.collectionId = createdCollection._id;
+        await Flashcard.create(newFlashcard);
+        response.status(201).json(createdCollection);
+        return;
+      }
+
+      if (actionMode === "edit") {
+        const updatedFlashcard = await Flashcard.findByIdAndUpdate(
+          newFlashcard._id,
+          { collectionId: createdCollection._id }
+        );
+
+        response.status(200).json(createdCollection);
+        return;
+      }
     } catch (error) {
       return response
         .status(400)
