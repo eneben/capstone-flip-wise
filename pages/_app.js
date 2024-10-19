@@ -160,6 +160,7 @@ export default function App({
       _id: currentFlashcard._id,
       isCorrect: currentFlashcard.isCorrect,
       level: currentFlashcard.level,
+      userId: currentFlashcard.userId,
     };
 
     await fetch(`/api/flashcards/${currentFlashcard._id}`, {
@@ -224,13 +225,20 @@ export default function App({
   }
 
   async function handleCreateFlashcard(newFlashcard) {
+    const createdFlashcard = {
+      ...newFlashcard,
+      isCorrect: false,
+      level: 1,
+      userId: user,
+    };
+
     try {
       const response = await fetch("/api/flashcards", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(newFlashcard),
+        body: JSON.stringify(createdFlashcard),
       });
       if (!response.ok) throw new Error("Failed to create flashcard");
       mutateFlashcards();
