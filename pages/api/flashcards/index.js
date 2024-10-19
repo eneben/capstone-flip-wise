@@ -17,8 +17,6 @@ export default async function handler(request, response) {
   if (request.method === "GET") {
     try {
       const { userId } = request.query;
-      console.log("Received userId:", userId);
-
       let query = {};
 
       if (userId) {
@@ -26,8 +24,6 @@ export default async function handler(request, response) {
       } else {
         query = { userId: null };
       }
-
-      console.log("Query:", query);
 
       const flashcards = await Flashcard.find(query);
       response.status(200).json(flashcards);

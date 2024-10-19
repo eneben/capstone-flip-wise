@@ -31,7 +31,6 @@ export default function App({
   pageProps: { session, ...pageProps },
 }) {
   const [user, setUser] = useState(null);
-  console.log("user: ", user);
 
   const {
     data: flashcards,
@@ -47,7 +46,9 @@ export default function App({
     isLoading: collectionIsLoading,
     error: collectionError,
     mutate: mutateCollections,
-  } = useSWR("/api/collections", fetcher, { fallbackData: [] });
+  } = useSWR(`/api/collections?userId=${user || ""}`, fetcher, {
+    fallbackData: [],
+  });
 
   if (flashcardError) {
     console.error("Flashcard fetch error:", flashcardError);
