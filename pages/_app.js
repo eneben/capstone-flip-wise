@@ -191,11 +191,6 @@ export default function App({
 
       return;
     }
-    const updatedCollection = {
-      ...currentCollection,
-      title: newCollection.title,
-      color: newCollection.color,
-    };
 
     try {
       const response = await fetch(
@@ -205,14 +200,14 @@ export default function App({
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(updatedCollection),
+          body: JSON.stringify({ newCollection, currentCollection }),
         }
       );
 
       if (!response.ok) {
         throw new Error("Failed to update collection");
       }
-
+      mutateFlashcards();
       mutateCollections();
       showToastMessage(
         "Collection updated successfully!",

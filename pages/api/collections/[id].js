@@ -55,10 +55,10 @@ export default async function handler(request, response) {
     try {
       await Flashcard.deleteMany({ collectionId: id, userId: userId });
 
-      const flashcardsUsingCollection = await Flashcard.findOne({
+      const flashcardsUsingOldCollection = await Flashcard.findOne({
         collectionId: id,
       });
-      if (!flashcardsUsingCollection) {
+      if (!flashcardsUsingOldCollection) {
         await Collection.findByIdAndDelete(id);
         response
           .status(200)
@@ -79,16 +79,32 @@ export default async function handler(request, response) {
 
   if (request.method === "PATCH") {
     try {
-      const updatedCollection = await Collection.findByIdAndUpdate(
-        id,
-        request.body,
-        {
-          new: true,
-        }
-      );
+      const { newCollection, currentCollection } = request.body;
+      const oldId = currentCollection._id;
+
+      const updatedCollection = await Collection.create(newCollection);
 
       if (!updatedCollection) {
         return response.status(404).json({ error: "Collection not found" });
+      }
+
+      await Flashcard.updateMany(
+        { collectionId: oldId },
+        { collectionId: updatedCollection._id }
+      );
+
+      const flashcardsUsingOldCollection = await Flashcard.findOne({
+        collectionId: oldId,
+      });
+      if (!flashcardsUsingOldCollection) {
+        await Collection.findByIdAndDelete(oldId);
+        response.status(200).json({
+          message: "New collection created and unnecessary old one deleted.",
+        });
+      } else {
+        response.status(200).json({
+          message: "User's collection updated. Old collection retained.",
+        });
       }
 
       response.status(200).json(updatedCollection);
