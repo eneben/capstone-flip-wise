@@ -334,6 +334,20 @@ export default function App({
         "success",
         MarkAsCorrect
       );
+      if (actionMode === "create") {
+        showToastMessage(
+          "Flashcard created successfully!",
+          "success",
+          MarkAsCorrect
+        );
+      }
+      if (actionMode === "edit") {
+        showToastMessage(
+          "Flashcard updated successfully!",
+          "success",
+          MarkAsCorrect
+        );
+      }
       mutateFlashcards();
       mutateCollections();
       return responseData._id;
