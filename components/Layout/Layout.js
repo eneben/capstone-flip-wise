@@ -282,8 +282,19 @@ const StyledModal = styled.article`
   margin: 0 auto;
   border-radius: 10px;
   background-color: #fff;
-  opacity: 1;
   z-index: 2;
+  animation: modalPop 0.3s ease-out;
+
+  @keyframes modalPop {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
 `;
 
 const StyledEnlargedImage = styled(Image)`
