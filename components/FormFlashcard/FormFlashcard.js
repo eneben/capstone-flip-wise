@@ -2,7 +2,6 @@ import { styled, css, keyframes } from "styled-components";
 import { useState } from "react";
 import FormManual from "../FormManual/FormManual";
 import FormAI from "../FormAI/FormAI";
-import { set } from "mongoose";
 
 export default function FormFlashcard({
   collections,
