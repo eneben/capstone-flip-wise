@@ -4,6 +4,7 @@ import Logo from "@/public/Logo_BrainStack.svg";
 import Menu from "../Menu/Menu";
 import Plus from "@/public/icons/Plus.svg";
 import RoundButton from "../Buttons/RoundButton";
+import ButtonWrapper from "../Buttons/ButtonWrapper";
 import MarkAsIncorrect from "@/public/icons/MarkAsIncorrect.svg";
 import FormFlashcard from "@/components/FormFlashcard/FormFlashcard";
 import AiInfoModal from "../AiInfoModal/AiInfoModal";
@@ -81,9 +82,11 @@ export default function Layout({
               height={500}
               priority={true}
             />
-            <RoundButton type="button" variant="delete">
-              <MarkAsIncorrect />
-            </RoundButton>
+            <StyledButtonContainer>
+              <RoundButton type="button" variant="delete">
+                <MarkAsIncorrect />
+              </RoundButton>
+            </StyledButtonContainer>
           </StyledModal>
         </StyledOutgreyContainer>
       )}
@@ -271,15 +274,14 @@ const StyledOutgreyContainer = styled.div`
 `;
 
 const StyledModal = styled.article`
-  position: absolute;
-  max-width: 90vw;
-  max-height: 90vh;
-  /* width: 90vw;
-  max-width: 500px; */
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90vw;
+  max-width: 500px;
   padding: 15px;
-  left: 50%;
-  transform: translateX(-50%);
-  margin-top: 10px;
+  margin: 0 auto;
   border-radius: 10px;
   background-color: #fff;
   opacity: 1;
@@ -292,4 +294,11 @@ const StyledEnlargedImage = styled(Image)`
   max-height: calc(90vh - 40px);
   width: auto;
   height: auto;
+`;
+
+const StyledButtonContainer = styled.div`
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  z-index: 3;
 `;
