@@ -2,6 +2,7 @@ import { styled, css, keyframes } from "styled-components";
 import { useState } from "react";
 import FormManual from "../FormManual/FormManual";
 import FormAI from "../FormAI/FormAI";
+import { set } from "mongoose";
 
 export default function FormFlashcard({
   collections,
@@ -19,15 +20,25 @@ export default function FormFlashcard({
   const [formMode, setFormMode] = useState("manual");
   const [image, setImage] = useState(null);
   const [imageUploaded, setImageUploaded] = useState(false);
+  const [shouldRemoveImage, setShouldRemoveImage] = useState(false);
+
+  function resetImageState() {
+    setImage(null);
+    setImageUploaded(false);
+    setShouldRemoveImage(false);
+  }
 
   function handleImageUpload(file) {
-    setImage(file);
-    setImageUploaded(true);
+    if (file) {
+      setImage(file);
+      setImageUploaded(true);
+      setShouldRemoveImage(false);
+    }
   }
 
   function handleCloseImagePreview() {
-    setImageUploaded(false);
-    setImage(null);
+    resetImageState();
+    setShouldRemoveImage(true);
   }
 
   function handleCollectionChange(event) {
@@ -52,22 +63,40 @@ export default function FormFlashcard({
         collectionId,
       } = data;
 
-      let url = "";
+      let url = null;
 
       if (imageUploaded && image) {
-        const response = await fetch("/api/upload", {
-          method: "POST",
-          body: formData,
-        });
+        try {
+          const uploadFormData = new FormData();
+          uploadFormData.append("image", image);
+          const response = await fetch("/api/upload", {
+            method: "POST",
+            body: uploadFormData,
+          });
 
-        if (!response.ok) {
+          if (!response.ok) {
+            throw new Error("Upload failed");
+          }
+          const responseData = await response.json();
+          url = responseData.url;
+        } catch (error) {
           console.error("An error occurred during upload:", error);
           return;
         }
-        const responseData = await response.json();
-        url = responseData.url;
       }
+
       let newFlashcard;
+      let imageUrl = null;
+
+      if (actionMode === "edit") {
+        if (imageUploaded && url) {
+          imageUrl = url;
+        } else if (!shouldRemoveImage && currentFlashcard?.imageUrl) {
+          imageUrl = currentFlashcard.imageUrl;
+        }
+      } else {
+        imageUrl = imageUploaded ? url : null;
+      }
 
       if (showNewCollectionFields) {
         const newCollection = {
@@ -81,7 +110,7 @@ export default function FormFlashcard({
           question,
           answer,
           level: 1,
-          imageUrl: imageUploaded ? url : currentFlashcard?.imageUrl || null,
+          imageUrl,
         };
       } else {
         newFlashcard = {
@@ -89,12 +118,13 @@ export default function FormFlashcard({
           question,
           answer,
           level: 1,
-          imageUrl: imageUploaded ? url : currentFlashcard?.imageUrl || null,
+          imageUrl,
         };
       }
 
       onSubmitFlashcard(newFlashcard);
       setShowNewCollectionFields(false);
+      resetImageState();
       event.target.reset();
     }
 
