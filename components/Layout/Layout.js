@@ -4,7 +4,6 @@ import Logo from "@/public/Logo_BrainStack.svg";
 import Menu from "../Menu/Menu";
 import Plus from "@/public/icons/Plus.svg";
 import RoundButton from "../Buttons/RoundButton";
-import ButtonWrapper from "../Buttons/ButtonWrapper";
 import MarkAsIncorrect from "@/public/icons/MarkAsIncorrect.svg";
 import FormFlashcard from "@/components/FormFlashcard/FormFlashcard";
 import AiInfoModal from "../AiInfoModal/AiInfoModal";
@@ -28,7 +27,6 @@ export default function Layout({
   getAllFlashcardsFromCollection,
   uploadImage,
   isImageEnlarged,
-  handlehandleOpenEnlargeImage,
   handleCloseEnlargedImage,
   imageUrl,
 }) {
@@ -280,7 +278,7 @@ const StyledModal = styled.article`
   align-items: center;
   width: 90vw;
   max-width: 500px;
-  padding: 15px;
+  padding: 40px;
   margin: 0 auto;
   border-radius: 10px;
   background-color: #fff;
@@ -291,8 +289,6 @@ const StyledModal = styled.article`
 const StyledEnlargedImage = styled(Image)`
   object-fit: contain;
   max-width: 100%;
-  max-height: calc(90vh - 40px);
-  width: auto;
   height: auto;
 `;
 

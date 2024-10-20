@@ -508,7 +508,7 @@ const StyledImageContainer = styled.div`
   padding: 10px;
   overflow: hidden;
   cursor: pointer;
-  transition: transform 0.2s ease;
+  transition: transform 0.4s ease;
 
   &:hover {
     transform: scale(1.05);
