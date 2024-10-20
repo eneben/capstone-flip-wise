@@ -174,6 +174,17 @@ export default function TrainingCollectionPage({
     );
   }
 
+  if (allFlashcardsFromCollection.length === 0) {
+    return (
+      <>
+        <StyledHeadlineWithPadding>{collectionTitle}</StyledHeadlineWithPadding>
+        <StyledMessage>
+          This collection doesn't exist (anymore). Create a new one!
+        </StyledMessage>
+      </>
+    );
+  }
+
   if (allFlashcardsFromCollection.length < 9) {
     return (
       <>

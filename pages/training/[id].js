@@ -106,7 +106,7 @@ export default function TrainingCollectionPage({
       )}
       {(!sortedFlashcards || sortedFlashcards.length === 0) && (
         <StyledMessage>
-          No flashcards in this collection found. Add some new!
+          This collection doesn't exist (anymore). Create a new one!
         </StyledMessage>
       )}
     </>
