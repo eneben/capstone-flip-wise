@@ -106,7 +106,7 @@ export default function TrainingCollectionPage({
       )}
       {(!sortedFlashcards || sortedFlashcards.length === 0) && (
         <StyledMessage>
-          This collection doesn't exist (anymore). Create a new one!
+          This collection doesn&apos;t exist (anymore). Create a new one!
         </StyledMessage>
       )}
     </>

@@ -179,7 +179,7 @@ export default function TrainingCollectionPage({
       <>
         <StyledHeadlineWithPadding>{collectionTitle}</StyledHeadlineWithPadding>
         <StyledMessage>
-          This collection doesn't exist (anymore). Create a new one!
+          This collection doesn&apos;t exist (anymore). Create a new one!
         </StyledMessage>
       </>
     );
