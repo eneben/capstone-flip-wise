@@ -20,7 +20,17 @@ export default async function handler(request, response) {
 
   if (request.method === "GET") {
     try {
-      const flashcards = await Flashcard.find();
+      const { userId } = request.query;
+      let query = {};
+
+      if (userId) {
+        query = { userId: userId };
+      } else {
+        query = { userId: null };
+      }
+
+      const flashcards = await Flashcard.find(query);
+
       response.status(200).json(flashcards);
       return;
     } catch (error) {

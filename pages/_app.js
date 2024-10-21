@@ -31,13 +31,16 @@ export default function App({
   pageProps: { session, ...pageProps },
 }) {
   const [user, setUser] = useState(null);
+  console.log("user: ", user);
 
   const {
     data: flashcards,
     isLoading: flashcardIsLoading,
     error: flashcardError,
     mutate: mutateFlashcards,
-  } = useSWR("/api/flashcards", fetcher, { fallbackData: [] });
+  } = useSWR(`/api/flashcards?userId=${user || ""}`, fetcher, {
+    fallbackData: [],
+  });
 
   const {
     data: collections,
