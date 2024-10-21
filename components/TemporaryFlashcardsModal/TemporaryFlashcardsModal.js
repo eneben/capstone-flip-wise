@@ -23,41 +23,17 @@ export default function TemporaryFlashcardsModal({
     setIsDelete((prevIsDelete) => !prevIsDelete);
   }
 
-  async function handleSubmitAiFlashcards(temporaryFlashcards) {
-    const { collectionColor, collectionId, collectionName } =
-      temporaryFlashcards[0];
-
+  async function handleSubmitAiFlashcards() {
     const includedFlashcards = temporaryFlashcards.filter(
       (temporaryFlashcard) => temporaryFlashcard.isIncluded
     );
 
-    let newAiFlashcards;
+    const newAiFlashcards = includedFlashcards.map(
+      ({ question, answer, collectionId }) => {
+        return { question, answer, collectionId };
+      }
+    );
 
-    if (collectionId === "newCollection") {
-      const newCollection = {
-        title: collectionName,
-        color: collectionColor,
-      };
-      const newCollectionId = await onAddCollection(newCollection);
-
-      newAiFlashcards = includedFlashcards.map((includedFlashcard) => {
-        return {
-          collectionId: newCollectionId,
-          question: includedFlashcard.question,
-          answer: includedFlashcard.answer,
-          level: 1,
-        };
-      });
-    } else {
-      newAiFlashcards = includedFlashcards.map((includedFlashcard) => {
-        return {
-          collectionId: includedFlashcard.collectionId,
-          question: includedFlashcard.question,
-          answer: includedFlashcard.answer,
-          level: 1,
-        };
-      });
-    }
     onSubmitFlashcard(newAiFlashcards);
     handleDeleteTemporaryFlashcards();
   }
@@ -153,7 +129,7 @@ export default function TemporaryFlashcardsModal({
               <RegularButton
                 type="button"
                 variant="submit"
-                onClick={() => handleSubmitAiFlashcards(temporaryFlashcards)}
+                onClick={() => handleSubmitAiFlashcards()}
               >
                 Save
               </RegularButton>

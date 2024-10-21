@@ -58,13 +58,7 @@ export default function Layout({
     setShowTemporaryFlashcardsModal(false);
   }
 
-  async function getAiFlashcards(
-    collectionId,
-    collectionName,
-    collectionColor,
-    textInput,
-    numberOfFlashcards
-  ) {
+  async function getAiFlashcards(promptData) {
     const controller = new AbortController();
     setAbortController(controller);
 
@@ -75,46 +69,32 @@ export default function Layout({
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          collectionId,
-          collectionName,
-          collectionColor,
-          textInput,
-          numberOfFlashcards,
-        }),
+        body: JSON.stringify(promptData),
         signal: controller.signal,
       });
+
+      const collectionResponse = await fetch("/api/collections");
+      const collections = await collectionResponse.json();
 
       const data = await response.json();
       if (!response.ok) {
         throw new Error(data.message || "Something went wrong");
       }
-      if (data[0].collectionId === "newCollection") {
-        setTemporaryFlashcards(
-          data.map((temporaryFlashcard) => {
-            return {
-              ...temporaryFlashcard,
-              temporaryFlashcardId: uid(),
-              isIncluded: true,
-            };
-          })
-        );
-      } else {
-        const existingCollection = collections.find(
-          (collection) => collection._id === data[0].collectionId
-        );
-        setTemporaryFlashcards(
-          data.map((temporaryFlashcard) => {
-            return {
-              ...temporaryFlashcard,
-              temporaryFlashcardId: uid(),
-              collectionName: existingCollection.title,
-              collectionColor: existingCollection.color,
-              isIncluded: true,
-            };
-          })
-        );
-      }
+
+      const existingCollection = collections.find(
+        (collection) => collection._id === promptData.collectionId
+      );
+      setTemporaryFlashcards(
+        data.map((temporaryFlashcard) => {
+          return {
+            ...temporaryFlashcard,
+            temporaryFlashcardId: uid(),
+            collectionName: existingCollection.title,
+            collectionColor: existingCollection.color,
+            isIncluded: true,
+          };
+        })
+      );
     } catch (error) {
       if (error.name === "AbortError") {
         console.log("Flashcard generation was cancelled.");

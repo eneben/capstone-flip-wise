@@ -26,7 +26,14 @@ export default async function handler(request, response) {
   if (request.method === "POST") {
     if (Array.isArray(request.body)) {
       try {
-        const newFlashcards = request.body;
+        const newFlashcards = request.body.map((flashcard) => {
+          return {
+            ...flashcard,
+            level: 1,
+            isCorrect: false,
+          };
+        });
+
         await Flashcard.insertMany(newFlashcards);
         response.status(201).json({ status: "Flashcards created" });
         return;
@@ -38,7 +45,8 @@ export default async function handler(request, response) {
     } else {
       try {
         const newFlashcard = request.body;
-        await Flashcard.create(newFlashcard);
+        console.log(newFlashcard);
+        await Flashcard.create({ ...newFlashcard, level: 1, isCorrect: false });
         response.status(201).json({ status: "Flashcard created" });
         console.log("One of flashcard created");
         return;

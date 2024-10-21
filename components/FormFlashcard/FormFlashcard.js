@@ -15,73 +15,11 @@ export default function FormFlashcard({
   getAiFlashcards,
   changeShowInfoModal,
 }) {
-  const [showNewCollectionFields, setShowNewCollectionFields] = useState(false);
   const [formMode, setFormMode] = useState("manual");
-
-  function handleCollectionChange(event) {
-    if (event.target.value === "newCollection") {
-      setShowNewCollectionFields(true);
-    } else {
-      setShowNewCollectionFields(false);
-    }
-  }
-
-  async function handleSubmit(event) {
-    event.preventDefault();
-
-    if (formMode === "manual") {
-      const data = Object.fromEntries(new FormData(event.target));
-      const { collectionName, collectionColor, question, answer } = data;
-      let newFlashcard;
-
-      if (showNewCollectionFields) {
-        const newCollection = {
-          title: collectionName,
-          color: collectionColor,
-        };
-        const newCollectionId = await onAddCollection(newCollection);
-
-        newFlashcard = {
-          collectionId: newCollectionId,
-          question,
-          answer,
-          level: 1,
-        };
-      } else {
-        newFlashcard = { ...data, level: 1 };
-      }
-
-      onSubmitFlashcard(newFlashcard);
-      setShowNewCollectionFields(false);
-      event.target.reset();
-    }
-
-    if (formMode === "ai") {
-      const data = Object.fromEntries(new FormData(event.target));
-      const {
-        collectionId,
-        collectionName,
-        collectionColor,
-        textInput,
-        numberOfFlashcards,
-      } = data;
-
-      getAiFlashcards(
-        collectionId,
-        collectionName,
-        collectionColor,
-        textInput,
-        numberOfFlashcards
-      );
-      setShowNewCollectionFields(false);
-      event.target.reset();
-    }
-    startClosingForm();
-  }
 
   return (
     <>
-      <StyledForm onSubmit={handleSubmit} $isFormClosing={isFormClosing}>
+      <StyledFormCard $isFormClosing={isFormClosing}>
         <StyledFormNavigation>
           <StyledFormButton
             type="button"
@@ -108,22 +46,22 @@ export default function FormFlashcard({
             actionMode={actionMode}
             currentFlashcard={currentFlashcard}
             isFormClosing={isFormClosing}
-            onSubmit={handleSubmit}
-            onCollectionChange={handleCollectionChange}
-            showNewCollectionFields={showNewCollectionFields}
+            onSubmit={onSubmitFlashcard}
             startClosingForm={startClosingForm}
+            onAddCollection={onAddCollection}
           />
         )}
 
         {formMode === "ai" && (
           <FormAI
             collections={collections}
-            onCollectionChange={handleCollectionChange}
-            showNewCollectionFields={showNewCollectionFields}
             changeShowInfoModal={changeShowInfoModal}
+            onAddCollection={onAddCollection}
+            onSubmit={getAiFlashcards}
+            startClosingForm={startClosingForm}
           />
         )}
-      </StyledForm>
+      </StyledFormCard>
     </>
   );
 }
@@ -138,7 +76,7 @@ const formAnimationOut = keyframes`
 100% { top: -350px; }
 `;
 
-const StyledForm = styled.form`
+const StyledFormCard = styled.div`
   animation: ${(props) =>
     props.$isFormClosing
       ? css`

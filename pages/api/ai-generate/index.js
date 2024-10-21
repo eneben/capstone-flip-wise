@@ -11,13 +11,9 @@ export default async function handler(request, response) {
       .json({ message: "Only POST requests are allowed" });
   }
 
-  const {
-    collectionId,
-    collectionName,
-    collectionColor,
-    textInput,
-    numberOfFlashcards,
-  } = request.body;
+  const { collectionId, textInput, numberOfFlashcards } = request.body;
+
+  console.log(request.body);
 
   if (!textInput || !numberOfFlashcards) {
     return response
@@ -58,8 +54,6 @@ export default async function handler(request, response) {
     const flashcardsWithCollectionAndColor = flashcards.map((flashcard) => ({
       ...flashcard,
       collectionId,
-      collectionName,
-      collectionColor,
     }));
 
     response.status(200).json(flashcardsWithCollectionAndColor);

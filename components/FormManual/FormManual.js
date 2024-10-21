@@ -3,18 +3,38 @@ import RegularButton from "../Buttons/RegularButton";
 import ButtonWrapper from "../Buttons/ButtonWrapper";
 import FormInput from "../FormFlashcard/FormInput";
 import { StyledFormHeadline } from "@/styledComponents";
+import { useState } from "react";
 
 export default function FormManual({
   collections,
   headline,
   actionMode,
   currentFlashcard,
-  onCollectionChange,
-  showNewCollectionFields,
   startClosingForm,
+  onSubmit,
+  onAddCollection,
 }) {
+  const [showNewCollectionFields, setShowNewCollectionFields] = useState(false);
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const data = Object.fromEntries(formData);
+
+    const collectionId =
+      data.collectionId ||
+      (await onAddCollection({
+        title: data.collectionName,
+        color: data.collectionColor,
+      }));
+
+    onSubmit({ ...data, collectionId });
+    startClosingForm();
+    event.target.reset();
+  }
+
   return (
-    <>
+    <form onSubmit={handleSubmit}>
       <StyledFormWrapper>
         <StyledFormHeadline>{headline}</StyledFormHeadline>
         <StyledLabel htmlFor="question">Question</StyledLabel>
@@ -31,46 +51,59 @@ export default function FormManual({
           currentFlashcard={currentFlashcard}
           maxLength="70"
         />
-        <StyledLabel htmlFor="collection">Collection</StyledLabel>
-        <StyledSelect
-          id="collection"
-          name="collectionId"
-          required
-          defaultValue={
-            actionMode === "edit" ? currentFlashcard.collectionId : ""
-          }
-          onChange={onCollectionChange}
-        >
-          <option value="">--Please choose a collection:--</option>
-          <option value="newCollection">+ Add New Collection</option>
-          {collections.map((collection) => {
-            return (
-              <option key={collection._id} value={collection._id}>
-                {collection.title}
-              </option>
-            );
-          })}
-        </StyledSelect>
+
+        {!showNewCollectionFields && (
+          <>
+            <StyledLabel htmlFor="collection">Collection</StyledLabel>
+            <StyledSelect
+              id="collection"
+              name="collectionId"
+              required
+              defaultValue={
+                actionMode === "edit" ? currentFlashcard.collectionId : ""
+              }
+            >
+              <option value="">--Please choose a collection:--</option>
+              {/* <option value="newCollection">+ Add New Collection</option> */}
+              {collections.map((collection) => {
+                return (
+                  <option key={collection._id} value={collection._id}>
+                    {collection.title}
+                  </option>
+                );
+              })}
+            </StyledSelect>
+
+            <button onClick={() => setShowNewCollectionFields(true)}>
+              Add new collection
+            </button>
+          </>
+        )}
 
         {showNewCollectionFields && (
-          <NewCollectionWrapper>
-            <CollectionNameWrapper>
-              <StyledLabel htmlFor="collectionName">
-                Collection Name
-              </StyledLabel>
-              <FormInput name="collectionName" maxLength="23" />
-            </CollectionNameWrapper>
-            <CollectionColorWrapper>
-              <StyledLabel htmlFor="collectionColor">Color</StyledLabel>
-              <StyledColorInput
-                type="color"
-                id="collectionColor"
-                name="collectionColor"
-                defaultValue="#000000"
-                required
-              />
-            </CollectionColorWrapper>
-          </NewCollectionWrapper>
+          <>
+            <NewCollectionWrapper>
+              <CollectionNameWrapper>
+                <StyledLabel htmlFor="collectionName">
+                  Collection Name
+                </StyledLabel>
+                <FormInput name="collectionName" maxLength="23" />
+              </CollectionNameWrapper>
+              <CollectionColorWrapper>
+                <StyledLabel htmlFor="collectionColor">Color</StyledLabel>
+                <StyledColorInput
+                  type="color"
+                  id="collectionColor"
+                  name="collectionColor"
+                  defaultValue="#000000"
+                  required
+                />
+              </CollectionColorWrapper>
+            </NewCollectionWrapper>
+            <button onClick={() => setShowNewCollectionFields(false)}>
+              Choose existing collection
+            </button>
+          </>
         )}
       </StyledFormWrapper>
 
@@ -88,7 +121,7 @@ export default function FormManual({
           </RegularButton>
         )}
       </ButtonWrapper>
-    </>
+    </form>
   );
 }
 
