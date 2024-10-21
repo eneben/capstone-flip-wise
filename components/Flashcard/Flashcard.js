@@ -10,6 +10,7 @@ import RoundButton from "../Buttons/RoundButton";
 import DeleteConfirmationDialog from "../DeleteConfirmationDialog/DeleteConfirmationDialog";
 import LevelBar from "../LevelBar/LevelBar";
 import BubbleAnimation from "../BubbleAnimation/BubbleAnimation";
+import Image from "next/image";
 
 export default function Flashcard({
   flashcard,
@@ -22,6 +23,7 @@ export default function Flashcard({
   onDecreaseFlashcardLevel,
   onToggleCorrect,
   onFirstClick,
+  handleOpenEnlargeImage,
 }) {
   const [showAnswer, setShowAnswer] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
@@ -36,6 +38,7 @@ export default function Flashcard({
     _id: id,
     isCorrect,
     level,
+    imageUrl,
   } = flashcard;
 
   const motionValue = useMotionValue(0);
@@ -217,6 +220,23 @@ export default function Flashcard({
                     </StyledDeleteButtonContainer>
                     <Answer>{answer}</Answer>
 
+                    {imageUrl && (
+                      <StyledImageContainer
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          handleOpenEnlargeImage(imageUrl);
+                        }}
+                      >
+                        <StyledImage
+                          src={imageUrl}
+                          alt="Flashcard Image"
+                          width={90}
+                          height={90}
+                          priority={true}
+                        />
+                      </StyledImageContainer>
+                    )}
+
                     {modeSelection === "learning" && (
                       <StyledMarkAsButtonContainer>
                         <RoundButton
@@ -346,6 +366,23 @@ export default function Flashcard({
                   </StyledDeleteButtonContainer>
                   <Answer>{answer}</Answer>
 
+                  {imageUrl && (
+                    <StyledImageContainer
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        handleOpenEnlargeImage(imageUrl);
+                      }}
+                    >
+                      <StyledImage
+                        src={imageUrl}
+                        alt="Flashcard Image"
+                        width={90}
+                        height={90}
+                        priority={true}
+                      />
+                    </StyledImageContainer>
+                  )}
+
                   {modeSelection === "learning" && (
                     <StyledMarkAsButtonContainer>
                       <RoundButton
@@ -398,7 +435,6 @@ const CardContainer = styled.li`
 
 const StyledFlashcard = styled.article`
   width: 90vw;
-  height: auto;
   min-height: 218px;
   max-width: 500px;
   position: relative;
@@ -454,13 +490,33 @@ const CollectionTitle = styled.p`
 const Answer = styled.p`
   font: var(--question-answer);
   padding: 10px;
-  grid-column: 1 / 8;
+  grid-column: 1 / 6;
   grid-row: 2 / 3;
   align-self: center;
 
   @media (min-width: 768px) {
     font-size: 1.4rem;
   }
+`;
+
+const StyledImageContainer = styled.div`
+  grid-column: 6 / 8;
+  grid-row: 2 / 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.4s ease;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+`;
+
+const StyledImage = styled(Image)`
+  object-fit: contain;
 `;
 
 const Question = styled.h3`
