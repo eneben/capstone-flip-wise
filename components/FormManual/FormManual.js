@@ -88,6 +88,7 @@ export default function FormManual({
 
     onSubmit({ ...data, collectionId, imageUrl });
     startClosingForm();
+    resetImageState();
     event.target.reset();
   }
 
