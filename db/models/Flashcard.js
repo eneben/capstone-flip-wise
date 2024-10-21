@@ -12,6 +12,8 @@ const flashcardSchema = new Schema({
   isCorrect: { type: Boolean },
 });
 
+flashcardSchema.index({ userId: 1, question: 1 }, { unique: true });
+
 const Flashcard =
   mongoose.models.Flashcard || mongoose.model("Flashcard", flashcardSchema);
 

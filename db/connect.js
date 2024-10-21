@@ -31,12 +31,21 @@ async function dbConnect() {
 
   try {
     cached.conn = await cached.promise;
+    await ensureIndexes();
+    return cached.conn;
   } catch (error) {
     cached.promise = null;
     throw error;
   }
-
-  return cached.conn;
 }
+
+const ensureIndexes = async () => {
+  try {
+    await Flashcard.ensureIndexes();
+    await User.ensureIndexes();
+  } catch (error) {
+    console.error("Error creating Flashcard indexes:", error);
+  }
+};
 
 export default dbConnect;

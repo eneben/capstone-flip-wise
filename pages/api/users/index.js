@@ -51,7 +51,17 @@ export default async function handler(request, response) {
         color: collection.color,
       }));
 
-      const insertedCollections = await Collection.insertMany(userCollections);
+      const checkAndCreateCollections = userCollections.map((collection) => ({
+        updateOne: {
+          filter: { userId: user._id, title: collection.title },
+          update: { $setOnInsert: collection },
+          upsert: true,
+        },
+      }));
+
+      await Collection.bulkWrite(checkAndCreateCollections);
+
+      const insertedCollections = await Collection.find({ userId: user._id });
 
       const collectionIdMap = defaultCollections.reduce(
         (mappingObject, defaultCollection, index) => {
