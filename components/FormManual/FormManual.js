@@ -248,7 +248,7 @@ const StyledImageWrapper = styled.div`
 
 const StyledImagePreview = styled(Image)`
   max-width: 100%;
-  max-height: 100%;
+  height: auto;
   object-fit: contain;
 `;
 
