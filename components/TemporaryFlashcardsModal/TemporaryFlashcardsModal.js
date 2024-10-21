@@ -62,6 +62,8 @@ export default function TemporaryFlashcardsModal({
     handleDeleteTemporaryFlashcards();
   }
 
+  console.log(temporaryFlashcards);
+
   return (
     <StyledOutgreyContainer>
       <StyledModal>
@@ -105,7 +107,7 @@ export default function TemporaryFlashcardsModal({
                         </StyledCheckboxLabel>
 
                         <Switch
-                          id="flashcard-checkbox"
+                          id={temporaryFlashcard.temporaryFlashcardId}
                           height={21}
                           width={42}
                           offColor="#e76f51"
