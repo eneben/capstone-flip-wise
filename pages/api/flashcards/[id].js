@@ -2,6 +2,7 @@ import dbConnect from "@/db/connect.js";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/pages/api/auth/[...nextauth].js";
 import Flashcard from "@/db/models/Flashcard.js";
+import Collection from "@/components/Collection/Collection";
 
 export default async function handler(request, response) {
   const session = await getServerSession(request, response, authOptions);
@@ -64,8 +65,29 @@ export default async function handler(request, response) {
 
   if (request.method === "DELETE") {
     try {
+      const flashcardToDelete = await Flashcard.findById(id);
+      if (!flashcardToDelete) {
+        response.status(404).json({ error: "Flashcard not found." });
+        return;
+      }
+
+      const collectionId = flashcardToDelete.collectionId;
+
       await Flashcard.findByIdAndDelete(id);
-      response.status(200).json({ message: "Flashcard deleted." });
+
+      const flashcardsUsingOldCollection = await Flashcard.findOne({
+        collectionId: collectionId,
+      });
+      if (!flashcardsUsingOldCollection) {
+        await Collection.findByIdAndDelete(collectionId);
+        response
+          .status(200)
+          .json({ message: "Flashcards deleted, collection deleted." });
+      } else {
+        response
+          .status(200)
+          .json({ message: "Flashcard deleted. Collection retained." });
+      }
       return;
     } catch (error) {
       response
