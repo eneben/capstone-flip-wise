@@ -55,14 +55,19 @@ export default function FormAI({
           </StyledCharacterCounterNumber>
         </StyledCharacterCounter>
 
-        <StyledLabel htmlFor="numberOfFlashcards">
+        <StyledLabel htmlFor="number-of-flashcards">
           Number of Flashcards (max. 40)
         </StyledLabel>
-        <StyledInput type="number" name="numberOfFlashcards" max="40" />
+        <StyledInput
+          id="number-of-flashcards"
+          type="number"
+          name="numberOfFlashcards"
+          max="40"
+        />
 
-        <StyledLabel htmlFor="collection">Collection</StyledLabel>
+        <StyledLabel htmlFor="ai-collection">Collection</StyledLabel>
         <StyledSelect
-          id="collection"
+          id="ai-collection"
           name="collectionId"
           required
           onChange={onCollectionChange}
