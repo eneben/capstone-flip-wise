@@ -7,6 +7,8 @@ const flashcardSchema = new Schema({
   collectionId: { type: Schema.Types.ObjectId, ref: "Collection" },
   question: { type: String, required: true },
   answer: { type: String, required: true },
+  level: { type: Number, required: true },
+  isCorrect: { type: Boolean },
 });
 
 const Flashcard =

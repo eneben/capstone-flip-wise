@@ -1,14 +1,17 @@
 [
   {
     "title": "French Vocabulary",
-    "color": "#E73181"
+    "color": "#E73181",
+    "userId": null
   },
   {
     "title": "Trick Questions",
-    "color": "#FAB62D"
+    "color": "#FAB62D",
+    "userId": null
   },
   {
     "title": "Art & Music",
-    "color": "#009FDB"
+    "color": "#009FDB",
+    "userId": null
   }
 ]

@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import Collection from "./Collection";
+import "./Collection";
 
 const { Schema } = mongoose;
 
