@@ -26,7 +26,6 @@ export default function Layout({
   changeFlashcardSelection,
   handleAddCollection,
   getAllFlashcardsFromCollection,
-  uploadImage,
   isImageEnlarged,
   handleCloseEnlargedImage,
   imageUrl,
@@ -202,7 +201,6 @@ export default function Layout({
           startClosingForm={startClosingForm}
           onAddCollection={handleAddCollection}
           changeShowInfoModal={changeShowInfoModal}
-          uploadImage={uploadImage}
         />
       )}
 
@@ -218,7 +216,6 @@ export default function Layout({
           isFormClosing={isFormClosing}
           startClosingForm={startClosingForm}
           onAddCollection={handleAddCollection}
-          uploadImage={uploadImage}
         />
       )}
 

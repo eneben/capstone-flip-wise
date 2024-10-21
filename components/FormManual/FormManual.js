@@ -2,9 +2,8 @@ import styled from "styled-components";
 import RegularButton from "../Buttons/RegularButton";
 import ButtonWrapper from "../Buttons/ButtonWrapper";
 import FormInput from "../FormFlashcard/FormInput";
-import Upload from "@/public/icons/Upload.svg";
-import Image from "next/image";
-import MarkAsIncorrect from "@/public/icons/MarkAsIncorrect.svg";
+import UploadButton from "./UploadButton";
+import ImagePreview from "./ImagePreview";
 import { StyledFormHeadline } from "@/styledComponents";
 import { useState } from "react";
 
@@ -23,10 +22,14 @@ export default function FormManual({
   const [imageUploaded, setImageUploaded] = useState(false);
   const [shouldRemoveImage, setShouldRemoveImage] = useState(false);
 
+  const showUploadPreview =
+    imageUploaded ||
+    (actionMode === "edit" && currentFlashcard?.imageUrl && showOriginalImage);
+
   function handleImageClose() {
     handleCloseImagePreview();
     setShowOriginalImage(false);
-    document.getElementById("image").value = null;
+    setImage(null);
   }
 
   function resetImageState() {
@@ -77,7 +80,9 @@ export default function FormManual({
       }
     }
 
-    const imageUrl = url || currentFlashcard?.imageUrl || null;
+    const imageUrl = shouldRemoveImage
+      ? null
+      : url || currentFlashcard?.imageUrl || null;
 
     const collectionId =
       data.collectionId ||
@@ -166,48 +171,16 @@ export default function FormManual({
         )}
 
         <StyledImageInputWrapper>
-          {(imageUploaded ||
-            (actionMode === "edit" &&
-              currentFlashcard?.imageUrl &&
-              showOriginalImage)) && (
-            <StyledImageWrapper onClick={handleImageClose}>
-              <StyledIconWrapper>
-                <MarkAsIncorrect />
-              </StyledIconWrapper>
-              <StyledImagePreview
-                src={
-                  imageUploaded
-                    ? URL.createObjectURL(image)
-                    : currentFlashcard.imageUrl
-                }
-                alt="Preview of the image"
-                sizes="300px"
-                fill
-              />
-            </StyledImageWrapper>
-          )}
-          <>
-            <StyledImageInput
-              $hidden={
-                imageUploaded ||
-                (actionMode === "edit" &&
-                  currentFlashcard?.imageUrl &&
-                  showOriginalImage)
-              }
-            >
-              <IconTextWrapper>
-                <Upload />
-                Upload Image
-              </IconTextWrapper>
-            </StyledImageInput>
-            <HiddenImageInput
-              name="image"
-              type="file"
-              accept="image/*"
-              id="image"
-              onChange={(event) => uploadImage(event.target.files[0])}
+          {showUploadPreview ? (
+            <ImagePreview
+              handleImageClose={handleImageClose}
+              imageUploaded={imageUploaded}
+              image={image}
+              currentFlashcard={currentFlashcard}
             />
-          </>
+          ) : (
+            <UploadButton uploadImage={uploadImage} />
+          )}
         </StyledImageInputWrapper>
       </StyledFormWrapper>
 
@@ -276,62 +249,4 @@ const StyledImageInputWrapper = styled.div`
   position: relative;
   justify-content: center;
   padding-top: 20px;
-`;
-
-const HiddenImageInput = styled.input.attrs({
-  type: "file",
-})`
-  opacity: 0;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  cursor: pointer;
-`;
-
-const StyledImageInput = styled.label`
-  padding: 8px 14px;
-  background-color: var(--secondary-grey);
-  border-radius: 4px;
-  font-weight: 500;
-  cursor: pointer;
-  text-align: center;
-  display: ${({ $hidden }) => ($hidden ? "none" : "inline-block")};
-`;
-
-const IconTextWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-`;
-
-const StyledImageWrapper = styled.div`
-  width: 150px;
-  height: 150px;
-  display: flex;
-  position: relative;
-  flex-direction: row-reverse;
-  padding: 5px;
-  overflow: auto;
-  margin-top: 20px;
-  border: 1px solid var(--primary-neutral);
-  border-radius: 2px;
-`;
-
-const StyledImagePreview = styled(Image)`
-  max-width: 100%;
-  height: auto;
-  object-fit: contain;
-`;
-
-const StyledIconWrapper = styled.div`
-  color: #fff;
-  background-color: var(--primary-neutral);
-  width: 20px;
-  height: 20px;
-  padding: 2px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 5;
 `;
