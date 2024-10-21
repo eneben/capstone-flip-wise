@@ -60,43 +60,9 @@ export default function App({ Component, pageProps }) {
 
   const [isClickedFirstTime, setIsClickedFirstTime] = useState(false);
 
-  const [temporaryFlashcards, setTemporaryFlashcards] = useState([]);
-
   const [isImageEnlarged, setIsImageEnlarged] = useState(false);
 
   const [imageUrl, setImageUrl] = useState(null);
-
-  async function getAiFlashcards(
-    collectionId,
-    collectionName,
-    collectionColor,
-    textInput,
-    numberOfFlashcards
-  ) {
-    try {
-      const response = await fetch("/api/ai-generate", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          collectionId,
-          collectionName,
-          collectionColor,
-          textInput,
-          numberOfFlashcards,
-        }),
-      });
-
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.message || "Something went wrong");
-      }
-      setTemporaryFlashcards(data);
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  }
 
   function handleOpenEnlargeImage(imageSrc) {
     setImageUrl(imageSrc);
@@ -265,11 +231,28 @@ export default function App({ Component, pageProps }) {
       });
       if (!response.ok) throw new Error("Failed to create flashcard");
       mutateFlashcards();
-      showToastMessage(
-        "Flashcard created successfully!",
-        "success",
-        MarkAsCorrect
-      );
+
+      if (Array.isArray(newFlashcard)) {
+        if (newFlashcard.length > 1) {
+          showToastMessage(
+            "Flashcards created successfully!",
+            "success",
+            MarkAsCorrect
+          );
+        } else if (newFlashcard.length === 1) {
+          showToastMessage(
+            "Flashcard created successfully!",
+            "success",
+            MarkAsCorrect
+          );
+        }
+      } else if (!Array.isArray(newFlashcard)) {
+        showToastMessage(
+          "Flashcard created successfully!",
+          "success",
+          MarkAsCorrect
+        );
+      }
     } catch (error) {
       console.error("An error occurred: ", error);
       showToastMessage("Error", "error", MarkAsIncorrect);
@@ -453,7 +436,6 @@ export default function App({ Component, pageProps }) {
   return (
     <SWRConfig value={{ fetcher }}>
       <Layout
-        getAiFlashcards={getAiFlashcards}
         collections={collections}
         actionMode={actionMode}
         changeActionMode={changeActionMode}

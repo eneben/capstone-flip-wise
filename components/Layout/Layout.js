@@ -9,10 +9,11 @@ import FormFlashcard from "@/components/FormFlashcard/FormFlashcard";
 import AiInfoModal from "../AiInfoModal/AiInfoModal";
 import FormCollection from "@/components/FormCollection/FormCollection";
 import Image from "next/image";
+import TemporaryFlashcardsModal from "../TemporaryFlashcardsModal/TemporaryFlashcardsModal";
 import { useState, useEffect, useCallback } from "react";
+import { uid } from "uid";
 
 export default function Layout({
-  getAiFlashcards,
   children,
   collections,
   actionMode,
@@ -37,6 +38,86 @@ export default function Layout({
   const cachedChangeActionMode = useCallback(changeActionMode, [
     changeActionMode,
   ]);
+
+  const [temporaryFlashcards, setTemporaryFlashcards] = useState([]);
+
+  const [showTemporaryFlashcardsModal, setShowTemporaryFlashcardsModal] =
+    useState(false);
+
+  const [abortController, setAbortController] = useState(null);
+
+  function toggleTemporaryFlashcardIncluded(id) {
+    setTemporaryFlashcards(
+      temporaryFlashcards.map((temporaryFlashcard) => {
+        return temporaryFlashcard.temporaryFlashcardId === id
+          ? {
+              ...temporaryFlashcard,
+              isIncluded: !temporaryFlashcard.isIncluded,
+            }
+          : temporaryFlashcard;
+      })
+    );
+  }
+
+  function handleDeleteTemporaryFlashcards() {
+    setTemporaryFlashcards([]);
+    setShowTemporaryFlashcardsModal(false);
+  }
+
+  async function getAiFlashcards(promptData) {
+    const controller = new AbortController();
+    setAbortController(controller);
+
+    setShowTemporaryFlashcardsModal(true);
+    try {
+      const response = await fetch("/api/ai-generate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(promptData),
+        signal: controller.signal,
+      });
+
+      const collectionResponse = await fetch("/api/collections");
+      const collections = await collectionResponse.json();
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || "Something went wrong");
+      }
+
+      const existingCollection = collections.find(
+        (collection) => collection._id === promptData.collectionId
+      );
+      setTemporaryFlashcards(
+        data.map((temporaryFlashcard) => {
+          return {
+            ...temporaryFlashcard,
+            temporaryFlashcardId: uid(),
+            collectionName: existingCollection.title,
+            collectionColor: existingCollection.color,
+            isIncluded: true,
+          };
+        })
+      );
+    } catch (error) {
+      if (error.name === "AbortError") {
+        console.log("Flashcard generation was cancelled.");
+      } else {
+        console.error("Error:", error);
+      }
+    } finally {
+      setAbortController(null);
+    }
+  }
+
+  function cancelFlashcardGeneration() {
+    if (abortController) {
+      abortController.abort();
+    }
+    setShowTemporaryFlashcardsModal(false);
+  }
 
   function changeShowInfoModal() {
     setShowInfoModal(!showInfoModal);
@@ -91,6 +172,17 @@ export default function Layout({
 
       {showInfoModal && (
         <AiInfoModal changeShowInfoModal={changeShowInfoModal} />
+      )}
+
+      {showTemporaryFlashcardsModal && (
+        <TemporaryFlashcardsModal
+          temporaryFlashcards={temporaryFlashcards}
+          toggleTemporaryFlashcardIncluded={toggleTemporaryFlashcardIncluded}
+          handleDeleteTemporaryFlashcards={handleDeleteTemporaryFlashcards}
+          cancelFlashcardGeneration={cancelFlashcardGeneration}
+          onSubmitFlashcard={handleCreateFlashcard}
+          onAddCollection={handleAddCollection}
+        />
       )}
 
       {actionMode !== "default" && (

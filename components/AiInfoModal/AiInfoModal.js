@@ -56,6 +56,18 @@ export default function AiInfoModal({ changeShowInfoModal }) {
             </StyledInfoListHighlight>{" "}
             in no time.
           </StyledListItem>
+          <StyledListItem>
+            <StyledInfoListHighlight>
+              Uncheck flashcards
+            </StyledInfoListHighlight>{" "}
+            you don&apos;t want to include in your collection.
+          </StyledListItem>
+          <StyledListItem>
+            <StyledInfoListHighlight>
+              Save the flashcards
+            </StyledInfoListHighlight>{" "}
+            to your collection.
+          </StyledListItem>
         </StyledList>
       </StyledModal>
     </StyledOutgreyContainer>
@@ -80,8 +92,6 @@ const StyledModal = styled.article`
   width: 90vw;
   max-width: 500px;
   padding: 15px;
-  left: 50%;
-  transform: translateX(-50%);
   margin-top: 10px;
   border-radius: 10px;
   background-color: #fff;

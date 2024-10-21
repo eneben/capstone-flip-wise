@@ -5,12 +5,14 @@ import RoundButton from "../Buttons/RoundButton";
 import InfoSmall from "@/public/icons/InfoSmall.svg";
 import ButtonWrapper from "../Buttons/ButtonWrapper";
 import RegularButton from "../Buttons/RegularButton";
+import { StyledFormHeadline } from "@/styledComponents";
 
 export default function FormAI({
   collections,
-  onCollectionChange,
-  showNewCollectionFields,
   changeShowInfoModal,
+  onAddCollection,
+  onSubmit,
+  startClosingForm,
 }) {
   const maxTextInputLength = 8000;
 
@@ -22,8 +24,31 @@ export default function FormAI({
     setRemainingTextInputLength(maxTextInputLength - textInputLength);
   }
 
+  const [showNewCollectionFields, setShowNewCollectionFields] = useState(false);
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const data = Object.fromEntries(formData);
+
+    const collectionId =
+      data.collectionId ||
+      (await onAddCollection({
+        title: data.collectionName,
+        color: data.collectionColor,
+      }));
+
+    onSubmit({
+      textInput: data.textInput,
+      numberOfFlashcards: data.numberOfFlashcards,
+      collectionId,
+    });
+    startClosingForm();
+    event.target.reset();
+  }
+
   return (
-    <>
+    <form onSubmit={handleSubmit}>
       <StyledFormWrapper>
         <StyledFormHeadline>
           Text to Flashcards{" "}
@@ -54,49 +79,63 @@ export default function FormAI({
           </StyledCharacterCounterNumber>
         </StyledCharacterCounter>
 
-        <StyledLabel htmlFor="numberOfFlashcards">
+        <StyledLabel htmlFor="number-of-flashcards">
           Number of Flashcards (max. 40)
         </StyledLabel>
-        <StyledInput type="number" name="numberOfFlashcards" max="40" />
+        <StyledInput
+          id="number-of-flashcards"
+          type="number"
+          name="numberOfFlashcards"
+          max="40"
+        />
 
-        <StyledLabel htmlFor="collection">Collection</StyledLabel>
-        <StyledSelect
-          id="collection"
-          name="collectionId"
-          required
-          onChange={onCollectionChange}
-        >
-          <option value="">--Please choose a collection:--</option>
-          <option value="newCollection">+ Add New Collection</option>
-          {collections.map((collection) => {
-            return (
-              <option key={collection._id} value={collection._id}>
-                {collection.title}
-              </option>
-            );
-          })}
-        </StyledSelect>
+        {!showNewCollectionFields && (
+          <>
+            <StyledLabel htmlFor="collection">Collection</StyledLabel>
+            <StyledSelect id="collection" name="collectionId" required>
+              <option value="">--Please choose a collection:--</option>
+              {/* <option value="newCollection">+ Add New Collection</option> */}
+              {collections.map((collection) => {
+                return (
+                  <option key={collection._id} value={collection._id}>
+                    {collection.title}
+                  </option>
+                );
+              })}
+            </StyledSelect>
+
+            <button onClick={() => setShowNewCollectionFields(true)}>
+              Add new collection
+            </button>
+          </>
+        )}
 
         {showNewCollectionFields && (
-          <NewCollectionWrapper>
-            <CollectionNameWrapper>
-              <StyledLabel htmlFor="collectionName">
-                Collection Name
-              </StyledLabel>
-              <FormInput name="collectionName" maxLength="23" />
-            </CollectionNameWrapper>
-            <CollectionColorWrapper>
-              <StyledLabel htmlFor="collectionColor">Color</StyledLabel>
-              <StyledColorInput
-                type="color"
-                id="collectionColor"
-                name="collectionColor"
-                defaultValue="#000000"
-                required
-              />
-            </CollectionColorWrapper>
-          </NewCollectionWrapper>
+          <>
+            <NewCollectionWrapper>
+              <CollectionNameWrapper>
+                <StyledLabel htmlFor="collectionName">
+                  Collection Name
+                </StyledLabel>
+                <FormInput name="collectionName" maxLength="23" />
+              </CollectionNameWrapper>
+              <CollectionColorWrapper>
+                <StyledLabel htmlFor="collectionColor">Color</StyledLabel>
+                <StyledColorInput
+                  type="color"
+                  id="collectionColor"
+                  name="collectionColor"
+                  defaultValue="#000000"
+                  required
+                />
+              </CollectionColorWrapper>
+            </NewCollectionWrapper>
+            <button onClick={() => setShowNewCollectionFields(false)}>
+              Choose existing collection
+            </button>
+          </>
         )}
+
         {remainingTextInputLength < 0 && (
           <StyledTextWarning>
             Please shorten the text before submitting.
@@ -112,18 +151,12 @@ export default function FormAI({
           </RegularButton>
         </ButtonWrapper>
       </StyledFormWrapper>
-    </>
+    </form>
   );
 }
 
 const StyledFormWrapper = styled.div`
   padding: 0 10px 0 10px;
-`;
-
-const StyledFormHeadline = styled.h2`
-  font: var(--form-headline);
-  text-align: center;
-  padding-top: 20px;
 `;
 
 const StyledLabel = styled.label`
@@ -147,6 +180,10 @@ const StyledTextArea = styled.textarea`
   padding: 8px;
   border-radius: 2px;
   font: var(--form-input);
+  overflow-y: scroll;
+  scrollbar-width: 8px;
+  scrollbar-color: var(--primary-neutral) #fff;
+
   &:focus {
     outline: 1px solid var(--primary-neutral);
   }

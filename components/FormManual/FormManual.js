@@ -5,6 +5,7 @@ import FormInput from "../FormFlashcard/FormInput";
 import Upload from "@/public/icons/Upload.svg";
 import Image from "next/image";
 import MarkAsIncorrect from "@/public/icons/MarkAsIncorrect.svg";
+import { StyledFormHeadline } from "@/styledComponents";
 import { useState } from "react";
 
 export default function FormManual({
@@ -12,15 +13,15 @@ export default function FormManual({
   headline,
   actionMode,
   currentFlashcard,
-  onCollectionChange,
-  showNewCollectionFields,
   startClosingForm,
-  uploadImage,
-  image,
-  imageUploaded,
-  handleCloseImagePreview,
+  onSubmit,
+  onAddCollection,
 }) {
   const [showOriginalImage, setShowOriginalImage] = useState(true);
+  const [showNewCollectionFields, setShowNewCollectionFields] = useState(false);
+  const [image, setImage] = useState(null);
+  const [imageUploaded, setImageUploaded] = useState(false);
+  const [shouldRemoveImage, setShouldRemoveImage] = useState(false);
 
   function handleImageClose() {
     handleCloseImagePreview();
@@ -28,8 +29,70 @@ export default function FormManual({
     document.getElementById("image").value = null;
   }
 
+  function resetImageState() {
+    setImage(null);
+    setImageUploaded(false);
+    setShouldRemoveImage(false);
+  }
+
+  function uploadImage(file) {
+    if (!file) {
+      console.log("No file found");
+      return;
+    }
+    setImage(file);
+    setImageUploaded(true);
+    setShouldRemoveImage(false);
+  }
+
+  function handleCloseImagePreview() {
+    resetImageState();
+    setShouldRemoveImage(true);
+  }
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const data = Object.fromEntries(formData);
+
+    let url = null;
+
+    if (imageUploaded && image) {
+      try {
+        const uploadFormData = new FormData();
+        uploadFormData.append("image", image);
+        const response = await fetch("/api/upload", {
+          method: "POST",
+          body: uploadFormData,
+        });
+
+        if (!response.ok) {
+          throw new Error("Upload failed");
+        }
+        const responseData = await response.json();
+        url = responseData.url;
+      } catch (error) {
+        console.error("An error occurred during upload:", error);
+        return;
+      }
+    }
+
+    const imageUrl = url || currentFlashcard?.imageUrl || null;
+
+    const collectionId =
+      data.collectionId ||
+      (await onAddCollection({
+        title: data.collectionName,
+        color: data.collectionColor,
+      }));
+
+    onSubmit({ ...data, collectionId, imageUrl });
+    startClosingForm();
+    event.target.reset();
+  }
+
   return (
-    <>
+    <form onSubmit={handleSubmit}>
       <StyledFormWrapper>
         <StyledFormHeadline>{headline}</StyledFormHeadline>
         <StyledLabel htmlFor="question">Question</StyledLabel>
@@ -46,46 +109,59 @@ export default function FormManual({
           currentFlashcard={currentFlashcard}
           maxLength="50"
         />
-        <StyledLabel htmlFor="collection">Collection</StyledLabel>
-        <StyledSelect
-          id="collection"
-          name="collectionId"
-          required
-          defaultValue={
-            actionMode === "edit" ? currentFlashcard.collectionId : ""
-          }
-          onChange={onCollectionChange}
-        >
-          <option value="">--Please choose a collection:--</option>
-          <option value="newCollection">+ Add New Collection</option>
-          {collections.map((collection) => {
-            return (
-              <option key={collection._id} value={collection._id}>
-                {collection.title}
-              </option>
-            );
-          })}
-        </StyledSelect>
+
+        {!showNewCollectionFields && (
+          <>
+            <StyledLabel htmlFor="collection">Collection</StyledLabel>
+            <StyledSelect
+              id="collection"
+              name="collectionId"
+              required
+              defaultValue={
+                actionMode === "edit" ? currentFlashcard.collectionId : ""
+              }
+            >
+              <option value="">--Please choose a collection:--</option>
+              {/* <option value="newCollection">+ Add New Collection</option> */}
+              {collections.map((collection) => {
+                return (
+                  <option key={collection._id} value={collection._id}>
+                    {collection.title}
+                  </option>
+                );
+              })}
+            </StyledSelect>
+
+            <button onClick={() => setShowNewCollectionFields(true)}>
+              Add new collection
+            </button>
+          </>
+        )}
 
         {showNewCollectionFields && (
-          <NewCollectionWrapper>
-            <CollectionNameWrapper>
-              <StyledLabel htmlFor="collectionName">
-                Collection Name
-              </StyledLabel>
-              <FormInput name="collectionName" maxLength="23" />
-            </CollectionNameWrapper>
-            <CollectionColorWrapper>
-              <StyledLabel htmlFor="collectionColor">Color</StyledLabel>
-              <StyledColorInput
-                type="color"
-                id="collectionColor"
-                name="collectionColor"
-                defaultValue="#000000"
-                required
-              />
-            </CollectionColorWrapper>
-          </NewCollectionWrapper>
+          <>
+            <NewCollectionWrapper>
+              <CollectionNameWrapper>
+                <StyledLabel htmlFor="collectionName">
+                  Collection Name
+                </StyledLabel>
+                <FormInput name="collectionName" maxLength="23" />
+              </CollectionNameWrapper>
+              <CollectionColorWrapper>
+                <StyledLabel htmlFor="collectionColor">Color</StyledLabel>
+                <StyledColorInput
+                  type="color"
+                  id="collectionColor"
+                  name="collectionColor"
+                  defaultValue="#000000"
+                  required
+                />
+              </CollectionColorWrapper>
+            </NewCollectionWrapper>
+            <button onClick={() => setShowNewCollectionFields(false)}>
+              Choose existing collection
+            </button>
+          </>
         )}
 
         <StyledImageInputWrapper>
@@ -148,18 +224,12 @@ export default function FormManual({
           </RegularButton>
         )}
       </ButtonWrapper>
-    </>
+    </form>
   );
 }
 
 const StyledFormWrapper = styled.div`
   padding: 0 10px 0 10px;
-`;
-
-const StyledFormHeadline = styled.h2`
-  font: var(--form-headline);
-  text-align: center;
-  padding-top: 20px;
 `;
 
 const StyledLabel = styled.label`

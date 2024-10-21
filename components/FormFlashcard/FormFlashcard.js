@@ -15,141 +15,11 @@ export default function FormFlashcard({
   getAiFlashcards,
   changeShowInfoModal,
 }) {
-  const [showNewCollectionFields, setShowNewCollectionFields] = useState(false);
   const [formMode, setFormMode] = useState("manual");
-  const [image, setImage] = useState(null);
-  const [imageUploaded, setImageUploaded] = useState(false);
-  const [shouldRemoveImage, setShouldRemoveImage] = useState(false);
-
-  function resetImageState() {
-    setImage(null);
-    setImageUploaded(false);
-    setShouldRemoveImage(false);
-  }
-
-  function handleImageUpload(file) {
-    if (file) {
-      setImage(file);
-      setImageUploaded(true);
-      setShouldRemoveImage(false);
-    }
-  }
-
-  function handleCloseImagePreview() {
-    resetImageState();
-    setShouldRemoveImage(true);
-  }
-
-  function handleCollectionChange(event) {
-    if (event.target.value === "newCollection") {
-      setShowNewCollectionFields(true);
-    } else {
-      setShowNewCollectionFields(false);
-    }
-  }
-
-  async function handleSubmit(event) {
-    event.preventDefault();
-
-    if (formMode === "manual") {
-      const formData = new FormData(event.target);
-      const data = Object.fromEntries(formData);
-      const {
-        collectionName,
-        collectionColor,
-        question,
-        answer,
-        collectionId,
-      } = data;
-
-      let url = null;
-
-      if (imageUploaded && image) {
-        try {
-          const uploadFormData = new FormData();
-          uploadFormData.append("image", image);
-          const response = await fetch("/api/upload", {
-            method: "POST",
-            body: uploadFormData,
-          });
-
-          if (!response.ok) {
-            throw new Error("Upload failed");
-          }
-          const responseData = await response.json();
-          url = responseData.url;
-        } catch (error) {
-          console.error("An error occurred during upload:", error);
-          return;
-        }
-      }
-
-      let newFlashcard;
-      let imageUrl = null;
-
-      if (actionMode === "edit") {
-        if (imageUploaded && url) {
-          imageUrl = url;
-        } else if (!shouldRemoveImage && currentFlashcard?.imageUrl) {
-          imageUrl = currentFlashcard.imageUrl;
-        }
-      } else {
-        imageUrl = imageUploaded ? url : null;
-      }
-
-      if (showNewCollectionFields) {
-        const newCollection = {
-          title: collectionName,
-          color: collectionColor,
-        };
-        const newCollectionId = await onAddCollection(newCollection);
-
-        newFlashcard = {
-          collectionId: newCollectionId,
-          question,
-          answer,
-          level: 1,
-          imageUrl,
-        };
-      } else {
-        newFlashcard = {
-          collectionId,
-          question,
-          answer,
-          level: 1,
-          imageUrl,
-        };
-      }
-
-      onSubmitFlashcard(newFlashcard);
-      setShowNewCollectionFields(false);
-      resetImageState();
-      event.target.reset();
-    }
-
-    if (formMode === "ai") {
-      const formData = Object.fromEntries(new FormData(event.target));
-      const {
-        collectionId,
-        collectionName,
-        collectionColor,
-        textInput,
-        numberOfFlashcards,
-      } = formData;
-      getAiFlashcards(
-        collectionId,
-        collectionName,
-        collectionColor,
-        textInput,
-        numberOfFlashcards
-      );
-    }
-    startClosingForm();
-  }
 
   return (
     <>
-      <StyledForm onSubmit={handleSubmit} $isFormClosing={isFormClosing}>
+      <StyledFormCard $isFormClosing={isFormClosing}>
         <StyledFormNavigation>
           <StyledFormButton
             type="button"
@@ -176,26 +46,22 @@ export default function FormFlashcard({
             actionMode={actionMode}
             currentFlashcard={currentFlashcard}
             isFormClosing={isFormClosing}
-            onSubmit={handleSubmit}
-            onCollectionChange={handleCollectionChange}
-            showNewCollectionFields={showNewCollectionFields}
+            onSubmit={onSubmitFlashcard}
             startClosingForm={startClosingForm}
-            uploadImage={handleImageUpload}
-            image={image}
-            imageUploaded={imageUploaded}
-            handleCloseImagePreview={handleCloseImagePreview}
+            onAddCollection={onAddCollection}
           />
         )}
 
         {formMode === "ai" && (
           <FormAI
             collections={collections}
-            onCollectionChange={handleCollectionChange}
-            showNewCollectionFields={showNewCollectionFields}
             changeShowInfoModal={changeShowInfoModal}
+            onAddCollection={onAddCollection}
+            onSubmit={getAiFlashcards}
+            startClosingForm={startClosingForm}
           />
         )}
-      </StyledForm>
+      </StyledFormCard>
     </>
   );
 }
@@ -210,7 +76,7 @@ const formAnimationOut = keyframes`
 100% { top: -350px; }
 `;
 
-const StyledForm = styled.form`
+const StyledFormCard = styled.div`
   animation: ${(props) =>
     props.$isFormClosing
       ? css`
