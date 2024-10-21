@@ -51,21 +51,27 @@ export default async function handler(request, response) {
         color: collection.color,
       }));
 
-      const checkAndCreateFlashcards = userFlashcards.map((flashcard) => ({
-        updateOne: {
-          filter: { userId: flashcard.userId, question: flashcard.question },
-          update: { $setOnInsert: flashcard },
-          upsert: true,
+      const insertedCollections = await Collection.insertMany(userCollections);
+
+      const collectionIdMap = defaultCollections.reduce(
+        (mappingObject, defaultCollection, index) => {
+          mappingObject[defaultCollection._id] = insertedCollections[index]._id;
+          return mappingObject;
         },
-      }));
+        {}
+      );
 
-      await Flashcard.bulkWrite(checkAndCreateFlashcards);
+      console.log("collectionIdMap: ", collectionIdMap);
 
-      const defaultFlashcards = await Flashcard.find({ userId: null });
+      const defaultFlashcards = await Flashcard.find({
+        collectionId: {
+          $in: defaultCollections.map((collection) => collection._id),
+        },
+      });
 
       const userFlashcards = defaultFlashcards.map((flashcard) => ({
         userId: user._id,
-        collectionId: flashcard.collectionId,
+        collectionId: collectionIdMap[flashcard.collectionId],
         question: flashcard.question,
         answer: flashcard.answer,
         level: 1,
