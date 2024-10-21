@@ -25,6 +25,7 @@ export default function FormManual({
   function handleImageClose() {
     handleCloseImagePreview();
     setShowOriginalImage(false);
+    document.getElementById("image").value = null;
   }
 
   return (
