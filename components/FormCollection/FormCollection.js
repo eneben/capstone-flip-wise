@@ -18,7 +18,6 @@ export default function FormCollection({
     const { collectionName, collectionColor } = formData;
 
     let updatedCollection = {
-      ...currentCollection,
       title: collectionName,
       color: collectionColor,
     };

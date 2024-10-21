@@ -30,19 +30,25 @@ export default function App({
   Component,
   pageProps: { session, ...pageProps },
 }) {
+  const [user, setUser] = useState(null);
+
   const {
     data: flashcards,
     isLoading: flashcardIsLoading,
     error: flashcardError,
     mutate: mutateFlashcards,
-  } = useSWR("/api/flashcards", fetcher, { fallbackData: [] });
+  } = useSWR(`/api/flashcards?userId=${user || ""}`, fetcher, {
+    fallbackData: [],
+  });
 
   const {
     data: collections,
     isLoading: collectionIsLoading,
     error: collectionError,
     mutate: mutateCollections,
-  } = useSWR("/api/collections", fetcher, { fallbackData: [] });
+  } = useSWR(`/api/collections?userId=${user || ""}`, fetcher, {
+    fallbackData: [],
+  });
 
   if (flashcardError) {
     console.error("Flashcard fetch error:", flashcardError);
@@ -63,6 +69,10 @@ export default function App({
   const [flashcardSelection, setFlashcardSelection] = useState("all");
 
   const [isClickedFirstTime, setIsClickedFirstTime] = useState(false);
+
+  function changeUser(userId) {
+    setUser(userId);
+  }
 
   function handleFirstClick() {
     if (!isClickedFirstTime) {
@@ -114,7 +124,7 @@ export default function App({
     return (
       <SessionProvider session={session}>
         <SWRConfig value={{ fetcher }}>
-          <Layout>
+          <Layout changeUser={changeUser} user={user}>
             <GlobalStyle />
             <LoadingSpinner />
           </Layout>
@@ -151,6 +161,7 @@ export default function App({
       _id: currentFlashcard._id,
       isCorrect: currentFlashcard.isCorrect,
       level: currentFlashcard.level,
+      userId: currentFlashcard.userId,
     };
 
     await fetch(`/api/flashcards/${currentFlashcard._id}`, {
@@ -180,11 +191,6 @@ export default function App({
 
       return;
     }
-    const updatedCollection = {
-      ...currentCollection,
-      title: newCollection.title,
-      color: newCollection.color,
-    };
 
     try {
       const response = await fetch(
@@ -194,14 +200,14 @@ export default function App({
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(updatedCollection),
+          body: JSON.stringify({ newCollection, currentCollection }),
         }
       );
 
       if (!response.ok) {
         throw new Error("Failed to update collection");
       }
-
+      mutateFlashcards();
       mutateCollections();
       showToastMessage(
         "Collection updated successfully!",
@@ -215,13 +221,20 @@ export default function App({
   }
 
   async function handleCreateFlashcard(newFlashcard) {
+    const createdFlashcard = {
+      ...newFlashcard,
+      isCorrect: false,
+      level: 1,
+      userId: user,
+    };
+
     try {
       const response = await fetch("/api/flashcards", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(newFlashcard),
+        body: JSON.stringify(createdFlashcard),
       });
       if (!response.ok) throw new Error("Failed to create flashcard");
       mutateFlashcards();
@@ -281,6 +294,10 @@ export default function App({
     try {
       const collectionsResponse = await fetch(`/api/collections/${id}`, {
         method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId: user }),
       });
 
       if (!collectionsResponse.ok) {
@@ -300,28 +317,42 @@ export default function App({
     }
   }
 
-  async function handleAddCollection(newCollection) {
+  async function handleAddCollection(newCollection, newFlashcard) {
     try {
       const response = await fetch("/api/collections", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(newCollection),
+        body: JSON.stringify({ newCollection, newFlashcard, actionMode }),
       });
       if (!response.ok) throw new Error("Failed to add collection");
       const responseData = await response.json();
-      const newCollectionId = responseData._id;
-      mutateCollections();
       showToastMessage(
         "Collection created successfully!",
         "success",
         MarkAsCorrect
       );
-      return newCollectionId;
+      if (actionMode === "create") {
+        showToastMessage(
+          "Flashcard created successfully!",
+          "success",
+          MarkAsCorrect
+        );
+      }
+      if (actionMode === "edit") {
+        showToastMessage(
+          "Flashcard updated successfully!",
+          "success",
+          MarkAsCorrect
+        );
+      }
+      mutateFlashcards();
+      mutateCollections();
+      return responseData._id;
     } catch (error) {
-      console.error("An error occurred: ", error);
-      showToastMessage("An error occured.", "error", MarkAsIncorrect);
+      console.error("Failed to add collection: ", error);
+      showToastMessage("Failed to add collection.", "error", MarkAsIncorrect);
     }
   }
 
@@ -425,6 +456,8 @@ export default function App({
           handleAddCollection={handleAddCollection}
           handleEditCollection={handleEditCollection}
           getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
+          changeUser={changeUser}
+          user={user}
         >
           <GlobalStyle />
           <Component

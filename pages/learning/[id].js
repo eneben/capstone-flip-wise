@@ -81,7 +81,7 @@ export default function LearningCollectionPage({
       {(!displayedFlashcards || displayedFlashcards.length === 0) && (
         <StyledMessage>
           {(flashcardSelection === "all" &&
-            "No flashcards in this collection found. Add some new!") ||
+            "This collection doesn't exist (anymore). Create a new one!") ||
             (flashcardSelection === "learned" &&
               "No learned flashcards in this collection. Start learning!") ||
             (flashcardSelection === "to-learn" &&
