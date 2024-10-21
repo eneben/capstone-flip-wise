@@ -13,8 +13,6 @@ export default function TemporaryFlashcardsModal({
   handleDeleteTemporaryFlashcards,
   cancelFlashcardGeneration,
   onSubmitFlashcard,
-  onAddCollection,
-  onDeleteTemporaryFlashcards,
 }) {
   const [isDelete, setIsDelete] = useState(false);
 
@@ -37,8 +35,6 @@ export default function TemporaryFlashcardsModal({
     onSubmitFlashcard(newAiFlashcards);
     handleDeleteTemporaryFlashcards();
   }
-
-  console.log(temporaryFlashcards);
 
   return (
     <StyledOutgreyContainer>
@@ -157,13 +153,11 @@ export default function TemporaryFlashcardsModal({
 
           {isDelete && (
             <DeleteConfirmationDialogContainer>
-              <div>
-                <DeleteConfirmationDialog
-                  onDeleteTemporaryFlashcards={handleDeleteTemporaryFlashcards}
-                  toggleDeleteConfirmation={toggleDeleteConfirmation}
-                  variant="preview collection and all flashcards in it"
-                />
-              </div>
+              <DeleteConfirmationDialog
+                onDeleteTemporaryFlashcards={handleDeleteTemporaryFlashcards}
+                toggleDeleteConfirmation={toggleDeleteConfirmation}
+                variant="preview collection and all flashcards in it"
+              />
             </DeleteConfirmationDialogContainer>
           )}
         </StyledConfirmationContainer>
@@ -206,6 +200,7 @@ const StyledModalContentContainer = styled.div`
 
 const DeleteConfirmationDialogContainer = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100%;

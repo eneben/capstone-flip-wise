@@ -91,10 +91,9 @@ export default function FormAI({
 
         {!showNewCollectionFields && (
           <>
-            <StyledLabel htmlFor="collection">Collection</StyledLabel>
+            <StyledLabel htmlFor="collection">Existing Collection</StyledLabel>
             <StyledSelect id="collection" name="collectionId" required>
               <option value="">--Please choose a collection:--</option>
-              {/* <option value="newCollection">+ Add New Collection</option> */}
               {collections.map((collection) => {
                 return (
                   <option key={collection._id} value={collection._id}>
@@ -104,9 +103,14 @@ export default function FormAI({
               })}
             </StyledSelect>
 
-            <button onClick={() => setShowNewCollectionFields(true)}>
-              Add new collection
-            </button>
+            <StyledButtonWrapper>
+              <RegularButton
+                variant="collectionToggle"
+                onClick={() => setShowNewCollectionFields(true)}
+              >
+                + Add New Collection
+              </RegularButton>
+            </StyledButtonWrapper>
           </>
         )}
 
@@ -115,7 +119,7 @@ export default function FormAI({
             <NewCollectionWrapper>
               <CollectionNameWrapper>
                 <StyledLabel htmlFor="collectionName">
-                  Collection Name
+                  New Collection
                 </StyledLabel>
                 <FormInput name="collectionName" maxLength="23" />
               </CollectionNameWrapper>
@@ -130,9 +134,15 @@ export default function FormAI({
                 />
               </CollectionColorWrapper>
             </NewCollectionWrapper>
-            <button onClick={() => setShowNewCollectionFields(false)}>
-              Choose existing collection
-            </button>
+
+            <StyledButtonWrapper>
+              <RegularButton
+                variant="collectionToggle"
+                onClick={() => setShowNewCollectionFields(false)}
+              >
+                Choose Existing Collection
+              </RegularButton>
+            </StyledButtonWrapper>
           </>
         )}
 
@@ -214,7 +224,7 @@ const StyledSelect = styled.select`
   display: block;
   width: 100%;
   font: var(--form-input);
-  height: 1.7rem;
+  height: 1.5rem;
   border: 1px solid var(--primary-neutral);
   border-radius: 2px;
   &:focus {
@@ -226,6 +236,10 @@ const NewCollectionWrapper = styled.section`
   display: flex;
   width: 100%;
   gap: 10px;
+`;
+
+const StyledButtonWrapper = styled.div`
+  padding-top: 10px;
 `;
 
 const CollectionNameWrapper = styled.article`

@@ -109,10 +109,15 @@ const StyledFormButton = styled.button`
   font-weight: 700;
   border: none;
   padding: 15px 0 15px 0;
-  box-shadow: ${({ $active, $rightButton, $leftButton }) =>
-    !$active && $rightButton
-      ? "inset 5px -5px 5px -5px #000;"
-      : !$active && $leftButton
-      ? "inset -5px -5px 5px -5px #000;"
-      : ""};
+  box-shadow: ${({ $active, $rightButton, $leftButton }) => {
+    if ($active) {
+      return "";
+    }
+    if ($rightButton) {
+      return "inset 5px -5px 5px -5px #000;";
+    }
+    if ($leftButton) {
+      return "inset -5px -5px 5px -5px #000;";
+    }
+  }};
 `;

@@ -232,7 +232,7 @@ export default function App({ Component, pageProps }) {
             MarkAsCorrect
           );
         }
-      } else if (!Array.isArray(newFlashcard)) {
+      } else {
         showToastMessage(
           "Flashcard created successfully!",
           "success",

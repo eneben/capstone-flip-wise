@@ -13,8 +13,6 @@ export default async function handler(request, response) {
 
   const { collectionId, textInput, numberOfFlashcards } = request.body;
 
-  console.log(request.body);
-
   if (!textInput || !numberOfFlashcards) {
     return response
       .status(400)

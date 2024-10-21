@@ -42,4 +42,12 @@ const variantRegularButtonStyles = {
     color: #fff;
     background-color: var(--primary-red);
   `,
+  collectionToggle: css`
+    padding: 4px 8px;
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: #000;
+    border-radius: 2px;
+    border: 1px solid #000;
+  `,
 };

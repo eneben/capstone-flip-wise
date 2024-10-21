@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import { styled, css } from "styled-components";
 
 export const StyledMessage = styled.p`
   text-align: center;

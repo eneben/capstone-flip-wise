@@ -54,7 +54,7 @@ export default function FormManual({
 
         {!showNewCollectionFields && (
           <>
-            <StyledLabel htmlFor="collection">Collection</StyledLabel>
+            <StyledLabel htmlFor="collection">Existing Collection</StyledLabel>
             <StyledSelect
               id="collection"
               name="collectionId"
@@ -64,7 +64,6 @@ export default function FormManual({
               }
             >
               <option value="">--Please choose a collection:--</option>
-              {/* <option value="newCollection">+ Add New Collection</option> */}
               {collections.map((collection) => {
                 return (
                   <option key={collection._id} value={collection._id}>
@@ -74,9 +73,14 @@ export default function FormManual({
               })}
             </StyledSelect>
 
-            <button onClick={() => setShowNewCollectionFields(true)}>
-              Add new collection
-            </button>
+            <StyledButtonWrapper>
+              <RegularButton
+                variant="collectionToggle"
+                onClick={() => setShowNewCollectionFields(true)}
+              >
+                + Add new collection
+              </RegularButton>
+            </StyledButtonWrapper>
           </>
         )}
 
@@ -85,7 +89,7 @@ export default function FormManual({
             <NewCollectionWrapper>
               <CollectionNameWrapper>
                 <StyledLabel htmlFor="collectionName">
-                  Collection Name
+                  New Collection
                 </StyledLabel>
                 <FormInput name="collectionName" maxLength="23" />
               </CollectionNameWrapper>
@@ -100,9 +104,15 @@ export default function FormManual({
                 />
               </CollectionColorWrapper>
             </NewCollectionWrapper>
-            <button onClick={() => setShowNewCollectionFields(false)}>
-              Choose existing collection
-            </button>
+
+            <StyledButtonWrapper>
+              <RegularButton
+                variant="collectionToggle"
+                onClick={() => setShowNewCollectionFields(false)}
+              >
+                Choose existing collection
+              </RegularButton>
+            </StyledButtonWrapper>
           </>
         )}
       </StyledFormWrapper>
@@ -139,7 +149,7 @@ const StyledSelect = styled.select`
   display: block;
   width: 100%;
   font: var(--form-input);
-  height: 1.7rem;
+  height: 1.5rem;
   border: 1px solid var(--primary-neutral);
   border-radius: 2px;
   &:focus {
@@ -164,4 +174,8 @@ const CollectionColorWrapper = styled.article`
 const StyledColorInput = styled.input`
   height: 1.5rem;
   width: 100%;
+`;
+
+const StyledButtonWrapper = styled.div`
+  padding-top: 10px;
 `;
