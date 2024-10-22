@@ -27,6 +27,7 @@ export default async function handler(request, response) {
   }
 
   const providerId = session.user.id;
+  console.log("providerId: ", providerId);
 
   try {
     const user = await User.findOneAndUpdate(
@@ -45,21 +46,48 @@ export default async function handler(request, response) {
     if (!collectionsExist) {
       const defaultCollections = await Collection.find({ userId: null });
 
-      const userCollections = defaultCollections.map((collection) => ({
+      //   const userCollections = defaultCollections.map((collection) => ({
+      //     userId: user._id,
+      //     title: collection.title,
+      //     color: collection.color,
+      //   }));
+
+      //   const checkAndCreateCollections = userCollections.map((collection) => ({
+      //     updateOne: {
+      //       filter: { userId: user._id, title: collection.title },
+      //       update: { $setOnInsert: collection },
+      //       upsert: true,
+      //     },
+      //   }));
+
+      //   await Collection.bulkWrite(checkAndCreateCollections);
+
+      const existingUserCollections = await Collection.find({
         userId: user._id,
-        title: collection.title,
-        color: collection.color,
-      }));
+      });
+      const existingCollectionTitles = new Set(
+        existingUserCollections.map((collection) => collection.title)
+      );
 
-      const checkAndCreateCollections = userCollections.map((collection) => ({
-        updateOne: {
-          filter: { userId: user._id, title: collection.title },
-          update: { $setOnInsert: collection },
-          upsert: true,
-        },
-      }));
+      const userCollections = defaultCollections
+        .filter((collection) => !existingCollectionTitles.has(collection.title))
+        .map((collection) => ({
+          userId: user._id,
+          title: collection.title,
+          color: collection.color,
+        }));
 
-      await Collection.bulkWrite(checkAndCreateCollections);
+      if (userCollections.length > 0) {
+        const checkAndCreateCollections = userCollections.map((collection) => ({
+          updateOne: {
+            filter: { userId: user._id, title: collection.title },
+            update: { $setOnInsert: collection },
+            upsert: true,
+          },
+        }));
+
+        await Collection.bulkWrite(checkAndCreateCollections);
+      }
 
       const insertedCollections = await Collection.find({ userId: user._id });
 
@@ -97,9 +125,9 @@ export default async function handler(request, response) {
       }));
 
       await Flashcard.bulkWrite(checkAndCreateFlashcards);
-    }
 
-    return response.status(200).json({ user });
+      return response.status(200).json({ user });
+    }
   } catch (error) {
     console.error("Error in handler:", error);
 
