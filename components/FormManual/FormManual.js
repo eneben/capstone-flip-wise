@@ -240,6 +240,7 @@ const StyledSelect = styled.select`
   display: block;
   width: 100%;
   font: var(--form-input);
+  color: #000;
   height: 1.5rem;
   border: 1px solid var(--primary-neutral);
   border-radius: 2px;
