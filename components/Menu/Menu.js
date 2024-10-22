@@ -76,6 +76,8 @@ export default function Menu({
         }
 
         const userData = await response.json();
+        console.log("Received userData: ", userData);
+
         const userId = userData.user._id;
         changeUser(userId);
         return userId;
@@ -89,7 +91,11 @@ export default function Menu({
       session
       // && !hasAlreadyRun
     ) {
+      console.log("Session detected, fetching user...");
+
       fetchUser();
+    } else {
+      console.log("No session available");
     }
 
     // return () => {

@@ -78,6 +78,8 @@ export default function App({
   const [imageUrl, setImageUrl] = useState(null);
 
   function changeUser(userId) {
+    console.log("User ID is being set to:", userId);
+
     setUser(userId);
   }
 
@@ -352,7 +354,7 @@ export default function App({
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(newCollection),
+        body: JSON.stringify({ ...newCollection, userId: user }),
       });
       if (!response.ok) throw new Error("Failed to add collection");
       const responseData = await response.json();

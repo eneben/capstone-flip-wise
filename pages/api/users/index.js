@@ -27,6 +27,7 @@ export default async function handler(request, response) {
   }
 
   const providerId = session.user.id;
+  console.log("session: ", session);
   console.log("providerId: ", providerId);
 
   try {
@@ -39,28 +40,19 @@ export default async function handler(request, response) {
       }
     );
 
+    console.log("User found or created: ", user);
+
     const collectionsExist = await Collection.exists({
       userId: user._id,
     });
 
+    if (collectionsExist) {
+      console.log("Response sent successfully");
+      return response.status(200).json({ user });
+    }
+
     if (!collectionsExist) {
       const defaultCollections = await Collection.find({ userId: null });
-
-      //   const userCollections = defaultCollections.map((collection) => ({
-      //     userId: user._id,
-      //     title: collection.title,
-      //     color: collection.color,
-      //   }));
-
-      //   const checkAndCreateCollections = userCollections.map((collection) => ({
-      //     updateOne: {
-      //       filter: { userId: user._id, title: collection.title },
-      //       update: { $setOnInsert: collection },
-      //       upsert: true,
-      //     },
-      //   }));
-
-      //   await Collection.bulkWrite(checkAndCreateCollections);
 
       const existingUserCollections = await Collection.find({
         userId: user._id,

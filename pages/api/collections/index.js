@@ -43,8 +43,12 @@ export default async function handler(request, response) {
         response.status(401).json({ status: "Not authorized" });
         return;
       }
-
       const newCollection = request.body;
+
+      if (!newCollection.userId) {
+        throw new Error("Missing userId");
+      }
+
       const createdCollection = await Collection.create(newCollection);
       response.status(201).json(createdCollection);
       return;
