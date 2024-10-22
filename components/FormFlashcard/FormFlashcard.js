@@ -105,6 +105,7 @@ const StyledFormNavigation = styled.nav`
 const StyledFormButton = styled.button`
   width: 50%;
   background-color: #fff;
+  color: #000;
   font-size: 1rem;
   font-weight: 700;
   border: none;
