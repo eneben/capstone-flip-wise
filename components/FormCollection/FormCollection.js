@@ -2,6 +2,7 @@ import styled, { keyframes, css } from "styled-components";
 import RegularButton from "../Buttons/RegularButton";
 import ButtonWrapper from "../Buttons/ButtonWrapper";
 import FormInput from "../FormFlashcard/FormInput";
+import { StyledFormHeadline } from "@/styledComponents";
 
 export default function FormCollection({
   headline,
@@ -30,7 +31,9 @@ export default function FormCollection({
 
   return (
     <StyledForm onSubmit={handleSubmit} $isFormClosing={isFormClosing}>
-      <StyledFormHeadline>{headline}</StyledFormHeadline>
+      <StyledFormHeadlineWithoutPadding>
+        {headline}
+      </StyledFormHeadlineWithoutPadding>
 
       <NewCollectionWrapper>
         <CollectionNameWrapper>
@@ -95,7 +98,8 @@ const StyledForm = styled.form`
   transform: translateX(-50%);
   position: fixed;
   top: 100px;
-  width: 21rem;
+  width: 90vw;
+  max-width: 500px;
   padding: 30px 10px 10px 10px;
   background-color: #fff;
   border-top: 0;
@@ -103,9 +107,8 @@ const StyledForm = styled.form`
   box-shadow: 0px 0px 10px #000;
 `;
 
-const StyledFormHeadline = styled.h2`
-  font: var(--form-headline);
-  text-align: center;
+const StyledFormHeadlineWithoutPadding = styled(StyledFormHeadline)`
+  padding-top: 0;
 `;
 
 const StyledLabel = styled.label`

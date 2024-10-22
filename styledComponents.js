@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import { styled, css } from "styled-components";
 
 export const StyledMessage = styled.p`
   text-align: center;
@@ -36,4 +36,10 @@ export const StyledAccessDeniedMessage = styled.h2`
   font: var(--sub-headline);
   text-align: center;
   padding: 100px 30px;
+`;
+
+export const StyledFormHeadline = styled.h2`
+  font: var(--form-headline);
+  text-align: center;
+  padding-top: 20px;
 `;

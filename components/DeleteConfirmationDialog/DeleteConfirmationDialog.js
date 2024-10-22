@@ -6,6 +6,7 @@ export default function DeleteConfirmationDialog({
   onDeleteFlashcard,
   onDeleteCollection,
   toggleDeleteConfirmation,
+  onDeleteTemporaryFlashcards,
   id,
   variant,
 }) {
@@ -14,6 +15,8 @@ export default function DeleteConfirmationDialog({
       onDeleteFlashcard(id);
     } else if (variant === "collection") {
       onDeleteCollection(id);
+    } else if (variant === "preview collection and all flashcards in it") {
+      onDeleteTemporaryFlashcards();
     }
   }
 

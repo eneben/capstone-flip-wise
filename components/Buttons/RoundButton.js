@@ -65,4 +65,13 @@ const variantRoundButtonStyles = {
     transition: 0.3s ease-out;
     opacity: 1;
   `,
+
+  infoSmall: css`
+    padding: 2px;
+    display: inline-block;
+    background-color: var(--primary-neutral);
+    color: #fff;
+    width: 20px;
+    height: 20px;
+  `,
 };

@@ -10,6 +10,7 @@ const flashcardSchema = new Schema({
   answer: { type: String, required: true },
   level: { type: Number, required: true },
   isCorrect: { type: Boolean },
+  imageUrl: { type: String },
 });
 
 flashcardSchema.index({ userId: 1, question: 1 }, { unique: true });

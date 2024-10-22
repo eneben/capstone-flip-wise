@@ -2,10 +2,10 @@ import CollectionList from "@/components/CollectionList/CollectionList";
 
 export default function LearningPage({
   collections,
-  changeActionMode,
   getCorrectFlashcardsFromCollection,
   getIncorrectFlashcardsFromCollection,
   flashcardSelection,
+  changeActionMode,
   changeFlashcardSelection,
   handleDeleteCollection,
   getAllFlashcardsFromCollection,

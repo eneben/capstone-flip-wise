@@ -69,8 +69,22 @@ export default function App({
 
   const [isClickedFirstTime, setIsClickedFirstTime] = useState(false);
 
+  const [isImageEnlarged, setIsImageEnlarged] = useState(false);
+
+  const [imageUrl, setImageUrl] = useState(null);
+
   function changeUser(userId) {
     setUser(userId);
+  }
+
+  function handleOpenEnlargeImage(imageSrc) {
+    setImageUrl(imageSrc);
+    setIsImageEnlarged(true);
+  }
+
+  function handleCloseEnlargedImage() {
+    setIsImageEnlarged(false);
+    setImageUrl(null);
   }
 
   function handleFirstClick() {
@@ -234,11 +248,28 @@ export default function App({
       });
       if (!response.ok) throw new Error("Failed to create flashcard");
       mutateFlashcards();
-      showToastMessage(
-        "Flashcard created successfully!",
-        "success",
-        MarkAsCorrect
-      );
+
+      if (Array.isArray(newFlashcard)) {
+        if (newFlashcard.length > 1) {
+          showToastMessage(
+            "Flashcards created successfully!",
+            "success",
+            MarkAsCorrect
+          );
+        } else if (newFlashcard.length === 1) {
+          showToastMessage(
+            "Flashcard created successfully!",
+            "success",
+            MarkAsCorrect
+          );
+        }
+      } else {
+        showToastMessage(
+          "Flashcard created successfully!",
+          "success",
+          MarkAsCorrect
+        );
+      }
     } catch (error) {
       console.error("An error occurred: ", error);
       showToastMessage("Error", "error", MarkAsIncorrect);
@@ -434,6 +465,10 @@ export default function App({
           handleAddCollection={handleAddCollection}
           handleEditCollection={handleEditCollection}
           getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
+          isImageEnlarged={isImageEnlarged}
+          handleCloseEnlargedImage={handleCloseEnlargedImage}
+          handleOpenEnlargeImage={handleOpenEnlargeImage}
+          imageUrl={imageUrl}
           changeUser={changeUser}
           user={user}
         >
@@ -467,6 +502,7 @@ export default function App({
             handleIncreaseFlashcardLevel={handleIncreaseFlashcardLevel}
             handleDecreaseFlashcardLevel={handleDecreaseFlashcardLevel}
             handleFirstClick={handleFirstClick}
+            handleOpenEnlargeImage={handleOpenEnlargeImage}
           />
           <ToastMessageContainer
             toastMessages={toastMessages}
