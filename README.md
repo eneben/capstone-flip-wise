@@ -8,7 +8,7 @@ You can create your own flashcards manually or let AI generate them for you. Add
 
 ## ➕ Create your own flashcards
 
-With a simple form, you can create custom collections of flashcards for any topic you wish to master. Just input a question and answer, optionally upload an image for added explanation, and save it to an existing collection or start a new one.
+With a simple form, you can create custom collections of flashcards for any topic you wish to master. Just type in a question and answer, optionally upload an image for added explanation, and save it to an existing collection or start a new one.
 Alternatively, use AI to generate flashcards for you. Input your text, choose how many flashcards you want, and let AI create key questions and answers. Review the cards, uncheck any you don’t want, and save the rest to your collection.
 
 ---
@@ -25,6 +25,6 @@ Training Mode shows your flashcard collection as a stack where you only see the 
 
 ---
 
-## 🎮 Game Mode
+## 🎮 Gaming Mode
 
 Make learning more fun by playing a game of Memory: Reinforce learning by turning flashcards into a memory game. In this mode, you’ll be presented with a grid of cards, each containing either a question or an answer on their back. Your goal is to find the matching pairs by flipping the cards one at a time.
