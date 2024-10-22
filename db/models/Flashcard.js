@@ -13,8 +13,6 @@ const flashcardSchema = new Schema({
   imageUrl: { type: String },
 });
 
-// flashcardSchema.index({ userId: 1, question: 1 }, { unique: true });
-
 const Flashcard =
   mongoose.models.Flashcard || mongoose.model("Flashcard", flashcardSchema);
 
