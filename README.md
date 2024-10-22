@@ -1,4 +1,6 @@
-# 🧠 BRAIN STACK – Your Intuitive and Innovative Flashcard Learning App
+# 🧠 BRAIN STACK
+
+## Your Intuitive and Innovative Flashcard Learning App
 
 Welcome to your ultimate flashcard learning app! Whether you're mastering new topics or sharpening your memory, BRAIN STACK has the perfect modes to make learning fun and effective.
 Explore **Learning Mode** for a classic flashcard experience, tackle **Training Mode** to level up or down based on your knowledge, or challenge yourself with **Game Mode**, where you match questions with the correct answers in a fun and engaging way.
