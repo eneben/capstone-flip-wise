@@ -4,9 +4,11 @@ import Logo from "@/public/Logo_BrainStack.svg";
 import Menu from "../Menu/Menu";
 import Plus from "@/public/icons/Plus.svg";
 import RoundButton from "../Buttons/RoundButton";
+import MarkAsIncorrect from "@/public/icons/MarkAsIncorrect.svg";
 import FormFlashcard from "@/components/FormFlashcard/FormFlashcard";
 import AiInfoModal from "../AiInfoModal/AiInfoModal";
 import FormCollection from "@/components/FormCollection/FormCollection";
+import Image from "next/image";
 import TemporaryFlashcardsModal from "../TemporaryFlashcardsModal/TemporaryFlashcardsModal";
 import { useState, useEffect, useCallback } from "react";
 import { uid } from "uid";
@@ -24,6 +26,9 @@ export default function Layout({
   changeFlashcardSelection,
   handleAddCollection,
   getAllFlashcardsFromCollection,
+  isImageEnlarged,
+  handleCloseEnlargedImage,
+  imageUrl,
 }) {
   const [isFormClosing, setIsFormClosing] = useState(false);
 
@@ -144,6 +149,25 @@ export default function Layout({
   return (
     <>
       <MainContainer>{children}</MainContainer>
+
+      {isImageEnlarged && (
+        <StyledOutgreyContainer>
+          <StyledModal onClick={handleCloseEnlargedImage}>
+            <StyledEnlargedImage
+              src={imageUrl}
+              alt="Enlarged Flashcard Image"
+              width={500}
+              height={500}
+              priority={true}
+            />
+            <StyledButtonContainer>
+              <RoundButton type="button" variant="delete">
+                <MarkAsIncorrect />
+              </RoundButton>
+            </StyledButtonContainer>
+          </StyledModal>
+        </StyledOutgreyContainer>
+      )}
 
       {showInfoModal && (
         <AiInfoModal changeShowInfoModal={changeShowInfoModal} />
@@ -321,4 +345,56 @@ const FormButtonShadow = styled.div`
   border-radius: 50%;
   background-color: #fff;
   box-shadow: 0 3px 10px #000;
+`;
+
+const StyledOutgreyContainer = styled.div`
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+  background-color: #00000088;
+`;
+
+const StyledModal = styled.article`
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90vw;
+  max-width: 500px;
+  padding: 40px;
+  margin: 0 auto;
+  border-radius: 10px;
+  background-color: #fff;
+  z-index: 2;
+  animation: modalPop 0.3s ease-out;
+
+  @keyframes modalPop {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+`;
+
+const StyledEnlargedImage = styled(Image)`
+  object-fit: contain;
+  max-width: 100%;
+  height: auto;
+`;
+
+const StyledButtonContainer = styled.div`
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  z-index: 3;
 `;

@@ -2,8 +2,11 @@ import styled from "styled-components";
 import RegularButton from "../Buttons/RegularButton";
 import ButtonWrapper from "../Buttons/ButtonWrapper";
 import FormInput from "../FormFlashcard/FormInput";
+import UploadButton from "./UploadButton";
+import ImagePreview from "./ImagePreview";
 import { StyledFormHeadline } from "@/styledComponents";
 import { useState } from "react";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 export default function FormManual({
   collections,
@@ -14,12 +17,76 @@ export default function FormManual({
   onSubmit,
   onAddCollection,
 }) {
+  const [showOriginalImage, setShowOriginalImage] = useState(true);
   const [showNewCollectionFields, setShowNewCollectionFields] = useState(false);
+  const [image, setImage] = useState(null);
+  const [imageUploaded, setImageUploaded] = useState(false);
+  const [shouldRemoveImage, setShouldRemoveImage] = useState(false);
+  const [imageIsUploading, setImageIsUploading] = useState(false);
+
+  const showUploadPreview =
+    imageUploaded ||
+    (actionMode === "edit" && currentFlashcard?.imageUrl && showOriginalImage);
+
+  function handleImageClose() {
+    handleCloseImagePreview();
+    setShowOriginalImage(false);
+    setImage(null);
+  }
+
+  function resetImageState() {
+    setImage(null);
+    setImageUploaded(false);
+    setShouldRemoveImage(false);
+    setImageIsUploading(false);
+  }
+
+  function uploadImage(file) {
+    if (!file) {
+      console.log("No file found");
+      return;
+    }
+    setImage(file);
+    setImageUploaded(true);
+    setShouldRemoveImage(false);
+  }
+
+  function handleCloseImagePreview() {
+    resetImageState();
+    setShouldRemoveImage(true);
+  }
 
   async function handleSubmit(event) {
     event.preventDefault();
+    setImageIsUploading(true);
     const formData = new FormData(event.target);
     const data = Object.fromEntries(formData);
+
+    let url = null;
+
+    if (imageUploaded && image) {
+      try {
+        const uploadFormData = new FormData();
+        uploadFormData.append("image", image);
+        const response = await fetch("/api/upload", {
+          method: "POST",
+          body: uploadFormData,
+        });
+
+        if (!response.ok) {
+          throw new Error("Upload failed");
+        }
+        const responseData = await response.json();
+        url = responseData.url;
+      } catch (error) {
+        console.error("An error occurred during upload:", error);
+        return;
+      }
+    }
+
+    const imageUrl = shouldRemoveImage
+      ? null
+      : url || currentFlashcard?.imageUrl || null;
 
     const collectionId =
       data.collectionId ||
@@ -28,110 +95,131 @@ export default function FormManual({
         color: data.collectionColor,
       }));
 
-    onSubmit({ ...data, collectionId });
+    onSubmit({ ...data, collectionId, imageUrl });
+    resetImageState();
     startClosingForm();
     event.target.reset();
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <StyledFormWrapper>
-        <StyledFormHeadline>{headline}</StyledFormHeadline>
-        <StyledLabel htmlFor="question">Question</StyledLabel>
-        <FormInput
-          name="question"
-          actionMode={actionMode}
-          currentFlashcard={currentFlashcard}
-          maxLength="100"
-        />
-        <StyledLabel htmlFor="answer">Answer</StyledLabel>
-        <FormInput
-          name="answer"
-          actionMode={actionMode}
-          currentFlashcard={currentFlashcard}
-          maxLength="70"
-        />
+    <>
+      {!imageIsUploading && (
+        <form onSubmit={handleSubmit}>
+          <StyledFormWrapper>
+            <StyledFormHeadline>{headline}</StyledFormHeadline>
+            <StyledLabel htmlFor="question">Question</StyledLabel>
+            <FormInput
+              name="question"
+              actionMode={actionMode}
+              currentFlashcard={currentFlashcard}
+              maxLength="100"
+            />
+            <StyledLabel htmlFor="answer">Answer</StyledLabel>
+            <FormInput
+              name="answer"
+              actionMode={actionMode}
+              currentFlashcard={currentFlashcard}
+              maxLength="50"
+            />
 
-        {!showNewCollectionFields && (
-          <>
-            <StyledLabel htmlFor="collection">Existing Collection</StyledLabel>
-            <StyledSelect
-              id="collection"
-              name="collectionId"
-              required
-              defaultValue={
-                actionMode === "edit" ? currentFlashcard.collectionId : ""
-              }
-            >
-              <option value="">--Please choose a collection:--</option>
-              {collections.map((collection) => {
-                return (
-                  <option key={collection._id} value={collection._id}>
-                    {collection.title}
-                  </option>
-                );
-              })}
-            </StyledSelect>
-
-            <StyledButtonWrapper>
-              <RegularButton
-                variant="collectionToggle"
-                onClick={() => setShowNewCollectionFields(true)}
-              >
-                + Add new collection
-              </RegularButton>
-            </StyledButtonWrapper>
-          </>
-        )}
-
-        {showNewCollectionFields && (
-          <>
-            <NewCollectionWrapper>
-              <CollectionNameWrapper>
-                <StyledLabel htmlFor="collectionName">
-                  New Collection
+            {!showNewCollectionFields && (
+              <>
+                <StyledLabel htmlFor="collection">
+                  Existing Collection
                 </StyledLabel>
-                <FormInput name="collectionName" maxLength="23" />
-              </CollectionNameWrapper>
-              <CollectionColorWrapper>
-                <StyledLabel htmlFor="collectionColor">Color</StyledLabel>
-                <StyledColorInput
-                  type="color"
-                  id="collectionColor"
-                  name="collectionColor"
-                  defaultValue="#000000"
+                <StyledSelect
+                  id="collection"
+                  name="collectionId"
                   required
+                  defaultValue={
+                    actionMode === "edit" ? currentFlashcard.collectionId : ""
+                  }
+                >
+                  <option value="">--Please choose a collection:--</option>
+                  {collections.map((collection) => {
+                    return (
+                      <option key={collection._id} value={collection._id}>
+                        {collection.title}
+                      </option>
+                    );
+                  })}
+                </StyledSelect>
+
+                <StyledButtonWrapper>
+                  <RegularButton
+                    variant="collectionToggle"
+                    onClick={() => setShowNewCollectionFields(true)}
+                  >
+                    + Add new collection
+                  </RegularButton>
+                </StyledButtonWrapper>
+              </>
+            )}
+
+            {showNewCollectionFields && (
+              <>
+                <NewCollectionWrapper>
+                  <CollectionNameWrapper>
+                    <StyledLabel htmlFor="collectionName">
+                      New Collection
+                    </StyledLabel>
+                    <FormInput name="collectionName" maxLength="23" />
+                  </CollectionNameWrapper>
+                  <CollectionColorWrapper>
+                    <StyledLabel htmlFor="collectionColor">Color</StyledLabel>
+                    <StyledColorInput
+                      type="color"
+                      id="collectionColor"
+                      name="collectionColor"
+                      defaultValue="#000000"
+                      required
+                    />
+                  </CollectionColorWrapper>
+                </NewCollectionWrapper>
+
+                <StyledButtonWrapper>
+                  <RegularButton
+                    variant="collectionToggle"
+                    onClick={() => setShowNewCollectionFields(false)}
+                  >
+                    Choose existing collection
+                  </RegularButton>
+                </StyledButtonWrapper>
+              </>
+            )}
+
+            <StyledImageInputWrapper>
+              {showUploadPreview ? (
+                <ImagePreview
+                  handleImageClose={handleImageClose}
+                  imageUploaded={imageUploaded}
+                  image={image}
+                  currentFlashcard={currentFlashcard}
                 />
-              </CollectionColorWrapper>
-            </NewCollectionWrapper>
+              ) : (
+                <UploadButton uploadImage={uploadImage} />
+              )}
+            </StyledImageInputWrapper>
+          </StyledFormWrapper>
 
-            <StyledButtonWrapper>
+          <ButtonWrapper>
+            <RegularButton type="submit" variant="submit">
+              Submit
+            </RegularButton>
+            {actionMode === "edit" && (
               <RegularButton
-                variant="collectionToggle"
-                onClick={() => setShowNewCollectionFields(false)}
+                type="button"
+                variant="confirm"
+                onClick={() => startClosingForm()}
               >
-                Choose existing collection
+                Cancel
               </RegularButton>
-            </StyledButtonWrapper>
-          </>
-        )}
-      </StyledFormWrapper>
-
-      <ButtonWrapper>
-        <RegularButton type="submit" variant="submit">
-          Submit
-        </RegularButton>
-        {actionMode === "edit" && (
-          <RegularButton
-            type="button"
-            variant="confirm"
-            onClick={() => startClosingForm()}
-          >
-            Cancel
-          </RegularButton>
-        )}
-      </ButtonWrapper>
-    </form>
+            )}
+          </ButtonWrapper>
+        </form>
+      )}
+      {imageIsUploading && <LoadingSpinner />}
+    </>
   );
 }
 
@@ -178,4 +266,12 @@ const StyledColorInput = styled.input`
 
 const StyledButtonWrapper = styled.div`
   padding-top: 10px;
+`;
+
+const StyledImageInputWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  position: relative;
+  justify-content: center;
+  padding-top: 20px;
 `;
