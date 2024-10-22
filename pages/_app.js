@@ -47,7 +47,11 @@ export default function App({
     isLoading: collectionIsLoading,
     error: collectionError,
     mutate: mutateCollections,
-  } = useSWR("/api/collections", fetcher, { fallbackData: [] });
+  } = useSWR(`/api/collections?userId=${user || ""}`, fetcher, {
+    fallbackData: [],
+  });
+
+  console.log("collections: ", collections);
 
   if (flashcardError) {
     console.error("Flashcard fetch error:", flashcardError);
@@ -172,6 +176,7 @@ export default function App({
     const updatedFlashcard = {
       ...newFlashcard,
       _id: currentFlashcard._id,
+      userId: currentFlashcard.userId,
       isCorrect: currentFlashcard.isCorrect,
       level: currentFlashcard.level,
     };
@@ -244,7 +249,7 @@ export default function App({
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(newFlashcard),
+        body: JSON.stringify({ newFlashcard: newFlashcard, user: user }),
       });
       if (!response.ok) throw new Error("Failed to create flashcard");
       mutateFlashcards();

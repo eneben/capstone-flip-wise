@@ -16,7 +16,17 @@ export default async function handler(request, response) {
 
   if (request.method === "GET") {
     try {
-      const collections = await Collection.find();
+      const { userId } = request.query;
+      let query = {};
+
+      if (userId) {
+        query = { userId: userId };
+      } else {
+        query = { userId: null };
+      }
+
+      const collections = await Collection.find(query);
+      console.log("collections: ", collections);
       response.status(200).json(collections);
       return;
     } catch (error) {

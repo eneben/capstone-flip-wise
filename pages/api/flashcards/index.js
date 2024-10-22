@@ -47,13 +47,16 @@ export default async function handler(request, response) {
   }
 
   if (request.method === "POST") {
-    if (Array.isArray(request.body)) {
+    const { newFlashcard, user } = request.body;
+
+    if (Array.isArray(newFlashcard)) {
       try {
-        const newFlashcards = request.body.map((flashcard) => {
+        const newFlashcards = newFlashcard.map((flashcard) => {
           return {
             ...flashcard,
             level: 1,
             isCorrect: false,
+            userId: user,
           };
         });
 
@@ -67,9 +70,15 @@ export default async function handler(request, response) {
       }
     } else {
       try {
-        const newFlashcard = request.body;
+        const newFlashcardObject = newFlashcard;
         console.log(newFlashcard);
-        await Flashcard.create({ ...newFlashcard, level: 1, isCorrect: false });
+
+        await Flashcard.create({
+          ...newFlashcardObject,
+          level: 1,
+          isCorrect: false,
+          userId: user,
+        });
         response.status(201).json({ status: "Flashcard created" });
         console.log("One of flashcard created");
         return;

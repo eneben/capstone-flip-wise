@@ -54,11 +54,11 @@ export default function Menu({
   }, [isMenuClosing]);
 
   useEffect(() => {
-    let hasAlreadyRun = false;
+    // let hasAlreadyRun = false;
 
     async function fetchUser() {
-      if (hasAlreadyRun) return;
-      hasAlreadyRun = true;
+      // if (hasAlreadyRun) return;
+      // hasAlreadyRun = true;
 
       try {
         const response = await fetch("/api/users", {
@@ -85,13 +85,16 @@ export default function Menu({
       }
     }
 
-    if (session && !hasAlreadyRun) {
+    if (
+      session
+      // && !hasAlreadyRun
+    ) {
       fetchUser();
     }
 
-    return () => {
-      hasAlreadyRun = true;
-    };
+    // return () => {
+    //   hasAlreadyRun = true;
+    // };
   }, [session, changeUser]);
 
   function handleLogout() {
