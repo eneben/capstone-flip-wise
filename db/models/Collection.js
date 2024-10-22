@@ -9,6 +9,8 @@ const collectionSchema = new Schema({
   userId: { type: Schema.Types.ObjectId, ref: "User" },
 });
 
+// collectionSchema.index({ userId: 1, title: 1, color: 1 }, { unique: true });
+
 const Collection =
   mongoose.models.Collection || mongoose.model("Collection", collectionSchema);
 
