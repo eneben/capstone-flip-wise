@@ -27,8 +27,6 @@ export default async function handler(request, response) {
   }
 
   const providerId = session.user.id;
-  console.log("session: ", session);
-  console.log("providerId: ", providerId);
 
   try {
     const user = await User.findOneAndUpdate(
@@ -40,14 +38,11 @@ export default async function handler(request, response) {
       }
     );
 
-    console.log("User found or created: ", user);
-
     const collectionsExist = await Collection.exists({
       userId: user._id,
     });
 
     if (collectionsExist) {
-      console.log("Response sent successfully");
       return response.status(200).json({ user });
     }
 
@@ -90,8 +85,6 @@ export default async function handler(request, response) {
         },
         {}
       );
-
-      console.log("collectionIdMap: ", collectionIdMap);
 
       const defaultFlashcards = await Flashcard.find({
         collectionId: {

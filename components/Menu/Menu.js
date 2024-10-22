@@ -54,11 +54,11 @@ export default function Menu({
   }, [isMenuClosing]);
 
   useEffect(() => {
-    // let hasAlreadyRun = false;
+    let hasAlreadyRun = false;
 
     async function fetchUser() {
-      // if (hasAlreadyRun) return;
-      // hasAlreadyRun = true;
+      if (hasAlreadyRun) return;
+      hasAlreadyRun = true;
 
       try {
         const response = await fetch("/api/users", {
@@ -76,7 +76,6 @@ export default function Menu({
         }
 
         const userData = await response.json();
-        console.log("Received userData: ", userData);
 
         const userId = userData.user._id;
         changeUser(userId);
@@ -87,20 +86,13 @@ export default function Menu({
       }
     }
 
-    if (
-      session
-      // && !hasAlreadyRun
-    ) {
-      console.log("Session detected, fetching user...");
-
+    if (session && !hasAlreadyRun) {
       fetchUser();
-    } else {
-      console.log("No session available");
     }
 
-    // return () => {
-    //   hasAlreadyRun = true;
-    // };
+    return () => {
+      hasAlreadyRun = true;
+    };
   }, [session, changeUser]);
 
   function handleLogout() {

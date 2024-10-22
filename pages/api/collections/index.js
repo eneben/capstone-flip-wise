@@ -26,7 +26,6 @@ export default async function handler(request, response) {
       }
 
       const collections = await Collection.find(query);
-      console.log("collections: ", collections);
       response.status(200).json(collections);
       return;
     } catch (error) {

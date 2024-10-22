@@ -107,7 +107,6 @@ export default function Layout({
       );
     } catch (error) {
       if (error.name === "AbortError") {
-        console.log("Flashcard generation was cancelled.");
       } else {
         console.error("Error:", error);
       }

@@ -6,10 +6,6 @@ import Flashcard from "@/db/models/Flashcard.js";
 export default async function handler(request, response) {
   const session = await getServerSession(request, response, authOptions);
 
-  if (session) {
-    console.log("ID: ", session.user.id);
-  }
-
   try {
     await dbConnect();
   } catch (error) {
@@ -71,7 +67,6 @@ export default async function handler(request, response) {
     } else {
       try {
         const newFlashcardObject = newFlashcard;
-        console.log(newFlashcard);
 
         await Flashcard.create({
           ...newFlashcardObject,
@@ -80,7 +75,6 @@ export default async function handler(request, response) {
           userId: user,
         });
         response.status(201).json({ status: "Flashcard created" });
-        console.log("One of flashcard created");
         return;
       } catch (error) {
         return response

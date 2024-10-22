@@ -31,7 +31,6 @@ export default function App({
   pageProps: { session, ...pageProps },
 }) {
   const [user, setUser] = useState(null);
-  console.log("user: ", user);
 
   const {
     data: flashcards,
@@ -50,8 +49,6 @@ export default function App({
   } = useSWR(`/api/collections?userId=${user || ""}`, fetcher, {
     fallbackData: [],
   });
-
-  console.log("collections: ", collections);
 
   if (flashcardError) {
     console.error("Flashcard fetch error:", flashcardError);
@@ -78,8 +75,6 @@ export default function App({
   const [imageUrl, setImageUrl] = useState(null);
 
   function changeUser(userId) {
-    console.log("User ID is being set to:", userId);
-
     setUser(userId);
   }
 
