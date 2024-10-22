@@ -83,7 +83,9 @@ export default function Layout({
         signal: controller.signal,
       });
 
-      const collectionResponse = await fetch("/api/collections");
+      const collectionResponse = await fetch(
+        `/api/collections?userId=${user || ""}`
+      );
       const collections = await collectionResponse.json();
 
       const data = await response.json();
