@@ -25,7 +25,7 @@ Training Mode shows your flashcard collection as a stack where you only see the 
 
 Make learning more fun by playing a game of Memory: Reinforce learning by turning flashcards into a memory game. In this mode, you’ll be presented with a grid of cards, each containing either a question or an answer on their back. Your goal is to find the matching pairs by flipping the cards one at a time.
 
-### Have fun and enjoy BRAIN STACK!
+#### Have fun and enjoy BRAIN STACK!
 
 ---
 
