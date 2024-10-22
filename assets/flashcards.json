@@ -1,47 +1,83 @@
 [
   {
-    "collectionId": { "$oid": "67179ff25837c4668993a95e" },
+    "userId": null,
+    "collectionId": { "$oid": "6717c398ce2974532879781f" },
     "question": "Apple",
-    "answer": "Pomme"
+    "answer": "Pomme",
+    "level": 1,
+    "isCorrect": false,
+    "imageUrl": null
   },
   {
-    "collectionId": { "$oid": "67179ff25837c4668993a95e" },
+    "userId": null,
+    "collectionId": { "$oid": "6717c398ce2974532879781f" },
     "question": "Dog",
-    "answer": "Chien"
+    "answer": "Chien",
+    "level": 1,
+    "isCorrect": false,
+    "imageUrl": null
   },
   {
-    "collectionId": { "$oid": "67179ff25837c4668993a95e" },
+    "userId": null,
+    "collectionId": { "$oid": "6717c398ce2974532879781f" },
     "question": "House",
-    "answer": "Maison"
+    "answer": "Maison",
+    "level": 1,
+    "isCorrect": false,
+    "imageUrl": null
   },
   {
-    "collectionId": { "$oid": "67179ff25837c4668993a95e" },
+    "userId": null,
+    "collectionId": { "$oid": "6717c398ce2974532879781f" },
     "question": "Water",
-    "answer": "Eau"
+    "answer": "Eau",
+    "level": 1,
+    "isCorrect": false,
+    "imageUrl": null
   },
   {
-    "collectionId": { "$oid": "67179ff25837c4668993a95e" },
+    "userId": null,
+    "collectionId": { "$oid": "6717c398ce2974532879781f" },
     "question": "Book",
-    "answer": "Livre"
+    "answer": "Livre",
+    "level": 1,
+    "isCorrect": false,
+    "imageUrl": null
   },
   {
-    "collectionId": { "$oid": "67179ff25837c4668993a95e" },
+    "userId": null,
+    "collectionId": { "$oid": "6717c398ce2974532879781f" },
     "question": "Table",
-    "answer": "Table"
+    "answer": "Table",
+    "level": 1,
+    "isCorrect": false,
+    "imageUrl": null
   },
   {
-    "collectionId": { "$oid": "67179ff25837c4668993a95e" },
+    "userId": null,
+    "collectionId": { "$oid": "6717c398ce2974532879781f" },
     "question": "Chair",
-    "answer": "Chaise"
+    "answer": "Chaise",
+    "level": 1,
+    "isCorrect": false,
+    "imageUrl": null
   },
   {
-    "collectionId": { "$oid": "67179ff25837c4668993a95e" },
+    "userId": null,
+    "collectionId": { "$oid": "6717c398ce2974532879781f" },
     "question": "Car",
-    "answer": "Voiture"
+    "answer": "Voiture",
+    "level": 1,
+    "isCorrect": false,
+    "imageUrl": null
   },
   {
-    "collectionId": { "$oid": "67179ff25837c4668993a95e" },
+    "userId": null,
+    "collectionId": { "$oid": "6717c398ce2974532879781f" },
     "question": "School",
-    "answer": "École"
+    "answer": "École",
+    "level": 1,
+    "isCorrect": false,
+    "imageUrl": null
   }
 ]
