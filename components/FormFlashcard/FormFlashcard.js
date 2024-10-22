@@ -1,8 +1,7 @@
-import styled, { keyframes, css } from "styled-components";
-import RegularButton from "../Buttons/RegularButton";
-import ButtonWrapper from "../Buttons/ButtonWrapper";
-import FormInput from "./FormInput";
+import { styled, css, keyframes } from "styled-components";
 import { useState } from "react";
+import FormManual from "../FormManual/FormManual";
+import FormAI from "../FormAI/FormAI";
 
 export default function FormFlashcard({
   collections,
@@ -11,121 +10,59 @@ export default function FormFlashcard({
   currentFlashcard,
   onSubmitFlashcard,
   isFormClosing,
-  onAddCollection,
   startClosingForm,
+  onAddCollection,
+  getAiFlashcards,
+  changeShowInfoModal,
 }) {
-  const [showNewCollectionFields, setShowNewCollectionFields] = useState(false);
-
-  function handleCollectionChange(event) {
-    if (event.target.value === "newCollection") {
-      setShowNewCollectionFields(true);
-    } else {
-      setShowNewCollectionFields(false);
-    }
-  }
-
-  async function handleSubmit(event) {
-    event.preventDefault();
-
-    const formData = Object.fromEntries(new FormData(event.target));
-    const { collectionName, collectionColor, question, answer } = formData;
-    let newFlashcard;
-
-    if (showNewCollectionFields) {
-      const newCollection = {
-        title: collectionName,
-        color: collectionColor,
-      };
-      const newCollectionId = await onAddCollection(newCollection);
-
-      newFlashcard = {
-        collectionId: newCollectionId,
-        question,
-        answer,
-        level: 1,
-      };
-    } else {
-      newFlashcard = { ...formData, level: 1 };
-    }
-
-    onSubmitFlashcard(newFlashcard);
-    setShowNewCollectionFields(false);
-    event.target.reset();
-    startClosingForm();
-  }
+  const [formMode, setFormMode] = useState("manual");
 
   return (
-    <StyledForm onSubmit={handleSubmit} $isFormClosing={isFormClosing}>
-      <StyledFormHeadline>{headline}</StyledFormHeadline>
-      <StyledLabel htmlFor="question">Question</StyledLabel>
-      <FormInput
-        name="question"
-        actionMode={actionMode}
-        currentFlashcard={currentFlashcard}
-        maxLength="100"
-      />
-      <StyledLabel htmlFor="answer">Answer</StyledLabel>
-      <FormInput
-        name="answer"
-        actionMode={actionMode}
-        currentFlashcard={currentFlashcard}
-        maxLength="70"
-      />
-      <StyledLabel htmlFor="collection">Collection</StyledLabel>
-      <StyledSelect
-        id="collection"
-        name="collectionId"
-        required
-        defaultValue={
-          actionMode === "edit" ? currentFlashcard.collectionId : ""
-        }
-        onChange={handleCollectionChange}
-      >
-        <option value="">--Please choose a collection:--</option>
-        <option value="newCollection">+ Add New Collection</option>
-        {collections.map((collection) => {
-          return (
-            <option key={collection._id} value={collection._id}>
-              {collection.title}
-            </option>
-          );
-        })}
-      </StyledSelect>
-
-      {showNewCollectionFields && (
-        <NewCollectionWrapper>
-          <CollectionNameWrapper>
-            <StyledLabel htmlFor="collectionName">Collection Name</StyledLabel>
-            <FormInput name="collectionName" maxLength="23" />
-          </CollectionNameWrapper>
-          <CollectionColorWrapper>
-            <StyledLabel htmlFor="collectionColor">Color</StyledLabel>
-            <StyledColorInput
-              type="color"
-              id="collectionColor"
-              name="collectionColor"
-              defaultValue="#000000"
-              required
-            />
-          </CollectionColorWrapper>
-        </NewCollectionWrapper>
-      )}
-
-      <ButtonWrapper>
-        <RegularButton type="submit" variant="submit">
-          Submit
-        </RegularButton>
-        {actionMode === "edit" && (
-          <RegularButton
+    <>
+      <StyledFormCard $isFormClosing={isFormClosing}>
+        <StyledFormNavigation>
+          <StyledFormButton
             type="button"
-            variant="confirm"
-            onClick={() => startClosingForm()}
+            $leftButton
+            $active={formMode === "manual"}
+            onClick={() => setFormMode("manual")}
           >
-            Cancel
-          </RegularButton>
+            Manual Entry
+          </StyledFormButton>
+          <StyledFormButton
+            type="button"
+            $rightButton
+            $active={formMode === "ai"}
+            onClick={() => setFormMode("ai")}
+          >
+            AI Generation
+          </StyledFormButton>
+        </StyledFormNavigation>
+
+        {formMode === "manual" && (
+          <FormManual
+            collections={collections}
+            headline={headline}
+            actionMode={actionMode}
+            currentFlashcard={currentFlashcard}
+            isFormClosing={isFormClosing}
+            onSubmit={onSubmitFlashcard}
+            startClosingForm={startClosingForm}
+            onAddCollection={onAddCollection}
+          />
         )}
-      </ButtonWrapper>
-    </StyledForm>
+
+        {formMode === "ai" && (
+          <FormAI
+            collections={collections}
+            changeShowInfoModal={changeShowInfoModal}
+            onAddCollection={onAddCollection}
+            onSubmit={getAiFlashcards}
+            startClosingForm={startClosingForm}
+          />
+        )}
+      </StyledFormCard>
+    </>
   );
 }
 
@@ -139,7 +76,7 @@ const formAnimationOut = keyframes`
 100% { top: -350px; }
 `;
 
-const StyledForm = styled.form`
+const StyledFormCard = styled.div`
   animation: ${(props) =>
     props.$isFormClosing
       ? css`
@@ -152,52 +89,36 @@ const StyledForm = styled.form`
   transform: translateX(-50%);
   position: fixed;
   top: 100px;
-  width: 21rem;
-  padding: 30px 10px 10px 10px;
+  width: 90vw;
+  max-width: 500px;
+  align-items: center;
   background-color: #fff;
   border-top: 0;
   border-radius: 0 0 10px 10px;
   box-shadow: 0px 0px 10px #000;
 `;
 
-const StyledFormHeadline = styled.h2`
-  font: var(--form-headline);
-  text-align: center;
-`;
-
-const StyledLabel = styled.label`
-  display: block;
-  padding: 10px 0 2px 0;
-  font: var(--form-label);
-`;
-
-const StyledSelect = styled.select`
-  display: block;
+const StyledFormNavigation = styled.nav`
   width: 100%;
-  font: var(--form-input);
-  height: 1.7rem;
-  border: 1px solid var(--primary-neutral);
-  border-radius: 2px;
-  &:focus {
-    outline: 1px solid var(--primary-neutral);
-  }
 `;
 
-const NewCollectionWrapper = styled.section`
-  display: flex;
-  width: 100%;
-  gap: 10px;
-`;
-
-const CollectionNameWrapper = styled.article`
-  flex-grow: 3;
-`;
-
-const CollectionColorWrapper = styled.article`
-  flex-grow: 1;
-`;
-
-const StyledColorInput = styled.input`
-  height: 1.5rem;
-  width: 100%;
+const StyledFormButton = styled.button`
+  width: 50%;
+  background-color: #fff;
+  color: #000;
+  font-size: 1rem;
+  font-weight: 700;
+  border: none;
+  padding: 15px 0 15px 0;
+  box-shadow: ${({ $active, $rightButton, $leftButton }) => {
+    if ($active) {
+      return "";
+    }
+    if ($rightButton) {
+      return "inset 5px -5px 5px -5px #000;";
+    }
+    if ($leftButton) {
+      return "inset -5px -5px 5px -5px #000;";
+    }
+  }};
 `;
