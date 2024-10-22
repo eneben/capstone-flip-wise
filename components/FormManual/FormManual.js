@@ -197,9 +197,12 @@ export default function FormManual({
                   currentFlashcard={currentFlashcard}
                 />
               ) : (
-                <UploadButton uploadImage={uploadImage} />
+                <>
+                  <UploadButton uploadImage={uploadImage}></UploadButton>
+                </>
               )}
             </StyledImageInputWrapper>
+            <StyledMaxSizeInfo>Max. file size 4.5 MB</StyledMaxSizeInfo>
           </StyledFormWrapper>
 
           <ButtonWrapper>
@@ -274,4 +277,10 @@ const StyledImageInputWrapper = styled.div`
   position: relative;
   justify-content: center;
   padding-top: 20px;
+`;
+
+const StyledMaxSizeInfo = styled.p`
+  text-align: center;
+  font-size: 0.75rem;
+  display: block;
 `;
