@@ -31,7 +31,7 @@ Make learning more fun by playing a game of Memory: Reinforce learning by turnin
 
 ### 💻 Technologies & Tools
 
-**React | Next.js | styled-components | Node.js | SWR | NextAuth.js | MongoDB | Mongoose | Vercel | Git | GitHub**
+**React | Next.js | Styled Components | SWR | NextAuth | MongoDB | Mongoose | Vercel | Git | GitHub | Framer Motion | Cloudinary | OpenAI**
 
 ---
 
