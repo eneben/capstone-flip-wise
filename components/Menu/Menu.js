@@ -12,6 +12,7 @@ export default function Menu({
   startClosingForm,
   changeFlashcardSelection,
   getAllFlashcardsFromCollection,
+  changeUser,
 }) {
   const { data: session } = useSession();
 
@@ -51,6 +52,48 @@ export default function Menu({
       return () => clearTimeout(menuTimeoutId);
     }
   }, [isMenuClosing]);
+
+  useEffect(() => {
+    let hasAlreadyRun = false;
+
+    async function fetchUser() {
+      if (hasAlreadyRun) return;
+      hasAlreadyRun = true;
+
+      try {
+        const response = await fetch("/api/users", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            providerId: session.user.id,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to create new user");
+        }
+
+        const userData = await response.json();
+
+        const userId = userData.user._id;
+        changeUser(userId);
+        return userId;
+      } catch (error) {
+        console.error("error during fetch user function: ", error);
+        return;
+      }
+    }
+
+    if (session && !hasAlreadyRun) {
+      fetchUser();
+    }
+
+    return () => {
+      hasAlreadyRun = true;
+    };
+  }, [session, changeUser]);
 
   function handleLogout() {
     signOut();
@@ -135,7 +178,7 @@ export default function Menu({
               <Login
                 variant="expanded"
                 changeShowLogOutDialog={changeShowLogOutDialog}
-                onClick={() => {
+                additionalFunctions={() => {
                   changeSubmenuMode("default");
                   changeFlashcardSelection("all");
                   handleToggleMenu();

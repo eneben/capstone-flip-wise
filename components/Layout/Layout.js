@@ -27,6 +27,8 @@ export default function Layout({
   changeFlashcardSelection,
   handleAddCollection,
   getAllFlashcardsFromCollection,
+  changeUser,
+  user,
   isImageEnlarged,
   handleCloseEnlargedImage,
   imageUrl,
@@ -81,7 +83,9 @@ export default function Layout({
         signal: controller.signal,
       });
 
-      const collectionResponse = await fetch("/api/collections");
+      const collectionResponse = await fetch(
+        `/api/collections?userId=${user || ""}`
+      );
       const collections = await collectionResponse.json();
 
       const data = await response.json();
@@ -105,7 +109,6 @@ export default function Layout({
       );
     } catch (error) {
       if (error.name === "AbortError") {
-        console.log("Flashcard generation was cancelled.");
       } else {
         console.error("Error:", error);
       }
@@ -201,6 +204,7 @@ export default function Layout({
           onSubmitFlashcard={handleCreateFlashcard}
           isFormClosing={isFormClosing}
           startClosingForm={startClosingForm}
+          user={user}
           onAddCollection={handleAddCollection}
           changeShowInfoModal={changeShowInfoModal}
         />
@@ -216,6 +220,7 @@ export default function Layout({
           onSubmitFlashcard={handleEditFlashcard}
           isFormClosing={isFormClosing}
           startClosingForm={startClosingForm}
+          user={user}
           onAddCollection={handleAddCollection}
         />
       )}
@@ -272,6 +277,7 @@ export default function Layout({
             startClosingForm={startClosingForm}
             changeFlashcardSelection={changeFlashcardSelection}
             getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
+            changeUser={changeUser}
           />
         </StyledHeaderContentContainer>
       </StyledHeader>

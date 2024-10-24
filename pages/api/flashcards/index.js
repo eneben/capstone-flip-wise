@@ -6,10 +6,6 @@ import Flashcard from "@/db/models/Flashcard.js";
 export default async function handler(request, response) {
   const session = await getServerSession(request, response, authOptions);
 
-  if (session) {
-    console.log("ID: ", session.user.id);
-  }
-
   try {
     await dbConnect();
   } catch (error) {
@@ -20,7 +16,17 @@ export default async function handler(request, response) {
 
   if (request.method === "GET") {
     try {
-      const flashcards = await Flashcard.find();
+      const { userId } = request.query;
+      let query = {};
+
+      if (userId) {
+        query = { userId: userId };
+      } else {
+        query = { userId: null };
+      }
+
+      const flashcards = await Flashcard.find(query);
+
       response.status(200).json(flashcards);
       return;
     } catch (error) {
@@ -37,13 +43,16 @@ export default async function handler(request, response) {
   }
 
   if (request.method === "POST") {
-    if (Array.isArray(request.body)) {
+    const { newFlashcard, user } = request.body;
+
+    if (Array.isArray(newFlashcard)) {
       try {
-        const newFlashcards = request.body.map((flashcard) => {
+        const newFlashcards = newFlashcard.map((flashcard) => {
           return {
             ...flashcard,
             level: 1,
             isCorrect: false,
+            userId: user,
           };
         });
 
@@ -57,11 +66,15 @@ export default async function handler(request, response) {
       }
     } else {
       try {
-        const newFlashcard = request.body;
-        console.log(newFlashcard);
-        await Flashcard.create({ ...newFlashcard, level: 1, isCorrect: false });
+        const newFlashcardObject = newFlashcard;
+
+        await Flashcard.create({
+          ...newFlashcardObject,
+          level: 1,
+          isCorrect: false,
+          userId: user,
+        });
         response.status(201).json({ status: "Flashcard created" });
-        console.log("One of flashcard created");
         return;
       } catch (error) {
         return response

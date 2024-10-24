@@ -16,7 +16,16 @@ export default async function handler(request, response) {
 
   if (request.method === "GET") {
     try {
-      const collections = await Collection.find();
+      const { userId } = request.query;
+      let query = {};
+
+      if (userId) {
+        query = { userId: userId };
+      } else {
+        query = { userId: null };
+      }
+
+      const collections = await Collection.find(query);
       response.status(200).json(collections);
       return;
     } catch (error) {
@@ -33,8 +42,12 @@ export default async function handler(request, response) {
         response.status(401).json({ status: "Not authorized" });
         return;
       }
-
       const newCollection = request.body;
+
+      if (!newCollection.userId) {
+        throw new Error("Missing userId");
+      }
+
       const createdCollection = await Collection.create(newCollection);
       response.status(201).json(createdCollection);
       return;

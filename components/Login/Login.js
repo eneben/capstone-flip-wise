@@ -6,7 +6,7 @@ import styled from "styled-components";
 export default function Login({
   variant,
   changeShowLogOutDialog,
-  onClick = () => {},
+  additionalFunctions = () => {},
 }) {
   const { data: session } = useSession();
 
@@ -17,7 +17,7 @@ export default function Login({
           $variant={variant}
           onClick={() => {
             changeShowLogOutDialog(true);
-            onClick();
+            additionalFunctions();
           }}
         >
           <StyledWrapper>
@@ -35,7 +35,7 @@ export default function Login({
         $variant={variant}
         onClick={() => {
           signIn();
-          onClick();
+          additionalFunctions();
         }}
       >
         <StyledWrapper>

@@ -3,8 +3,6 @@ import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-console.log("Vercel Environment:", process.env.VERCEL_ENV);
-
 export const authOptions = {
   providers: [
     CredentialsProvider({
@@ -18,15 +16,44 @@ export const authOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        if (
-          credentials.username === "test-user" &&
-          credentials.password === "katze123"
-        ) {
-          return {
-            name: "Horst Detlef",
-            email: "horst@detlef.com",
-            id: "a1b2c3d4",
-          };
+        const users = [
+          {
+            username: "test-user",
+            password: "katze123",
+            userData: {
+              name: "Horst Detlef",
+              email: "horst@detlef.com",
+              id: "a1b2c3d4",
+            },
+          },
+          {
+            username: "super-user",
+            password: "sonnenblume",
+            userData: {
+              name: "Ingrid Meier",
+              email: "ingrid@meier.com",
+              id: "b5c6d7e8",
+            },
+          },
+          {
+            username: "best-coaches",
+            password: "lieblings-hummer",
+            userData: {
+              name: "Andrea Jessica",
+              email: "andrea@jessica.com",
+              id: "c9d0e1f2",
+            },
+          },
+        ];
+
+        const user = users.find(
+          (u) =>
+            u.username === credentials.username &&
+            u.password === credentials.password
+        );
+
+        if (user) {
+          return user.userData;
         } else {
           return null;
         }

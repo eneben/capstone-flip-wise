@@ -30,19 +30,25 @@ export default function App({
   Component,
   pageProps: { session, ...pageProps },
 }) {
+  const [user, setUser] = useState(null);
+
   const {
     data: flashcards,
     isLoading: flashcardIsLoading,
     error: flashcardError,
     mutate: mutateFlashcards,
-  } = useSWR("/api/flashcards", fetcher, { fallbackData: [] });
+  } = useSWR(`/api/flashcards?userId=${user || ""}`, fetcher, {
+    fallbackData: [],
+  });
 
   const {
     data: collections,
     isLoading: collectionIsLoading,
     error: collectionError,
     mutate: mutateCollections,
-  } = useSWR("/api/collections", fetcher, { fallbackData: [] });
+  } = useSWR(`/api/collections?userId=${user || ""}`, fetcher, {
+    fallbackData: [],
+  });
 
   if (flashcardError) {
     console.error("Flashcard fetch error:", flashcardError);
@@ -67,6 +73,10 @@ export default function App({
   const [isImageEnlarged, setIsImageEnlarged] = useState(false);
 
   const [imageUrl, setImageUrl] = useState(null);
+
+  function changeUser(userId) {
+    setUser(userId);
+  }
 
   function handleOpenEnlargeImage(imageSrc) {
     setImageUrl(imageSrc);
@@ -128,7 +138,7 @@ export default function App({
     return (
       <SessionProvider session={session}>
         <SWRConfig value={{ fetcher }}>
-          <Layout>
+          <Layout changeUser={changeUser} user={user}>
             <GlobalStyle />
             <LoadingSpinner />
           </Layout>
@@ -163,6 +173,7 @@ export default function App({
     const updatedFlashcard = {
       ...newFlashcard,
       _id: currentFlashcard._id,
+      userId: currentFlashcard.userId,
       isCorrect: currentFlashcard.isCorrect,
       level: currentFlashcard.level,
     };
@@ -235,7 +246,7 @@ export default function App({
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(newFlashcard),
+        body: JSON.stringify({ newFlashcard: newFlashcard, user: user }),
       });
       if (!response.ok) throw new Error("Failed to create flashcard");
       mutateFlashcards();
@@ -338,7 +349,7 @@ export default function App({
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(newCollection),
+        body: JSON.stringify({ ...newCollection, userId: user }),
       });
       if (!response.ok) throw new Error("Failed to add collection");
       const responseData = await response.json();
@@ -445,21 +456,23 @@ export default function App({
     <SessionProvider session={session}>
       <SWRConfig value={{ fetcher }}>
         <Layout
-        collections={collections}
-        actionMode={actionMode}
-        changeActionMode={changeActionMode}
-        currentFlashcard={currentFlashcard}
-        currentCollection={currentCollection}
-        handleEditFlashcard={handleEditFlashcard}
-        handleCreateFlashcard={handleCreateFlashcard}
-        changeFlashcardSelection={changeFlashcardSelection}
-        handleAddCollection={handleAddCollection}
-        handleEditCollection={handleEditCollection}
-        getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
-        isImageEnlarged={isImageEnlarged}
-        handleCloseEnlargedImage={handleCloseEnlargedImage}
-        handleOpenEnlargeImage={handleOpenEnlargeImage}
-        imageUrl={imageUrl}
+          collections={collections}
+          actionMode={actionMode}
+          changeActionMode={changeActionMode}
+          currentFlashcard={currentFlashcard}
+          currentCollection={currentCollection}
+          handleEditFlashcard={handleEditFlashcard}
+          handleCreateFlashcard={handleCreateFlashcard}
+          changeFlashcardSelection={changeFlashcardSelection}
+          handleAddCollection={handleAddCollection}
+          handleEditCollection={handleEditCollection}
+          getAllFlashcardsFromCollection={getAllFlashcardsFromCollection}
+          isImageEnlarged={isImageEnlarged}
+          handleCloseEnlargedImage={handleCloseEnlargedImage}
+          handleOpenEnlargeImage={handleOpenEnlargeImage}
+          imageUrl={imageUrl}
+          changeUser={changeUser}
+          user={user}
         >
           <GlobalStyle />
           <Component

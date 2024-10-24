@@ -43,7 +43,6 @@ export default function FormManual({
 
   function uploadImage(file) {
     if (!file) {
-      console.log("No file found");
       return;
     }
     setImage(file);

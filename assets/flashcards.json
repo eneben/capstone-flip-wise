@@ -1,317 +1,83 @@
 [
   {
-    "id": "16",
-    "collectionId": "2",
+    "userId": null,
+    "collectionId": { "$oid": "6717c398ce2974532879781f" },
     "question": "Apple",
     "answer": "Pomme",
-    "level": 1
+    "level": 1,
+    "isCorrect": false,
+    "imageUrl": null
   },
   {
-    "id": "17",
-    "collectionId": "2",
+    "userId": null,
+    "collectionId": { "$oid": "6717c398ce2974532879781f" },
     "question": "Dog",
     "answer": "Chien",
-    "level": 1
+    "level": 1,
+    "isCorrect": false,
+    "imageUrl": null
   },
   {
-    "id": "18",
-    "collectionId": "2",
+    "userId": null,
+    "collectionId": { "$oid": "6717c398ce2974532879781f" },
     "question": "House",
     "answer": "Maison",
-    "level": 3
+    "level": 1,
+    "isCorrect": false,
+    "imageUrl": null
   },
   {
-    "id": "19",
-    "collectionId": "2",
+    "userId": null,
+    "collectionId": { "$oid": "6717c398ce2974532879781f" },
     "question": "Water",
     "answer": "Eau",
-    "level": 3
+    "level": 1,
+    "isCorrect": false,
+    "imageUrl": null
   },
   {
-    "id": "20",
-    "collectionId": "2",
+    "userId": null,
+    "collectionId": { "$oid": "6717c398ce2974532879781f" },
     "question": "Book",
     "answer": "Livre",
-    "level": 1
+    "level": 1,
+    "isCorrect": false,
+    "imageUrl": null
   },
   {
-    "id": "21",
-    "collectionId": "2",
+    "userId": null,
+    "collectionId": { "$oid": "6717c398ce2974532879781f" },
     "question": "Table",
     "answer": "Table",
-    "level": 1
+    "level": 1,
+    "isCorrect": false,
+    "imageUrl": null
   },
   {
-    "id": "22",
-    "collectionId": "2",
+    "userId": null,
+    "collectionId": { "$oid": "6717c398ce2974532879781f" },
     "question": "Chair",
     "answer": "Chaise",
-    "level": 1
+    "level": 1,
+    "isCorrect": false,
+    "imageUrl": null
   },
   {
-    "id": "23",
-    "collectionId": "2",
+    "userId": null,
+    "collectionId": { "$oid": "6717c398ce2974532879781f" },
     "question": "Car",
     "answer": "Voiture",
-    "level": 2
+    "level": 1,
+    "isCorrect": false,
+    "imageUrl": null
   },
   {
-    "id": "24",
-    "collectionId": "2",
+    "userId": null,
+    "collectionId": { "$oid": "6717c398ce2974532879781f" },
     "question": "School",
     "answer": "École",
-    "level": 1
-  },
-  {
-    "id": "25",
-    "collectionId": "2",
-    "question": "Pen",
-    "answer": "Stylo",
-    "level": 1
-  },
-  {
-    "id": "26",
-    "collectionId": "2",
-    "question": "Window",
-    "answer": "Fenêtre",
-    "level": 1
-  },
-  {
-    "id": "27",
-    "collectionId": "2",
-    "question": "Door",
-    "answer": "Porte",
-    "level": 1
-  },
-  {
-    "id": "28",
-    "collectionId": "2",
-    "question": "Cat",
-    "answer": "Chat",
-    "level": 5
-  },
-  {
-    "id": "29",
-    "collectionId": "2",
-    "question": "Sun",
-    "answer": "Soleil",
-    "level": 1
-  },
-  {
-    "id": "30",
-    "collectionId": "2",
-    "question": "Moon",
-    "answer": "Lune",
-    "level": 4
-  },
-  {
-    "id": "46",
-    "collectionId": "4",
-    "question": "What comes down but never goes up?",
-    "answer": "Rain",
-    "level": 5
-  },
-  {
-    "id": "47",
-    "collectionId": "4",
-    "question": "What has keys but can't open locks?",
-    "answer": "A piano",
-    "level": 4
-  },
-  {
-    "id": "48",
-    "collectionId": "4",
-    "question": "What gets wetter as it dries?",
-    "answer": "A towel",
-    "level": 3
-  },
-  {
-    "id": "49",
-    "collectionId": "4",
-    "question": "What can travel around the world while staying in the same spot?",
-    "answer": "A stamp",
-    "level": 5
-  },
-  {
-    "id": "50",
-    "collectionId": "4",
-    "question": "What has a heart that doesn't beat?",
-    "answer": "An artichoke",
-    "level": 5
-  },
-  {
-    "id": "51",
-    "collectionId": "4",
-    "question": "I'm tall when I'm young, and I'm short when I'm old. What am I?",
-    "answer": "A candle",
-    "level": 5
-  },
-  {
-    "id": "52",
-    "collectionId": "4",
-    "question": "What has a head, a tail, is brown, and has no legs?",
-    "answer": "A penny",
-    "level": 5
-  },
-  {
-    "id": "53",
-    "collectionId": "4",
-    "question": "The more you take, the more you leave behind. What am I?",
-    "answer": "Footsteps",
-    "level": 5
-  },
-  {
-    "id": "54",
-    "collectionId": "4",
-    "question": "What has an eye but cannot see?",
-    "answer": "A needle",
-    "level": 5
-  },
-  {
-    "id": "55",
-    "collectionId": "4",
-    "question": "What has to be broken before you can use it?",
-    "answer": "An egg",
-    "level": 5
-  },
-  {
-    "id": "56",
-    "collectionId": "4",
-    "question": "What has one head, one foot, and four legs?",
-    "answer": "A bed",
-    "level": 5
-  },
-  {
-    "id": "57",
-    "collectionId": "4",
-    "question": "What can fill a room but takes up no space?",
-    "answer": "Light",
-    "level": 5
-  },
-  {
-    "id": "58",
-    "collectionId": "4",
-    "question": "What is so fragile that saying its name breaks it?",
-    "answer": "Silence",
-    "level": 5
-  },
-  {
-    "id": "59",
-    "collectionId": "4",
-    "question": "What gets sharper the more you use it?",
-    "answer": "Your brain",
-    "level": 5
-  },
-  {
-    "id": "60",
-    "collectionId": "4",
-    "question": "What has four wheels and flies?",
-    "answer": "A garbage truck",
-    "level": 5
-  },
-  {
-    "id": "91",
-    "collectionId": "7",
-    "question": "Who painted the Mona Lisa?",
-    "answer": "Leonardo da Vinci",
-    "level": 1
-  },
-  {
-    "id": "92",
-    "collectionId": "7",
-    "question": "What musical instrument has 88 keys?",
-    "answer": "Piano",
-    "level": 1
-  },
-  {
-    "id": "93",
-    "collectionId": "7",
-    "question": "Who composed the Four Seasons?",
-    "answer": "Antonio Vivaldi",
-    "level": 1
-  },
-  {
-    "id": "94",
-    "collectionId": "7",
-    "question": "Which art movement is associated with Claude Monet?",
-    "answer": "Impressionism",
-    "level": 1
-  },
-  {
-    "id": "95",
-    "collectionId": "7",
-    "question": "What is the name of the famous painting of a girl with a pearl earring?",
-    "answer": "Girl with a Pearl Earring",
-    "level": 1
-  },
-  {
-    "id": "96",
-    "collectionId": "7",
-    "question": "What instrument is often used in jazz music?",
-    "answer": "Saxophone",
-    "level": 1
-  },
-  {
-    "id": "97",
-    "collectionId": "7",
-    "question": "Who composed the opera 'The Magic Flute'?",
-    "answer": "Wolfgang Amadeus Mozart",
-    "level": 1
-  },
-  {
-    "id": "98",
-    "collectionId": "7",
-    "question": "Which artist is known for the painting 'Starry Night'?",
-    "answer": "Vincent van Gogh",
-    "level": 1
-  },
-  {
-    "id": "99",
-    "collectionId": "7",
-    "question": "Who painted the ceiling of the Sistine Chapel?",
-    "answer": "Michelangelo",
-    "level": 1
-  },
-  {
-    "id": "100",
-    "collectionId": "7",
-    "question": "What musical symbol represents a sharp note?",
-    "answer": "#",
-    "level": 1
-  },
-  {
-    "id": "101",
-    "collectionId": "7",
-    "question": "Which famous composer was deaf?",
-    "answer": "Ludwig van Beethoven",
-    "level": 1
-  },
-  {
-    "id": "102",
-    "collectionId": "7",
-    "question": "Who painted 'The Persistence of Memory'?",
-    "answer": "Salvador Dalí",
-    "level": 1
-  },
-  {
-    "id": "103",
-    "collectionId": "7",
-    "question": "What instrument is the lead in a string quartet?",
-    "answer": "Violin",
-    "level": 1
-  },
-  {
-    "id": "104",
-    "collectionId": "7",
-    "question": "What is the term for a quick tempo in music?",
-    "answer": "Allegro",
-    "level": 1
-  },
-  {
-    "id": "105",
-    "collectionId": "7",
-    "question": "Which famous painting was stolen from the Louvre in 1911?",
-    "answer": "The Mona Lisa",
-    "level": 1
+    "level": 1,
+    "isCorrect": false,
+    "imageUrl": null
   }
 ]
